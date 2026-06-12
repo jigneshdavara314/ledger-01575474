@@ -29,6 +29,12 @@
   .card .value { font-size:28px; font-weight:700; margin:6px 0 2px; }
   .card .sub { color:var(--muted); font-size:12px; }
   .pos { color:var(--pos); } .neg { color:var(--neg); }
+  .bankroll { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+               gap:12px; margin:6px 0 14px; padding:16px; border-radius:12px;
+               background:linear-gradient(135deg,#161b22,#1c2333);
+               border:1px solid var(--accent); }
+  .bk-item .label { color:var(--muted); font-size:11px; text-transform:uppercase; }
+  .bk-item .value { font-size:20px; font-weight:700; margin-top:4px; }
   .targetbar { position:relative; height:26px; background:var(--panel);
                 border:1px solid var(--border); border-radius:8px; overflow:hidden;
                 margin-bottom:28px; }
@@ -82,7 +88,7 @@
     <span class="badge-mode paper">PAPER</span>
     <span class="badge-mode paper">profile: moderate</span>
   </header>
-  <div class="gen">Generated 2026-06-13 00:26:31 &middot; auto-refreshes every 60s</div>
+  <div class="gen">Generated 2026-06-13 00:33:46 &middot; auto-refreshes every 60s</div>
 
   <div class="actions">
     <button class="btn primary" onclick="run('resolve')">🔄 Resolve (settle finished games)</button>
@@ -126,6 +132,27 @@
         <div class="targetfill" style="width:0%"></div>
         <span class="targetlabel">0% of $500 daily target</span>
       </div>
+    
+
+  
+      <div class="bankroll">
+        <div class="bk-item"><div class="label">Deposit (total invested)</div>
+          <div class="value">$500.00</div></div>
+        <div class="bk-item"><div class="label">Cash available</div>
+          <div class="value">$470.00</div></div>
+        <div class="bk-item"><div class="label">In open bets</div>
+          <div class="value">$30.00</div></div>
+        <div class="bk-item"><div class="label">Total equity</div>
+          <div class="value ">$500.00</div></div>
+        <div class="bk-item"><div class="label">Profit / return</div>
+          <div class="value ">+$0.00
+            (+0.0%)</div></div>
+      </div>
+      <h2>Bankroll history (compounding — $500 deposited once,
+          winnings reinvested)</h2>
+      <table><thead><tr><th>Time (UTC)</th><th>Type</th><th>Amount</th>
+        <th>Balance after</th><th>Note</th></tr></thead>
+        <tbody><tr><td>2026-06-12T19:02</td><td>stake</td><td class='neg'>$-30.00</td><td>$470.00</td><td class='q'>0 pre-existing open bets</td></tr><tr><td>2026-06-12T19:02</td><td>deposit</td><td class='pos'>+$500.00</td><td>$500.00</td><td class='q'>initial deposit $500.00</td></tr></tbody></table>
     
 
   

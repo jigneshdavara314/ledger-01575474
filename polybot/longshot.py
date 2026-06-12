@@ -49,15 +49,20 @@ TIER_STAKE_MULT = {"confirmed": 1.0, "exploratory": 0.5}
 
 def budget_base_stake() -> float:
     """
-    Base per-bet stake derived from the daily budget, spread across the expected
-    number of bets. Confirmed bets then get the full base, exploratory get half.
-    Example: $200 budget / 20 max bets = $10 base. A confirmed bet stakes ~$10,
-    an exploratory ~$5 — before the depth cap and the per-bet fraction cap.
+    Base per-bet stake derived from the CURRENT BANKROLL BALANCE (compounding),
+    spread across the expected number of bets. As the balance grows from
+    reinvested winnings, bets grow too; as it shrinks, they shrink. This realises
+    the user's "$200 once, then compound" model.
+
+    Falls back to DAILY_BUDGET_USD if the bankroll isn't initialised.
     """
+    try:
+        from .bankroll import balance
+        pool = balance()
+    except Exception:
+        pool = config.DAILY_BUDGET_USD
     n = max(1, config.LONGSHOT_MAX_BETS)
-    base = config.DAILY_BUDGET_USD / n
-    # never let the legacy flat stake pull it below a sensible floor
-    return max(base, 0.0)
+    return max(pool / n, 0.0)
 
 # Price band where fading is worthwhile: the YES longshot is priced high enough
 # to be overpriced, but not so high it's a real contender.

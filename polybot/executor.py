@@ -41,6 +41,15 @@ class Executor:
         else:
             result = self._execute_paper(signal)
         store.record_trade(signal, result)
+        # Compounding bankroll: deduct the stake from the running balance.
+        try:
+            from . import bankroll
+            bankroll.deduct_stake(
+                signal.size_usd,
+                note=f"{signal.side} {signal.market.question[:40]}",
+            )
+        except Exception:
+            pass
         return result
 
     # ------------------------------------------------------------------

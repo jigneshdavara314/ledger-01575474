@@ -289,6 +289,11 @@ def cmd_longshot(trade: bool = True):
           f"{'estWin':>7} {'hrs':>5}  market")
     print("-" * 104)
 
+    from polybot import bankroll
+    bk0 = bankroll.summary()
+    print(f"Bankroll available: ${bk0['balance']:.2f} cash "
+          f"(deposit ${bk0['initial_deposit']:.0f}, equity ${bk0['total_equity']:.2f})\n")
+
     placed = 0
     skipped_nofill = 0
     for f in fades:
@@ -303,6 +308,11 @@ def cmd_longshot(trade: bool = True):
             continue
         if store.open_position_count() >= 50:
             print("     -> skipped (position cap)")
+            continue
+        # COMPOUNDING GUARD: don't bet money we don't have in the bankroll.
+        if not bankroll.can_afford(f.size_usd):
+            print(f"     -> skipped (insufficient bankroll: "
+                  f"${bankroll.balance():.2f} < ${f.size_usd:.2f})")
             continue
 
         # HONEST FILL MODEL: a limit order below the ask may not fill. In paper
@@ -433,6 +443,7 @@ def cmd_resolve():
         print("No open positions to resolve.")
         return
 
+    from polybot import bankroll
     print(f"Checking {len(positions)} open positions for resolution...\n")
     settled = 0
     for trade_id, cond_id, question, side, size_usd, mkt_prob, shares in positions:
@@ -442,13 +453,41 @@ def cmd_resolve():
             continue
         won = (winner == side)
         pnl = store.settle_position(trade_id, won, size_usd, shares)
+        # Compounding bankroll: credit the payout back. A win returns stake+profit
+        # (= shares * $1); a loss returns nothing (stake already deducted).
+        payout = round(shares * 1.0, 4) if won else 0.0
+        if payout > 0:
+            bankroll.credit_payout(payout, note=f"WON {question[:36]}")
         tag = "WON " if won else "LOST"
         print(f"  [{tag}]   {question[:48]}  (bet {side}, {winner} won)  pnl={pnl:+.2f}")
         settled += 1
 
     print(f"\nSettled {settled} position(s).")
-    today_pnl = store.today_pnl()
-    print(f"Today's realised P&L: ${today_pnl:+.2f}   target: ${config.DAILY_TARGET_USD:.0f}/day")
+    bk = bankroll.summary()
+    print(f"Bankroll: ${bk['balance']:.2f} cash + ${bk['open_exposure']:.2f} in open bets "
+          f"= ${bk['total_equity']:.2f} equity  "
+          f"(deposit ${bk['initial_deposit']:.0f}, return {bk['return_pct']:+.1f}%)")
+
+
+# ---------------------------------------------------------------------------
+# BANKROLL — show the compounding balance + movement history
+# ---------------------------------------------------------------------------
+
+def cmd_bankroll():
+    from polybot import bankroll
+    bk = bankroll.summary()
+    print("=" * 56)
+    print("  COMPOUNDING BANKROLL")
+    print("=" * 56)
+    print(f"  Initial deposit : ${bk['initial_deposit']:.2f}")
+    print(f"  Cash balance    : ${bk['balance']:.2f}")
+    print(f"  In open bets    : ${bk['open_exposure']:.2f}")
+    print(f"  Total equity    : ${bk['total_equity']:.2f}")
+    print(f"  Profit          : ${bk['profit']:+.2f}  ({bk['return_pct']:+.1f}%)")
+    print("\n  Recent movements:")
+    print(f"  {'time':17} {'kind':8} {'amount':>9} {'balance':>9}  note")
+    for ts, kind, amount, bal_after, note in bankroll.history(15):
+        print(f"  {ts[:16]:17} {kind:8} {amount:>+9.2f} {bal_after:>9.2f}  {(note or '')[:30]}")
 
 
 # ---------------------------------------------------------------------------
@@ -551,6 +590,7 @@ COMMANDS = {
     "resolve": cmd_resolve,
     "history": cmd_history,
     "report":  cmd_report,
+    "bankroll": cmd_bankroll,
     "status":  cmd_status,
 }
 

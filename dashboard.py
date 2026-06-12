@@ -115,6 +115,47 @@ def _backtest_section(bt) -> str:
     """
 
 
+def _bankroll_section():
+    """Compounding-bankroll equity banner + movement history."""
+    try:
+        from polybot import bankroll
+        bk = bankroll.summary()
+        moves = bankroll.history(20)
+    except Exception:
+        return ""
+    rows = []
+    for ts, kind, amount, bal_after, note in moves:
+        rows.append(
+            f"<tr><td>{html.escape(ts[:16])}</td>"
+            f"<td>{html.escape(kind)}</td>"
+            f"<td class='{_pnl_class(amount)}'>{_fmt_money(amount)}</td>"
+            f"<td>${bal_after:,.2f}</td>"
+            f"<td class='q'>{html.escape((note or '')[:46])}</td></tr>"
+        )
+    if not rows:
+        rows = ['<tr><td colspan="5" class="empty">No movements yet.</td></tr>']
+    return f"""
+      <div class="bankroll">
+        <div class="bk-item"><div class="label">Deposit (total invested)</div>
+          <div class="value">${bk['initial_deposit']:,.2f}</div></div>
+        <div class="bk-item"><div class="label">Cash available</div>
+          <div class="value">${bk['balance']:,.2f}</div></div>
+        <div class="bk-item"><div class="label">In open bets</div>
+          <div class="value">${bk['open_exposure']:,.2f}</div></div>
+        <div class="bk-item"><div class="label">Total equity</div>
+          <div class="value {_pnl_class(bk['profit'])}">${bk['total_equity']:,.2f}</div></div>
+        <div class="bk-item"><div class="label">Profit / return</div>
+          <div class="value {_pnl_class(bk['profit'])}">{_fmt_money(bk['profit'])}
+            ({bk['return_pct']:+.1f}%)</div></div>
+      </div>
+      <h2>Bankroll history (compounding — ${bk['initial_deposit']:.0f} deposited once,
+          winnings reinvested)</h2>
+      <table><thead><tr><th>Time (UTC)</th><th>Type</th><th>Amount</th>
+        <th>Balance after</th><th>Note</th></tr></thead>
+        <tbody>{''.join(rows)}</tbody></table>
+    """
+
+
 def build_html() -> str:
     store.init_db()
     s = store.performance_summary()
@@ -256,6 +297,12 @@ def build_html() -> str:
   .card .value {{ font-size:28px; font-weight:700; margin:6px 0 2px; }}
   .card .sub {{ color:var(--muted); font-size:12px; }}
   .pos {{ color:var(--pos); }} .neg {{ color:var(--neg); }}
+  .bankroll {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+               gap:12px; margin:6px 0 14px; padding:16px; border-radius:12px;
+               background:linear-gradient(135deg,#161b22,#1c2333);
+               border:1px solid var(--accent); }}
+  .bk-item .label {{ color:var(--muted); font-size:11px; text-transform:uppercase; }}
+  .bk-item .value {{ font-size:20px; font-weight:700; margin-top:4px; }}
   .targetbar {{ position:relative; height:26px; background:var(--panel);
                 border:1px solid var(--border); border-radius:8px; overflow:hidden;
                 margin-bottom:28px; }}
@@ -322,6 +369,8 @@ def build_html() -> str:
   <pre id="output" class="output" style="display:none"></pre>
 
   {cards}
+
+  {_bankroll_section()}
 
   {_backtest_section(bt)}
 
