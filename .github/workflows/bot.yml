@@ -1,0 +1,95 @@
+name: polymarket-paper-bot
+
+# Runs the paper-trading bot on a schedule in the cloud (free GitHub Actions).
+# Each run: places longshot-fade bets, watches for lag arb, resolves settled
+# positions, regenerates the dashboard, and commits trades.db + dashboard.html
+# back to the repo so history persists across runs.
+#
+# PAPER MODE ONLY. No wallet key is used. No real money can move.
+
+on:
+  schedule:
+    # Every 15 minutes. (GitHub cron min interval is 5 min; 15 is plenty here.)
+    # Note: GitHub may delay scheduled runs under load — not real-time.
+    - cron: "*/15 * * * *"
+  workflow_dispatch: {}   # lets you run it manually from the Actions tab
+
+# Allow the workflow to push commits (the updated DB + dashboard) back.
+permissions:
+  contents: write
+
+# Never run two copies at once (they'd fight over trades.db).
+concurrency:
+  group: bot-run
+  cancel-in-progress: false
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run bot cycle (PAPER)
+        env:
+          MODE: PAPER
+          PROFILE: moderate
+        run: |
+          echo "::group::longshot fades"
+          python run.py longshot || true
+          echo "::endgroup::"
+          echo "::group::lag arbitrage"
+          python run.py lagwatch || true
+          echo "::endgroup::"
+          echo "::group::resolve settled positions"
+          python run.py resolve || true
+          echo "::endgroup::"
+          echo "::group::report"
+          python run.py report || true
+          echo "::endgroup::"
+          python dashboard.py
+
+      - name: Publish dashboard to GitHub Pages
+        run: |
+          mkdir -p public
+          cp dashboard.html public/index.html
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      - name: Commit updated DB + dashboard
+        run: |
+          git config user.name "polymarket-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add trades.db dashboard.html
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "bot run: update trades.db + dashboard [skip ci]"
+            git push
+          fi
+
+  # Deploy the dashboard to GitHub Pages (public URL to view from anywhere).
+  deploy-pages:
+    needs: run-bot
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,902 @@
+[
+  {
+    "condition_id": "0x3774cdf17e49143a4f6e10812df8b06113731493842fccc52dea045a1744ae61",
+    "question": "Will United States vs. Paraguay end in a draw?",
+    "category": "soccer",
+    "event": "United States vs. Paraguay",
+    "market_price_yes": 0.295,
+    "hours_to_resolution": 7.55,
+    "liquidity": 1706228.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x26c10c27cde58e2d6214d65ab562d8142d34723b3b6ec3f40836d24f6d22dfc9",
+    "question": "Will United States win on 2026-06-12?",
+    "category": "soccer",
+    "event": "United States vs. Paraguay",
+    "market_price_yes": 0.455,
+    "hours_to_resolution": 7.55,
+    "liquidity": 3705467.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x86f102a31cf4b12dbcf31ae8c62c526c0b538d5b7eb1af5947d0b0378522f926",
+    "question": "Will Paraguay win on 2026-06-12?",
+    "category": "soccer",
+    "event": "United States vs. Paraguay",
+    "market_price_yes": 0.235,
+    "hours_to_resolution": 7.55,
+    "liquidity": 1949224.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xeda55c7409e9f0f436377ea300db42db6c576277846df770abd1391828dde639",
+    "question": "Will Canada vs. Bosnia and Herzegovina end in a draw?",
+    "category": "soccer",
+    "event": "Canada vs. Bosnia-Herzegovina",
+    "market_price_yes": 0.275,
+    "hours_to_resolution": 1.55,
+    "liquidity": 1561486.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x3bb3f35e86949207b257f1f3288a8ceaf071638cbd10a3c9a8273b4f542d4ee0",
+    "question": "Will Bosnia and Herzegovina win on 2026-06-12?",
+    "category": "soccer",
+    "event": "Canada vs. Bosnia-Herzegovina",
+    "market_price_yes": 0.195,
+    "hours_to_resolution": 1.55,
+    "liquidity": 1790424.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x802adc7238db42d431521f625b2a367954d04ebf8836109257dd4a3b961c6108",
+    "question": "Will Canada win on 2026-06-12?",
+    "category": "soccer",
+    "event": "Canada vs. Bosnia-Herzegovina",
+    "market_price_yes": 0.535,
+    "hours_to_resolution": 1.55,
+    "liquidity": 2712888.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x07df66c4d13e055f9be2c6a9ffdf1cd66aca4ec1bfa96853fe80fd1c003d5405",
+    "question": "Counter-Strike: Team Falcons vs BetBoom Team (BO3) - IEM Cologne Major Stage 3",
+    "category": "esports",
+    "event": "Counter-Strike: Team Falcons vs BetBoom Team (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.005,
+    "hours_to_resolution": 3.72,
+    "liquidity": 409178.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x09d3484b79c1c530bf062dd54d967896d97d04681557ef42633cf4e2e019e4df",
+    "question": "Games Total: O/U 2.5",
+    "category": "esports",
+    "event": "Counter-Strike: Team Falcons vs BetBoom Team (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.005,
+    "hours_to_resolution": 3.72,
+    "liquidity": 38985.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x50bb192766300dd76c44fbc77f7e1a150ec865e7178c769cbcda44e97612c765",
+    "question": "Map Handicap: FAL (-1.5) vs BetBoom Team (+1.5)",
+    "category": "esports",
+    "event": "Counter-Strike: Team Falcons vs BetBoom Team (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.0005,
+    "hours_to_resolution": 3.72,
+    "liquidity": 467474.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xadd7f84af5ad6dc0db1dfff80e428d9df695f5602910734bcd5db8fe8effa326",
+    "question": "Map 1 Total Rounds: Over/Under 21.5",
+    "category": "esports",
+    "event": "Counter-Strike: Team Falcons vs BetBoom Team (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.9995,
+    "hours_to_resolution": 3.72,
+    "liquidity": 1651.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x88af4761575573a2160112379f717b7d2c2dd561a4cd1a0d694f3d6fe396bcb9",
+    "question": "Counter-Strike: Team Falcons vs BetBoom Team - Map 1 Winner",
+    "category": "esports",
+    "event": "Counter-Strike: Team Falcons vs BetBoom Team (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.0005,
+    "hours_to_resolution": 3.72,
+    "liquidity": 543197.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xefb0bab8349f61b8a33dec32c929171cd613f998ee47fda7ddc61cdf5027c5d8",
+    "question": "Counter-Strike: Natus Vincere vs Legacy - Map 1 Winner",
+    "category": "esports",
+    "event": "Counter-Strike: Natus Vincere vs Legacy (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.9995,
+    "hours_to_resolution": 3.3,
+    "liquidity": 282712.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xd5386997ff69e91caa567e6d0349837ce8a53dbd89c752a5efc109a426e31629",
+    "question": "Counter-Strike: Natus Vincere vs Legacy - Map 2 Winner",
+    "category": "esports",
+    "event": "Counter-Strike: Natus Vincere vs Legacy (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.9995,
+    "hours_to_resolution": 3.3,
+    "liquidity": 488374.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x854cc1734477825d158c0da3256661894d4e6fc4abe4e963e09e9fbe250ed363",
+    "question": "Counter-Strike: Natus Vincere vs Legacy (BO3) - IEM Cologne Major Stage 3",
+    "category": "esports",
+    "event": "Counter-Strike: Natus Vincere vs Legacy (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.9995,
+    "hours_to_resolution": 3.3,
+    "liquidity": 643508.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x9c7305b53a2b73c7c01d2cc4b9a8e05b6ed5dd7a608ebe38e36e9aee6203995a",
+    "question": "Map Handicap: NAVI (-1.5) vs Legacy (+1.5)",
+    "category": "esports",
+    "event": "Counter-Strike: Natus Vincere vs Legacy (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.9995,
+    "hours_to_resolution": 3.3,
+    "liquidity": 324430.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xe62d56b476407251bcc23cece597876ab0d5c32ac7096b14c91ff54101e02d27",
+    "question": "Map 1 Rounds Handicap: Natus Vincere (-3.5) vs Legacy (+3.5)",
+    "category": "esports",
+    "event": "Counter-Strike: Natus Vincere vs Legacy (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.9995,
+    "hours_to_resolution": 3.3,
+    "liquidity": 8784.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xd99c60888ea71d9cd9ad5e69f2eae30a2c7439b228827211d880f79c05c376c3",
+    "question": "Spread: Canada (-1.5)",
+    "category": "soccer",
+    "event": "Canada vs. Bosnia and Herzegovina - More Markets",
+    "market_price_yes": 0.275,
+    "hours_to_resolution": 1.55,
+    "liquidity": 378991.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xb3b7c64733c75de6bcc210853c2174acd115c650aaa989a7483e08fed90d679a",
+    "question": "Spread: Bosnia and Herzegovina (-1.5)",
+    "category": "soccer",
+    "event": "Canada vs. Bosnia and Herzegovina - More Markets",
+    "market_price_yes": 0.055,
+    "hours_to_resolution": 1.55,
+    "liquidity": 142464.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x257b096216f454df49c1c9f3e866694c7d3c5c34838051a169b161ec8e39dd6d",
+    "question": "Spread: Canada (-2.5)",
+    "category": "soccer",
+    "event": "Canada vs. Bosnia and Herzegovina - More Markets",
+    "market_price_yes": 0.105,
+    "hours_to_resolution": 1.55,
+    "liquidity": 211949.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xaa8d336274718824cbfc965e3341caf39b35da72a1f2326b9208e81d38d81067",
+    "question": "Spread: Bosnia and Herzegovina (-2.5)",
+    "category": "soccer",
+    "event": "Canada vs. Bosnia and Herzegovina - More Markets",
+    "market_price_yes": 0.017,
+    "hours_to_resolution": 1.55,
+    "liquidity": 101468.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x3ec0c20d6fce095b8294abc3a0131093a372ec87c4478c441a6d31cc3d2cb332",
+    "question": "Canada vs. Bosnia and Herzegovina: O/U 0.5",
+    "category": "soccer",
+    "event": "Canada vs. Bosnia and Herzegovina - More Markets",
+    "market_price_yes": 0.905,
+    "hours_to_resolution": 1.55,
+    "liquidity": 168773.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xbf3e98ee0eaa6f3685b37c54ce81c254a835f62f4895e5073360817799528d6f",
+    "question": "Spread: Qatar (-1.5)",
+    "category": "soccer",
+    "event": "Qatar vs. Switzerland - More Markets",
+    "market_price_yes": 0.014,
+    "hours_to_resolution": 25.55,
+    "liquidity": 16301.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x5238b69e57442973c13be38c5a71937cc33e1ce89a65e16e1158f233a9a767e5",
+    "question": "Spread: Switzerland (-1.5)",
+    "category": "soccer",
+    "event": "Qatar vs. Switzerland - More Markets",
+    "market_price_yes": 0.565,
+    "hours_to_resolution": 25.55,
+    "liquidity": 192048.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x0b348188021dd0b9b824f6bebf6652d6b9c03949910b25fdfbc60a6a0300f1da",
+    "question": "Spread: Qatar (-2.5)",
+    "category": "soccer",
+    "event": "Qatar vs. Switzerland - More Markets",
+    "market_price_yes": 0.004,
+    "hours_to_resolution": 25.55,
+    "liquidity": 15163.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x00846ec590ed53411af67400bb519e6cfb4ac903055098486cff4c91b3d3b956",
+    "question": "Spread: Switzerland (-2.5)",
+    "category": "soccer",
+    "event": "Qatar vs. Switzerland - More Markets",
+    "market_price_yes": 0.315,
+    "hours_to_resolution": 25.55,
+    "liquidity": 125769.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xd66e813436b47aefaa9c3662d4088b5f6304bd021bd2a4581cc658c262128cc9",
+    "question": "Qatar vs. Switzerland: O/U 0.5",
+    "category": "soccer",
+    "event": "Qatar vs. Switzerland - More Markets",
+    "market_price_yes": 0.953,
+    "hours_to_resolution": 25.55,
+    "liquidity": 33330.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x639c60e4a74ea30a30b637625813d3fabed195d88072a488f8b7ac6441b930ae",
+    "question": "Will Qatar vs. Switzerland end in a draw?",
+    "category": "soccer",
+    "event": "Qatar vs. Switzerland",
+    "market_price_yes": 0.135,
+    "hours_to_resolution": 25.55,
+    "liquidity": 686183.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x6b864f35765706986a861d22fcc207872062186ddcb5fbc20275e991b20ff6ab",
+    "question": "Will Switzerland win on 2026-06-13?",
+    "category": "soccer",
+    "event": "Qatar vs. Switzerland",
+    "market_price_yes": 0.805,
+    "hours_to_resolution": 25.55,
+    "liquidity": 654572.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x415cb64cfa04f2cde4ec39c5a81050cc9fb539b9b6972e72cce16b46e0e33a5b",
+    "question": "Will Qatar win on 2026-06-13?",
+    "category": "soccer",
+    "event": "Qatar vs. Switzerland",
+    "market_price_yes": 0.059,
+    "hours_to_resolution": 25.55,
+    "liquidity": 644661.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x5aa3c64b8f8c45cbf09cbeb004e3e192315a3d5a6e99217b64e429fdbd7c9d48",
+    "question": "Valorant: Paper Rex vs Leviatán Esports (BO3) - VCT Masters London Playoffs",
+    "category": "esports",
+    "event": "Valorant: Paper Rex vs Leviatán Esports (BO3) - VCT Masters London Playoffs",
+    "market_price_yes": 0.9995,
+    "hours_to_resolution": 2.55,
+    "liquidity": 319221.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xf03dfc21e6ab7ada3b9bf54d935f0bd2f71ebadc507e5d47c446fa663b1fade1",
+    "question": "Games Total: O/U 2.5",
+    "category": "esports",
+    "event": "Valorant: Paper Rex vs Leviatán Esports (BO3) - VCT Masters London Playoffs",
+    "market_price_yes": 0.0005,
+    "hours_to_resolution": 2.55,
+    "liquidity": 26700.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x62381c5c08c4b187d0464eef376bfc34f7356255bee21755aad92aab677c05b4",
+    "question": "Map Handicap: PR (-1.5) vs Leviatán Esports (+1.5)",
+    "category": "esports",
+    "event": "Valorant: Paper Rex vs Leviatán Esports (BO3) - VCT Masters London Playoffs",
+    "market_price_yes": 0.9995,
+    "hours_to_resolution": 2.55,
+    "liquidity": 30099.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x8e32438ce980af23be525411e1282d86d2c7814f9b94b3bb1456941b937fed8e",
+    "question": "Map 1 Total Rounds: Over/Under 22.5",
+    "category": "esports",
+    "event": "Valorant: Paper Rex vs Leviatán Esports (BO3) - VCT Masters London Playoffs",
+    "market_price_yes": 0.0005,
+    "hours_to_resolution": 2.55,
+    "liquidity": 674.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x6952000dbbb1494070054ac93bf57bdcc684c8b932a85ab3ab95510b4e16ca91",
+    "question": "Map 1 Total Rounds: Over/Under 21.5",
+    "category": "esports",
+    "event": "Valorant: Paper Rex vs Leviatán Esports (BO3) - VCT Masters London Playoffs",
+    "market_price_yes": 0.0005,
+    "hours_to_resolution": 2.55,
+    "liquidity": 648.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xa154758b650b1a264703c5131e62a19f7470c6b6386524f22df39911faa082ca",
+    "question": "Spread: United States (-1.5)",
+    "category": "soccer",
+    "event": "United States vs. Paraguay - More Markets",
+    "market_price_yes": 0.215,
+    "hours_to_resolution": 7.55,
+    "liquidity": 215144.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xb4804e6f5162f3b8bd9a30dc7a57a8e181479e3ec7bf6e24ba56ef5a240e31b1",
+    "question": "Spread: Paraguay (-1.5)",
+    "category": "soccer",
+    "event": "United States vs. Paraguay - More Markets",
+    "market_price_yes": 0.075,
+    "hours_to_resolution": 7.55,
+    "liquidity": 73171.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x5c6647d179413fbb40f6a11afedfe4adfefcbafeecb640921c5fde93c02fe951",
+    "question": "Spread: United States (-2.5)",
+    "category": "soccer",
+    "event": "United States vs. Paraguay - More Markets",
+    "market_price_yes": 0.075,
+    "hours_to_resolution": 7.55,
+    "liquidity": 77345.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xaf1c28a7d3ccc22ceb67115b07c7adc2b49acc859aa102148df0a8074b6a2454",
+    "question": "Spread: Paraguay (-2.5)",
+    "category": "soccer",
+    "event": "United States vs. Paraguay - More Markets",
+    "market_price_yes": 0.0195,
+    "hours_to_resolution": 7.55,
+    "liquidity": 62630.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xe4ce0455e9b55a5a7be02c20330c7eacdd178e8173e6f095bb54ce844448b3b2",
+    "question": "United States vs. Paraguay: O/U 0.5",
+    "category": "soccer",
+    "event": "United States vs. Paraguay - More Markets",
+    "market_price_yes": 0.895,
+    "hours_to_resolution": 7.55,
+    "liquidity": 91333.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xda9d42a6368a181d107bfc0cf4ef185aaee9b00e19db2e01a40750127a718264",
+    "question": "Exact Score: Canada 0 - 0 Bosnia-Herzegovina?",
+    "category": "soccer",
+    "event": "Canada vs. Bosnia-Herzegovina - Exact Score",
+    "market_price_yes": 0.105,
+    "hours_to_resolution": 1.55,
+    "liquidity": 46158.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x0fcbc876b76b48a085116e6c906e91435dde3370eadad8ecfb75b4ad40aacc2e",
+    "question": "Exact Score: Canada 0 - 1 Bosnia-Herzegovina?",
+    "category": "soccer",
+    "event": "Canada vs. Bosnia-Herzegovina - Exact Score",
+    "market_price_yes": 0.09,
+    "hours_to_resolution": 1.55,
+    "liquidity": 36486.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x5ab6f720e6d1f77caae6f81cc6bcabab8dbe2ba4e49bff3102e63b91265b2d10",
+    "question": "Exact Score: Canada 1 - 0 Bosnia-Herzegovina?",
+    "category": "soccer",
+    "event": "Canada vs. Bosnia-Herzegovina - Exact Score",
+    "market_price_yes": 0.165,
+    "hours_to_resolution": 1.55,
+    "liquidity": 40658.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xb1c07b0951e95d95f463652a7d365c65c2d223f4ec1d018aa9ef1a82bb6b9f3c",
+    "question": "Exact Score: Canada 0 - 2 Bosnia-Herzegovina?",
+    "category": "soccer",
+    "event": "Canada vs. Bosnia-Herzegovina - Exact Score",
+    "market_price_yes": 0.0285,
+    "hours_to_resolution": 1.55,
+    "liquidity": 51237.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x95db3f3dc36c7cad50a367ff9601c9e23f93d8251195aae2dd5b9faed83a8eb7",
+    "question": "Exact Score: Canada 1 - 1 Bosnia-Herzegovina?",
+    "category": "soccer",
+    "event": "Canada vs. Bosnia-Herzegovina - Exact Score",
+    "market_price_yes": 0.15,
+    "hours_to_resolution": 1.55,
+    "liquidity": 24312.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x54e133e26795655e469df67a34218fabf17fb822af2514c052435da326ac7204",
+    "question": "Counter-Strike: Aurora Gaming vs Spirit (BO3) - IEM Cologne Major Stage 3",
+    "category": "esports",
+    "event": "Counter-Strike: Aurora Gaming vs Spirit (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.145,
+    "hours_to_resolution": 5.97,
+    "liquidity": 226502.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xe5d8e9ffe78f92cdc31a667872b25227760d7cf4ff9f605b752e92a4dc36a3c9",
+    "question": "Games Total: O/U 2.5",
+    "category": "esports",
+    "event": "Counter-Strike: Aurora Gaming vs Spirit (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.325,
+    "hours_to_resolution": 5.97,
+    "liquidity": 49130.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x7c7ad651e163c65fa7b843037f3cd0cb333f34de208267464474fb28d542fa15",
+    "question": "Map Handicap: TS (-1.5) vs Aurora Gaming (+1.5)",
+    "category": "esports",
+    "event": "Counter-Strike: Aurora Gaming vs Spirit (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.615,
+    "hours_to_resolution": 5.97,
+    "liquidity": 293786.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x6776419c1a85995b5228a52e03c486a87b0e7f4e124801b8d77fac53f8b75041",
+    "question": "Map 1 Rounds Handicap: Spirit (-6.5) vs Aurora Gaming (+6.5)",
+    "category": "esports",
+    "event": "Counter-Strike: Aurora Gaming vs Spirit (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.415,
+    "hours_to_resolution": 5.97,
+    "liquidity": 21220.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x1a5b6cb50ac769495af2fb40e0ce13fec651a9050293226bf01a7034954dc302",
+    "question": "Map 1 Total Rounds: Over/Under 18.5",
+    "category": "esports",
+    "event": "Counter-Strike: Aurora Gaming vs Spirit (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.64,
+    "hours_to_resolution": 5.97,
+    "liquidity": 32.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x3fc39421e8ac6013078ea6159a4a35228e5a7090b94ef113cc56b54a67eba2c3",
+    "question": "Knicks vs. Spurs: O/U 217.5",
+    "category": "nba",
+    "event": "Knicks vs. Spurs",
+    "market_price_yes": 0.47,
+    "hours_to_resolution": 31.05,
+    "liquidity": 79271.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xb46cf994b2b52a12bd6b8348f90779d4e5c1f60092ffe5a8db4b1d85fcaccca6",
+    "question": "1H Spread: Knicks (-11.5)",
+    "category": "nba",
+    "event": "Knicks vs. Spurs",
+    "market_price_yes": 0.34,
+    "hours_to_resolution": 31.05,
+    "liquidity": 609.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x0c0e1444793177c2668e3e7deb7f6fd8ccaf48894bb5af86d4b20cd2efcba6fb",
+    "question": "1H Spread: Knicks (-2.5)",
+    "category": "nba",
+    "event": "Knicks vs. Spurs",
+    "market_price_yes": 0.31,
+    "hours_to_resolution": 31.05,
+    "liquidity": 3961.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x5343059eb2ff7c770e4be5952a8123f257dfc523a3755fa5a574fe8a1c3c676b",
+    "question": "1H Spread: Knicks (-5.5)",
+    "category": "nba",
+    "event": "Knicks vs. Spurs",
+    "market_price_yes": 0.155,
+    "hours_to_resolution": 31.05,
+    "liquidity": 3307.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x4eacef5e80200d7560ee1362b66cd0957826900fad32dca543349d04f90cb02b",
+    "question": "1H Spread: Knicks (-8.5)",
+    "category": "nba",
+    "event": "Knicks vs. Spurs",
+    "market_price_yes": 0.475,
+    "hours_to_resolution": 31.05,
+    "liquidity": 98.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x5b8cf1329ad6fa5a9b6302b1dd3b9a7ca1c80f2a9c0a7edc0909172cebbc08d7",
+    "question": "Counter-Strike: Vitality vs 9z (BO3) - IEM Cologne Major Stage 3",
+    "category": "esports",
+    "event": "Counter-Strike: Vitality vs 9z (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.9475,
+    "hours_to_resolution": 5.3,
+    "liquidity": 97364.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x5e1a1e28b0bbf0919571e58168fe5c9e04c8a5ce2a56db8bc9199db454f3f90b",
+    "question": "Games Total: O/U 2.5",
+    "category": "esports",
+    "event": "Counter-Strike: Vitality vs 9z (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.155,
+    "hours_to_resolution": 5.3,
+    "liquidity": 28864.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xf67c43a43039cadeee3e8beb7c42ed7eb03f77a59e84d51be53ed90407271e83",
+    "question": "Map Handicap: VIT (-1.5) vs 9z (+1.5)",
+    "category": "esports",
+    "event": "Counter-Strike: Vitality vs 9z (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.82,
+    "hours_to_resolution": 5.3,
+    "liquidity": 32736.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xef2b57cd1394bf5c3d2c06762a148dcc199e345dee5a43e1e7b1868a41ffdb3d",
+    "question": "Map 1 Rounds Handicap: Vitality (-6.5) vs 9z (+6.5)",
+    "category": "esports",
+    "event": "Counter-Strike: Vitality vs 9z (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.515,
+    "hours_to_resolution": 5.3,
+    "liquidity": 3.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x675d70e509b8170be7ec6aaa477c9d0b88c2b7c23965df1338914f931819b3ac",
+    "question": "Map 1 Total Rounds: Over/Under 21.5",
+    "category": "esports",
+    "event": "Counter-Strike: Vitality vs 9z (BO3) - IEM Cologne Major Stage 3",
+    "market_price_yes": 0.515,
+    "hours_to_resolution": 5.3,
+    "liquidity": 5.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xa4781f5d97b6fe28ca7a69353b89e3401a9483a4c7bfc2f493c6cca138bd9c82",
+    "question": "Will Morocco win on 2026-06-13?",
+    "category": "soccer",
+    "event": "Brazil vs. Morocco",
+    "market_price_yes": 0.165,
+    "hours_to_resolution": 28.55,
+    "liquidity": 454789.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xa75053ffa630e41fdc08a0885fe0614716ecb13061ac460914bfe498038d5364",
+    "question": "Will Brazil win on 2026-06-13?",
+    "category": "soccer",
+    "event": "Brazil vs. Morocco",
+    "market_price_yes": 0.595,
+    "hours_to_resolution": 28.55,
+    "liquidity": 631216.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xb20f96ba6ccf4555d4e3adcc97a561512ef27af67183b52d32283066d4a81853",
+    "question": "Will Brazil vs. Morocco end in a draw?",
+    "category": "soccer",
+    "event": "Brazil vs. Morocco",
+    "market_price_yes": 0.245,
+    "hours_to_resolution": 28.55,
+    "liquidity": 796741.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x7571c99b7206afb6e505224e5c162edd99e1c9dbb803ed09bae96db44d931576",
+    "question": "Will the price of Bitcoin be above $50,000 on June 13?",
+    "category": "crypto",
+    "event": "Bitcoin above ___ on June 13?",
+    "market_price_yes": 0.9995,
+    "hours_to_resolution": 22.55,
+    "liquidity": 58699.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x9e4470d4196b5d7161aefa2dbbefe34701526b9b6080e9d9b3e87aef9652bc32",
+    "question": "Will the price of Bitcoin be above $52,000 on June 13?",
+    "category": "crypto",
+    "event": "Bitcoin above ___ on June 13?",
+    "market_price_yes": 0.9995,
+    "hours_to_resolution": 22.55,
+    "liquidity": 26531.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x904518db2a96dc996e60ee36d476b076551e783a3481bc40713d4e832d63eb78",
+    "question": "Will the price of Bitcoin be above $54,000 on June 13?",
+    "category": "crypto",
+    "event": "Bitcoin above ___ on June 13?",
+    "market_price_yes": 0.9995,
+    "hours_to_resolution": 22.55,
+    "liquidity": 21913.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x4f75f8f6ee3327b5084206a0ebbaf9f937e9b3c724a4666d4e4959aa123d8a5d",
+    "question": "Will the price of Bitcoin be above $56,000 on June 13?",
+    "category": "crypto",
+    "event": "Bitcoin above ___ on June 13?",
+    "market_price_yes": 0.9985,
+    "hours_to_resolution": 22.55,
+    "liquidity": 26112.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xb27af7e19cca7181682de0c2765a57492cd2964934034dd9b3d9242a102c5aed",
+    "question": "Will the price of Bitcoin be above $58,000 on June 13?",
+    "category": "crypto",
+    "event": "Bitcoin above ___ on June 13?",
+    "market_price_yes": 0.9975,
+    "hours_to_resolution": 22.55,
+    "liquidity": 33062.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x537f7287e4c110b7c14cee4b07874f6b0d854452cee246ed27c3f15c6747200c",
+    "question": "Map 3 Rounds Handicap: Team Vitality (-2.5) vs Team Heretics (+2.5)",
+    "category": "esports",
+    "event": "Valorant: Team Heretics vs Team Vitality (BO3) - VCT Masters London Playoffs",
+    "market_price_yes": 0.5,
+    "hours_to_resolution": 4.55,
+    "liquidity": 0.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x391d7ed675e532b89b621f9bd00f04e6edd7e16dce858f9a8e4f7530fe94a291",
+    "question": "Map Handicap: VIT (-1.5) vs Team Heretics (+1.5)",
+    "category": "esports",
+    "event": "Valorant: Team Heretics vs Team Vitality (BO3) - VCT Masters London Playoffs",
+    "market_price_yes": 0.5,
+    "hours_to_resolution": 4.55,
+    "liquidity": 0.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x8f8158701f3e488bad0c46f4d97a8d6e2d1fe70f9eebb6be78f897d47b9cd0e4",
+    "question": "Map 2 Rounds Handicap: Team Vitality (-2.5) vs Team Heretics (+2.5)",
+    "category": "esports",
+    "event": "Valorant: Team Heretics vs Team Vitality (BO3) - VCT Masters London Playoffs",
+    "market_price_yes": 0.5,
+    "hours_to_resolution": 4.55,
+    "liquidity": 0.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x1a657d04b97e63d03c70603500dcb3ff5b7e5331f864c01bb5a216c39b08356d",
+    "question": "Map 1 Rounds Handicap: Team Vitality (-2.5) vs Team Heretics (+2.5)",
+    "category": "esports",
+    "event": "Valorant: Team Heretics vs Team Vitality (BO3) - VCT Masters London Playoffs",
+    "market_price_yes": 0.95,
+    "hours_to_resolution": 4.55,
+    "liquidity": 5321.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x58f77b4cb99770c6d23699fb1bc47231cb7cd0bdfe778e812be850e1a675eabf",
+    "question": "Valorant: Team Heretics vs Team Vitality - Map 1 Winner",
+    "category": "esports",
+    "event": "Valorant: Team Heretics vs Team Vitality (BO3) - VCT Masters London Playoffs",
+    "market_price_yes": 0.0005,
+    "hours_to_resolution": 4.55,
+    "liquidity": 307048.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x00cf3efc18a950cf442049aa0770903f0ab8606212499e0e4196bf74c102c456",
+    "question": "Will Germany win on 2026-06-14?",
+    "category": "soccer",
+    "event": "Germany vs. Curaçao",
+    "market_price_yes": 0.9405,
+    "hours_to_resolution": 47.55,
+    "liquidity": 372577.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x0fe5bb2f2da60b0bcb4855dc0cc3101dd1028f6639479bdeefecacb0102869a8",
+    "question": "Will Curaçao win on 2026-06-14?",
+    "category": "soccer",
+    "event": "Germany vs. Curaçao",
+    "market_price_yes": 0.024,
+    "hours_to_resolution": 47.55,
+    "liquidity": 467207.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x18f73aca12019d3fc2a03e7af28f6ebcec12634413819605d7cfa3db20073f26",
+    "question": "Will Germany vs. Curaçao end in a draw?",
+    "category": "soccer",
+    "event": "Germany vs. Curaçao",
+    "market_price_yes": 0.0395,
+    "hours_to_resolution": 47.55,
+    "liquidity": 438387.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xdeff04ad7369bf3b44ff5e1641da191c91c02b1f2685219d9019f428a21333e8",
+    "question": "LoL: Misa Esports vs E WIE EINFACH E-SPORTS - Game 1 Winner",
+    "category": "esports",
+    "event": "LoL: Misa Esports vs E WIE EINFACH E-SPORTS (BO3) - EMEA Masters Group A",
+    "market_price_yes": 0.9995,
+    "hours_to_resolution": 1.55,
+    "liquidity": 178823.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xf6c2977fc68e0aa6e3f79a7daa01814b2c691623ab15ee14da17749d14a65b36",
+    "question": "LoL: Misa Esports vs E WIE EINFACH E-SPORTS - Game 2 Winner",
+    "category": "esports",
+    "event": "LoL: Misa Esports vs E WIE EINFACH E-SPORTS (BO3) - EMEA Masters Group A",
+    "market_price_yes": 0.9995,
+    "hours_to_resolution": 1.55,
+    "liquidity": 110734.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xd2fecbb0c05f6714a2c4b4cbbeffccf3f0fd1958f54ee46e10f7abec6b70c119",
+    "question": "Game 2: Any Player Penta Kill?",
+    "category": "esports",
+    "event": "LoL: Misa Esports vs E WIE EINFACH E-SPORTS (BO3) - EMEA Masters Group A",
+    "market_price_yes": 0.1,
+    "hours_to_resolution": 1.55,
+    "liquidity": 471.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x920f408586293af2f4f811e61b3919b16de1930ea1d6983ffbb8fb495b6545bf",
+    "question": "Game 2: Odd/Even Total Kills?",
+    "category": "esports",
+    "event": "LoL: Misa Esports vs E WIE EINFACH E-SPORTS (BO3) - EMEA Masters Group A",
+    "market_price_yes": 0.1,
+    "hours_to_resolution": 1.55,
+    "liquidity": 118.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x06106b71cd91dd6ce7202533df01f2ee8ee6aa19137962e81b2bc646002bdbdf",
+    "question": "Game 3: Both Teams Slay Baron Nashor?",
+    "category": "esports",
+    "event": "LoL: Misa Esports vs E WIE EINFACH E-SPORTS (BO3) - EMEA Masters Group A",
+    "market_price_yes": 0.5,
+    "hours_to_resolution": 2.55,
+    "liquidity": 0.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x1afb2140b124491e8b5aff162eded645d17a643a731e0531f04a554ab2258e31",
+    "question": "Exact Score: United States 0 - 0 Paraguay?",
+    "category": "soccer",
+    "event": "United States vs. Paraguay - Exact Score",
+    "market_price_yes": 0.095,
+    "hours_to_resolution": 7.55,
+    "liquidity": 24578.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xfb400ccb046a95ccfb6914c85cb1c3836dc037f9f496ffadc32849f79f166ac8",
+    "question": "Exact Score: United States 0 - 1 Paraguay?",
+    "category": "soccer",
+    "event": "United States vs. Paraguay - Exact Score",
+    "market_price_yes": 0.085,
+    "hours_to_resolution": 7.55,
+    "liquidity": 17232.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x93c29f1a418b4e93ee5239e75bd85aff372931c459630cd03e133f4c4675ea73",
+    "question": "Exact Score: United States 1 - 0 Paraguay?",
+    "category": "soccer",
+    "event": "United States vs. Paraguay - Exact Score",
+    "market_price_yes": 0.165,
+    "hours_to_resolution": 7.55,
+    "liquidity": 10923.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xebab7583acb8d639583539d0de50b76a1bf4d1fd78ca44ad91c8517852dfda02",
+    "question": "Exact Score: United States 0 - 2 Paraguay?",
+    "category": "soccer",
+    "event": "United States vs. Paraguay - Exact Score",
+    "market_price_yes": 0.0365,
+    "hours_to_resolution": 7.55,
+    "liquidity": 18796.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xc06283206b4f93b9ab9c5205eb47af16cce5c2ef97a4013f4e27df6956db7184",
+    "question": "Exact Score: United States 1 - 1 Paraguay?",
+    "category": "soccer",
+    "event": "United States vs. Paraguay - Exact Score",
+    "market_price_yes": 0.145,
+    "hours_to_resolution": 7.55,
+    "liquidity": 16671.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xd76a0e98117c0027553249b50ab43b9c40b9a8bfd8e6afc4cee4c035d9340d03",
+    "question": "Spread: Brazil (-1.5)",
+    "category": "soccer",
+    "event": "Brazil vs. Morocco - More Markets",
+    "market_price_yes": 0.325,
+    "hours_to_resolution": 28.55,
+    "liquidity": 206116.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xbf23041368d55e0effaed9380b1cb5192c39662c0588093e5a9cebdc45643fa4",
+    "question": "Spread: Morocco (-1.5)",
+    "category": "soccer",
+    "event": "Brazil vs. Morocco - More Markets",
+    "market_price_yes": 0.045,
+    "hours_to_resolution": 28.55,
+    "liquidity": 18025.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x7f2f45e53362c1c3fca6590b834fbd1360a9fa487f7b2b72448437a220b3c6d3",
+    "question": "Spread: Brazil (-2.5)",
+    "category": "soccer",
+    "event": "Brazil vs. Morocco - More Markets",
+    "market_price_yes": 0.145,
+    "hours_to_resolution": 28.55,
+    "liquidity": 25918.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0x68c0b7b3ec3fd253f5b6cd02f187fbfa9af6aa16af90802aa7a1f7d6aa57dc01",
+    "question": "Spread: Morocco (-2.5)",
+    "category": "soccer",
+    "event": "Brazil vs. Morocco - More Markets",
+    "market_price_yes": 0.0135,
+    "hours_to_resolution": 28.55,
+    "liquidity": 7744.0,
+    "fair_prob": null
+  },
+  {
+    "condition_id": "0xeb4430ca651157288572b90f6f4442a80f1441deabf537ba2d5165092f7ab6c6",
+    "question": "Brazil vs. Morocco: O/U 0.5",
+    "category": "soccer",
+    "event": "Brazil vs. Morocco - More Markets",
+    "market_price_yes": 0.92,
+    "hours_to_resolution": 28.55,
+    "liquidity": 36039.0,
+    "fair_prob": null
+  }
+]

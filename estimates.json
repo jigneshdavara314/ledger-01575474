@@ -1,0 +1,20 @@
+{
+  "_comment": "Estimates by Claude (cutoff Jan 2026, NO live data). Base-rate-driven only. condition_id -> est TRUE prob of YES.",
+
+  "_us_paraguay_ou05": "at-least-1-goal base rate ~95% vs mkt 0.895",
+  "0xe4ce0455e9b55a5a7be02c20330c7eacdd178e8173e6f095bb54ce844448b3b2": 0.95,
+  "_canada_bosnia_ou05": "vs mkt 0.905",
+  "0x3ec0c20d6fce095b8294abc3a0131093a372ec87c4478c441a6d31cc3d2cb332": 0.95,
+  "_qatar_swiss_ou05": "vs mkt 0.953 - no edge, near fair",
+  "0xd66e813436b47aefaa9c3662d4088b5f6304bd021bd2a4581cc658c262128cc9": 0.95,
+  "_brazil_morocco_ou05": "vs mkt 0.92",
+  "0xeb4430ca651157288572b90f6f4442a80f1441deabf537ba2d5165092f7ab6c6": 0.95,
+
+  "_brazil_morocco_draw": "intl draw base rate ~26-28% vs mkt 0.245",
+  "0xb20f96ba6ccf4555d4e3adcc97a561512ef27af67183b52d32283066d4a81853": 0.27,
+  "_us_paraguay_draw": "vs mkt 0.295",
+  "0x3774cdf17e49143a4f6e10812df8b06113731493842fccc52dea045a1744ae61": 0.27,
+
+  "_germany_win": "strong favorite vs Curacao, vs mkt 0.9405",
+  "0x00cf3efc18a950cf442049aa0770903f0ab8606212499e0e4196bf74c102c456": 0.95
+}

@@ -1,0 +1,11 @@
+# Secrets — NEVER commit these
+.env
+.venv/
+
+# Python caches
+__pycache__/
+*.pyc
+
+# NOTE: trades.db is intentionally NOT ignored — GitHub Actions commits it
+# back each run so paper-trade history persists in the cloud.
+.claude/
