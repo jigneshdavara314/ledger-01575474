@@ -295,6 +295,7 @@ def cmd_longshot(trade: bool = True):
           f"(deposit ${bk0['initial_deposit']:.0f}, equity ${bk0['total_equity']:.2f})\n")
 
     placed = 0
+    staked_total = 0.0
     skipped_nofill = 0
     for f in fades:
         print(f"{f.tier:11} ${f.size_usd:>5.2f} ${f.desired_usd:>5.2f} "
@@ -334,13 +335,35 @@ def cmd_longshot(trade: bool = True):
         )
         result = executor.execute(sig)
         placed += 1
+        staked_total += f.size_usd
 
     if trade:
-        staked = placed * config.LONGSHOT_STAKE_USD
-        print(f"\nFilled {placed} NO bets (~${staked:.2f} staked); "
+        print(f"\nFilled {placed} NO bets (~${staked_total:.2f} staked); "
               f"{skipped_nofill} limit orders didn't fill at the mid price.")
         print("Bidding below ask = better entry when it fills = more profit per win.")
-        print("Run 'resolve' then 'report' after the games settle.")
+
+        # --- CAPACITY: how much could be deployed across ALL current edges ---
+        total_fillable = sum((f.fillable_usd or 0) for f in fades)
+        capacity = {
+            "markets": len(fades),
+            "total_fillable_usd": round(total_fillable, 2),
+            "confirmed_fillable_usd": round(
+                sum((f.fillable_usd or 0) for f in fades if f.tier == "confirmed"), 2),
+            "exploratory_fillable_usd": round(
+                sum((f.fillable_usd or 0) for f in fades if f.tier == "exploratory"), 2),
+        }
+        print(f"\nMAX DEPLOYABLE NOW: ${total_fillable:,.2f} across {len(fades)} markets "
+              f"(this is the ceiling — markets can't absorb more near a good price).")
+        for target in (200, 500, 1000):
+            verdict = "YES, fits" if total_fillable >= target else \
+                      f"NO — only ${total_fillable:,.0f} fits today"
+            print(f"   Invest ${target}? -> {verdict}")
+
+        # Save today's snapshot (bids + capacity + balance) for the dashboard history
+        bk = bankroll.summary()
+        store.save_daily_snapshot(placed, round(staked_total, 2), capacity,
+                                  bk["balance"], bk["total_equity"])
+        print("\nRun 'resolve' then 'report' after the games settle.")
 
 
 # ---------------------------------------------------------------------------

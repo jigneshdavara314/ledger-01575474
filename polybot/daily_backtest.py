@@ -60,8 +60,11 @@ def _fetch_resolved_window(days: int, max_pages: int = 60) -> list:
                     continue
             except Exception:
                 continue
-            ql = m.get("question", "").lower()
-            if not ("exact score" in ql or "spread:" in ql or "handicap" in ql):
+            # Use the SAME longshot classifier as the live strategy so the
+            # backtest includes every pattern we actually bet (exact-score,
+            # spread/handicap, AND tweet-count ranges).
+            from .longshot import _longshot_tier
+            if _longshot_tier(m.get("question", "")) is None:
                 continue
             prices = _parse(m.get("outcomePrices"))
             toks = _parse(m.get("clobTokenIds"))

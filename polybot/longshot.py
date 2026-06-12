@@ -199,3 +199,28 @@ def find_longshot_fades(
     signals.sort(key=lambda s: (tier_rank.get(s.tier, 9),
                                 -(s.est_win_prob - s.bid_price)))
     return signals[: config.LONGSHOT_MAX_BETS]
+
+
+def capacity_now(max_hours: float = None) -> dict:
+    """
+    How much money could realistically be deployed RIGHT NOW across all current
+    longshot edges — the honest answer to "can I invest $1000?".
+
+    Sums the order-book depth available near a good price across every qualifying
+    fade (no per-bet or budget cap — pure market capacity). This is the ceiling:
+    if total_fillable < your capital, the rest can't be deployed at a good price
+    today and would have to wait for new markets or worse fills.
+    """
+    fades = find_longshot_fades(max_hours=max_hours)
+    by_tier = {"confirmed": 0.0, "exploratory": 0.0}
+    total = 0.0
+    for f in fades:
+        cap = f.fillable_usd or 0.0
+        by_tier[f.tier] = by_tier.get(f.tier, 0.0) + cap
+        total += cap
+    return {
+        "markets": len(fades),
+        "total_fillable_usd": round(total, 2),
+        "confirmed_fillable_usd": round(by_tier.get("confirmed", 0), 2),
+        "exploratory_fillable_usd": round(by_tier.get("exploratory", 0), 2),
+    }

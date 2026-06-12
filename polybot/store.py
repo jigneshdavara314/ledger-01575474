@@ -178,6 +178,70 @@ def category_summary() -> list:
     return rows
 
 
+def init_snapshots():
+    """Table recording a daily snapshot of bids placed + market capacity."""
+    with _conn() as c:
+        c.execute("""
+            CREATE TABLE IF NOT EXISTS daily_snapshots (
+                day TEXT PRIMARY KEY,
+                ts TEXT,
+                bets_placed INTEGER,
+                staked_usd REAL,
+                markets_available INTEGER,
+                total_fillable_usd REAL,
+                confirmed_fillable_usd REAL,
+                exploratory_fillable_usd REAL,
+                balance_usd REAL,
+                equity_usd REAL
+            )
+        """)
+
+
+def save_daily_snapshot(bets_placed, staked_usd, capacity, balance, equity):
+    """Upsert today's snapshot (accumulates bets across the day's runs)."""
+    import datetime
+    init_snapshots()
+    day = datetime.datetime.utcnow().strftime("%Y-%m-%d")
+    ts = datetime.datetime.utcnow().isoformat()
+    with _conn() as c:
+        existing = c.execute(
+            "SELECT bets_placed, staked_usd FROM daily_snapshots WHERE day=?",
+            (day,)).fetchone()
+        prev_bets = existing[0] if existing else 0
+        prev_staked = existing[1] if existing else 0.0
+        c.execute("""
+            INSERT INTO daily_snapshots
+              (day, ts, bets_placed, staked_usd, markets_available,
+               total_fillable_usd, confirmed_fillable_usd, exploratory_fillable_usd,
+               balance_usd, equity_usd)
+            VALUES (?,?,?,?,?,?,?,?,?,?)
+            ON CONFLICT(day) DO UPDATE SET
+              ts=excluded.ts,
+              bets_placed=daily_snapshots.bets_placed + ?,
+              staked_usd=daily_snapshots.staked_usd + ?,
+              markets_available=excluded.markets_available,
+              total_fillable_usd=excluded.total_fillable_usd,
+              confirmed_fillable_usd=excluded.confirmed_fillable_usd,
+              exploratory_fillable_usd=excluded.exploratory_fillable_usd,
+              balance_usd=excluded.balance_usd,
+              equity_usd=excluded.equity_usd
+        """, (day, ts, bets_placed, staked_usd,
+              capacity.get("markets", 0), capacity.get("total_fillable_usd", 0),
+              capacity.get("confirmed_fillable_usd", 0),
+              capacity.get("exploratory_fillable_usd", 0),
+              balance, equity, bets_placed, staked_usd))
+
+
+def daily_snapshots(limit: int = 30):
+    init_snapshots()
+    with _conn() as c:
+        return c.execute(
+            "SELECT day, bets_placed, staked_usd, markets_available, "
+            "total_fillable_usd, confirmed_fillable_usd, exploratory_fillable_usd, "
+            "equity_usd FROM daily_snapshots ORDER BY day DESC LIMIT ?",
+            (limit,)).fetchall()
+
+
 def recent_trades(limit: int = 30):
     with _conn() as c:
         # event_slug may not exist on very old DBs; COALESCE guards it

@@ -1,0 +1,14 @@
+{
+  "bets": 5,
+  "win_rate": 0.8,
+  "ci": [
+    0.376,
+    0.964
+  ],
+  "avg_price": 0.768,
+  "edge": 0.032,
+  "roi": 0.091,
+  "pnl": 0.45,
+  "verdict": "PROMISING (need >=20 bets to confirm)",
+  "generated": "2026-06-12T20:21:20.131755"
+}

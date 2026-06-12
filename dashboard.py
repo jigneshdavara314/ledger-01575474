@@ -192,6 +192,53 @@ def _daily_backtest_section():
     """
 
 
+def _capacity_daily_section():
+    """Daily bid/capacity history + the 'can I invest $X' answer."""
+    try:
+        snaps = store.daily_snapshots(30)
+    except Exception:
+        snaps = []
+    # latest capacity (top row) drives the invest-answer
+    latest_cap = snaps[0][4] if snaps else 0  # total_fillable_usd
+    rows = []
+    for day, bets, staked, mkts, total_fill, conf_fill, expl_fill, equity in snaps:
+        rows.append(
+            f"<tr><td>{html.escape(day)}</td><td>{bets}</td>"
+            f"<td>${staked:,.2f}</td><td>{mkts}</td>"
+            f"<td>${total_fill:,.0f}</td>"
+            f"<td>${equity:,.2f}</td></tr>"
+        )
+    if not rows:
+        rows = ['<tr><td colspan="6" class="empty">'
+                'No daily snapshots yet — run the longshot scan to record one.</td></tr>']
+
+    def invest_badge(target):
+        ok = latest_cap >= target
+        cls = "won" if ok else "lost"
+        txt = "fits" if ok else "too big today"
+        return f'<span class="badge {cls}">${target:,} → {txt}</span>'
+
+    return f"""
+      <h2>Capacity — how much can you actually invest?</h2>
+      <div class="note">
+        <b>Max deployable right now: ${latest_cap:,.2f}</b> across the current
+        markets (the most the order books can absorb near a good price). Investing
+        more than this means worse fills or waiting for new markets.<br>
+        {invest_badge(200)} &nbsp; {invest_badge(500)} &nbsp; {invest_badge(1000)}
+      </div>
+      <h2>Daily history (bids placed + market capacity)</h2>
+      <table><thead><tr><th>Day</th><th>Bets placed</th><th>Staked</th>
+        <th>Markets avail.</th><th>Max deployable</th><th>Equity</th></tr></thead>
+        <tbody>{''.join(rows)}</tbody></table>
+      <div class="note">
+        <b>This is the honest capacity picture.</b> "Max deployable" is the total
+        order-book depth across all edges that day — your real ceiling. Thin
+        longshot markets mean this is usually modest; on a busy sports day it's
+        higher. To deploy big capital you need many markets, not a bigger setting.
+      </div>
+    """
+
+
 def build_html() -> str:
     store.init_db()
     s = store.performance_summary()
@@ -407,6 +454,8 @@ def build_html() -> str:
   {cards}
 
   {_bankroll_section()}
+
+  {_capacity_daily_section()}
 
   {_daily_backtest_section()}
 
