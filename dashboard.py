@@ -239,6 +239,97 @@ def _capacity_daily_section():
     """
 
 
+def _category_tabs_section(open_rows):
+    """Tabbed view: per-category 30-day win% + today's open bids in that category."""
+    import os, json
+    path = os.path.join(os.path.dirname(__file__), "category_backfill.json")
+    bf = {}
+    if os.path.exists(path):
+        try:
+            with open(path, encoding="utf-8") as f:
+                bf = json.load(f)
+        except Exception:
+            bf = {}
+    cats_data = bf.get("categories", {})
+    if not cats_data:
+        return ('<h2>Categories</h2><div class="note">No category backfill yet. '
+                'Run <code>python run_category_backfill.py</code>.</div>')
+
+    # classify each open position into a fine category (same logic as backfill)
+    def fine_cat(q):
+        ql = q.lower()
+        if "post" in ql and "posts" in ql: return "tweets"
+        if "exact score" in ql: return "soccer-exactscore"
+        if any(k in ql for k in ["map ", "rounds:", "valorant", "counter-strike", "leo team", "ursa"]): return "esports"
+        if any(k in ql for k in ["set ", "doubles", "games o/u"]): return "tennis"
+        if any(k in ql for k in ["1h spread", "knicks", "spurs", "nba"]): return "basketball"
+        if any(k in ql for k in ["spread:", "draw?", " win on ", "o/u 0.5"]): return "soccer"
+        return "other"
+
+    open_by_cat = {}
+    for r in open_rows:
+        q = r[10]
+        open_by_cat.setdefault(fine_cat(q), []).append(r)
+
+    # order tabs: confirmed/promising first by ROI, then the rest
+    order = sorted(cats_data.items(),
+                   key=lambda x: (-{"CONFIRMED": 2, "promising": 1}.get(x[1]["verdict"], 0),
+                                  -x[1]["roi"]))
+
+    tab_btns, tab_panes = [], []
+    for i, (cat, d) in enumerate(order):
+        active = " active" if i == 0 else ""
+        vclass = ("won" if d["verdict"] == "CONFIRMED"
+                  else "" if d["verdict"] == "promising" else "lost")
+        tab_btns.append(
+            f'<button class="tab-btn{active}" onclick="showTab(\'{cat}\')" '
+            f'id="btn-{cat}">{html.escape(cat)} '
+            f'<span class="badge {vclass}">{d["win_rate"]*100:.0f}%</span></button>'
+        )
+        # open positions in this category
+        opens = open_by_cat.get(cat, [])
+        orows = ""
+        for r in opens:
+            ts, mode, side, size, price, edge, status, pnl, c2, hrs, q, slug = r
+            orows += (f"<tr><td><span class='side {side.lower()}'>{side}</span></td>"
+                      f"<td>${size:,.2f}</td><td>{price:.3f}</td>"
+                      f"<td class='q'>{_market_link(q, slug)}</td></tr>")
+        if not orows:
+            orows = '<tr><td colspan="4" class="empty">No open bets in this category right now.</td></tr>'
+        ci = d.get("ci", [0, 0])
+        tab_panes.append(f"""
+          <div class="tab-pane{active}" id="pane-{cat}">
+            <div class="cards">
+              <div class="card"><div class="label">30-day win rate</div>
+                <div class="value">{d['win_rate']*100:.0f}%</div>
+                <div class="sub">CI {ci[0]*100:.0f}-{ci[1]*100:.0f}% &middot; n={d['n']}</div></div>
+              <div class="card"><div class="label">Edge vs price</div>
+                <div class="value {_pnl_class(d['edge'])}">{d['edge']*100:+.0f}%</div>
+                <div class="sub">avg NO price {d['avg_no_price']:.2f}</div></div>
+              <div class="card"><div class="label">ROI (30d backtest)</div>
+                <div class="value {_pnl_class(d['roi'])}">{d['roi']*100:+.0f}%</div>
+                <div class="sub">P&amp;L ${d['pnl']:+.2f}</div></div>
+              <div class="card"><div class="label">Verdict</div>
+                <div class="value"><span class="badge {vclass}">{html.escape(d['verdict'])}</span></div></div>
+            </div>
+            <h3 style="font-size:13px;color:var(--muted);margin:14px 0 6px">
+              Today's open bids in {html.escape(cat)} ({len(opens)})</h3>
+            <table><thead><tr><th>Side</th><th>Stake</th><th>Price</th><th>Market</th></tr></thead>
+              <tbody>{orows}</tbody></table>
+          </div>""")
+
+    return f"""
+      <h2>Categories — 30-day win% + today's bids (by tab)</h2>
+      <div class="tabs">{''.join(tab_btns)}</div>
+      {''.join(tab_panes)}
+      <div class="note">Each tab shows that category's REAL 30-day longshot-fade
+        win rate (backfilled from resolved markets) and any bets open there now.
+        <b>Green = confirmed edge, plain = promising, red = no edge.</b> We bet
+        most where the edge is proven (soccer exact-score); red categories are
+        shown for honesty — we avoid betting them.</div>
+    """
+
+
 def build_html() -> str:
     store.init_db()
     s = store.performance_summary()
@@ -405,6 +496,14 @@ def build_html() -> str:
   td.q {{ color:var(--muted); }}
   a.mlink {{ color:var(--accent); text-decoration:none; }}
   a.mlink:hover {{ text-decoration:underline; }}
+  .tabs {{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }}
+  .tab-btn {{ background:var(--panel); color:var(--text); border:1px solid var(--border);
+              padding:8px 12px; border-radius:8px 8px 0 0; cursor:pointer; font-size:13px;
+              font-weight:600; }}
+  .tab-btn.active {{ border-color:var(--accent); border-bottom-color:var(--bg);
+                     background:#1c2333; }}
+  .tab-pane {{ display:none; }}
+  .tab-pane.active {{ display:block; }}
   .empty {{ text-align:center; color:var(--muted); padding:18px; }}
   .side {{ padding:1px 8px; border-radius:6px; font-weight:700; font-size:11px; }}
   .side.yes {{ background:#3fb95022; color:var(--pos); }}
@@ -455,6 +554,8 @@ def build_html() -> str:
 
   {_bankroll_section()}
 
+  {_category_tabs_section(open_rows)}
+
   {_capacity_daily_section()}
 
   {_daily_backtest_section()}
@@ -483,6 +584,14 @@ def build_html() -> str:
   </div>
 </div>
 <script>
+function showTab(cat) {{
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  var pane = document.getElementById('pane-' + cat);
+  var btn = document.getElementById('btn-' + cat);
+  if (pane) pane.classList.add('active');
+  if (btn) btn.classList.add('active');
+}}
 async function run(action) {{
   const btns = document.querySelectorAll('.btn');
   const status = document.getElementById('status');

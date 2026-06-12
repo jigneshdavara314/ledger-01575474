@@ -54,6 +54,14 @@
   td.q { color:var(--muted); }
   a.mlink { color:var(--accent); text-decoration:none; }
   a.mlink:hover { text-decoration:underline; }
+  .tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
+  .tab-btn { background:var(--panel); color:var(--text); border:1px solid var(--border);
+              padding:8px 12px; border-radius:8px 8px 0 0; cursor:pointer; font-size:13px;
+              font-weight:600; }
+  .tab-btn.active { border-color:var(--accent); border-bottom-color:var(--bg);
+                     background:#1c2333; }
+  .tab-pane { display:none; }
+  .tab-pane.active { display:block; }
   .empty { text-align:center; color:var(--muted); padding:18px; }
   .side { padding:1px 8px; border-radius:6px; font-weight:700; font-size:11px; }
   .side.yes { background:#3fb95022; color:var(--pos); }
@@ -88,7 +96,7 @@
     <span class="badge-mode paper">PAPER</span>
     <span class="badge-mode paper">profile: moderate</span>
   </header>
-  <div class="gen">Generated 2026-06-13 01:54:05 &middot; auto-refreshes every 60s</div>
+  <div class="gen">Generated 2026-06-13 02:08:44 &middot; auto-refreshes every 60s</div>
 
   <div class="actions">
     <button class="btn primary" onclick="run('resolve')">🔄 Resolve (settle finished games)</button>
@@ -156,9 +164,134 @@
     
 
   
+      <h2>Categories — 30-day win% + today's bids (by tab)</h2>
+      <div class="tabs"><button class="tab-btn active" onclick="showTab('soccer-exactscore')" id="btn-soccer-exactscore">soccer-exactscore <span class="badge won">92%</span></button><button class="tab-btn" onclick="showTab('soccer')" id="btn-soccer">soccer <span class="badge ">100%</span></button><button class="tab-btn" onclick="showTab('tweets')" id="btn-tweets">tweets <span class="badge ">93%</span></button><button class="tab-btn" onclick="showTab('tennis')" id="btn-tennis">tennis <span class="badge lost">64%</span></button><button class="tab-btn" onclick="showTab('other')" id="btn-other">other <span class="badge lost">71%</span></button><button class="tab-btn" onclick="showTab('esports')" id="btn-esports">esports <span class="badge lost">56%</span></button></div>
+      
+          <div class="tab-pane active" id="pane-soccer-exactscore">
+            <div class="cards">
+              <div class="card"><div class="label">30-day win rate</div>
+                <div class="value">92%</div>
+                <div class="sub">CI 82-97% &middot; n=53</div></div>
+              <div class="card"><div class="label">Edge vs price</div>
+                <div class="value pos">+32%</div>
+                <div class="sub">avg NO price 0.60</div></div>
+              <div class="card"><div class="label">ROI (30d backtest)</div>
+                <div class="value pos">+55%</div>
+                <div class="sub">P&amp;L $+29.00</div></div>
+              <div class="card"><div class="label">Verdict</div>
+                <div class="value"><span class="badge won">CONFIRMED</span></div></div>
+            </div>
+            <h3 style="font-size:13px;color:var(--muted);margin:14px 0 6px">
+              Today's open bids in soccer-exactscore (2)</h3>
+            <table><thead><tr><th>Side</th><th>Stake</th><th>Price</th><th>Market</th></tr></thead>
+              <tbody><tr><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.964</td><td class='q'><a href="https://polymarket.com/event/fifwc-usa-par-2026-06-12-exact-score" target="_blank" rel="noopener" class="mlink">Exact Score: United States 0 - 2 Paraguay? ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.972</td><td class='q'><a href="https://polymarket.com/event/fifwc-can-bih-2026-06-12-exact-score" target="_blank" rel="noopener" class="mlink">Exact Score: Canada 0 - 2 Bosnia-Herzegovina? ↗</a></td></tr></tbody></table>
+          </div>
+          <div class="tab-pane" id="pane-soccer">
+            <div class="cards">
+              <div class="card"><div class="label">30-day win rate</div>
+                <div class="value">100%</div>
+                <div class="sub">CI 81-100% &middot; n=16</div></div>
+              <div class="card"><div class="label">Edge vs price</div>
+                <div class="value pos">+26%</div>
+                <div class="sub">avg NO price 0.74</div></div>
+              <div class="card"><div class="label">ROI (30d backtest)</div>
+                <div class="value pos">+36%</div>
+                <div class="sub">P&amp;L $+5.75</div></div>
+              <div class="card"><div class="label">Verdict</div>
+                <div class="value"><span class="badge ">promising</span></div></div>
+            </div>
+            <h3 style="font-size:13px;color:var(--muted);margin:14px 0 6px">
+              Today's open bids in soccer (11)</h3>
+            <table><thead><tr><th>Side</th><th>Stake</th><th>Price</th><th>Market</th></tr></thead>
+              <tbody><tr><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.785</td><td class='q'><a href="https://polymarket.com/event/fifwc-usa-par-2026-06-12-more-markets" target="_blank" rel="noopener" class="mlink">Spread: United States (-1.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.725</td><td class='q'><a href="https://polymarket.com/event/fifwc-can-bih-2026-06-12-more-markets" target="_blank" rel="noopener" class="mlink">Spread: Canada (-1.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.695</td><td class='q'><a href="https://polymarket.com/event/fifwc-qat-che-2026-06-13-more-markets" target="_blank" rel="noopener" class="mlink">Spread: Switzerland (-2.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.675</td><td class='q'><a href="https://polymarket.com/event/fifwc-bra-mar-2026-06-13-more-markets" target="_blank" rel="noopener" class="mlink">Spread: Brazil (-1.5) ↗</a></td></tr><tr><td><span class='side yes'>YES</span></td><td>$2.00</td><td>0.953</td><td class='q'><a href="https://polymarket.com/event/fifwc-qat-che-2026-06-13-more-markets" target="_blank" rel="noopener" class="mlink">Qatar vs. Switzerland: O/U 0.5 ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.955</td><td class='q'><a href="https://polymarket.com/event/fifwc-bra-mar-2026-06-13-more-markets" target="_blank" rel="noopener" class="mlink">Spread: Morocco (-1.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.961</td><td class='q'><a href="https://polymarket.com/event/fifwc-ger-kor-2026-06-14" target="_blank" rel="noopener" class="mlink">Will Germany vs. Curaçao end in a draw? ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.976</td><td class='q'><a href="https://polymarket.com/event/fifwc-ger-kor-2026-06-14" target="_blank" rel="noopener" class="mlink">Will Curaçao win on 2026-06-14? ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.981</td><td class='q'><a href="https://polymarket.com/event/fifwc-usa-par-2026-06-12-more-markets" target="_blank" rel="noopener" class="mlink">Spread: Paraguay (-2.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.983</td><td class='q'><a href="https://polymarket.com/event/fifwc-can-bih-2026-06-12-more-markets" target="_blank" rel="noopener" class="mlink">Spread: Bosnia and Herzegovina (-2.5) ↗</a></td></tr><tr><td><span class='side yes'>YES</span></td><td>$5.00</td><td>0.895</td><td class='q'><a href="https://polymarket.com/event/fifwc-usa-par-2026-06-12-more-markets" target="_blank" rel="noopener" class="mlink">United States vs. Paraguay: O/U 0.5 ↗</a></td></tr></tbody></table>
+          </div>
+          <div class="tab-pane" id="pane-tweets">
+            <div class="cards">
+              <div class="card"><div class="label">30-day win rate</div>
+                <div class="value">93%</div>
+                <div class="sub">CI 68-99% &middot; n=14</div></div>
+              <div class="card"><div class="label">Edge vs price</div>
+                <div class="value pos">+16%</div>
+                <div class="sub">avg NO price 0.77</div></div>
+              <div class="card"><div class="label">ROI (30d backtest)</div>
+                <div class="value pos">+24%</div>
+                <div class="sub">P&amp;L $+3.34</div></div>
+              <div class="card"><div class="label">Verdict</div>
+                <div class="value"><span class="badge ">promising</span></div></div>
+            </div>
+            <h3 style="font-size:13px;color:var(--muted);margin:14px 0 6px">
+              Today's open bids in tweets (0)</h3>
+            <table><thead><tr><th>Side</th><th>Stake</th><th>Price</th><th>Market</th></tr></thead>
+              <tbody><tr><td colspan="4" class="empty">No open bets in this category right now.</td></tr></tbody></table>
+          </div>
+          <div class="tab-pane" id="pane-tennis">
+            <div class="cards">
+              <div class="card"><div class="label">30-day win rate</div>
+                <div class="value">64%</div>
+                <div class="sub">CI 52-75% &middot; n=59</div></div>
+              <div class="card"><div class="label">Edge vs price</div>
+                <div class="value neg">-4%</div>
+                <div class="sub">avg NO price 0.68</div></div>
+              <div class="card"><div class="label">ROI (30d backtest)</div>
+                <div class="value neg">-2%</div>
+                <div class="sub">P&amp;L $-1.42</div></div>
+              <div class="card"><div class="label">Verdict</div>
+                <div class="value"><span class="badge lost">no edge</span></div></div>
+            </div>
+            <h3 style="font-size:13px;color:var(--muted);margin:14px 0 6px">
+              Today's open bids in tennis (0)</h3>
+            <table><thead><tr><th>Side</th><th>Stake</th><th>Price</th><th>Market</th></tr></thead>
+              <tbody><tr><td colspan="4" class="empty">No open bets in this category right now.</td></tr></tbody></table>
+          </div>
+          <div class="tab-pane" id="pane-other">
+            <div class="cards">
+              <div class="card"><div class="label">30-day win rate</div>
+                <div class="value">71%</div>
+                <div class="sub">CI 36-92% &middot; n=7</div></div>
+              <div class="card"><div class="label">Edge vs price</div>
+                <div class="value neg">-1%</div>
+                <div class="sub">avg NO price 0.73</div></div>
+              <div class="card"><div class="label">ROI (30d backtest)</div>
+                <div class="value neg">-3%</div>
+                <div class="sub">P&amp;L $-0.19</div></div>
+              <div class="card"><div class="label">Verdict</div>
+                <div class="value"><span class="badge lost">no edge</span></div></div>
+            </div>
+            <h3 style="font-size:13px;color:var(--muted);margin:14px 0 6px">
+              Today's open bids in other (1)</h3>
+            <table><thead><tr><th>Side</th><th>Stake</th><th>Price</th><th>Market</th></tr></thead>
+              <tbody><tr><td><span class='side no'>NO</span></td><td>$11.16</td><td>0.507</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" rel="noopener" class="mlink">Game Handicap: GEN (-2.5) vs KT Rolster (+2.5)</a></td></tr></tbody></table>
+          </div>
+          <div class="tab-pane" id="pane-esports">
+            <div class="cards">
+              <div class="card"><div class="label">30-day win rate</div>
+                <div class="value">56%</div>
+                <div class="sub">CI 37-74% &middot; n=23</div></div>
+              <div class="card"><div class="label">Edge vs price</div>
+                <div class="value neg">-8%</div>
+                <div class="sub">avg NO price 0.64</div></div>
+              <div class="card"><div class="label">ROI (30d backtest)</div>
+                <div class="value neg">-12%</div>
+                <div class="sub">P&amp;L $-2.75</div></div>
+              <div class="card"><div class="label">Verdict</div>
+                <div class="value"><span class="badge lost">no edge</span></div></div>
+            </div>
+            <h3 style="font-size:13px;color:var(--muted);margin:14px 0 6px">
+              Today's open bids in esports (2)</h3>
+            <table><thead><tr><th>Side</th><th>Stake</th><th>Price</th><th>Market</th></tr></thead>
+              <tbody><tr><td><span class='side no'>NO</span></td><td>$11.75</td><td>0.507</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" rel="noopener" class="mlink">Map 3 Rounds Handicap: Team Heretics (-2.5) vs Team Vitality (+2.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$11.75</td><td>0.505</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" rel="noopener" class="mlink">Map 3 Rounds Handicap: Team Falcons (-3.5) vs BetBoom Team (+3.5)</a></td></tr></tbody></table>
+          </div>
+      <div class="note">Each tab shows that category's REAL 30-day longshot-fade
+        win rate (backfilled from resolved markets) and any bets open there now.
+        <b>Green = confirmed edge, plain = promising, red = no edge.</b> We bet
+        most where the edge is proven (soccer exact-score); red categories are
+        shown for honesty — we avoid betting them.</div>
+    
+
+  
       <h2>Capacity — how much can you actually invest?</h2>
       <div class="note">
-        <b>Max deployable right now: $15,513.63</b> across the current
+        <b>Max deployable right now: $15,452.19</b> across the current
         markets (the most the order books can absorb near a good price). Investing
         more than this means worse fills or waiting for new markets.<br>
         <span class="badge won">$200 → fits</span> &nbsp; <span class="badge won">$500 → fits</span> &nbsp; <span class="badge won">$1,000 → fits</span>
@@ -166,7 +299,7 @@
       <h2>Daily history (bids placed + market capacity)</h2>
       <table><thead><tr><th>Day</th><th>Bets placed</th><th>Staked</th>
         <th>Markets avail.</th><th>Max deployable</th><th>Equity</th></tr></thead>
-        <tbody><tr><td>2026-06-12</td><td>1</td><td>$11.16</td><td>2</td><td>$15,514</td><td>$500.00</td></tr></tbody></table>
+        <tbody><tr><td>2026-06-12</td><td>1</td><td>$11.16</td><td>2</td><td>$15,452</td><td>$500.00</td></tr></tbody></table>
       <div class="note">
         <b>This is the honest capacity picture.</b> "Max deployable" is the total
         order-book depth across all edges that day — your real ceiling. Thin
@@ -230,6 +363,14 @@
   </div>
 </div>
 <script>
+function showTab(cat) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  var pane = document.getElementById('pane-' + cat);
+  var btn = document.getElementById('btn-' + cat);
+  if (pane) pane.classList.add('active');
+  if (btn) btn.classList.add('active');
+}
 async function run(action) {
   const btns = document.querySelectorAll('.btn');
   const status = document.getElementById('status');

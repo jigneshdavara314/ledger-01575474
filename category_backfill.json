@@ -1,0 +1,84 @@
+{
+  "days": 30,
+  "generated": "2026-06-12T20:37:06.269274",
+  "categories": {
+    "tennis": {
+      "n": 59,
+      "win_rate": 0.644,
+      "avg_no_price": 0.68,
+      "edge": -0.036,
+      "ci": [
+        0.517,
+        0.754
+      ],
+      "roi": -0.024,
+      "pnl": -1.42,
+      "verdict": "no edge"
+    },
+    "soccer-exactscore": {
+      "n": 53,
+      "win_rate": 0.925,
+      "avg_no_price": 0.6,
+      "edge": 0.324,
+      "ci": [
+        0.821,
+        0.97
+      ],
+      "roi": 0.547,
+      "pnl": 29.0,
+      "verdict": "CONFIRMED"
+    },
+    "esports": {
+      "n": 23,
+      "win_rate": 0.565,
+      "avg_no_price": 0.641,
+      "edge": -0.076,
+      "ci": [
+        0.368,
+        0.744
+      ],
+      "roi": -0.12,
+      "pnl": -2.75,
+      "verdict": "no edge"
+    },
+    "soccer": {
+      "n": 16,
+      "win_rate": 1.0,
+      "avg_no_price": 0.74,
+      "edge": 0.26,
+      "ci": [
+        0.806,
+        1
+      ],
+      "roi": 0.36,
+      "pnl": 5.75,
+      "verdict": "promising"
+    },
+    "tweets": {
+      "n": 14,
+      "win_rate": 0.929,
+      "avg_no_price": 0.767,
+      "edge": 0.162,
+      "ci": [
+        0.685,
+        0.987
+      ],
+      "roi": 0.238,
+      "pnl": 3.34,
+      "verdict": "promising"
+    },
+    "other": {
+      "n": 7,
+      "win_rate": 0.714,
+      "avg_no_price": 0.726,
+      "edge": -0.011,
+      "ci": [
+        0.359,
+        0.918
+      ],
+      "roi": -0.027,
+      "pnl": -0.19,
+      "verdict": "no edge"
+    }
+  }
+}
