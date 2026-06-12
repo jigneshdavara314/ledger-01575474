@@ -101,6 +101,8 @@ def _category_from_tags(tags: list) -> str:
     if any(s in tag_set for s in ["crypto", "bitcoin", "ethereum", "weekly",
                                    "multi-strikes", "hit-price", "crypto-prices"]):
         return "crypto"
+    if "tweets-markets" in tag_set:
+        return "tweets"
     if any(s in tag_set for s in ["politics", "elections", "global-elections"]):
         return "politics"
     return "other"

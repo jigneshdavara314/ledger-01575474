@@ -38,6 +38,11 @@ LONGSHOT_TIERS = {
     "exact score":      "confirmed",    # soccer exact-score: +36% NO edge, n=32, CI clear
     "spread:":          "exploratory",  # spread/handicap: same bias likely, not yet confirmed
     "handicap":         "exploratory",
+    # Tweet-count RANGE markets ("post X-Y posts this week?"): same longshot bias
+    # — many mutually-exclusive ranges, each overpriced. NO won ~100% (n=9, +24%)
+    # in the hunt. Exploratory until more resolve. Recurs weekly (Trump/Musk/etc).
+    "posts from":       "exploratory",
+    "posts between":    "exploratory",
 }
 LONGSHOT_PATTERNS = list(LONGSHOT_TIERS.keys())
 
@@ -112,8 +117,8 @@ def find_longshot_fades(
     # Per-bet hard cap: never more than this share of the daily budget on one market.
     per_bet_cap = config.DAILY_BUDGET_USD * config.LONGSHOT_MAX_BET_FRAC
 
-    # Pull a wide set of soccer/sports markets (these carry the exact-score subs)
-    cats = ["soccer", "nba", "mlb", "tennis", "esports"]
+    # Pull sports (exact-score subs) + tweets-markets (post-count range longshots)
+    cats = ["soccer", "nba", "mlb", "tennis", "esports", "tweets", "politics"]
     markets = fetch_short_term_markets(max_hours=max_hours, categories=cats,
                                        limit_per_event=40)
 
