@@ -299,6 +299,51 @@ def fetch_quote(token_id: str) -> Optional[dict]:
         return None
 
 
+def fillable_depth(token_id: str, max_price: float) -> Optional[dict]:
+    """
+    How much capital (USD) can realistically be deployed buying this token at or
+    below `max_price`, reading the live ask side of the order book.
+
+    Returns {usd, shares, levels, best_ask} — the cumulative USD and shares
+    available at prices <= max_price, i.e. what you could fill WITHOUT walking
+    the book up to bad prices. None if the book is empty.
+
+    This is the honest size ceiling for a market: betting more than `usd` here
+    means paying worse prices and eroding your edge.
+    """
+    try:
+        resp = requests.get(
+            f"{config.CLOB_HOST}/book",
+            params={"token_id": token_id},
+            timeout=15,
+        )
+        resp.raise_for_status()
+        asks = resp.json().get("asks", [])
+        if not asks:
+            return None
+        asks_sorted = sorted(asks, key=lambda a: _safe_float(a["price"]))
+        best_ask = _safe_float(asks_sorted[0]["price"])
+        cum_usd = 0.0
+        cum_shares = 0.0
+        levels = 0
+        for a in asks_sorted:
+            p = _safe_float(a["price"])
+            sz = _safe_float(a["size"])
+            if p > max_price:
+                break
+            cum_usd += p * sz
+            cum_shares += sz
+            levels += 1
+        return {
+            "usd": round(cum_usd, 2),
+            "shares": round(cum_shares, 2),
+            "levels": levels,
+            "best_ask": best_ask,
+        }
+    except Exception:
+        return None
+
+
 def limit_bid_price(token_id: str, aggression: float = 0.5) -> Optional[dict]:
     """
     Compute a limit-buy price between the midpoint and the ask.

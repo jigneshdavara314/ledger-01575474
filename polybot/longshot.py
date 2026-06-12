@@ -25,7 +25,8 @@ from dataclasses import dataclass
 from typing import List
 
 from . import config
-from .market_data import fetch_short_term_markets, Market, limit_bid_price
+from .market_data import (fetch_short_term_markets, Market, limit_bid_price,
+                          fillable_depth)
 from .calib_table import measured_no_win
 
 
@@ -66,6 +67,8 @@ class FadeSignal:
     fill_prob: float = 1.0      # estimated chance the limit order fills
     win_source: str = "market"  # "measured" | "blended" | "market"
     win_n: int = 0              # sample size backing the win estimate
+    desired_usd: float = 0.0    # what we WANTED to stake
+    fillable_usd: float = 0.0   # what the book can absorb near our price
 
 
 def _longshot_tier(q: str):
@@ -136,17 +139,30 @@ def find_longshot_fades(
         if edge < config.LONGSHOT_MIN_EDGE:
             continue
 
-        # Confirmed edges get full stake; exploratory get a fraction.
-        tier_stake = round(stake_usd * TIER_STAKE_MULT[tier], 2)
+        # Confirmed edges get full desired stake; exploratory get a fraction.
+        desired_usd = round(stake_usd * TIER_STAKE_MULT[tier], 2)
+
+        # REALISTIC SIZING: cap the stake at what the order book can absorb at
+        # prices within LONGSHOT_FILL_TOLERANCE of the best ask. We never "bet"
+        # more than the thin market can fill near a good price.
+        depth = fillable_depth(m.token_id_no,
+                               max_price=bid_price + config.LONGSHOT_FILL_TOLERANCE)
+        fillable_usd = depth["usd"] if depth else desired_usd
+        actual_stake = round(min(desired_usd, fillable_usd), 2)
+
+        # If the market can't even absorb our minimum, skip it (too thin to bet).
+        if actual_stake < config.LONGSHOT_MIN_STAKE:
+            continue
 
         signals.append(FadeSignal(
             market=m, side="NO", no_price=no_price, yes_price=m.price_yes,
-            est_win_prob=est_win_prob, size_usd=tier_stake, tier=tier,
+            est_win_prob=est_win_prob, size_usd=actual_stake, tier=tier,
             bid_price=bid_price, ask_price=ask_price, fill_prob=fill_prob,
             win_source=win_source, win_n=win_n,
+            desired_usd=desired_usd, fillable_usd=fillable_usd,
             reason=f"fade {tier} longshot: YES@{m.price_yes:.2f} overpriced, "
-                   f"bid NO@{bid_price:.3f} (ask {ask_price:.3f}), "
-                   f"est_win={est_win_prob:.2f} ({win_source} n={win_n})",
+                   f"bid NO@{bid_price:.3f}, stake ${actual_stake:.2f} "
+                   f"(wanted ${desired_usd:.2f}, fillable ${fillable_usd:.2f})",
         ))
 
     # Prioritize CONFIRMED edges first (soccer exact-score), then by edge size.

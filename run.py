@@ -283,18 +283,19 @@ def cmd_longshot(trade: bool = True):
         print("  (No open exact-score/spread markets in the fade price band.)")
         return
 
-    print(f"Found {len(fades)} longshot fade(s). Bidding NO below ask (mid-price):\n")
-    print(f"{'tier':11} {'$':>5} {'bid':>6} {'ask':>6} {'save':>5} {'estWin':>7} "
-          f"{'fill%':>6} {'hrs':>5}  market")
+    print(f"Found {len(fades)} longshot fade(s). Bidding NO below ask, "
+          f"sized to real book depth:\n")
+    print(f"{'tier':11} {'stake':>6} {'want':>6} {'fillable':>9} {'bid':>6} "
+          f"{'estWin':>7} {'hrs':>5}  market")
     print("-" * 104)
 
     placed = 0
     skipped_nofill = 0
     for f in fades:
-        save = round((f.ask_price or 0) - (f.bid_price or 0), 3)
-        print(f"{f.tier:11} ${f.size_usd:>4.2f} {f.bid_price:>6.3f} {f.ask_price:>6.3f} "
-              f"{save:>5.3f} {f.est_win_prob:>7.2f} {f.fill_prob*100:>5.0f}% "
-              f"{f.market.hours_to_resolution:>4.1f}h  {f.market.question[:40]}")
+        print(f"{f.tier:11} ${f.size_usd:>5.2f} ${f.desired_usd:>5.2f} "
+              f"${f.fillable_usd:>8.2f} {f.bid_price:>6.3f} "
+              f"{f.est_win_prob:>7.2f} {f.market.hours_to_resolution:>4.1f}h  "
+              f"{f.market.question[:38]}")
         if not trade:
             continue
         if store.already_open(f.market.condition_id):

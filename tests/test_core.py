@@ -143,6 +143,31 @@ def test_limit_bid_price_bounds():
     print("PASS test_limit_bid_price_bounds")
 
 
+def test_fillable_depth():
+    """Depth caps at prices <= max_price, summing USD correctly."""
+    from polybot import market_data
+    class FakeResp:
+        status_code = 200
+        def raise_for_status(self): pass
+        def json(self):
+            return {"asks": [
+                {"price": "0.61", "size": "10"},   # $6.10  (<=0.62 ok)
+                {"price": "0.62", "size": "20"},   # $12.40 (<=0.62 ok)
+                {"price": "0.87", "size": "100"},  # excluded (> 0.62)
+            ]}
+    orig = market_data.requests.get
+    market_data.requests.get = lambda *a, **k: FakeResp()
+    try:
+        d = market_data.fillable_depth("tok", max_price=0.62)
+        assert d["levels"] == 2, d
+        # 0.61*10 + 0.62*20 = 6.1 + 12.4 = 18.5
+        assert abs(d["usd"] - 18.5) < 1e-6, d
+        assert abs(d["shares"] - 30) < 1e-6, d
+    finally:
+        market_data.requests.get = orig
+    print("PASS test_fillable_depth")
+
+
 def _run_all():
     fns = [v for k, v in globals().items() if k.startswith("test_") and callable(v)]
     failed = 0
