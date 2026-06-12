@@ -31,6 +31,18 @@ def _pnl_class(v):
     return "pos" if v > 0 else ("neg" if v < 0 else "")
 
 
+def _market_link(question: str, slug: str) -> str:
+    """Render the market question as a clickable Polymarket link (new tab)."""
+    label = html.escape(question[:70])
+    if slug:
+        url = f"https://polymarket.com/event/{html.escape(slug)}"
+        return (f'<a href="{url}" target="_blank" rel="noopener" '
+                f'class="mlink">{label} ↗</a>')
+    # no slug stored (older trades) -> link to Polymarket search as fallback
+    return (f'<a href="https://polymarket.com/markets" target="_blank" '
+            f'rel="noopener" class="mlink">{label}</a>')
+
+
 def _load_backtest():
     """Load the saved strategy-backtest result, if present."""
     import os, json
@@ -162,14 +174,14 @@ def build_html() -> str:
                  '</tr></thead><tbody>']
     if not open_rows:
         open_html.append('<tr><td colspan="8" class="empty">No open positions.</td></tr>')
-    for ts, mode, side, size, price, edge, status, pnl, cat, hrs, q in open_rows:
+    for ts, mode, side, size, price, edge, status, pnl, cat, hrs, q, slug in open_rows:
         hrs_str = f"{hrs:.1f}h" if hrs else "?"
         open_html.append(
             f"<tr><td>{html.escape(ts[:16])}</td>"
             f"<td><span class='side {side.lower()}'>{side}</span></td>"
             f"<td>${size:,.2f}</td><td>{price:.3f}</td>"
             f"<td>{edge:+.3f}</td><td>{html.escape(cat or '')}</td>"
-            f"<td>{hrs_str}</td><td class='q'>{html.escape(q[:70])}</td></tr>"
+            f"<td>{hrs_str}</td><td class='q'>{_market_link(q, slug)}</td></tr>"
         )
     open_html.append('</tbody></table>')
 
@@ -181,7 +193,7 @@ def build_html() -> str:
     if not done_rows:
         done_html.append('<tr><td colspan="8" class="empty">'
                          'No resolved trades yet — they settle after the games finish.</td></tr>')
-    for ts, mode, side, size, price, edge, status, pnl, cat, hrs, q in done_rows:
+    for ts, mode, side, size, price, edge, status, pnl, cat, hrs, q, slug in done_rows:
         badge = "won" if status == "WON" else "lost"
         done_html.append(
             f"<tr><td>{html.escape(ts[:16])}</td>"
@@ -190,7 +202,7 @@ def build_html() -> str:
             f"<td><span class='badge {badge}'>{status}</span></td>"
             f"<td class='{_pnl_class(pnl)}'>{_fmt_money(pnl)}</td>"
             f"<td>{html.escape(cat or '')}</td>"
-            f"<td class='q'>{html.escape(q[:70])}</td></tr>"
+            f"<td class='q'>{_market_link(q, slug)}</td></tr>"
         )
     done_html.append('</tbody></table>')
 
@@ -261,6 +273,8 @@ def build_html() -> str:
         letter-spacing:.03em; background:#1c2129; }}
   tr:last-child td {{ border-bottom:none; }}
   td.q {{ color:var(--muted); }}
+  a.mlink {{ color:var(--accent); text-decoration:none; }}
+  a.mlink:hover {{ text-decoration:underline; }}
   .empty {{ text-align:center; color:var(--muted); padding:18px; }}
   .side {{ padding:1px 8px; border-radius:6px; font-weight:700; font-size:11px; }}
   .side.yes {{ background:#3fb95022; color:var(--pos); }}

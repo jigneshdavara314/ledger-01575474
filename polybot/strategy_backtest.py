@@ -23,7 +23,8 @@ from collections import defaultdict
 from . import config
 from .calibration import _category_from_text, price_before_close, _parse
 from .calib_table import measured_no_win
-from .longshot import _longshot_tier, FADE_MIN_YES, FADE_MAX_YES, TIER_STAKE_MULT
+from .longshot import (_longshot_tier, FADE_MIN_YES, FADE_MAX_YES,
+                       TIER_STAKE_MULT, budget_base_stake)
 
 
 def _wilson(wins, n, z=1.96):
@@ -121,7 +122,14 @@ def backtest_longshot(days: int = 30, sample_cap: int = 500) -> dict:
 
         # We'd have bought NO at ~no_price (ignore mid-price improvement here to be
         # conservative — assume we paid the implied NO price).
-        stake = round(config.LONGSHOT_STAKE_USD * TIER_STAKE_MULT[tier], 2)
+        # Size from the DAILY BUDGET (same base as live), scaled by tier and capped
+        # at the per-bet fraction. NOTE: the backtest cannot fetch historical book
+        # depth, so it does NOT apply the live depth cap — real live stakes on thin
+        # exact-score markets may be smaller than shown here. Treat this P&L as the
+        # budget-scaled upper estimate; live depth capping makes it more conservative.
+        base = budget_base_stake()
+        stake = round(base * TIER_STAKE_MULT[tier], 2)
+        stake = round(min(stake, config.DAILY_BUDGET_USD * config.LONGSHOT_MAX_BET_FRAC), 2)
         shares = stake / no_price if no_price > 0 else 0
         no_won = not m["yes_won"]      # NO wins when the longshot (YES) missed
         pnl = round(shares - stake, 4) if no_won else round(-stake, 4)

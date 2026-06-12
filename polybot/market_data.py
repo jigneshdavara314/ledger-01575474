@@ -30,6 +30,14 @@ class Market:
     hours_to_resolution: float
     category: str             # e.g. "soccer", "esports", "crypto", "tennis"
     event_title: str          # parent event title for context
+    event_slug: str = ""      # Polymarket event slug, for building a view link
+
+    @property
+    def polymarket_url(self) -> str:
+        """Link to view this market on polymarket.com (event page)."""
+        if self.event_slug:
+            return f"https://polymarket.com/event/{self.event_slug}"
+        return "https://polymarket.com/markets"
 
     @property
     def price_no(self) -> float:
@@ -194,11 +202,14 @@ def _parse_gamma_markets(
         if hrs < 0 or hrs > max_hours:
             continue
 
-        # Category from this market's own events tags if not already known
+        # Category + event slug from this market's own events if not already known
         cat = category
-        if cat == "other" and m.get("events"):
-            ev_tags = (m["events"][0].get("tags") or []) if m.get("events") else []
-            cat = _category_from_tags(ev_tags)
+        ev_slug = ""
+        if m.get("events"):
+            ev0 = m["events"][0]
+            ev_slug = ev0.get("slug", "") or ""
+            if cat == "other":
+                cat = _category_from_tags(ev0.get("tags") or [])
 
         markets.append(Market(
             condition_id=m.get("conditionId", ""),
@@ -214,6 +225,7 @@ def _parse_gamma_markets(
             hours_to_resolution=hrs,
             category=cat,
             event_title=event_title,
+            event_slug=ev_slug,
         ))
     return markets
 

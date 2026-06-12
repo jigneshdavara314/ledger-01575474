@@ -41,10 +41,23 @@ LONGSHOT_TIERS = {
 }
 LONGSHOT_PATTERNS = list(LONGSHOT_TIERS.keys())
 
-# Confirmed edges get a bigger stake; exploratory ones get a fraction until they
-# accumulate their own resolved sample. (Win probabilities now come from the
-# empirical calib_table, not a per-tier cap.)
+# Confirmed edges get a bigger share of the budget; exploratory ones get less
+# until they accumulate their own resolved sample. (Win probabilities come from
+# the empirical calib_table.)
 TIER_STAKE_MULT = {"confirmed": 1.0, "exploratory": 0.5}
+
+
+def budget_base_stake() -> float:
+    """
+    Base per-bet stake derived from the daily budget, spread across the expected
+    number of bets. Confirmed bets then get the full base, exploratory get half.
+    Example: $200 budget / 20 max bets = $10 base. A confirmed bet stakes ~$10,
+    an exploratory ~$5 — before the depth cap and the per-bet fraction cap.
+    """
+    n = max(1, config.LONGSHOT_MAX_BETS)
+    base = config.DAILY_BUDGET_USD / n
+    # never let the legacy flat stake pull it below a sensible floor
+    return max(base, 0.0)
 
 # Price band where fading is worthwhile: the YES longshot is priced high enough
 # to be overpriced, but not so high it's a real contender.
@@ -89,7 +102,10 @@ def find_longshot_fades(
     NO bet on each. Returns a diversified list of fade signals.
     """
     max_hours = max_hours or config.MAX_HOURS_TO_RESOLUTION
-    stake_usd = stake_usd or config.LONGSHOT_STAKE_USD
+    # Per-bet base derived from the daily budget (overrides the flat stake).
+    stake_usd = stake_usd or budget_base_stake()
+    # Per-bet hard cap: never more than this share of the daily budget on one market.
+    per_bet_cap = config.DAILY_BUDGET_USD * config.LONGSHOT_MAX_BET_FRAC
 
     # Pull a wide set of soccer/sports markets (these carry the exact-score subs)
     cats = ["soccer", "nba", "mlb", "tennis", "esports"]
@@ -139,8 +155,10 @@ def find_longshot_fades(
         if edge < config.LONGSHOT_MIN_EDGE:
             continue
 
-        # Confirmed edges get full desired stake; exploratory get a fraction.
+        # Desired stake from the budget, scaled by tier, then capped so no single
+        # bet exceeds LONGSHOT_MAX_BET_FRAC of the daily budget (risk control).
         desired_usd = round(stake_usd * TIER_STAKE_MULT[tier], 2)
+        desired_usd = round(min(desired_usd, per_bet_cap), 2)
 
         # REALISTIC SIZING: cap the stake at what the order book can absorb at
         # prices within LONGSHOT_FILL_TOLERANCE of the best ask. We never "bet"

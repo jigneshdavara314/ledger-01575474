@@ -58,7 +58,8 @@ def init_db():
             """
         )
         # Add columns to existing databases that predate this schema
-        for col, typedef in [("category","TEXT"), ("estimator","TEXT"), ("hours_to_res","REAL")]:
+        for col, typedef in [("category","TEXT"), ("estimator","TEXT"),
+                              ("hours_to_res","REAL"), ("event_slug","TEXT")]:
             try:
                 c.execute(f"ALTER TABLE trades ADD COLUMN {col} {typedef}")
             except Exception:
@@ -71,13 +72,15 @@ def record_trade(signal: Signal, result: dict):
     estimator = getattr(signal, "estimator", "heuristic")
     category  = getattr(signal.market, "category", "other")
     hrs       = getattr(signal.market, "hours_to_resolution", None)
+    slug      = getattr(signal.market, "event_slug", "") or ""
     with _conn() as c:
         c.execute(
             """INSERT INTO trades
                (ts, mode, condition_id, question, side, fair_prob,
                 market_prob, edge, size_usd, shares, status, exec_status,
-                order_id, resolved_ts, pnl_usd, category, estimator, hours_to_res)
-               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                order_id, resolved_ts, pnl_usd, category, estimator, hours_to_res,
+                event_slug)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
             (
                 datetime.datetime.utcnow().isoformat(),
                 result.get("mode"),
@@ -93,7 +96,7 @@ def record_trade(signal: Signal, result: dict):
                 result.get("status"),
                 result.get("order_id"),
                 None, None,
-                category, estimator, hrs,
+                category, estimator, hrs, slug,
             ),
         )
 
@@ -177,9 +180,10 @@ def category_summary() -> list:
 
 def recent_trades(limit: int = 30):
     with _conn() as c:
+        # event_slug may not exist on very old DBs; COALESCE guards it
         rows = c.execute(
             "SELECT ts, mode, side, size_usd, market_prob, edge, status, pnl_usd, "
-            "category, hours_to_res, question "
+            "category, hours_to_res, question, COALESCE(event_slug,'') "
             "FROM trades ORDER BY id DESC LIMIT ?",
             (limit,),
         ).fetchall()

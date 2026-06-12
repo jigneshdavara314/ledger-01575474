@@ -146,7 +146,16 @@ MARKET_LIMIT  = int(os.getenv("MARKET_LIMIT",  "30"))
 # Longshot-fade strategy (from the calibration study: exact-score / spread
 # longshots are systematically overpriced -> buy NO, spread across many).
 # ---------------------------------------------------------------------------
-LONGSHOT_STAKE_USD     = float(os.getenv("LONGSHOT_STAKE", "1.0"))   # DESIRED per-bet
+# --- Budget-based sizing ---
+# Total capital to deploy per day across ALL longshot bets. The per-bet stake is
+# derived from this (budget / expected number of bets), scaled by tier confidence
+# and capped by real order-book depth. THIS is the main knob — set it to your
+# daily budget and the bot sizes each bet sensibly.
+DAILY_BUDGET_USD = float(os.getenv("DAILY_BUDGET", "200"))
+
+# Legacy flat per-bet stake — used only as a fallback / floor. The budget logic
+# above normally overrides this.
+LONGSHOT_STAKE_USD     = float(os.getenv("LONGSHOT_STAKE", "10.0"))
 LONGSHOT_MIN_LIQUIDITY = float(os.getenv("LONGSHOT_MIN_LIQ", "3000"))
 LONGSHOT_MIN_EDGE      = float(os.getenv("LONGSHOT_MIN_EDGE", "0.06"))
 LONGSHOT_MAX_BETS      = int(os.getenv("LONGSHOT_MAX_BETS", "20"))   # diversify
@@ -156,10 +165,12 @@ LONGSHOT_BID_AGGRESSION = float(os.getenv("LONGSHOT_BID_AGG", "0.4"))
 
 # Realistic-fill sizing: the actual stake is capped at the order-book depth
 # available within LONGSHOT_FILL_TOLERANCE of the best ask, so we never "bet"
-# more than the thin market can absorb near a good price. Raise LONGSHOT_STAKE
-# to bet bigger — but the book depth is the true ceiling.
+# more than the thin market can absorb near a good price.
 LONGSHOT_FILL_TOLERANCE = float(os.getenv("LONGSHOT_FILL_TOL", "0.02"))  # 2 cents
-LONGSHOT_MIN_STAKE      = float(os.getenv("LONGSHOT_MIN_STAKE", "0.50")) # skip if thinner
+LONGSHOT_MIN_STAKE      = float(os.getenv("LONGSHOT_MIN_STAKE", "1.0"))  # skip if thinner
+# Per-bet hard cap as a fraction of the daily budget (risk control — never put
+# more than this share of the day's money on one market).
+LONGSHOT_MAX_BET_FRAC   = float(os.getenv("LONGSHOT_MAX_BET_FRAC", "0.15"))  # 15%
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "trades.db")
 
