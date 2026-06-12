@@ -1,0 +1,79 @@
+{
+  "days": 30,
+  "total_bets": 39,
+  "overall": {
+    "n": 39,
+    "wins": 33,
+    "win_rate": 0.846,
+    "win_ci": [
+      0.703,
+      0.928
+    ],
+    "predicted_win": 0.754,
+    "pnl": 15.67,
+    "staked": 34.0,
+    "roi": 0.461,
+    "verdict": "EDGE CONFIRMED (win-CI>50% and +ROI)"
+  },
+  "by_tier": {
+    "exploratory": {
+      "n": 10,
+      "wins": 6,
+      "win_rate": 0.6,
+      "win_ci": [
+        0.313,
+        0.832
+      ],
+      "predicted_win": 0.625,
+      "pnl": 0.35,
+      "staked": 5.0,
+      "roi": 0.07,
+      "verdict": "INSUFFICIENT (n<20)"
+    },
+    "confirmed": {
+      "n": 29,
+      "wins": 27,
+      "win_rate": 0.931,
+      "win_ci": [
+        0.78,
+        0.981
+      ],
+      "predicted_win": 0.799,
+      "pnl": 15.32,
+      "staked": 29.0,
+      "roi": 0.528,
+      "verdict": "EDGE CONFIRMED (win-CI>50% and +ROI)"
+    }
+  },
+  "by_subtype": {
+    "spread/handicap": {
+      "n": 10,
+      "wins": 6,
+      "win_rate": 0.6,
+      "win_ci": [
+        0.313,
+        0.832
+      ],
+      "predicted_win": 0.625,
+      "pnl": 0.35,
+      "staked": 5.0,
+      "roi": 0.07,
+      "verdict": "INSUFFICIENT (n<20)"
+    },
+    "exact_score": {
+      "n": 29,
+      "wins": 27,
+      "win_rate": 0.931,
+      "win_ci": [
+        0.78,
+        0.981
+      ],
+      "predicted_win": 0.799,
+      "pnl": 15.32,
+      "staked": 29.0,
+      "roi": 0.528,
+      "verdict": "EDGE CONFIRMED (win-CI>50% and +ROI)"
+    }
+  },
+  "generated": "2026-06-12T18:32:52.548907"
+}

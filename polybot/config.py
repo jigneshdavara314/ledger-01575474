@@ -150,6 +150,9 @@ LONGSHOT_STAKE_USD     = float(os.getenv("LONGSHOT_STAKE", "1.0"))   # small per
 LONGSHOT_MIN_LIQUIDITY = float(os.getenv("LONGSHOT_MIN_LIQ", "3000"))
 LONGSHOT_MIN_EDGE      = float(os.getenv("LONGSHOT_MIN_EDGE", "0.06"))
 LONGSHOT_MAX_BETS      = int(os.getenv("LONGSHOT_MAX_BETS", "20"))   # diversify
+# Mid-price bidding: 0.0 = bid at midpoint (best price, may not fill),
+# 1.0 = bid at ask (fills immediately). 0.4 leans toward a better price.
+LONGSHOT_BID_AGGRESSION = float(os.getenv("LONGSHOT_BID_AGG", "0.4"))
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "trades.db")
 

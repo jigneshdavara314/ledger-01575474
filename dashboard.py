@@ -31,6 +31,78 @@ def _pnl_class(v):
     return "pos" if v > 0 else ("neg" if v < 0 else "")
 
 
+def _load_backtest():
+    """Load the saved strategy-backtest result, if present."""
+    import os, json
+    path = os.path.join(os.path.dirname(__file__), "backtest_result.json")
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+
+def _backtest_section(bt) -> str:
+    """Render the strategy-backtest validation as a matrix table."""
+    if not bt or not bt.get("overall"):
+        return ('<h2>Strategy backtest (validation)</h2>'
+                '<div class="note">No backtest yet. Run '
+                '<code>python run_strategy_backtest.py 30</code> to validate the '
+                'strategy on the last 30 days of resolved markets.</div>')
+    o = bt["overall"]
+    gen = (bt.get("generated", "") or "")[:16]
+
+    def verdict_class(v):
+        if "CONFIRMED" in v:
+            return "won"
+        if "NEGATIVE" in v:
+            return "lost"
+        return ""
+
+    rows = []
+    # overall row first, then sub-types
+    ordered = [("OVERALL", o)]
+    ordered += sorted(bt.get("by_subtype", {}).items(),
+                      key=lambda x: -((x[1] or {}).get("n", 0)))
+    for name, s in ordered:
+        if not s:
+            continue
+        beat = s["win_rate"] >= s["predicted_win"]
+        beat_mark = "✓" if beat else "✗"
+        rows.append(
+            f"<tr><td><b>{html.escape(name)}</b></td>"
+            f"<td>{s['n']}</td>"
+            f"<td>{s['win_rate']*100:.0f}%</td>"
+            f"<td>{s['predicted_win']*100:.0f}%</td>"
+            f"<td class='{'pos' if beat else 'neg'}'>{beat_mark}</td>"
+            f"<td>[{s['win_ci'][0]*100:.0f}–{s['win_ci'][1]*100:.0f}%]</td>"
+            f"<td class='{_pnl_class(s['pnl'])}'>{_fmt_money(s['pnl'])}</td>"
+            f"<td class='{_pnl_class(s['roi'])}'>{s['roi']*100:+.0f}%</td>"
+            f"<td><span class='badge {verdict_class(s['verdict'])}'>"
+            f"{html.escape(s['verdict'].split(' (')[0])}</span></td></tr>"
+        )
+
+    return f"""
+      <h2>Strategy backtest — last {bt['days']} days (validation, generated {gen})</h2>
+      <table>
+        <thead><tr>
+          <th>Segment</th><th>Bets</th><th>Actual win%</th><th>Predicted%</th>
+          <th>Beat?</th><th>95% CI</th><th>P&amp;L</th><th>ROI</th><th>Verdict</th>
+        </tr></thead>
+        <tbody>{''.join(rows)}</tbody>
+      </table>
+      <div class="note">
+        <b>This is the confidence check:</b> we replayed the exact betting logic on
+        markets that already resolved. <b>Beat? ✓</b> means actual win rate met or
+        exceeded what our model predicted (good — not over-optimistic). A verdict of
+        <b>EDGE CONFIRMED</b> means the win-rate CI is above 50% with positive ROI.
+        Past results don't guarantee future ones, but this is real out-of-sample evidence.
+      </div>
+    """
+
+
 def build_html() -> str:
     store.init_db()
     s = store.performance_summary()
@@ -38,6 +110,7 @@ def build_html() -> str:
     rows = store.recent_trades(200)
     today = store.today_pnl()
     target = config.DAILY_TARGET_USD
+    bt = _load_backtest()
 
     open_rows = [r for r in rows if r[6] == "OPEN"]
     done_rows = [r for r in rows if r[6] in ("WON", "LOST")]
@@ -199,6 +272,20 @@ def build_html() -> str:
            padding:14px 16px; color:var(--muted); font-size:13px; line-height:1.5;
            margin-top:24px; }}
   .note b {{ color:var(--text); }}
+  .actions {{ display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+              margin-bottom:18px; }}
+  .btn {{ background:var(--panel); color:var(--text); border:1px solid var(--border);
+          padding:9px 14px; border-radius:8px; font-size:13px; font-weight:600;
+          cursor:pointer; transition:.15s; }}
+  .btn:hover {{ border-color:var(--accent); }}
+  .btn.primary {{ background:#1f6feb; border-color:#1f6feb; }}
+  .btn.primary:hover {{ background:#2a7bff; }}
+  .btn.ghost {{ background:transparent; color:var(--muted); }}
+  .btn:disabled {{ opacity:.5; cursor:wait; }}
+  .status {{ font-size:13px; color:var(--muted); }}
+  .output {{ background:#0b0e13; border:1px solid var(--border); border-radius:8px;
+             padding:12px; font-size:12px; color:#cdd9e5; max-height:260px;
+             overflow:auto; white-space:pre-wrap; margin-bottom:18px; }}
 </style>
 </head>
 <body>
@@ -208,10 +295,21 @@ def build_html() -> str:
     <span class="badge-mode {mode_class}">{mode_badge}</span>
     <span class="badge-mode paper">profile: {config.STRATEGY.name}</span>
   </header>
-  <div class="gen">Generated {generated} &middot; auto-refreshes every 60s &middot;
-       re-run <code>python dashboard.py</code> to update data</div>
+  <div class="gen">Generated {generated} &middot; auto-refreshes every 60s</div>
+
+  <div class="actions">
+    <button class="btn primary" onclick="run('resolve')">🔄 Resolve (settle finished games)</button>
+    <button class="btn" onclick="run('longshot')">🎯 Run longshot fades</button>
+    <button class="btn" onclick="run('lagwatch')">⚡ Check lag arb</button>
+    <button class="btn" onclick="run('backtest')">📊 Run 30-day backtest</button>
+    <button class="btn ghost" onclick="location.reload()">↻ Refresh page</button>
+    <span id="status" class="status"></span>
+  </div>
+  <pre id="output" class="output" style="display:none"></pre>
 
   {cards}
+
+  {_backtest_section(bt)}
 
   <h2>Open positions ({len(open_rows)})</h2>
   {''.join(open_html)}
@@ -223,6 +321,10 @@ def build_html() -> str:
   {''.join(cat_html)}
 
   <div class="note">
+    <b>Buttons:</b> work only on the local server version
+    (<code>http://localhost:8755</code>, started by <code>python serve.py</code>).
+    They run the real bot commands on your machine. The <b>file://</b> and
+    <b>GitHub Pages</b> versions are view-only.<br>
     <b>Reading this:</b> Win rate alone is misleading — a 95% win rate on bets
     priced at 0.95 makes ~5&cent; per win but loses the full stake on a miss, so
     net P&amp;L (not win%) is what matters. Watch the <b>Net P&amp;L</b> and
@@ -230,6 +332,28 @@ def build_html() -> str:
     funded wallet and is never done automatically.
   </div>
 </div>
+<script>
+async function run(action) {{
+  const btns = document.querySelectorAll('.btn');
+  const status = document.getElementById('status');
+  const output = document.getElementById('output');
+  btns.forEach(b => b.disabled = true);
+  status.textContent = 'Running ' + action + '... (this can take 30-60s)';
+  output.style.display = 'block';
+  output.textContent = 'Working...';
+  try {{
+    const res = await fetch('/run/' + action, {{ method: 'POST' }});
+    const text = await res.text();
+    output.textContent = text;
+    status.textContent = 'Done. Reloading data...';
+    setTimeout(() => location.reload(), 1500);
+  }} catch (e) {{
+    output.textContent = 'Error: ' + e + '\\n\\n(Is serve.py still running? Buttons only work via http://localhost:8755, not the file:// or GitHub Pages version.)';
+    status.textContent = 'Failed.';
+    btns.forEach(b => b.disabled = false);
+  }}
+}}
+</script>
 </body>
 </html>"""
 

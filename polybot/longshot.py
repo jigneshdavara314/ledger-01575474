@@ -25,14 +25,25 @@ from dataclasses import dataclass
 from typing import List
 
 from . import config
-from .market_data import fetch_short_term_markets, Market
+from .market_data import fetch_short_term_markets, Market, limit_bid_price
+from .calib_table import measured_no_win
 
 
-# Question patterns that historically showed the strongest overpricing.
-LONGSHOT_PATTERNS = [
-    "exact score",     # strongest edge in the study
-    "spread:",         # handicap longshots
-]
+# Question patterns that historically showed the strongest overpricing, each
+# with a confidence TIER from the calibration research:
+#   "confirmed" = statistically significant edge (n>=25, CI excludes 0)
+#   "exploratory" = likely overpriced by analogy but not yet confirmed at n>=25
+LONGSHOT_TIERS = {
+    "exact score":      "confirmed",    # soccer exact-score: +36% NO edge, n=32, CI clear
+    "spread:":          "exploratory",  # spread/handicap: same bias likely, not yet confirmed
+    "handicap":         "exploratory",
+}
+LONGSHOT_PATTERNS = list(LONGSHOT_TIERS.keys())
+
+# Confirmed edges get a bigger stake; exploratory ones get a fraction until they
+# accumulate their own resolved sample. (Win probabilities now come from the
+# empirical calib_table, not a per-tier cap.)
+TIER_STAKE_MULT = {"confirmed": 1.0, "exploratory": 0.5}
 
 # Price band where fading is worthwhile: the YES longshot is priced high enough
 # to be overpriced, but not so high it's a real contender.
@@ -49,11 +60,21 @@ class FadeSignal:
     est_win_prob: float  # our estimate that NO wins (longshot misses)
     size_usd: float
     reason: str
+    tier: str = "exploratory"   # "confirmed" | "exploratory"
+    bid_price: float = None     # the limit price we'll actually try (<= ask)
+    ask_price: float = None     # the ask we'd otherwise pay
+    fill_prob: float = 1.0      # estimated chance the limit order fills
+    win_source: str = "market"  # "measured" | "blended" | "market"
+    win_n: int = 0              # sample size backing the win estimate
 
 
-def _is_longshot_question(q: str) -> bool:
+def _longshot_tier(q: str):
+    """Return the confidence tier for a question, or None if not a longshot."""
     ql = q.lower()
-    return any(pat in ql for pat in LONGSHOT_PATTERNS)
+    for pat, tier in LONGSHOT_TIERS.items():
+        if pat in ql:
+            return tier
+    return None
 
 
 def find_longshot_fades(
@@ -74,7 +95,8 @@ def find_longshot_fades(
 
     signals: List[FadeSignal] = []
     for m in markets:
-        if not _is_longshot_question(m.question):
+        tier = _longshot_tier(m.question)
+        if tier is None:
             continue
         # only fade genuine longshots in the sane band
         if not (FADE_MIN_YES <= m.price_yes <= FADE_MAX_YES):
@@ -83,23 +105,53 @@ def find_longshot_fades(
             continue
 
         no_price = round(1.0 - m.price_yes, 4)
-        # Our estimate that the longshot MISSES (NO wins). The backtest implies
-        # the true miss rate is much higher than the market's implied (1-yes).
-        # We conservatively shade halfway between the implied NO price and 0.95
-        # to avoid over-betting on the raw backtest's 100% figure.
+        # Our estimate that the longshot MISSES (NO wins), from the EMPIRICAL
+        # calibration table: the actual measured NO-win rate for this sub-type
+        # and price bucket, shrunk toward the market price when the sample is
+        # thin. This replaces the old generic heuristic so sizing reflects the
+        # real evidence we collected, not a guess.
         implied_no = no_price
-        est_win_prob = round(min(0.95, implied_no + 0.5 * (0.95 - implied_no)), 4)
-        edge = round(est_win_prob - no_price, 4)
+        win = measured_no_win(m.question, m.price_yes, implied_no)
+        est_win_prob = win["est"]
+        win_source = win["source"]
+        win_n = win["n"]
+
+        # --- MID-PRICE BIDDING ---
+        # Instead of paying the ask, fetch the live order book for the NO token
+        # and place a limit order between the midpoint and the ask. If it fills,
+        # we paid less -> bigger edge. Fall back to the Gamma price if the book
+        # is unavailable.
+        quote = limit_bid_price(m.token_id_no, aggression=config.LONGSHOT_BID_AGGRESSION)
+        if quote:
+            bid_price = quote["price"]
+            ask_price = quote["ask"]
+            fill_prob = quote["fill_prob_estimate"]
+        else:
+            bid_price = no_price
+            ask_price = no_price
+            fill_prob = 1.0
+
+        # Edge is now measured against the price we actually try to pay (bid).
+        edge = round(est_win_prob - bid_price, 4)
         if edge < config.LONGSHOT_MIN_EDGE:
             continue
 
+        # Confirmed edges get full stake; exploratory get a fraction.
+        tier_stake = round(stake_usd * TIER_STAKE_MULT[tier], 2)
+
         signals.append(FadeSignal(
             market=m, side="NO", no_price=no_price, yes_price=m.price_yes,
-            est_win_prob=est_win_prob, size_usd=stake_usd,
-            reason=f"fade longshot: YES@{m.price_yes:.2f} overpriced, "
-                   f"buy NO@{no_price:.2f}, est_win={est_win_prob:.2f}",
+            est_win_prob=est_win_prob, size_usd=tier_stake, tier=tier,
+            bid_price=bid_price, ask_price=ask_price, fill_prob=fill_prob,
+            win_source=win_source, win_n=win_n,
+            reason=f"fade {tier} longshot: YES@{m.price_yes:.2f} overpriced, "
+                   f"bid NO@{bid_price:.3f} (ask {ask_price:.3f}), "
+                   f"est_win={est_win_prob:.2f} ({win_source} n={win_n})",
         ))
 
-    # Diversify: sort by edge, cap the number per scan so we spread bets.
-    signals.sort(key=lambda s: s.est_win_prob - s.no_price, reverse=True)
+    # Prioritize CONFIRMED edges first (soccer exact-score), then by edge size.
+    # This puts the most money on the statistically-proven mispricing.
+    tier_rank = {"confirmed": 0, "exploratory": 1}
+    signals.sort(key=lambda s: (tier_rank.get(s.tier, 9),
+                                -(s.est_win_prob - s.bid_price)))
     return signals[: config.LONGSHOT_MAX_BETS]

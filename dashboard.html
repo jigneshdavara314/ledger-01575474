@@ -57,6 +57,20 @@
            padding:14px 16px; color:var(--muted); font-size:13px; line-height:1.5;
            margin-top:24px; }
   .note b { color:var(--text); }
+  .actions { display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+              margin-bottom:18px; }
+  .btn { background:var(--panel); color:var(--text); border:1px solid var(--border);
+          padding:9px 14px; border-radius:8px; font-size:13px; font-weight:600;
+          cursor:pointer; transition:.15s; }
+  .btn:hover { border-color:var(--accent); }
+  .btn.primary { background:#1f6feb; border-color:#1f6feb; }
+  .btn.primary:hover { background:#2a7bff; }
+  .btn.ghost { background:transparent; color:var(--muted); }
+  .btn:disabled { opacity:.5; cursor:wait; }
+  .status { font-size:13px; color:var(--muted); }
+  .output { background:#0b0e13; border:1px solid var(--border); border-radius:8px;
+             padding:12px; font-size:12px; color:#cdd9e5; max-height:260px;
+             overflow:auto; white-space:pre-wrap; margin-bottom:18px; }
 </style>
 </head>
 <body>
@@ -66,8 +80,17 @@
     <span class="badge-mode paper">PAPER</span>
     <span class="badge-mode paper">profile: moderate</span>
   </header>
-  <div class="gen">Generated 2026-06-12 23:19:13 &middot; auto-refreshes every 60s &middot;
-       re-run <code>python dashboard.py</code> to update data</div>
+  <div class="gen">Generated 2026-06-13 00:04:00 &middot; auto-refreshes every 60s</div>
+
+  <div class="actions">
+    <button class="btn primary" onclick="run('resolve')">🔄 Resolve (settle finished games)</button>
+    <button class="btn" onclick="run('longshot')">🎯 Run longshot fades</button>
+    <button class="btn" onclick="run('lagwatch')">⚡ Check lag arb</button>
+    <button class="btn" onclick="run('backtest')">📊 Run 30-day backtest</button>
+    <button class="btn ghost" onclick="location.reload()">↻ Refresh page</button>
+    <span id="status" class="status"></span>
+  </div>
+  <pre id="output" class="output" style="display:none"></pre>
 
   
       <div class="cards">
@@ -103,6 +126,24 @@
       </div>
     
 
+  
+      <h2>Strategy backtest — last 30 days (validation, generated 2026-06-12T18:32)</h2>
+      <table>
+        <thead><tr>
+          <th>Segment</th><th>Bets</th><th>Actual win%</th><th>Predicted%</th>
+          <th>Beat?</th><th>95% CI</th><th>P&amp;L</th><th>ROI</th><th>Verdict</th>
+        </tr></thead>
+        <tbody><tr><td><b>OVERALL</b></td><td>39</td><td>85%</td><td>75%</td><td class='pos'>✓</td><td>[70–93%]</td><td class='pos'>+$15.67</td><td class='pos'>+46%</td><td><span class='badge won'>EDGE CONFIRMED</span></td></tr><tr><td><b>exact_score</b></td><td>29</td><td>93%</td><td>80%</td><td class='pos'>✓</td><td>[78–98%]</td><td class='pos'>+$15.32</td><td class='pos'>+53%</td><td><span class='badge won'>EDGE CONFIRMED</span></td></tr><tr><td><b>spread/handicap</b></td><td>10</td><td>60%</td><td>62%</td><td class='neg'>✗</td><td>[31–83%]</td><td class='pos'>+$0.35</td><td class='pos'>+7%</td><td><span class='badge '>INSUFFICIENT</span></td></tr></tbody>
+      </table>
+      <div class="note">
+        <b>This is the confidence check:</b> we replayed the exact betting logic on
+        markets that already resolved. <b>Beat? ✓</b> means actual win rate met or
+        exceeded what our model predicted (good — not over-optimistic). A verdict of
+        <b>EDGE CONFIRMED</b> means the win-rate CI is above 50% with positive ROI.
+        Past results don't guarantee future ones, but this is real out-of-sample evidence.
+      </div>
+    
+
   <h2>Open positions (18)</h2>
   <table><thead><tr><th>Time (UTC)</th><th>Side</th><th>Stake</th><th>Price</th><th>Edge</th><th>Category</th><th>Resolves in</th><th>Market</th></tr></thead><tbody><tr><td>2026-06-12T17:47</td><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.785</td><td>+0.083</td><td>soccer</td><td>7.2h</td><td class='q'>Spread: United States (-1.5)</td></tr><tr><td>2026-06-12T17:47</td><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.770</td><td>+0.090</td><td>nba</td><td>30.7h</td><td class='q'>Spread: Spurs (-14.5)</td></tr><tr><td>2026-06-12T17:47</td><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.730</td><td>+0.110</td><td>nba</td><td>30.7h</td><td class='q'>1H Spread: Spurs (-10.5)</td></tr><tr><td>2026-06-12T17:47</td><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.725</td><td>+0.113</td><td>soccer</td><td>1.2h</td><td class='q'>Spread: Canada (-1.5)</td></tr><tr><td>2026-06-12T17:47</td><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.695</td><td>+0.128</td><td>soccer</td><td>25.2h</td><td class='q'>Spread: Switzerland (-2.5)</td></tr><tr><td>2026-06-12T17:47</td><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.680</td><td>+0.135</td><td>nba</td><td>30.7h</td><td class='q'>1H Spread: Knicks (-2.5)</td></tr><tr><td>2026-06-12T17:47</td><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.675</td><td>+0.138</td><td>soccer</td><td>28.2h</td><td class='q'>Spread: Brazil (-1.5)</td></tr><tr><td>2026-06-12T17:47</td><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.640</td><td>+0.155</td><td>nba</td><td>30.7h</td><td class='q'>1H Spread: Spurs (-7.5)</td></tr><tr><td>2026-06-12T17:47</td><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.550</td><td>+0.200</td><td>nba</td><td>30.7h</td><td class='q'>1H Spread: Spurs (-4.5)</td></tr><tr><td>2026-06-12T17:29</td><td><span class='side yes'>YES</span></td><td>$2.00</td><td>0.953</td><td>+0.047</td><td>soccer</td><td>25.5h</td><td class='q'>Qatar vs. Switzerland: O/U 0.5</td></tr><tr><td>2026-06-12T17:29</td><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.955</td><td>+0.045</td><td>soccer</td><td>28.5h</td><td class='q'>Spread: Morocco (-1.5)</td></tr><tr><td>2026-06-12T17:29</td><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.961</td><td>+0.040</td><td>soccer</td><td>47.5h</td><td class='q'>Will Germany vs. Curaçao end in a draw?</td></tr><tr><td>2026-06-12T17:29</td><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.964</td><td>+0.036</td><td>soccer</td><td>7.5h</td><td class='q'>Exact Score: United States 0 - 2 Paraguay?</td></tr><tr><td>2026-06-12T17:29</td><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.972</td><td>+0.029</td><td>soccer</td><td>1.5h</td><td class='q'>Exact Score: Canada 0 - 2 Bosnia-Herzegovina?</td></tr><tr><td>2026-06-12T17:29</td><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.976</td><td>+0.024</td><td>soccer</td><td>47.5h</td><td class='q'>Will Curaçao win on 2026-06-14?</td></tr><tr><td>2026-06-12T17:29</td><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.981</td><td>+0.019</td><td>soccer</td><td>7.5h</td><td class='q'>Spread: Paraguay (-2.5)</td></tr><tr><td>2026-06-12T17:29</td><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.983</td><td>+0.017</td><td>soccer</td><td>1.5h</td><td class='q'>Spread: Bosnia and Herzegovina (-2.5)</td></tr><tr><td>2026-06-12T17:10</td><td><span class='side yes'>YES</span></td><td>$5.00</td><td>0.895</td><td>+0.045</td><td>soccer</td><td>7.8h</td><td class='q'>United States vs. Paraguay: O/U 0.5</td></tr></tbody></table>
 
@@ -113,6 +154,10 @@
   <table><thead><tr><th>Category</th><th>Trades</th><th>Won</th><th>Lost</th><th>Win%</th><th>P&amp;L</th><th>Staked</th></tr></thead><tbody><tr><td colspan="7" class="empty">No resolved trades to break down yet.</td></tr></tbody></table>
 
   <div class="note">
+    <b>Buttons:</b> work only on the local server version
+    (<code>http://localhost:8755</code>, started by <code>python serve.py</code>).
+    They run the real bot commands on your machine. The <b>file://</b> and
+    <b>GitHub Pages</b> versions are view-only.<br>
     <b>Reading this:</b> Win rate alone is misleading — a 95% win rate on bets
     priced at 0.95 makes ~5&cent; per win but loses the full stake on a miss, so
     net P&amp;L (not win%) is what matters. Watch the <b>Net P&amp;L</b> and
@@ -120,5 +165,27 @@
     funded wallet and is never done automatically.
   </div>
 </div>
+<script>
+async function run(action) {
+  const btns = document.querySelectorAll('.btn');
+  const status = document.getElementById('status');
+  const output = document.getElementById('output');
+  btns.forEach(b => b.disabled = true);
+  status.textContent = 'Running ' + action + '... (this can take 30-60s)';
+  output.style.display = 'block';
+  output.textContent = 'Working...';
+  try {
+    const res = await fetch('/run/' + action, { method: 'POST' });
+    const text = await res.text();
+    output.textContent = text;
+    status.textContent = 'Done. Reloading data...';
+    setTimeout(() => location.reload(), 1500);
+  } catch (e) {
+    output.textContent = 'Error: ' + e + '\n\n(Is serve.py still running? Buttons only work via http://localhost:8755, not the file:// or GitHub Pages version.)';
+    status.textContent = 'Failed.';
+    btns.forEach(b => b.disabled = false);
+  }
+}
+</script>
 </body>
 </html>

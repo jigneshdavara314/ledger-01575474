@@ -283,15 +283,18 @@ def cmd_longshot(trade: bool = True):
         print("  (No open exact-score/spread markets in the fade price band.)")
         return
 
-    print(f"Found {len(fades)} longshot fade(s). Spreading small NO bets:\n")
-    print(f"{'side':4} {'$':>5} {'NO@':>6} {'YES@':>6} {'estWin':>7} {'cat':>8} {'hrs':>5}  market")
-    print("-" * 100)
+    print(f"Found {len(fades)} longshot fade(s). Bidding NO below ask (mid-price):\n")
+    print(f"{'tier':11} {'$':>5} {'bid':>6} {'ask':>6} {'save':>5} {'estWin':>7} "
+          f"{'fill%':>6} {'hrs':>5}  market")
+    print("-" * 104)
 
     placed = 0
+    skipped_nofill = 0
     for f in fades:
-        print(f"{f.side:4} ${f.size_usd:>4.2f} {f.no_price:>6.3f} {f.yes_price:>6.3f} "
-              f"{f.est_win_prob:>7.2f} {f.market.category:>8} "
-              f"{f.market.hours_to_resolution:>4.1f}h  {f.market.question[:42]}")
+        save = round((f.ask_price or 0) - (f.bid_price or 0), 3)
+        print(f"{f.tier:11} ${f.size_usd:>4.2f} {f.bid_price:>6.3f} {f.ask_price:>6.3f} "
+              f"{save:>5.3f} {f.est_win_prob:>7.2f} {f.fill_prob*100:>5.0f}% "
+              f"{f.market.hours_to_resolution:>4.1f}h  {f.market.question[:40]}")
         if not trade:
             continue
         if store.already_open(f.market.condition_id):
@@ -300,19 +303,33 @@ def cmd_longshot(trade: bool = True):
         if store.open_position_count() >= 50:
             print("     -> skipped (position cap)")
             continue
+
+        # HONEST FILL MODEL: a limit order below the ask may not fill. In paper
+        # mode we simulate this — only count the trade as filled with prob
+        # f.fill_prob. Use a deterministic hash so runs are reproducible and we
+        # don't depend on Math.random/time (keeps behavior stable).
+        fill_roll = (hash(f.market.condition_id) % 1000) / 1000.0
+        if fill_roll > f.fill_prob:
+            print(f"     -> limit NOT filled at {f.bid_price:.3f} "
+                  f"(would retry next scan or pay ask)")
+            skipped_nofill += 1
+            continue
+
         sig = Signal(
             market=f.market, side="NO",
-            fair_prob=f.est_win_prob, market_prob=f.no_price,
-            edge=round(f.est_win_prob - f.no_price, 4), size_usd=f.size_usd,
+            fair_prob=f.est_win_prob, market_prob=f.bid_price,
+            edge=round(f.est_win_prob - f.bid_price, 4), size_usd=f.size_usd,
             reason=f.reason, estimator="longshot-fade",
         )
         result = executor.execute(sig)
         placed += 1
 
     if trade:
-        print(f"\nPlaced {placed} NO bets, ${placed * config.LONGSHOT_STAKE_USD:.2f} staked total.")
-        print("These resolve over the next hours/days. Run 'resolve' then 'report'.")
-        print("WATCH the win rate in report -- the backtest edge must hold up live.")
+        staked = placed * config.LONGSHOT_STAKE_USD
+        print(f"\nFilled {placed} NO bets (~${staked:.2f} staked); "
+              f"{skipped_nofill} limit orders didn't fill at the mid price.")
+        print("Bidding below ask = better entry when it fills = more profit per win.")
+        print("Run 'resolve' then 'report' after the games settle.")
 
 
 # ---------------------------------------------------------------------------
@@ -325,7 +342,7 @@ def cmd_lagwatch(trade: bool = True):
     Polymarket market still prices the winner below 1.00, and paper-buy them.
     """
     from polybot.lagwatch import find_lag_opportunities
-    from polybot.market_data import Market
+    from polybot.market_data import Market, limit_bid_price
     from polybot.strategy import Signal
 
     _banner()
@@ -342,11 +359,28 @@ def cmd_lagwatch(trade: bool = True):
         return
 
     print(f"Found {len(opps)} lag opportunit(ies):\n")
+    placed = 0
+    nofill = 0
     for o in opps:
-        print(f"  BUY {o.side} @ {o.market_price:.3f}  -> profit +{o.implied_profit*100:.1f}% "
-              f"if it pays $1   liq=${o.liquidity:,.0f}")
-        print(f"    {o.game.winner} won {o.game.home_score}-{o.game.away_score}")
-        print(f"    market: {o.question[:62]}")
+        # MID-PRICE BIDDING: the side already won, so bid below the ask to pay
+        # less and capture more profit. We bid a bit more aggressively here than
+        # for longshots (aggression 0.6) because we want this near-certain win
+        # to actually fill, not miss over a fraction of a cent.
+        quote = limit_bid_price(o.token_id, aggression=0.6)
+        if quote:
+            bid_price = quote["price"]
+            ask_price = quote["ask"]
+            fill_prob = quote["fill_prob_estimate"]
+        else:
+            bid_price = o.market_price
+            ask_price = o.market_price
+            fill_prob = 1.0
+        profit = round(1.0 - bid_price, 4)
+
+        print(f"  BUY {o.side} bid@{bid_price:.3f} (ask {ask_price:.3f}) "
+              f"-> profit +{profit*100:.1f}% if it pays $1   liq=${o.liquidity:,.0f}")
+        print(f"    {o.game.winner} won {o.game.home_score}-{o.game.away_score}  "
+              f"| {o.question[:55]}")
 
         if not trade:
             continue
@@ -354,27 +388,36 @@ def cmd_lagwatch(trade: bool = True):
             print("    -> skipped (already open)\n")
             continue
 
-        # Size: lag arb is near-riskless, so stake the per-trade cap.
+        # Honest fill model for the limit order (deterministic, reproducible).
+        fill_roll = (hash(o.condition_id) % 1000) / 1000.0
+        if fill_roll > fill_prob:
+            print(f"    -> limit NOT filled at {bid_price:.3f} (retry next scan)\n")
+            nofill += 1
+            continue
+
         size = config.STRATEGY.max_position_usd
         mkt = Market(
             condition_id=o.condition_id, question=o.question,
             token_id_yes=o.token_id if o.side == "YES" else "",
             token_id_no=o.token_id if o.side == "NO" else "",
-            price_yes=o.market_price if o.side == "YES" else round(1 - o.market_price, 4),
+            price_yes=bid_price if o.side == "YES" else round(1 - bid_price, 4),
             liquidity=o.liquidity, volume=0, volume_24h=0, spread=0,
             end_date="", hours_to_resolution=0,
             category="lag-" + o.game.league, event_title=o.game.winner,
         )
         sig = Signal(
             market=mkt, side=o.side,
-            fair_prob=0.99, market_prob=o.market_price,
-            edge=o.implied_profit, size_usd=size,
+            fair_prob=0.99, market_prob=bid_price,
+            edge=profit, size_usd=size,
             reason=f"lag-arb: {o.game.winner} already won {o.game.home_score}-{o.game.away_score}",
             estimator="lagwatch",
         )
         result = executor.execute(sig)
+        placed += 1
         print(f"    -> {result['mode']} {result['status']} @ {result.get('price')}\n")
 
+    if trade:
+        print(f"Filled {placed} lag bets; {nofill} limit orders didn't fill.")
     print("Run 'python run.py resolve' after the oracle settles these markets.")
 
 

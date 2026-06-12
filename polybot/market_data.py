@@ -262,6 +262,17 @@ def fetch_resolution(condition_id: str) -> Optional[str]:
 
 def fetch_order_book_spread(token_id: str) -> Optional[float]:
     """Get live best-bid/best-ask spread from the CLOB for a token."""
+    quote = fetch_quote(token_id)
+    return quote["spread"] if quote else None
+
+
+def fetch_quote(token_id: str) -> Optional[dict]:
+    """
+    Return the live order-book quote for a token:
+      {best_bid, best_ask, mid, spread}
+    or None if the book is empty/thin. `mid` is the midpoint we can place a
+    limit order at to try to buy below the ask (better price if it fills).
+    """
     try:
         resp = requests.get(
             f"{config.CLOB_HOST}/book",
@@ -276,6 +287,48 @@ def fetch_order_book_spread(token_id: str) -> Optional[float]:
             return None
         best_bid = max(_safe_float(b["price"]) for b in bids)
         best_ask = min(_safe_float(a["price"]) for a in asks)
-        return round(best_ask - best_bid, 4)
+        if best_bid <= 0 or best_ask <= 0 or best_ask < best_bid:
+            return None
+        return {
+            "best_bid": round(best_bid, 4),
+            "best_ask": round(best_ask, 4),
+            "mid": round((best_bid + best_ask) / 2, 4),
+            "spread": round(best_ask - best_bid, 4),
+        }
     except Exception:
         return None
+
+
+def limit_bid_price(token_id: str, aggression: float = 0.5) -> Optional[dict]:
+    """
+    Compute a limit-buy price between the midpoint and the ask.
+
+    aggression in [0,1]:
+      0.0 = bid at the midpoint (best price, lowest fill chance)
+      1.0 = bid at the ask      (worst price, fills immediately)
+      0.5 = halfway between mid and ask (default: a bit better than ask,
+            still reasonably likely to fill)
+
+    Returns {price, mid, ask, bid, spread, fill_prob_estimate} or None.
+    """
+    q = fetch_quote(token_id)
+    if not q:
+        return None
+    mid, ask, bid = q["mid"], q["best_ask"], q["best_bid"]
+    price = round(mid + (ask - mid) * aggression, 4)
+    price = max(bid + 0.001, min(ask, price))  # stay inside the book
+
+    # Rough fill-probability estimate: bidding at the ask ~ certain fill;
+    # at the midpoint, fill depends on someone crossing to you. We model it
+    # linearly from ~0.45 (at mid) to ~0.99 (at ask). This is only used to
+    # simulate paper fills honestly — real fills depend on live flow.
+    if ask > mid:
+        frac_to_ask = (price - mid) / (ask - mid)
+    else:
+        frac_to_ask = 1.0
+    fill_prob = round(0.45 + 0.54 * frac_to_ask, 3)
+
+    return {
+        "price": price, "mid": mid, "ask": ask, "bid": bid,
+        "spread": q["spread"], "fill_prob_estimate": fill_prob,
+    }
