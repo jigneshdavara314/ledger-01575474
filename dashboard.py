@@ -156,6 +156,42 @@ def _bankroll_section():
     """
 
 
+def _daily_backtest_section():
+    """Day-by-day $500-float profit table."""
+    import os, json
+    path = os.path.join(os.path.dirname(__file__), "daily_backtest.json")
+    if not os.path.exists(path):
+        return ""
+    try:
+        with open(path, encoding="utf-8") as f:
+            d = json.load(f)
+    except Exception:
+        return ""
+    rows = []
+    for r in d.get("daily", []):
+        rows.append(
+            f"<tr><td>{html.escape(r['day'])}</td><td>{r['bets']}</td>"
+            f"<td>${r['staked']:,.2f}</td><td>${r['end_balance']:,.2f}</td>"
+            f"<td class='{_pnl_class(r['profit'])}'>{_fmt_money(r['profit'])}</td></tr>"
+        )
+    if not rows:
+        rows = ['<tr><td colspan="5" class="empty">No daily data.</td></tr>']
+    return f"""
+      <h2>Daily profit — {html.escape(d.get('model',''))}</h2>
+      <table><thead><tr><th>Day</th><th>Bets</th><th>Staked</th>
+        <th>End balance</th><th>Profit skimmed</th></tr></thead>
+        <tbody>{''.join(rows)}</tbody></table>
+      <div class="note">
+        Each day starts at the $500 float; profit above $500 is swept out.
+        <b>Total profit ${d.get('total_profit',0):+,.2f}</b> across
+        {d.get('days_with_action',0)} active day(s), win rate
+        {d.get('win_rate',0)*100:.0f}%. <b>One strong day is not the average</b> —
+        many days have few or no qualifying markets. Real fills may be smaller
+        (no historical depth data). Treat as a budget-scaled estimate.
+      </div>
+    """
+
+
 def build_html() -> str:
     store.init_db()
     s = store.performance_summary()
@@ -371,6 +407,8 @@ def build_html() -> str:
   {cards}
 
   {_bankroll_section()}
+
+  {_daily_backtest_section()}
 
   {_backtest_section(bt)}
 

@@ -1,0 +1,20 @@
+{
+  "model": "$500 daily float, skim profit above float",
+  "days_with_action": 1,
+  "window_days": 30,
+  "total_bets": 21,
+  "total_staked": 487.5,
+  "total_profit": 220.86,
+  "avg_daily_profit": 220.86,
+  "win_rate": 0.905,
+  "daily": [
+    {
+      "day": "2026-06-12",
+      "bets": 21,
+      "staked": 487.5,
+      "end_balance": 720.86,
+      "profit": 220.86
+    }
+  ],
+  "generated": "2026-06-12T19:09:59.929409"
+}
