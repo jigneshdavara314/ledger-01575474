@@ -1,4 +1,5 @@
 name: polymarket-paper-bot
+# (re-indexed for daily cloud scans — runs every 15 min, commits state back)
 
 # Runs the paper-trading bot on a schedule in the cloud (free GitHub Actions).
 # Each run: places longshot-fade bets, watches for lag arb, resolves settled
