@@ -39,8 +39,17 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path in ("/", "/index.html", "/dashboard", "/dashboard.html"):
             try:
-                # fresh import each load so code edits show up without restart
-                import importlib, dashboard
+                # Reload polybot submodules + dashboard so live code edits show up
+                # without restarting the server (avoids stale-module errors like
+                # "config has no attribute daily_budget" after an edit).
+                import importlib, sys
+                for name in list(sys.modules):
+                    if name == "polybot" or name.startswith("polybot."):
+                        try:
+                            importlib.reload(sys.modules[name])
+                        except Exception:
+                            pass
+                import dashboard
                 importlib.reload(dashboard)
                 html = dashboard.build_html()
             except Exception as e:
