@@ -34,6 +34,13 @@ CALIB = {
         (0.35, 0.84, 9),    # exploratory: weak/noisy overpricing
         (0.55, 0.74, 15),
     ],
+    # Baseball Home-Run player props. Edge hunt (2026-06, n=64): NO won 93.8%,
+    # avg YES ~0.50, Wilson lower bound 85%, held out-of-sample. A confirmed
+    # favorite-longshot fade — people overpay that a hitter WILL homer.
+    "home_runs_ou": [
+        (0.35, 0.96, 30),   # deep "will homer" longshots: NO almost always wins
+        (0.55, 0.93, 34),   # the main measured bucket (avg YES ~0.50)
+    ],
 }
 
 # Below this sample size we shrink hard toward the market price (don't trust it).
@@ -46,6 +53,8 @@ def _subtype_for(question: str) -> str:
     q = question.lower()
     if "exact score" in q:
         return "exact_score"
+    if "home runs o/u" in q:
+        return "home_runs_ou"
     if "spread:" in q or "handicap" in q:
         return "spread/handicap"
     return "other"

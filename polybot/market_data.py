@@ -136,27 +136,39 @@ def fetch_short_term_markets(
     max_hours: float = None,
     categories: list = None,
     limit_per_event: int = 5,
+    max_event_pages: int = 4,
 ) -> List[Market]:
     """
     Fetch markets that resolve within `max_hours` hours, filtered to the
     specified categories. Uses the events API to get tag metadata.
+
+    max_event_pages: how many 200-event pages to pull (by 24h volume). More pages
+    reach lower-volume markets like player props (the home-run edge) at the cost
+    of a few extra API calls.
 
     This is the main scanner for the short-term strategy.
     """
     max_hours = max_hours or config.MAX_HOURS_TO_RESOLUTION
     categories = categories or config.TARGET_CATEGORIES
 
+    # Paginate through events so LOW-VOLUME markets (e.g. baseball player props
+    # like Home-Run O/U) are reachable too — they fall well outside the top 200
+    # by 24h volume, so a single page would silently miss confirmed edges.
     url = f"{config.GAMMA_HOST}/events"
-    params = {
-        "active": "true",
-        "closed": "false",
-        "limit": 200,
-        "order": "volume24hr",
-        "ascending": "false",
-    }
-    resp = requests.get(url, params=params, timeout=30)
-    resp.raise_for_status()
-    events = resp.json()
+    events = []
+    for _offset in range(0, max_event_pages * 200, 200):
+        resp = requests.get(url, params={
+            "active": "true", "closed": "false", "limit": 200,
+            "offset": _offset, "order": "volume24hr", "ascending": "false",
+        }, timeout=30)
+        if resp.status_code != 200:
+            break
+        batch = resp.json()
+        if not batch:
+            break
+        events.extend(batch)
+        if len(batch) < 200:
+            break
 
     markets: List[Market] = []
 
