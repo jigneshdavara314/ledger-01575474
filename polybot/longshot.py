@@ -183,12 +183,13 @@ def find_longshot_fades(
         desired_usd = round(stake_usd * TIER_STAKE_MULT[tier], 2)
         desired_usd = round(min(desired_usd, per_bet_cap), 2)
 
-        # REALISTIC SIZING: cap the stake at what the order book can absorb at
-        # prices within LONGSHOT_FILL_TOLERANCE of the best ask. We never "bet"
-        # more than the thin market can fill near a good price.
-        depth = fillable_depth(m.token_id_no,
-                               max_price=bid_price + config.LONGSHOT_FILL_TOLERANCE)
-        fillable_usd = depth["usd"] if depth else desired_usd
+        # REALISTIC SIZING: we bid BELOW the ask, so the honest immediately-
+        # fillable size is the ask-side depth available AT OR BELOW our actual
+        # bid price — not bid+tolerance (which counts liquidity priced above us
+        # that we won't reach). This is the conservative, correct side of the
+        # book for a resting buy; we never "bet" more than that thin slice.
+        depth = fillable_depth(m.token_id_no, max_price=bid_price)
+        fillable_usd = depth["usd"] if depth else 0.0
         actual_stake = round(min(desired_usd, fillable_usd), 2)
 
         # If the market can't even absorb our minimum, skip it (too thin to bet).

@@ -139,17 +139,14 @@ def build_html() -> str:
 
     daily_budget = config.daily_budget()
     deposit = bk["initial_deposit"]
-    # Headline value = the backfilled equity curve's latest balance (the real
-    # "what would $500 be now" answer). Falls back to live equity if no curve.
-    if equity_days:
-        value = equity_days[0][5]            # balance_after of most recent day
-        tot_won = sum(d[2] for d in equity_days)
-        tot_lost = sum(d[3] for d in equity_days)
-    else:
-        value = bk["total_equity"]
-        tot_won, tot_lost = s["won"], s["lost"]
-    profit = round(value - deposit, 2)
-    ret = round(profit / deposit * 100, 1) if deposit else 0
+    # ALL headline/stat numbers come from REAL paper trades (store.performance_summary),
+    # NOT the simulated backfill curve. The backfill is shown separately and clearly
+    # labelled as a simulation in the Overview chart — it is never the headline.
+    value = bk["total_equity"]
+    profit = bk["profit"]
+    ret = bk["return_pct"]
+    tot_won = s["won"]
+    tot_lost = s["lost"]
     resolved = tot_won + tot_lost
     win_rate = (tot_won / resolved * 100) if resolved else 0
 
@@ -206,14 +203,14 @@ def build_html() -> str:
           <div class="s-lab">Open now</div></div>
       </div>
       <div class="caveat">
-        ⚠️ This is a <b>simulated replay</b> of the strategy on real resolved
-        markets since {dep_date} — real prices, real outcomes, our real rules.
-        The win rate (~{win_rate:.0f}%) is genuine. Every bet is now
-        <b>depth-limited</b> (capped at 3% of each market's actual traded volume),
-        so it no longer assumes unlimited size in thin markets — this is roughly
-        half the un-capped ceiling. One optimism remains: it assumes you got
-        <b>filled at the mid-life price</b> on each bet; real fills slip. Paper
-        only — not a promise.
+        ⚠️ <b>These headline numbers are REAL paper trades only</b> — the bot's
+        actual placed-and-settled bets since it went live. Paper money, no real
+        funds. Known limitations (being honest): the strategy's edge was measured
+        on past resolved markets and is <b>not yet proven on live open markets</b>;
+        paper fills are <b>optimistic</b> (no slippage/fees modelled fully). The
+        green line below labelled “simulation” is a hypothetical 30-day replay,
+        <b>not</b> your real balance. Treat results as a work-in-progress test,
+        not a promise.
       </div>
     """
 
@@ -448,6 +445,10 @@ def build_html() -> str:
   @keyframes fade {{ from {{ opacity:0; }} to {{ opacity:1; }} }}
   .panel-tab h2:first-child {{ margin-top:4px; }}
   .note {{ color:var(--muted); font-size:12px; margin:0 0 10px; }}
+  .sim-tag {{ background:#8a6d3b22; color:#d8a23b; border:1px solid #8a6d3b;
+              border-radius:6px; padding:1px 8px; font-size:10px; font-weight:700;
+              text-transform:uppercase; letter-spacing:.04em; margin-left:6px;
+              vertical-align:middle; }}
   .muted-cell {{ color:var(--muted); font-style:italic; }}
 </style></head>
 <body><div class="wrap">
@@ -482,7 +483,10 @@ def build_html() -> str:
   </nav>
 
   <section class="panel-tab active" id="tab-overview">
-    <h2>Balance over time</h2>
+    <h2>Simulated 30-day replay <span class="sim-tag">simulation — not your real balance</span></h2>
+    <div class="note">Hypothetical: what the strategy would have done over the last
+      30 days on resolved markets. Optimistic (assumes mid-life fills). Your REAL
+      paper balance is the ${net_equity:,.2f} shown above.</div>
     <div class="chart-box">{equity_svg}</div>
     <div class="chart-grid">
       <div class="chart-card">

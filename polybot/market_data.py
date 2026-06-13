@@ -333,6 +333,18 @@ def fetch_quote(token_id: str) -> Optional[dict]:
         return None
 
 
+def stable_unit(key: str) -> float:
+    """
+    Deterministic uniform [0,1) draw from a string key, using a STABLE hash
+    (hashlib) — unlike Python's built-in hash(), which is salted per process
+    (PYTHONHASHSEED) and so is NOT reproducible across runs. Used to simulate
+    paper fills reproducibly: the same market always rolls the same number.
+    """
+    import hashlib
+    h = hashlib.sha256(key.encode("utf-8")).hexdigest()
+    return (int(h[:8], 16) % 1_000_000) / 1_000_000.0
+
+
 def fillable_depth(token_id: str, max_price: float) -> Optional[dict]:
     """
     How much capital (USD) can realistically be deployed buying this token at or
@@ -397,15 +409,25 @@ def limit_bid_price(token_id: str, aggression: float = 0.5) -> Optional[dict]:
     price = round(mid + (ask - mid) * aggression, 4)
     price = max(bid + 0.001, min(ask, price))  # stay inside the book
 
-    # Rough fill-probability estimate: bidding at the ask ~ certain fill;
-    # at the midpoint, fill depends on someone crossing to you. We model it
-    # linearly from ~0.45 (at mid) to ~0.99 (at ask). This is only used to
-    # simulate paper fills honestly — real fills depend on live flow.
-    if ask > mid:
-        frac_to_ask = (price - mid) / (ask - mid)
+    # HONEST fill-probability estimate. A BUY limit only executes when a seller
+    # is willing to trade at or below our price:
+    #   - at/above the ASK  -> we cross the spread and fill ~immediately (prob~1)
+    #   - between bid and ask -> we must wait for a seller to cross DOWN to us.
+    #     The closer our price sits to the current best BID, the less likely a
+    #     seller gives us that price within our (short, pre-resolution) window.
+    # We model this as the price's position in the [bid, ask] band, but NOT the
+    # over-generous "0.45 floor at mid" the audit flagged: a resting buy well
+    # below the ask is genuinely uncertain. Position 0 (at bid) -> ~0.10,
+    # position 1 (at ask) -> ~0.97, roughly linear. A wider spread also lowers
+    # the chance of a cross, so we shade down on large spreads.
+    band = ask - bid
+    if band > 1e-6:
+        pos = (price - bid) / band           # 0 at bid, 1 at ask
     else:
-        frac_to_ask = 1.0
-    fill_prob = round(0.45 + 0.54 * frac_to_ask, 3)
+        pos = 1.0                              # no spread -> crossing fills
+    base = 0.10 + 0.87 * pos
+    spread_penalty = min(0.25, max(0.0, (band - 0.01) * 2.0))  # wide spread = harder
+    fill_prob = round(max(0.05, min(0.99, base - spread_penalty)), 3)
 
     return {
         "price": price, "mid": mid, "ask": ask, "bid": bid,

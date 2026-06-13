@@ -310,6 +310,22 @@ def cmd_longshot(trade: bool = True):
         if store.open_position_count() >= 50:
             print("     -> skipped (position cap)")
             continue
+        # CORRELATION CAP: the sub-markets of one match resolve together, so they
+        # aren't independent diversification. Limit bets per event.
+        slug = getattr(f.market, "event_slug", "") or ""
+        if slug and store.open_count_for_event(slug) >= config.LONGSHOT_MAX_PER_EVENT:
+            print(f"     -> skipped (per-event cap: already "
+                  f"{config.LONGSHOT_MAX_PER_EVENT} bets on this match)")
+            continue
+        # DAILY-SPEND GOVERNOR: cap TOTAL stake across all of today's runs to the
+        # daily budget (the scan runs many times/day; without this the budget is
+        # re-applied each run).
+        if config.LONGSHOT_DAILY_SPEND_CAP:
+            already = store.staked_today()
+            if already + f.size_usd > config.daily_budget():
+                print(f"     -> skipped (daily budget reached: "
+                      f"${already:.2f} staked today >= ${config.daily_budget():.0f})")
+                continue
         # COMPOUNDING GUARD: don't bet money we don't have in the bankroll.
         if not bankroll.can_afford(f.size_usd):
             print(f"     -> skipped (insufficient bankroll: "
@@ -317,14 +333,15 @@ def cmd_longshot(trade: bool = True):
             continue
 
         # HONEST FILL MODEL: a limit order below the ask may not fill. In PAPER
-        # mode we SIMULATE this — only count the trade as filled with prob
-        # f.fill_prob, using a deterministic hash so runs are reproducible.
+        # mode we SIMULATE this — count the trade as filled only if a STABLE
+        # (reproducible) uniform draw falls under f.fill_prob, which itself is a
+        # function of where the bid sits in the live bid/ask band and the spread.
         # In LIVE mode we DON'T simulate: we post the real limit order and let
-        # the exchange decide if it fills (this is the only paper/live divergence,
-        # and it's the correct one — you can't fake a fill you're really placing).
+        # the exchange decide (this is the only paper/live divergence, and it's
+        # the correct one — you can't fake a fill you're really placing).
         if config.MODE != "LIVE":
-            fill_roll = (hash(f.market.condition_id) % 1000) / 1000.0
-            if fill_roll > f.fill_prob:
+            from polybot.market_data import stable_unit
+            if stable_unit(f.market.condition_id) > f.fill_prob:
                 print(f"     -> limit NOT filled at {f.bid_price:.3f} "
                       f"(would retry next scan or pay ask)")
                 skipped_nofill += 1
@@ -337,8 +354,12 @@ def cmd_longshot(trade: bool = True):
             reason=f.reason, estimator="longshot-fade",
         )
         result = executor.execute(sig)
+        # Honor the ACTUAL fill: in LIVE an unfilled limit isn't a bet.
+        if result.get("recorded") is False:
+            print(f"     -> not filled live ({result.get('status')}) — not booked")
+            continue
         placed += 1
-        staked_total += f.size_usd
+        staked_total += float(result.get("filled_size", f.size_usd) or f.size_usd)
 
     if trade:
         print(f"\nFilled {placed} NO bets (~${staked_total:.2f} staked); "
@@ -426,10 +447,10 @@ def cmd_lagwatch(trade: bool = True):
             continue
 
         # Honest fill model (PAPER only — LIVE posts the real order and lets the
-        # exchange fill it). Deterministic roll so paper runs are reproducible.
+        # exchange fill it). Stable, reproducible roll vs the price-based fill_prob.
         if config.MODE != "LIVE":
-            fill_roll = (hash(o.condition_id) % 1000) / 1000.0
-            if fill_roll > fill_prob:
+            from polybot.market_data import stable_unit
+            if stable_unit(o.condition_id) > fill_prob:
                 print(f"    -> limit NOT filled at {bid_price:.3f} (retry next scan)\n")
                 nofill += 1
                 continue

@@ -180,6 +180,14 @@ LONGSHOT_MIN_STAKE      = float(os.getenv("LONGSHOT_MIN_STAKE", "1.0"))  # skip 
 # Per-bet hard cap as a fraction of the daily budget (risk control — never put
 # more than this share of the day's money on one market).
 LONGSHOT_MAX_BET_FRAC   = float(os.getenv("LONGSHOT_MAX_BET_FRAC", "0.20"))  # 20%
+# Correlation control: the many sub-markets of ONE match (every exact-score line,
+# every spread) resolve together, so they are NOT independent diversification.
+# Cap how many bets we place on a single event.
+LONGSHOT_MAX_PER_EVENT  = int(os.getenv("LONGSHOT_MAX_PER_EVENT", "3"))
+# Cumulative daily-spend governor: the scan runs many times per day (every 15 min
+# in the cloud). Without this, the per-run budget is re-applied each run. This
+# caps TOTAL stake deployed across ALL of today's runs to the daily budget.
+LONGSHOT_DAILY_SPEND_CAP = os.getenv("LONGSHOT_DAILY_SPEND_CAP", "1") == "1"
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "trades.db")
 

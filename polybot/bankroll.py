@@ -118,30 +118,33 @@ def deposit_date() -> str:
 
 
 def summary() -> dict:
-    """Balance, profit vs initial deposit, and total return %."""
+    """Balance, profit vs initial deposit, and total return %.
+
+    Open exposure is the EXACT sum of stakes on currently-OPEN trades — taken
+    straight from the trades table, not derived from the cash log (which mixes
+    in realized P&L from settled bets and drifts). Total equity = free cash +
+    that open stake. Profit = equity - initial deposit. One coherent number set,
+    all from real paper trades (no simulated-backtest credits).
+    """
     init_bankroll()
     with _conn() as c:
         bal, dep = c.execute(
             "SELECT balance, initial_deposit FROM bankroll WHERE id=1").fetchone()
-        # money currently tied up in open stakes = deposits - payouts - balance
-        staked_out = c.execute(
-            "SELECT COALESCE(-SUM(amount),0) FROM bankroll_log WHERE kind='stake'"
-        ).fetchone()[0]
-        # Exclude one-off reconciliation credits (e.g. seeding the bankroll to the
-        # 30-day backfill curve) from open-bet exposure — they are not bet payouts.
-        paid_back = c.execute(
-            "SELECT COALESCE(SUM(amount),0) FROM bankroll_log "
-            "WHERE kind='payout' AND COALESCE(note,'') NOT LIKE 'reconcile%'"
-        ).fetchone()[0]
-    # equity = cash balance + money still live in open bets
-    open_exposure = round(staked_out - paid_back, 2)
-    equity = round(bal + max(0.0, 0), 2)  # balance already excludes staked cash
-    profit = round(bal + max(0.0, open_exposure) - dep, 2)
+        # True money tied up right now = stakes on OPEN positions.
+        try:
+            open_exposure = c.execute(
+                "SELECT COALESCE(SUM(size_usd),0) FROM trades WHERE status='OPEN'"
+            ).fetchone()[0] or 0.0
+        except Exception:
+            open_exposure = 0.0
+    open_exposure = round(open_exposure, 2)
+    equity = round(bal + open_exposure, 2)
+    profit = round(equity - dep, 2)
     return {
         "balance": round(bal, 2),
         "initial_deposit": round(dep, 2),
-        "open_exposure": max(0.0, open_exposure),
-        "total_equity": round(bal + max(0.0, open_exposure), 2),
+        "open_exposure": open_exposure,
+        "total_equity": equity,
         "profit": profit,
         "return_pct": round((profit / dep * 100) if dep else 0, 1),
     }

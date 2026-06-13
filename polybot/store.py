@@ -111,6 +111,32 @@ def already_open(condition_id: str) -> bool:
     return row[0] > 0
 
 
+def staked_today() -> float:
+    """Total stake placed on trades opened today (UTC) — for the daily-spend cap."""
+    today = datetime.datetime.utcnow().strftime("%Y-%m-%d")
+    with _conn() as c:
+        row = c.execute(
+            "SELECT COALESCE(SUM(size_usd),0) FROM trades WHERE ts LIKE ?",
+            (today + "%",),
+        ).fetchone()
+    return round(row[0] or 0.0, 2)
+
+
+def open_count_for_event(event_slug: str) -> int:
+    """How many OPEN bets we already hold on a given event (correlation cap)."""
+    if not event_slug:
+        return 0
+    with _conn() as c:
+        try:
+            row = c.execute(
+                "SELECT COUNT(*) FROM trades WHERE status='OPEN' AND event_slug=?",
+                (event_slug,),
+            ).fetchone()
+        except Exception:
+            return 0
+    return row[0]
+
+
 def open_position_count() -> int:
     """Count only currently-open (unresolved) positions."""
     with _conn() as c:
