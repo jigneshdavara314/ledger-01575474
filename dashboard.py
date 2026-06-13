@@ -1,620 +1,225 @@
 """
-Generate a self-contained HTML dashboard for the Polymarket paper bot.
+Clean investor dashboard for the Polymarket paper bot.
 
-    python dashboard.py            # writes dashboard.html and prints the path
+    python dashboard.py            # writes dashboard.html
 
-Open dashboard.html in any browser. It shows:
-  - headline stats (P&L, win rate, ROI, open positions, daily target progress)
-  - all open positions (live, awaiting resolution)
-  - resolved trade history (won/lost with P&L)
-  - per-category performance breakdown
+Simple, focused view: "You invested $500 on 13-05-2026 — here's how it's doing."
+Headline value, profit, win rate, a small per-category win% summary, and two
+tables (open bets, settled bets). Nothing else — no backtest/capacity clutter.
 
-The page auto-refreshes every 60s. Re-run this script (or let the scheduled
-job run it) to refresh the underlying data.
+Auto-refreshes every 60s. Served interactively by serve.py (with action buttons).
 """
 import html
 import datetime
 
-from polybot import config, store
+from polybot import config, store, bankroll
 
 
-def _fmt_money(v, plus=True):
+def _money(v, plus=True):
     if v is None:
         return "-"
     sign = "+" if (plus and v >= 0) else ""
     return f"{sign}${v:,.2f}"
 
 
-def _pnl_class(v):
+def _cls(v):
     if v is None:
         return ""
     return "pos" if v > 0 else ("neg" if v < 0 else "")
 
 
-def _market_link(question: str, slug: str) -> str:
-    """Render the market question as a clickable Polymarket link (new tab)."""
-    label = html.escape(question[:70])
+def _link(question, slug):
+    label = html.escape((question or "")[:72])
     if slug:
-        url = f"https://polymarket.com/event/{html.escape(slug)}"
-        return (f'<a href="{url}" target="_blank" rel="noopener" '
-                f'class="mlink">{label} ↗</a>')
-    # no slug stored (older trades) -> link to Polymarket search as fallback
-    return (f'<a href="https://polymarket.com/markets" target="_blank" '
-            f'rel="noopener" class="mlink">{label}</a>')
-
-
-def _load_backtest():
-    """Load the saved strategy-backtest result, if present."""
-    import os, json
-    path = os.path.join(os.path.dirname(__file__), "backtest_result.json")
-    if not os.path.exists(path):
-        return None
-    try:
-        with open(path, encoding="utf-8") as f:
-            return json.load(f)
-    except Exception:
-        return None
-
-
-def _backtest_section(bt) -> str:
-    """Render the strategy-backtest validation as a matrix table."""
-    if not bt or not bt.get("overall"):
-        return ('<h2>Strategy backtest (validation)</h2>'
-                '<div class="note">No backtest yet. Run '
-                '<code>python run_strategy_backtest.py 30</code> to validate the '
-                'strategy on the last 30 days of resolved markets.</div>')
-    o = bt["overall"]
-    gen = (bt.get("generated", "") or "")[:16]
-
-    def verdict_class(v):
-        if "CONFIRMED" in v:
-            return "won"
-        if "NEGATIVE" in v:
-            return "lost"
-        return ""
-
-    rows = []
-    # overall row first, then sub-types
-    ordered = [("OVERALL", o)]
-    ordered += sorted(bt.get("by_subtype", {}).items(),
-                      key=lambda x: -((x[1] or {}).get("n", 0)))
-    for name, s in ordered:
-        if not s:
-            continue
-        beat = s["win_rate"] >= s["predicted_win"]
-        beat_mark = "✓" if beat else "✗"
-        rows.append(
-            f"<tr><td><b>{html.escape(name)}</b></td>"
-            f"<td>{s['n']}</td>"
-            f"<td>{s['win_rate']*100:.0f}%</td>"
-            f"<td>{s['predicted_win']*100:.0f}%</td>"
-            f"<td class='{'pos' if beat else 'neg'}'>{beat_mark}</td>"
-            f"<td>[{s['win_ci'][0]*100:.0f}–{s['win_ci'][1]*100:.0f}%]</td>"
-            f"<td class='{_pnl_class(s['pnl'])}'>{_fmt_money(s['pnl'])}</td>"
-            f"<td class='{_pnl_class(s['roi'])}'>{s['roi']*100:+.0f}%</td>"
-            f"<td><span class='badge {verdict_class(s['verdict'])}'>"
-            f"{html.escape(s['verdict'].split(' (')[0])}</span></td></tr>"
-        )
-
-    return f"""
-      <h2>Strategy backtest — last {bt['days']} days (validation, generated {gen})</h2>
-      <table>
-        <thead><tr>
-          <th>Segment</th><th>Bets</th><th>Actual win%</th><th>Predicted%</th>
-          <th>Beat?</th><th>95% CI</th><th>P&amp;L</th><th>ROI</th><th>Verdict</th>
-        </tr></thead>
-        <tbody>{''.join(rows)}</tbody>
-      </table>
-      <div class="note">
-        <b>This is the confidence check:</b> we replayed the exact betting logic on
-        markets that already resolved. <b>Beat? ✓</b> means actual win rate met or
-        exceeded what our model predicted (good — not over-optimistic). A verdict of
-        <b>EDGE CONFIRMED</b> means the win-rate CI is above 50% with positive ROI.
-        Past results don't guarantee future ones, but this is real out-of-sample evidence.
-      </div>
-    """
-
-
-def _bankroll_section():
-    """Compounding-bankroll equity banner + movement history."""
-    try:
-        from polybot import bankroll
-        bk = bankroll.summary()
-        moves = bankroll.history(20)
-    except Exception:
-        return ""
-    rows = []
-    for ts, kind, amount, bal_after, note in moves:
-        rows.append(
-            f"<tr><td>{html.escape(ts[:16])}</td>"
-            f"<td>{html.escape(kind)}</td>"
-            f"<td class='{_pnl_class(amount)}'>{_fmt_money(amount)}</td>"
-            f"<td>${bal_after:,.2f}</td>"
-            f"<td class='q'>{html.escape((note or '')[:46])}</td></tr>"
-        )
-    if not rows:
-        rows = ['<tr><td colspan="5" class="empty">No movements yet.</td></tr>']
-    return f"""
-      <div class="bankroll">
-        <div class="bk-item"><div class="label">Deposit (total invested)</div>
-          <div class="value">${bk['initial_deposit']:,.2f}</div></div>
-        <div class="bk-item"><div class="label">Cash available</div>
-          <div class="value">${bk['balance']:,.2f}</div></div>
-        <div class="bk-item"><div class="label">In open bets</div>
-          <div class="value">${bk['open_exposure']:,.2f}</div></div>
-        <div class="bk-item"><div class="label">Total equity</div>
-          <div class="value {_pnl_class(bk['profit'])}">${bk['total_equity']:,.2f}</div></div>
-        <div class="bk-item"><div class="label">Profit / return</div>
-          <div class="value {_pnl_class(bk['profit'])}">{_fmt_money(bk['profit'])}
-            ({bk['return_pct']:+.1f}%)</div></div>
-      </div>
-      <h2>Bankroll history (compounding — ${bk['initial_deposit']:.0f} deposited once,
-          winnings reinvested)</h2>
-      <table><thead><tr><th>Time (UTC)</th><th>Type</th><th>Amount</th>
-        <th>Balance after</th><th>Note</th></tr></thead>
-        <tbody>{''.join(rows)}</tbody></table>
-    """
-
-
-def _daily_backtest_section():
-    """Day-by-day $500-float profit table."""
-    import os, json
-    path = os.path.join(os.path.dirname(__file__), "daily_backtest.json")
-    if not os.path.exists(path):
-        return ""
-    try:
-        with open(path, encoding="utf-8") as f:
-            d = json.load(f)
-    except Exception:
-        return ""
-    rows = []
-    for r in d.get("daily", []):
-        rows.append(
-            f"<tr><td>{html.escape(r['day'])}</td><td>{r['bets']}</td>"
-            f"<td>${r['staked']:,.2f}</td><td>${r['end_balance']:,.2f}</td>"
-            f"<td class='{_pnl_class(r['profit'])}'>{_fmt_money(r['profit'])}</td></tr>"
-        )
-    if not rows:
-        rows = ['<tr><td colspan="5" class="empty">No daily data.</td></tr>']
-    return f"""
-      <h2>Daily profit — {html.escape(d.get('model',''))}</h2>
-      <table><thead><tr><th>Day</th><th>Bets</th><th>Staked</th>
-        <th>End balance</th><th>Profit skimmed</th></tr></thead>
-        <tbody>{''.join(rows)}</tbody></table>
-      <div class="note">
-        Each day starts at the $500 float; profit above $500 is swept out.
-        <b>Total profit ${d.get('total_profit',0):+,.2f}</b> across
-        {d.get('days_with_action',0)} active day(s), win rate
-        {d.get('win_rate',0)*100:.0f}%. <b>One strong day is not the average</b> —
-        many days have few or no qualifying markets. Real fills may be smaller
-        (no historical depth data). Treat as a budget-scaled estimate.
-      </div>
-    """
-
-
-def _capacity_daily_section():
-    """Daily bid/capacity history + the 'can I invest $X' answer."""
-    try:
-        snaps = store.daily_snapshots(30)
-    except Exception:
-        snaps = []
-    # latest capacity (top row) drives the invest-answer
-    latest_cap = snaps[0][4] if snaps else 0  # total_fillable_usd
-    rows = []
-    for day, bets, staked, mkts, total_fill, conf_fill, expl_fill, equity in snaps:
-        rows.append(
-            f"<tr><td>{html.escape(day)}</td><td>{bets}</td>"
-            f"<td>${staked:,.2f}</td><td>{mkts}</td>"
-            f"<td>${total_fill:,.0f}</td>"
-            f"<td>${equity:,.2f}</td></tr>"
-        )
-    if not rows:
-        rows = ['<tr><td colspan="6" class="empty">'
-                'No daily snapshots yet — run the longshot scan to record one.</td></tr>']
-
-    def invest_badge(target):
-        ok = latest_cap >= target
-        cls = "won" if ok else "lost"
-        txt = "fits" if ok else "too big today"
-        return f'<span class="badge {cls}">${target:,} → {txt}</span>'
-
-    return f"""
-      <h2>Capacity — how much can you actually invest?</h2>
-      <div class="note">
-        <b>Max deployable right now: ${latest_cap:,.2f}</b> across the current
-        markets (the most the order books can absorb near a good price). Investing
-        more than this means worse fills or waiting for new markets.<br>
-        {invest_badge(200)} &nbsp; {invest_badge(500)} &nbsp; {invest_badge(1000)}
-      </div>
-      <h2>Daily history (bids placed + market capacity)</h2>
-      <table><thead><tr><th>Day</th><th>Bets placed</th><th>Staked</th>
-        <th>Markets avail.</th><th>Max deployable</th><th>Equity</th></tr></thead>
-        <tbody>{''.join(rows)}</tbody></table>
-      <div class="note">
-        <b>This is the honest capacity picture.</b> "Max deployable" is the total
-        order-book depth across all edges that day — your real ceiling. Thin
-        longshot markets mean this is usually modest; on a busy sports day it's
-        higher. To deploy big capital you need many markets, not a bigger setting.
-      </div>
-    """
-
-
-def _category_tabs_section(open_rows):
-    """Tabbed view: per-category 30-day win% + today's open bids in that category."""
-    import os, json
-    path = os.path.join(os.path.dirname(__file__), "category_backfill.json")
-    bf = {}
-    if os.path.exists(path):
-        try:
-            with open(path, encoding="utf-8") as f:
-                bf = json.load(f)
-        except Exception:
-            bf = {}
-    cats_data = bf.get("categories", {})
-    if not cats_data:
-        return ('<h2>Categories</h2><div class="note">No category backfill yet. '
-                'Run <code>python run_category_backfill.py</code>.</div>')
-
-    # classify each open position into a fine category (same logic as backfill)
-    def fine_cat(q):
-        ql = q.lower()
-        if "post" in ql and "posts" in ql: return "tweets"
-        if "exact score" in ql: return "soccer-exactscore"
-        if any(k in ql for k in ["map ", "rounds:", "valorant", "counter-strike", "leo team", "ursa"]): return "esports"
-        if any(k in ql for k in ["set ", "doubles", "games o/u"]): return "tennis"
-        if any(k in ql for k in ["1h spread", "knicks", "spurs", "nba"]): return "basketball"
-        if any(k in ql for k in ["spread:", "draw?", " win on ", "o/u 0.5"]): return "soccer"
-        return "other"
-
-    open_by_cat = {}
-    for r in open_rows:
-        q = r[10]
-        open_by_cat.setdefault(fine_cat(q), []).append(r)
-
-    # order tabs: confirmed/promising first by ROI, then the rest
-    order = sorted(cats_data.items(),
-                   key=lambda x: (-{"CONFIRMED": 2, "promising": 1}.get(x[1]["verdict"], 0),
-                                  -x[1]["roi"]))
-
-    tab_btns, tab_panes = [], []
-    for i, (cat, d) in enumerate(order):
-        active = " active" if i == 0 else ""
-        vclass = ("won" if d["verdict"] == "CONFIRMED"
-                  else "" if d["verdict"] == "promising" else "lost")
-        tab_btns.append(
-            f'<button class="tab-btn{active}" onclick="showTab(\'{cat}\')" '
-            f'id="btn-{cat}">{html.escape(cat)} '
-            f'<span class="badge {vclass}">{d["win_rate"]*100:.0f}%</span></button>'
-        )
-        # open positions in this category
-        opens = open_by_cat.get(cat, [])
-        orows = ""
-        for r in opens:
-            ts, mode, side, size, price, edge, status, pnl, c2, hrs, q, slug = r
-            orows += (f"<tr><td><span class='side {side.lower()}'>{side}</span></td>"
-                      f"<td>${size:,.2f}</td><td>{price:.3f}</td>"
-                      f"<td class='q'>{_market_link(q, slug)}</td></tr>")
-        if not orows:
-            orows = '<tr><td colspan="4" class="empty">No open bets in this category right now.</td></tr>'
-        ci = d.get("ci", [0, 0])
-        tab_panes.append(f"""
-          <div class="tab-pane{active}" id="pane-{cat}">
-            <div class="cards">
-              <div class="card"><div class="label">30-day win rate</div>
-                <div class="value">{d['win_rate']*100:.0f}%</div>
-                <div class="sub">CI {ci[0]*100:.0f}-{ci[1]*100:.0f}% &middot; n={d['n']}</div></div>
-              <div class="card"><div class="label">Edge vs price</div>
-                <div class="value {_pnl_class(d['edge'])}">{d['edge']*100:+.0f}%</div>
-                <div class="sub">avg NO price {d['avg_no_price']:.2f}</div></div>
-              <div class="card"><div class="label">ROI (30d backtest)</div>
-                <div class="value {_pnl_class(d['roi'])}">{d['roi']*100:+.0f}%</div>
-                <div class="sub">P&amp;L ${d['pnl']:+.2f}</div></div>
-              <div class="card"><div class="label">Verdict</div>
-                <div class="value"><span class="badge {vclass}">{html.escape(d['verdict'])}</span></div></div>
-            </div>
-            <h3 style="font-size:13px;color:var(--muted);margin:14px 0 6px">
-              Today's open bids in {html.escape(cat)} ({len(opens)})</h3>
-            <table><thead><tr><th>Side</th><th>Stake</th><th>Price</th><th>Market</th></tr></thead>
-              <tbody>{orows}</tbody></table>
-          </div>""")
-
-    return f"""
-      <h2>Categories — 30-day win% + today's bids (by tab)</h2>
-      <div class="tabs">{''.join(tab_btns)}</div>
-      {''.join(tab_panes)}
-      <div class="note">Each tab shows that category's REAL 30-day longshot-fade
-        win rate (backfilled from resolved markets) and any bets open there now.
-        <b>Green = confirmed edge, plain = promising, red = no edge.</b> We bet
-        most where the edge is proven (soccer exact-score); red categories are
-        shown for honesty — we avoid betting them.</div>
-    """
+        return (f'<a href="https://polymarket.com/event/{html.escape(slug)}" '
+                f'target="_blank" rel="noopener" class="mlink">{label} ↗</a>')
+    return f'<a href="https://polymarket.com/markets" target="_blank" class="mlink">{label}</a>'
 
 
 def build_html() -> str:
     store.init_db()
+    bk = bankroll.summary()
+    dep_date = bankroll.deposit_date()
     s = store.performance_summary()
     cats = store.category_summary()
     rows = store.recent_trades(200)
-    today = store.today_pnl()
-    target = config.DAILY_TARGET_USD
-    bt = _load_backtest()
+    generated = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
     open_rows = [r for r in rows if r[6] == "OPEN"]
     done_rows = [r for r in rows if r[6] in ("WON", "LOST")]
 
-    generated = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    target_pct = max(0, min(100, (today / target * 100) if target else 0))
-
-    # ---- headline stat cards ----
+    value = bk["total_equity"]
+    profit = bk["profit"]
+    ret = bk["return_pct"]
     win_rate = s["win_rate"] * 100
-    roi = s["roi"] * 100
-    cards = f"""
-      <div class="cards">
-        <div class="card">
-          <div class="label">Net P&amp;L (resolved)</div>
-          <div class="value {_pnl_class(s['pnl_usd'])}">{_fmt_money(s['pnl_usd'])}</div>
-          <div class="sub">over {s['resolved']} resolved trades</div>
-        </div>
-        <div class="card">
-          <div class="label">Win rate</div>
-          <div class="value">{win_rate:.1f}%</div>
-          <div class="sub">{s['won']} won / {s['lost']} lost</div>
-        </div>
-        <div class="card">
-          <div class="label">ROI on staked</div>
-          <div class="value {_pnl_class(s['roi'])}">{roi:+.1f}%</div>
-          <div class="sub">${s['staked_usd']:,.2f} staked</div>
-        </div>
-        <div class="card">
-          <div class="label">Open positions</div>
-          <div class="value">{s['open']}</div>
-          <div class="sub">awaiting resolution</div>
-        </div>
-        <div class="card">
-          <div class="label">Today's P&amp;L</div>
-          <div class="value {_pnl_class(today)}">{_fmt_money(today)}</div>
-          <div class="sub">target ${target:,.0f}/day</div>
+
+    # ---- headline ----
+    headline = f"""
+      <div class="hero">
+        <div class="hero-label">Invested ${bk['initial_deposit']:,.0f} on {dep_date}</div>
+        <div class="hero-value {_cls(profit)}">${value:,.2f}</div>
+        <div class="hero-sub">
+          <span class="{_cls(profit)}">{_money(profit)} ({ret:+.1f}%)</span>
+          &nbsp;·&nbsp; ${bk['balance']:,.2f} cash + ${bk['open_exposure']:,.2f} in play
         </div>
       </div>
-      <div class="targetbar" title="progress to daily target">
-        <div class="targetfill" style="width:{target_pct:.0f}%"></div>
-        <span class="targetlabel">{target_pct:.0f}% of ${target:,.0f} daily target</span>
+      <div class="stats">
+        <div class="stat"><div class="s-val">{s['won']}–{s['lost']}</div>
+          <div class="s-lab">Won – Lost</div></div>
+        <div class="stat"><div class="s-val">{win_rate:.0f}%</div>
+          <div class="s-lab">Win rate</div></div>
+        <div class="stat"><div class="s-val">{s['open']}</div>
+          <div class="s-lab">Open bets</div></div>
+        <div class="stat"><div class="s-val">{s['resolved']}</div>
+          <div class="s-lab">Settled</div></div>
       </div>
     """
 
-    # ---- open positions table ----
-    open_html = ['<table><thead><tr>'
-                 '<th>Time (UTC)</th><th>Side</th><th>Stake</th><th>Price</th>'
-                 '<th>Edge</th><th>Category</th><th>Resolves in</th><th>Market</th>'
-                 '</tr></thead><tbody>']
-    if not open_rows:
-        open_html.append('<tr><td colspan="8" class="empty">No open positions.</td></tr>')
-    for ts, mode, side, size, price, edge, status, pnl, cat, hrs, q, slug in open_rows:
-        hrs_str = f"{hrs:.1f}h" if hrs else "?"
-        open_html.append(
-            f"<tr><td>{html.escape(ts[:16])}</td>"
-            f"<td><span class='side {side.lower()}'>{side}</span></td>"
-            f"<td>${size:,.2f}</td><td>{price:.3f}</td>"
-            f"<td>{edge:+.3f}</td><td>{html.escape(cat or '')}</td>"
-            f"<td>{hrs_str}</td><td class='q'>{_market_link(q, slug)}</td></tr>"
-        )
-    open_html.append('</tbody></table>')
+    # ---- category summary (simple, only resolved data) ----
+    cat_rows = []
+    for cat, n, won, lost, pnl, staked in cats:
+        wr = (won / n * 100) if n else 0
+        cat_rows.append(
+            f"<tr><td>{html.escape(cat or 'other')}</td>"
+            f"<td>{won}–{lost}</td><td>{wr:.0f}%</td>"
+            f"<td class='{_cls(pnl)}'>{_money(pnl)}</td></tr>")
+    if not cat_rows:
+        cat_rows = ['<tr><td colspan="4" class="empty">No settled bets yet.</td></tr>']
 
-    # ---- resolved history table ----
-    done_html = ['<table><thead><tr>'
-                 '<th>Time (UTC)</th><th>Side</th><th>Stake</th><th>Price</th>'
-                 '<th>Result</th><th>P&amp;L</th><th>Category</th><th>Market</th>'
-                 '</tr></thead><tbody>']
-    if not done_rows:
-        done_html.append('<tr><td colspan="8" class="empty">'
-                         'No resolved trades yet — they settle after the games finish.</td></tr>')
+    # ---- open bets ----
+    open_html = []
+    for ts, mode, side, size, price, edge, status, pnl, cat, hrs, q, slug in open_rows:
+        hrs_str = f"{hrs:.0f}h" if hrs else "—"
+        open_html.append(
+            f"<tr><td><span class='side {side.lower()}'>{side}</span></td>"
+            f"<td>${size:,.2f}</td><td>{price:.2f}</td>"
+            f"<td>{html.escape(cat or '')}</td><td>{hrs_str}</td>"
+            f"<td class='q'>{_link(q, slug)}</td></tr>")
+    if not open_html:
+        open_html = ['<tr><td colspan="6" class="empty">No open bets right now.</td></tr>']
+
+    # ---- settled bets ----
+    done_html = []
     for ts, mode, side, size, price, edge, status, pnl, cat, hrs, q, slug in done_rows:
         badge = "won" if status == "WON" else "lost"
         done_html.append(
-            f"<tr><td>{html.escape(ts[:16])}</td>"
+            f"<tr><td>{html.escape(ts[:10])}</td>"
             f"<td><span class='side {side.lower()}'>{side}</span></td>"
-            f"<td>${size:,.2f}</td><td>{price:.3f}</td>"
+            f"<td>${size:,.2f}</td>"
             f"<td><span class='badge {badge}'>{status}</span></td>"
-            f"<td class='{_pnl_class(pnl)}'>{_fmt_money(pnl)}</td>"
-            f"<td>{html.escape(cat or '')}</td>"
-            f"<td class='q'>{_market_link(q, slug)}</td></tr>"
-        )
-    done_html.append('</tbody></table>')
-
-    # ---- category breakdown ----
-    cat_html = ['<table><thead><tr>'
-                '<th>Category</th><th>Trades</th><th>Won</th><th>Lost</th>'
-                '<th>Win%</th><th>P&amp;L</th><th>Staked</th></tr></thead><tbody>']
-    if not cats:
-        cat_html.append('<tr><td colspan="7" class="empty">No resolved trades to break down yet.</td></tr>')
-    for cat, n, won, lost, pnl, staked in cats:
-        wr = (won / n * 100) if n else 0
-        cat_html.append(
-            f"<tr><td>{html.escape(cat or 'other')}</td><td>{n}</td>"
-            f"<td>{won}</td><td>{lost}</td><td>{wr:.0f}%</td>"
-            f"<td class='{_pnl_class(pnl)}'>{_fmt_money(pnl)}</td>"
-            f"<td>${staked:,.2f}</td></tr>"
-        )
-    cat_html.append('</tbody></table>')
-
-    mode_badge = "LIVE" if config.MODE == "LIVE" else "PAPER"
-    mode_class = "live" if config.MODE == "LIVE" else "paper"
+            f"<td class='{_cls(pnl)}'>{_money(pnl)}</td>"
+            f"<td class='q'>{_link(q, slug)}</td></tr>")
+    if not done_html:
+        done_html = ['<tr><td colspan="6" class="empty">Nothing settled yet — '
+                     'bets settle after the games finish.</td></tr>']
 
     return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="refresh" content="60">
-<title>Polymarket Bot Dashboard</title>
+<title>My Polymarket Portfolio</title>
 <style>
-  :root {{
-    --bg:#0d1117; --panel:#161b22; --border:#30363d; --text:#e6edf3;
-    --muted:#8b949e; --pos:#3fb950; --neg:#f85149; --accent:#58a6ff;
-  }}
+  :root {{ --bg:#0d1117; --panel:#161b22; --border:#30363d; --text:#e6edf3;
+           --muted:#8b949e; --pos:#3fb950; --neg:#f85149; --accent:#58a6ff; }}
   * {{ box-sizing:border-box; }}
   body {{ margin:0; background:var(--bg); color:var(--text);
-         font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }}
-  .wrap {{ max-width:1200px; margin:0 auto; padding:24px; }}
-  header {{ display:flex; align-items:center; gap:14px; margin-bottom:6px; flex-wrap:wrap; }}
-  h1 {{ font-size:22px; margin:0; }}
-  .badge-mode {{ padding:3px 10px; border-radius:20px; font-size:12px; font-weight:700; }}
-  .badge-mode.paper {{ background:#1f6feb33; color:var(--accent); border:1px solid #1f6feb55; }}
-  .badge-mode.live {{ background:#f8514922; color:var(--neg); border:1px solid #f8514955; }}
-  .gen {{ color:var(--muted); font-size:12px; margin-bottom:20px; }}
-  .cards {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-            gap:14px; margin-bottom:14px; }}
-  .card {{ background:var(--panel); border:1px solid var(--border); border-radius:12px;
-           padding:16px; }}
-  .card .label {{ color:var(--muted); font-size:12px; text-transform:uppercase;
-                  letter-spacing:.04em; }}
-  .card .value {{ font-size:28px; font-weight:700; margin:6px 0 2px; }}
-  .card .sub {{ color:var(--muted); font-size:12px; }}
+          font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif; }}
+  .wrap {{ max-width:920px; margin:0 auto; padding:24px; }}
+  h1 {{ font-size:18px; margin:0 0 2px; }}
+  .gen {{ color:var(--muted); font-size:12px; margin-bottom:18px; }}
+  .hero {{ background:linear-gradient(135deg,#161b22,#1c2333);
+           border:1px solid var(--accent); border-radius:14px; padding:24px;
+           text-align:center; margin-bottom:14px; }}
+  .hero-label {{ color:var(--muted); font-size:13px; text-transform:uppercase;
+                 letter-spacing:.05em; }}
+  .hero-value {{ font-size:46px; font-weight:800; margin:6px 0; }}
+  .hero-sub {{ font-size:15px; color:var(--muted); }}
+  .stats {{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px;
+            margin-bottom:24px; }}
+  .stat {{ background:var(--panel); border:1px solid var(--border);
+           border-radius:10px; padding:14px; text-align:center; }}
+  .s-val {{ font-size:24px; font-weight:700; }}
+  .s-lab {{ color:var(--muted); font-size:11px; text-transform:uppercase; margin-top:2px; }}
   .pos {{ color:var(--pos); }} .neg {{ color:var(--neg); }}
-  .bankroll {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-               gap:12px; margin:6px 0 14px; padding:16px; border-radius:12px;
-               background:linear-gradient(135deg,#161b22,#1c2333);
-               border:1px solid var(--accent); }}
-  .bk-item .label {{ color:var(--muted); font-size:11px; text-transform:uppercase; }}
-  .bk-item .value {{ font-size:20px; font-weight:700; margin-top:4px; }}
-  .targetbar {{ position:relative; height:26px; background:var(--panel);
-                border:1px solid var(--border); border-radius:8px; overflow:hidden;
-                margin-bottom:28px; }}
-  .targetfill {{ height:100%; background:linear-gradient(90deg,#1f6feb,#3fb950);
-                 transition:width .4s; }}
-  .targetlabel {{ position:absolute; inset:0; display:flex; align-items:center;
-                  justify-content:center; font-size:12px; color:var(--text); }}
-  h2 {{ font-size:15px; margin:26px 0 10px; color:var(--text);
-        border-left:3px solid var(--accent); padding-left:10px; }}
+  h2 {{ font-size:14px; margin:22px 0 8px; border-left:3px solid var(--accent);
+        padding-left:9px; }}
   table {{ width:100%; border-collapse:collapse; background:var(--panel);
            border:1px solid var(--border); border-radius:10px; overflow:hidden;
            font-size:13px; }}
-  th,td {{ text-align:left; padding:9px 12px; border-bottom:1px solid var(--border); }}
+  th,td {{ text-align:left; padding:9px 11px; border-bottom:1px solid var(--border); }}
   th {{ color:var(--muted); font-weight:600; font-size:11px; text-transform:uppercase;
-        letter-spacing:.03em; background:#1c2129; }}
+        background:#1c2129; }}
   tr:last-child td {{ border-bottom:none; }}
   td.q {{ color:var(--muted); }}
   a.mlink {{ color:var(--accent); text-decoration:none; }}
   a.mlink:hover {{ text-decoration:underline; }}
-  .tabs {{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }}
-  .tab-btn {{ background:var(--panel); color:var(--text); border:1px solid var(--border);
-              padding:8px 12px; border-radius:8px 8px 0 0; cursor:pointer; font-size:13px;
-              font-weight:600; }}
-  .tab-btn.active {{ border-color:var(--accent); border-bottom-color:var(--bg);
-                     background:#1c2333; }}
-  .tab-pane {{ display:none; }}
-  .tab-pane.active {{ display:block; }}
-  .empty {{ text-align:center; color:var(--muted); padding:18px; }}
-  .side {{ padding:1px 8px; border-radius:6px; font-weight:700; font-size:11px; }}
+  .empty {{ text-align:center; color:var(--muted); padding:16px; }}
+  .side {{ padding:1px 7px; border-radius:5px; font-weight:700; font-size:11px; }}
   .side.yes {{ background:#3fb95022; color:var(--pos); }}
   .side.no {{ background:#f8514922; color:var(--neg); }}
-  .badge {{ padding:1px 8px; border-radius:6px; font-weight:700; font-size:11px; }}
+  .badge {{ padding:1px 7px; border-radius:5px; font-weight:700; font-size:11px; }}
   .badge.won {{ background:#3fb95022; color:var(--pos); }}
   .badge.lost {{ background:#f8514922; color:var(--neg); }}
-  .note {{ background:#1c2129; border:1px solid var(--border); border-radius:10px;
-           padding:14px 16px; color:var(--muted); font-size:13px; line-height:1.5;
-           margin-top:24px; }}
-  .note b {{ color:var(--text); }}
-  .actions {{ display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-              margin-bottom:18px; }}
+  .actions {{ display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 4px; }}
   .btn {{ background:var(--panel); color:var(--text); border:1px solid var(--border);
-          padding:9px 14px; border-radius:8px; font-size:13px; font-weight:600;
-          cursor:pointer; transition:.15s; }}
+          padding:8px 13px; border-radius:8px; font-size:13px; font-weight:600;
+          cursor:pointer; }}
   .btn:hover {{ border-color:var(--accent); }}
   .btn.primary {{ background:#1f6feb; border-color:#1f6feb; }}
-  .btn.primary:hover {{ background:#2a7bff; }}
-  .btn.ghost {{ background:transparent; color:var(--muted); }}
   .btn:disabled {{ opacity:.5; cursor:wait; }}
-  .status {{ font-size:13px; color:var(--muted); }}
-  .output {{ background:#0b0e13; border:1px solid var(--border); border-radius:8px;
-             padding:12px; font-size:12px; color:#cdd9e5; max-height:260px;
-             overflow:auto; white-space:pre-wrap; margin-bottom:18px; }}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <header>
-    <h1>Polymarket Bot Dashboard</h1>
-    <span class="badge-mode {mode_class}">{mode_badge}</span>
-    <span class="badge-mode paper">profile: {config.STRATEGY.name}</span>
-  </header>
-  <div class="gen">Generated {generated} &middot; auto-refreshes every 60s</div>
+  #status {{ font-size:12px; color:var(--muted); align-self:center; }}
+  #output {{ background:#0b0e13; border:1px solid var(--border); border-radius:8px;
+             padding:10px; font-size:12px; color:#cdd9e5; max-height:200px;
+             overflow:auto; white-space:pre-wrap; margin:8px 0; display:none; }}
+</style></head>
+<body><div class="wrap">
+  <h1>My Polymarket Portfolio</h1>
+  <div class="gen">Updated {generated} · auto-refreshes every 60s · PAPER (no real money)</div>
+
+  {headline}
 
   <div class="actions">
-    <button class="btn primary" onclick="run('resolve')">🔄 Resolve (settle finished games)</button>
-    <button class="btn" onclick="run('longshot')">🎯 Run longshot fades</button>
-    <button class="btn" onclick="run('lagwatch')">⚡ Check lag arb</button>
-    <button class="btn" onclick="run('backtest')">📊 Run 30-day backtest</button>
-    <button class="btn ghost" onclick="location.reload()">↻ Refresh page</button>
-    <span id="status" class="status"></span>
+    <button class="btn primary" onclick="run('resolve')">Update results</button>
+    <button class="btn" onclick="run('longshot')">Place today's bets</button>
+    <button class="btn" onclick="location.reload()">Refresh</button>
+    <span id="status"></span>
   </div>
-  <pre id="output" class="output" style="display:none"></pre>
+  <pre id="output"></pre>
 
-  {cards}
+  <h2>By category</h2>
+  <table><thead><tr><th>Category</th><th>W–L</th><th>Win%</th><th>Profit</th></tr></thead>
+    <tbody>{''.join(cat_rows)}</tbody></table>
 
-  {_bankroll_section()}
+  <h2>Open bets ({len(open_rows)})</h2>
+  <table><thead><tr><th>Side</th><th>Stake</th><th>Price</th><th>Category</th>
+    <th>Resolves</th><th>Market</th></tr></thead>
+    <tbody>{''.join(open_html)}</tbody></table>
 
-  {_category_tabs_section(open_rows)}
-
-  {_capacity_daily_section()}
-
-  {_daily_backtest_section()}
-
-  {_backtest_section(bt)}
-
-  <h2>Open positions ({len(open_rows)})</h2>
-  {''.join(open_html)}
-
-  <h2>Resolved history ({len(done_rows)})</h2>
-  {''.join(done_html)}
-
-  <h2>Performance by category</h2>
-  {''.join(cat_html)}
-
-  <div class="note">
-    <b>Buttons:</b> work only on the local server version
-    (<code>http://localhost:8755</code>, started by <code>python serve.py</code>).
-    They run the real bot commands on your machine. The <b>file://</b> and
-    <b>GitHub Pages</b> versions are view-only.<br>
-    <b>Reading this:</b> Win rate alone is misleading — a 95% win rate on bets
-    priced at 0.95 makes ~5&cent; per win but loses the full stake on a miss, so
-    net P&amp;L (not win%) is what matters. Watch the <b>Net P&amp;L</b> and
-    <b>ROI</b> cards. This is PAPER mode — no real money. Going LIVE requires a
-    funded wallet and is never done automatically.
-  </div>
+  <h2>Settled bets ({len(done_rows)})</h2>
+  <table><thead><tr><th>Date</th><th>Side</th><th>Stake</th><th>Result</th>
+    <th>Profit</th><th>Market</th></tr></thead>
+    <tbody>{''.join(done_html)}</tbody></table>
 </div>
 <script>
-function showTab(cat) {{
-  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  var pane = document.getElementById('pane-' + cat);
-  var btn = document.getElementById('btn-' + cat);
-  if (pane) pane.classList.add('active');
-  if (btn) btn.classList.add('active');
-}}
 async function run(action) {{
-  const btns = document.querySelectorAll('.btn');
-  const status = document.getElementById('status');
-  const output = document.getElementById('output');
+  var btns = document.querySelectorAll('.btn'), st = document.getElementById('status'),
+      out = document.getElementById('output');
   btns.forEach(b => b.disabled = true);
-  status.textContent = 'Running ' + action + '... (this can take 30-60s)';
-  output.style.display = 'block';
-  output.textContent = 'Working...';
+  st.textContent = 'Running ' + action + '…';
+  out.style.display = 'block'; out.textContent = 'Working…';
   try {{
-    const res = await fetch('/run/' + action, {{ method: 'POST' }});
-    const text = await res.text();
-    output.textContent = text;
-    status.textContent = 'Done. Reloading data...';
+    var r = await fetch('/run/' + action, {{method:'POST'}});
+    out.textContent = await r.text();
+    st.textContent = 'Done. Reloading…';
     setTimeout(() => location.reload(), 1500);
   }} catch (e) {{
-    output.textContent = 'Error: ' + e + '\\n\\n(Is serve.py still running? Buttons only work via http://localhost:8755, not the file:// or GitHub Pages version.)';
-    status.textContent = 'Failed.';
-    btns.forEach(b => b.disabled = false);
+    out.textContent = 'Error: ' + e + ' (buttons work only on the local server)';
+    st.textContent = 'Failed.'; btns.forEach(b => b.disabled = false);
   }}
 }}
 </script>
-</body>
-</html>"""
+</body></html>"""
 
 
 def main():
@@ -623,7 +228,6 @@ def main():
     with open(out, "w", encoding="utf-8") as f:
         f.write(build_html())
     print(f"Dashboard written to: {out}")
-    print(f"Open it in your browser:  file:///{out.replace(chr(92), '/')}")
 
 
 if __name__ == "__main__":

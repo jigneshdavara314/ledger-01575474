@@ -109,6 +109,14 @@ def credit_payout(payout: float, note: str = "") -> float:
     return _move("payout", abs(payout), note or "bet settled")
 
 
+def deposit_date() -> str:
+    """The date the initial $500 was deposited (YYYY-MM-DD)."""
+    init_bankroll()
+    with _conn() as c:
+        row = c.execute("SELECT created_ts FROM bankroll WHERE id=1").fetchone()
+    return (row[0] or "")[:10] if row else ""
+
+
 def summary() -> dict:
     """Balance, profit vs initial deposit, and total return %."""
     init_bankroll()
