@@ -242,6 +242,58 @@ def daily_snapshots(limit: int = 30):
             (limit,)).fetchall()
 
 
+def init_daily_equity():
+    with _conn() as c:
+        c.execute("""
+            CREATE TABLE IF NOT EXISTS daily_equity (
+                day TEXT PRIMARY KEY,
+                bets_settled INTEGER,
+                won INTEGER,
+                lost INTEGER,
+                day_profit REAL,
+                balance_after REAL
+            )
+        """)
+
+
+def record_daily_equity():
+    """
+    Recompute TODAY's row from actual resolved-today trades + current balance.
+    Called after each resolve so the daily-history table reflects real results.
+    Idempotent: re-running the same day just overwrites today's row.
+    """
+    import datetime
+    from . import bankroll
+    init_daily_equity()
+    day = datetime.datetime.utcnow().strftime("%Y-%m-%d")
+    with _conn() as c:
+        won, lost, profit = c.execute(
+            "SELECT COALESCE(SUM(status='WON'),0), COALESCE(SUM(status='LOST'),0), "
+            "COALESCE(SUM(pnl_usd),0) FROM trades "
+            "WHERE status IN ('WON','LOST') AND resolved_ts LIKE ?",
+            (day + "%",),
+        ).fetchone()
+    bal = bankroll.summary()["total_equity"]
+    with _conn() as c:
+        c.execute("""
+            INSERT INTO daily_equity (day, bets_settled, won, lost, day_profit, balance_after)
+            VALUES (?,?,?,?,?,?)
+            ON CONFLICT(day) DO UPDATE SET
+              bets_settled=excluded.bets_settled, won=excluded.won,
+              lost=excluded.lost, day_profit=excluded.day_profit,
+              balance_after=excluded.balance_after
+        """, (day, (won or 0) + (lost or 0), won or 0, lost or 0,
+              round(profit or 0, 2), round(bal, 2)))
+
+
+def daily_equity(limit: int = 60):
+    init_daily_equity()
+    with _conn() as c:
+        return c.execute(
+            "SELECT day, bets_settled, won, lost, day_profit, balance_after "
+            "FROM daily_equity ORDER BY day DESC LIMIT ?", (limit,)).fetchall()
+
+
 def recent_trades(limit: int = 30):
     with _conn() as c:
         # event_slug may not exist on very old DBs; COALESCE guards it

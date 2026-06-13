@@ -47,6 +47,7 @@ def build_html() -> str:
 
     open_rows = [r for r in rows if r[6] == "OPEN"]
     done_rows = [r for r in rows if r[6] in ("WON", "LOST")]
+    equity_days = store.daily_equity(60)
 
     value = bk["total_equity"]
     profit = bk["profit"]
@@ -74,6 +75,18 @@ def build_html() -> str:
           <div class="s-lab">Settled</div></div>
       </div>
     """
+
+    # ---- daily history (real results, builds forward) ----
+    day_html = []
+    for day, n_set, won, lost, dprofit, bal in equity_days:
+        day_html.append(
+            f"<tr><td>{html.escape(day)}</td><td>{n_set}</td>"
+            f"<td>{won}–{lost}</td>"
+            f"<td class='{_cls(dprofit)}'>{_money(dprofit)}</td>"
+            f"<td>${bal:,.2f}</td></tr>")
+    if not day_html:
+        day_html = ['<tr><td colspan="5" class="empty">'
+                    'No settled days yet — history fills in as bets resolve daily.</td></tr>']
 
     # ---- category summary (simple, only resolved data) ----
     cat_rows = []
@@ -186,6 +199,11 @@ def build_html() -> str:
     <span id="status"></span>
   </div>
   <pre id="output"></pre>
+
+  <h2>Daily history (since {dep_date})</h2>
+  <table><thead><tr><th>Day</th><th>Settled</th><th>W–L</th><th>Day profit</th>
+    <th>Balance</th></tr></thead>
+    <tbody>{''.join(day_html)}</tbody></table>
 
   <h2>By category</h2>
   <table><thead><tr><th>Category</th><th>W–L</th><th>Win%</th><th>Profit</th></tr></thead>

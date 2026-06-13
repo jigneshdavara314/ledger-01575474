@@ -485,6 +485,9 @@ def cmd_resolve():
         print(f"  [{tag}]   {question[:48]}  (bet {side}, {winner} won)  pnl={pnl:+.2f}")
         settled += 1
 
+    # Record/refresh today's row in the daily equity history (real results only).
+    store.record_daily_equity()
+
     print(f"\nSettled {settled} position(s).")
     bk = bankroll.summary()
     print(f"Bankroll: ${bk['balance']:.2f} cash + ${bk['open_exposure']:.2f} in open bets "
