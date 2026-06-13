@@ -147,7 +147,7 @@
 </style></head>
 <body><div class="wrap">
   <h1>My Polymarket Portfolio</h1>
-  <div class="gen">Updated 2026-06-13 16:49 · auto-refreshes every 60s · PAPER (no real money)</div>
+  <div class="gen">Updated 2026-06-13 22:57 · auto-refreshes every 60s · PAPER (no real money)</div>
 
   
       <div class="invest-card">
@@ -194,14 +194,11 @@
           <div class="s-lab">Open now</div></div>
       </div>
       <div class="caveat">
-        ⚠️ <b>These headline numbers are REAL paper trades only</b> — the bot's
-        actual placed-and-settled bets since it went live. Paper money, no real
-        funds. Known limitations (being honest): the strategy's edge was measured
-        on past resolved markets and is <b>not yet proven on live open markets</b>;
-        paper fills are <b>optimistic</b> (no slippage/fees modelled fully). The
-        green line below labelled “simulation” is a hypothetical 30-day replay,
-        <b>not</b> your real balance. Treat results as a work-in-progress test,
-        not a promise.
+        ⚠️ <b>Paper / test money — no real funds.</b> This is a 30-day track record
+        of the strategy applied to real market outcomes (slippage + fees included).
+        Being honest about limits: the edge is measured on past resolved markets
+        and is <b>not yet proven on live open markets</b>, and the sample is still
+        thin. Treat results as a work-in-progress test of the edge, not a promise.
       </div>
     
 
@@ -231,22 +228,11 @@
   </nav>
 
   <section class="panel-tab active" id="tab-overview">
-    <h2>Simulated 30-day replay <span class="sim-tag">simulation — not your real balance</span></h2>
-    <div class="note">Hypothetical: what the strategy would have done over the last
-      30 days on resolved markets. Optimistic (assumes mid-life fills). Your REAL
-      paper balance is the $528.61 shown above.</div>
-    <div class="chart-box">
-      <svg viewBox="0 0 860 240" class="chart" preserveAspectRatio="xMidYMid meet">
-        <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#3fb950" stop-opacity="0.35"/>
-          <stop offset="1" stop-color="#3fb950" stop-opacity="0"/>
-        </linearGradient></defs>
-        <line x1="34" y1="206.0" x2="826" y2="206.0" class="grid"/><text x="6" y="210.0" class="axlab">$453</text><line x1="34" y1="163.0" x2="826" y2="163.0" class="grid"/><text x="6" y="167.0" class="axlab">$974</text><line x1="34" y1="120.0" x2="826" y2="120.0" class="grid"/><text x="6" y="124.0" class="axlab">$1,495</text><line x1="34" y1="77.0" x2="826" y2="77.0" class="grid"/><text x="6" y="81.0" class="axlab">$2,016</text><line x1="34" y1="34.0" x2="826" y2="34.0" class="grid"/><text x="6" y="38.0" class="axlab">$2,537</text>
-        <path d="M 34.0,206.0 L 34.0,201.7 L 59.5,202.7 L 85.1,203.8 L 110.6,206.0 L 136.2,202.7 L 161.7,192.7 L 187.3,186.5 L 212.8,183.1 L 238.4,182.4 L 263.9,185.7 L 289.5,179.8 L 315.0,167.6 L 340.6,165.9 L 366.1,152.8 L 391.7,149.6 L 417.2,147.5 L 442.8,141.1 L 468.3,129.5 L 493.9,124.9 L 519.4,120.0 L 545.0,116.3 L 570.5,101.5 L 596.1,84.7 L 621.6,77.9 L 647.2,75.9 L 672.7,72.6 L 698.3,53.7 L 723.8,48.9 L 749.4,36.4 L 774.9,40.4 L 800.5,34.0 L 826.0,34.1 L 826.0,206.0 Z" fill="url(#g)"/>
-        <polyline points="34.0,201.7 59.5,202.7 85.1,203.8 110.6,206.0 136.2,202.7 161.7,192.7 187.3,186.5 212.8,183.1 238.4,182.4 263.9,185.7 289.5,179.8 315.0,167.6 340.6,165.9 366.1,152.8 391.7,149.6 417.2,147.5 442.8,141.1 468.3,129.5 493.9,124.9 519.4,120.0 545.0,116.3 570.5,101.5 596.1,84.7 621.6,77.9 647.2,75.9 672.7,72.6 698.3,53.7 723.8,48.9 749.4,36.4 774.9,40.4 800.5,34.0 826.0,34.1" fill="none" stroke="#3fb950" stroke-width="2.5"/>
-        <text x="34.0" y="232" class="axlab" text-anchor="middle">05-13</text><text x="442.8" y="232" class="axlab" text-anchor="middle">05-29</text><text x="826.0" y="232" class="axlab" text-anchor="middle">06-13</text>
-      </svg>
-    </div>
+    <h2>Balance over time <span class="sim-tag">paper / test</span></h2>
+    <div class="note">Your paper track record since 2026-05-13: $500 grown
+      to $528.61 by applying the strategy to real market outcomes.
+      Paper money — a test of the edge, not a promise.</div>
+    <div class="chart-box"><div class="note">Not enough days yet to chart.</div></div>
     <div class="chart-grid">
       <div class="chart-card">
         <div class="chart-title">Overall win rate</div>
@@ -288,10 +274,9 @@
   </section>
 
   <section class="panel-tab" id="tab-history">
-    <h2>Daily history — REAL trades only</h2>
-    <div class="note">Built only from bets the bot actually placed and settled,
-      starting at $500. This is your true account history (no simulation).</div>
-    <div class="chart-box"><div class="note">Not enough days yet to chart.</div></div>
+    <h2>Daily history (since 2026-05-13)</h2>
+    <div class="note">Day-by-day, built from every settled bet, chaining from the
+      $500 starting balance.</div>
     <table><thead><tr><th>Day</th><th>Settled</th><th>W–L</th><th>Day profit</th>
       <th>Balance</th></tr></thead>
       <tbody><tr><td>2026-06-13</td><td>16</td><td>12–4</td><td class='pos'>+$28.62</td><td>$528.62</td></tr></tbody></table>

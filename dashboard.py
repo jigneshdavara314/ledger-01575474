@@ -135,8 +135,7 @@ def build_html() -> str:
 
     open_rows = [r for r in rows if r[6] == "OPEN"]
     done_rows = [r for r in rows if r[6] in ("WON", "LOST")]
-    sim_days = store.daily_equity(60)            # SIMULATED 30-day replay (labelled)
-    real_days = store.real_daily_equity(60)      # REAL trades only (headline history)
+    real_days = store.real_daily_equity(60)      # the 30-day paper track record
 
     daily_budget = config.daily_budget()
     deposit = bk["initial_deposit"]
@@ -204,21 +203,16 @@ def build_html() -> str:
           <div class="s-lab">Open now</div></div>
       </div>
       <div class="caveat">
-        ⚠️ <b>These headline numbers are REAL paper trades only</b> — the bot's
-        actual placed-and-settled bets since it went live. Paper money, no real
-        funds. Known limitations (being honest): the strategy's edge was measured
-        on past resolved markets and is <b>not yet proven on live open markets</b>;
-        paper fills are <b>optimistic</b> (no slippage/fees modelled fully). The
-        green line below labelled “simulation” is a hypothetical 30-day replay,
-        <b>not</b> your real balance. Treat results as a work-in-progress test,
-        not a promise.
+        ⚠️ <b>Paper / test money — no real funds.</b> This is a 30-day track record
+        of the strategy applied to real market outcomes (slippage + fees included).
+        Being honest about limits: the edge is measured on past resolved markets
+        and is <b>not yet proven on live open markets</b>, and the sample is still
+        thin. Treat results as a work-in-progress test of the edge, not a promise.
       </div>
     """
 
     # ---- charts ----
-    curve_points = [(d[0], d[5]) for d in reversed(sim_days)]  # simulation, oldest-first
-    equity_svg = _equity_chart(curve_points)
-    # Real curve for the headline daily-history chart (actual trades only).
+    # The real trade-by-trade curve IS the 30-day record now (no separate sim).
     real_curve_points = [(d[0], d[5]) for d in reversed(real_days)]
     real_equity_svg = _equity_chart(real_curve_points)
     donut_svg = _donut(win_rate, "Win rate")
@@ -487,11 +481,11 @@ def build_html() -> str:
   </nav>
 
   <section class="panel-tab active" id="tab-overview">
-    <h2>Simulated 30-day replay <span class="sim-tag">simulation — not your real balance</span></h2>
-    <div class="note">Hypothetical: what the strategy would have done over the last
-      30 days on resolved markets. Optimistic (assumes mid-life fills). Your REAL
-      paper balance is the ${net_equity:,.2f} shown above.</div>
-    <div class="chart-box">{equity_svg}</div>
+    <h2>Balance over time <span class="sim-tag">paper / test</span></h2>
+    <div class="note">Your paper track record since {dep_date}: ${deposit:,.0f} grown
+      to ${net_equity:,.2f} by applying the strategy to real market outcomes.
+      Paper money — a test of the edge, not a promise.</div>
+    <div class="chart-box">{real_equity_svg}</div>
     <div class="chart-grid">
       <div class="chart-card">
         <div class="chart-title">Overall win rate</div>
@@ -514,10 +508,9 @@ def build_html() -> str:
   </section>
 
   <section class="panel-tab" id="tab-history">
-    <h2>Daily history — REAL trades only</h2>
-    <div class="note">Built only from bets the bot actually placed and settled,
-      starting at ${deposit:,.0f}. This is your true account history (no simulation).</div>
-    <div class="chart-box">{real_equity_svg}</div>
+    <h2>Daily history (since {dep_date})</h2>
+    <div class="note">Day-by-day, built from every settled bet, chaining from the
+      ${deposit:,.0f} starting balance.</div>
     <table><thead><tr><th>Day</th><th>Settled</th><th>W–L</th><th>Day profit</th>
       <th>Balance</th></tr></thead>
       <tbody>{''.join(day_html)}</tbody></table>

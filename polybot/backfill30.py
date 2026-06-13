@@ -84,7 +84,8 @@ def collect_day_bets(day: str):
         if est - no_price < config.LONGSHOT_MIN_EDGE:
             continue
         out.append({"tier": tier, "no_price": no_price,
-                    "no_won": not m["yes_won"], "volume": m.get("volume", 0)})
+                    "no_won": not m["yes_won"], "volume": m.get("volume", 0),
+                    "question": m["question"], "est": est})
     return out
 
 
