@@ -164,7 +164,9 @@ def find_longshot_fades(
         # and place a limit order between the midpoint and the ask. If it fills,
         # we paid less -> bigger edge. Fall back to the Gamma price if the book
         # is unavailable.
-        quote = limit_bid_price(m.token_id_no, aggression=config.LONGSHOT_BID_AGGRESSION)
+        quote = limit_bid_price(m.token_id_no,
+                                aggression=config.LONGSHOT_BID_AGGRESSION,
+                                hours_to_res=getattr(m, "hours_to_resolution", None))
         if quote:
             bid_price = quote["price"]
             ask_price = quote["ask"]

@@ -95,15 +95,39 @@ def can_afford(stake: float) -> bool:
     return balance() >= stake
 
 
+def peak_equity() -> float:
+    """Highest equity reached so far, from the real daily curve + current equity.
+    Used to ratchet the drawdown halt to the PEAK (protecting compounded gains),
+    not just the initial deposit."""
+    cur = summary()["total_equity"]
+    peak = cur
+    try:
+        from . import store
+        for row in store.real_daily_equity(365):
+            peak = max(peak, row[5])
+    except Exception:
+        pass
+    return max(peak, summary()["initial_deposit"])
+
+
 def drawdown_halted() -> bool:
     """
     Ruin guard: True if total equity has fallen below DRAWDOWN_HALT_FRAC of the
-    initial deposit. When True, callers must stop opening NEW positions (existing
-    ones still settle normally). A simple stop-loss circuit breaker.
+    PEAK equity reached so far (ratcheted), not just the initial deposit — so a
+    big run-up that then craters is also protected. When True, callers must stop
+    opening NEW positions (existing ones still settle normally).
     """
     s = summary()
-    floor = config.DRAWDOWN_HALT_FRAC * s["initial_deposit"]
+    floor = config.DRAWDOWN_HALT_FRAC * peak_equity()
     return s["total_equity"] < floor
+
+
+def exposure_ok(new_stake: float) -> bool:
+    """Aggregate ceiling: total open exposure (current + this new bet) must not
+    exceed AGG_EXPOSURE_FRAC of total equity, capping correlated tail clusters."""
+    s = summary()
+    cap = config.AGG_EXPOSURE_FRAC * s["total_equity"]
+    return (s["open_exposure"] + new_stake) <= cap
 
 
 def deduct_stake(stake: float, note: str = "") -> float:

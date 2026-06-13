@@ -390,7 +390,8 @@ def fillable_depth(token_id: str, max_price: float) -> Optional[dict]:
         return None
 
 
-def limit_bid_price(token_id: str, aggression: float = 0.5) -> Optional[dict]:
+def limit_bid_price(token_id: str, aggression: float = 0.5,
+                    hours_to_res: float = None) -> Optional[dict]:
     """
     Compute a limit-buy price between the midpoint and the ask.
 
@@ -399,6 +400,11 @@ def limit_bid_price(token_id: str, aggression: float = 0.5) -> Optional[dict]:
       1.0 = bid at the ask      (worst price, fills immediately)
       0.5 = halfway between mid and ask (default: a bit better than ask,
             still reasonably likely to fill)
+
+    hours_to_res: time until the market resolves. A resting limit below the ask
+      has MORE chances to be crossed the longer it sits, so more time -> higher
+      fill probability. This is the dominant real-world driver and was previously
+      missing from the estimate.
 
     Returns {price, mid, ask, bid, spread, fill_prob_estimate} or None.
     """
@@ -427,7 +433,17 @@ def limit_bid_price(token_id: str, aggression: float = 0.5) -> Optional[dict]:
         pos = 1.0                              # no spread -> crossing fills
     base = 0.10 + 0.87 * pos
     spread_penalty = min(0.25, max(0.0, (band - 0.01) * 2.0))  # wide spread = harder
-    fill_prob = round(max(0.05, min(0.99, base - spread_penalty)), 3)
+
+    # TIME-TO-RESOLUTION: a resting sub-ask limit has more chances to be crossed
+    # the longer it sits. Scale a below-ask bid's fill chance up with available
+    # time (saturating ~48h); a crossing bid (pos~1) is unaffected. None -> neutral.
+    time_factor = 1.0
+    if hours_to_res is not None and pos < 0.999:
+        import math
+        # 0 at no time, ~1 by ~48h; multiplies the "uncertain" portion of base.
+        avail = 1.0 - math.exp(-max(0.0, hours_to_res) / 18.0)
+        time_factor = 0.55 + 0.45 * avail     # never below 0.55 of base
+    fill_prob = round(max(0.05, min(0.99, base * time_factor - spread_penalty)), 3)
 
     return {
         "price": price, "mid": mid, "ask": ask, "bid": bid,

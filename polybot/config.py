@@ -198,8 +198,11 @@ LONGSHOT_MAX_PER_EVENT  = int(os.getenv("LONGSHOT_MAX_PER_EVENT", "3"))
 # caps TOTAL stake deployed across ALL of today's runs to the daily budget.
 LONGSHOT_DAILY_SPEND_CAP = os.getenv("LONGSHOT_DAILY_SPEND_CAP", "1") == "1"
 # Drawdown circuit breaker: stop opening NEW bets if total equity has fallen
-# below this fraction of the initial deposit (ruin guard). 0.70 = halt at -30%.
+# below this fraction of PEAK equity (ratcheted ruin guard). 0.70 = halt at -30%.
 DRAWDOWN_HALT_FRAC = float(os.getenv("DRAWDOWN_HALT_FRAC", "0.70"))
+# Aggregate open-exposure ceiling: total live stake across all open bets may not
+# exceed this fraction of equity, limiting correlated tail clusters.
+AGG_EXPOSURE_FRAC = float(os.getenv("AGG_EXPOSURE_FRAC", "0.60"))
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "trades.db")
 

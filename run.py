@@ -346,6 +346,11 @@ def cmd_longshot(trade: bool = True):
                 print(f"     -> skipped (daily budget reached: "
                       f"${already:.2f} staked today >= ${config.daily_budget():.0f})")
                 continue
+        # AGGREGATE EXPOSURE CEILING: cap total live stake as a fraction of equity.
+        if not bankroll.exposure_ok(f.size_usd):
+            print(f"     -> skipped (aggregate exposure ceiling "
+                  f"{config.AGG_EXPOSURE_FRAC*100:.0f}% of equity reached)")
+            continue
         # COMPOUNDING GUARD: don't bet money we don't have in the bankroll.
         if not bankroll.can_afford(f.size_usd):
             print(f"     -> skipped (insufficient bankroll: "
@@ -361,7 +366,12 @@ def cmd_longshot(trade: bool = True):
         # the correct one — you can't fake a fill you're really placing).
         if config.MODE != "LIVE":
             from polybot.market_data import stable_unit
-            if stable_unit(f.market.condition_id) > f.fill_prob:
+            import datetime as _dt
+            # Salt the roll with the UTC day so the fill is reproducible WITHIN a
+            # scan but RE-SAMPLED across days (adds honest fill-risk variance — a
+            # market that missed today gets a fresh chance tomorrow).
+            roll_key = f"{f.market.condition_id}:{_dt.datetime.utcnow():%Y-%m-%d}"
+            if stable_unit(roll_key) > f.fill_prob:
                 print(f"     -> limit NOT filled at {f.bid_price:.3f} "
                       f"(would retry next scan or pay ask)")
                 skipped_nofill += 1
@@ -478,7 +488,9 @@ def cmd_lagwatch(trade: bool = True):
         # exchange fill it). Stable, reproducible roll vs the price-based fill_prob.
         if config.MODE != "LIVE":
             from polybot.market_data import stable_unit
-            if stable_unit(o.condition_id) > fill_prob:
+            import datetime as _dt
+            roll_key = f"{o.condition_id}:{_dt.datetime.utcnow():%Y-%m-%d}"
+            if stable_unit(roll_key) > fill_prob:
                 print(f"    -> limit NOT filled at {bid_price:.3f} (retry next scan)\n")
                 nofill += 1
                 continue
@@ -542,12 +554,16 @@ def cmd_resolve():
             print(f"  [pending] {question[:60]}")
             continue
         won = (winner == side)
-        pnl = store.settle_position(trade_id, won, size_usd, shares)
+        pnl, fee = store.settle_position(trade_id, won, size_usd, shares)
         # Compounding bankroll: credit the payout back. A win returns stake+profit
         # (= shares * $1); a loss returns nothing (stake already deducted).
         payout = round(shares * 1.0, 4) if won else 0.0
         if payout > 0:
             bankroll.credit_payout(payout, note=f"WON {question[:36]}")
+        # Charge the settlement fee to the bankroll too, so the cash balance and
+        # the trade-ledger P&L stay reconciled (no drifting profit numbers).
+        if fee > 0:
+            bankroll.deduct_stake(fee, note=f"fee {question[:32]}")
         tag = "WON " if won else "LOST"
         print(f"  [{tag}]   {question[:48]}  (bet {side}, {winner} won)  pnl={pnl:+.2f}")
         settled += 1

@@ -40,21 +40,23 @@ def test_pnl_win_and_loss():
     assert abs(shares - 2.5) < 1e-6, f"shares should be 2.5, got {shares}"
 
     # WIN (no fee): payout = shares*1 = 2.5, profit = 0.5
-    pnl = store.settle_position(trade_id, won=True, size_usd=size, shares=shares)
+    pnl, fee = store.settle_position(trade_id, won=True, size_usd=size, shares=shares)
     assert abs(pnl - 0.5) < 1e-6, f"win pnl should be +0.5, got {pnl}"
+    assert fee == 0.0, f"fee should be 0 here, got {fee}"
 
     # LOSS case on a fresh bet
     store.record_trade(sig, {"mode": "PAPER", "status": "simulated", "price": 0.80})
     pos2 = [p for p in store.open_positions()][0]
-    pnl2 = store.settle_position(pos2[0], won=False, size_usd=2.0, shares=2.5)
+    pnl2, _ = store.settle_position(pos2[0], won=False, size_usd=2.0, shares=2.5)
     assert abs(pnl2 - (-2.0)) < 1e-6, f"loss pnl should be -2.0, got {pnl2}"
 
     # Now verify the FRICTION model bites: 1% fee on a $2 stake = $0.02 drag.
     config.PAPER_FEE_FRAC = 0.01
     store.record_trade(sig, {"mode": "PAPER", "status": "simulated", "price": 0.80})
     p3 = [p for p in store.open_positions()][0]
-    pnl3 = store.settle_position(p3[0], won=True, size_usd=2.0, shares=2.5)
+    pnl3, fee3 = store.settle_position(p3[0], won=True, size_usd=2.0, shares=2.5)
     assert abs(pnl3 - (0.5 - 0.02)) < 1e-6, f"win pnl net of fee should be 0.48, got {pnl3}"
+    assert abs(fee3 - 0.02) < 1e-6, f"fee should be 0.02, got {fee3}"
     config.PAPER_FEE_FRAC = 0.0
     os.remove(path)
     print("PASS test_pnl_win_and_loss")
@@ -271,6 +273,35 @@ def test_drawdown_halt():
     bankroll.deduct_stake(200.0, note="big loss sim")  # balance 300, no open bets
     assert bankroll.drawdown_halted(), "equity $300 < $350 floor should halt"
     print("PASS test_drawdown_halt")
+
+
+def test_exposure_ceiling():
+    """Aggregate open-exposure ceiling rejects bets that would exceed the cap."""
+    from polybot import config, store, bankroll
+    import tempfile, os
+    fd, path = tempfile.mkstemp(suffix=".db"); os.close(fd)
+    config.DB_PATH = path
+    store.init_db(); bankroll.init_bankroll()
+    # equity $500, cap 60% = $300 open exposure allowed
+    assert bankroll.exposure_ok(100.0), "small bet within ceiling should be ok"
+    assert not bankroll.exposure_ok(400.0), "bet exceeding 60% ceiling should be rejected"
+    os.remove(path)
+    print("PASS test_exposure_ceiling")
+
+
+def test_fill_prob_rises_with_time():
+    """A resting sub-ask limit should have higher fill prob with more time."""
+    import polybot.market_data as md
+    orig = md.fetch_quote
+    try:
+        md.fetch_quote = lambda t: {"mid": 0.42, "best_ask": 0.44,
+                                    "best_bid": 0.40, "spread": 0.04}
+        short = md.limit_bid_price("t", aggression=0.5, hours_to_res=2)["fill_prob_estimate"]
+        long = md.limit_bid_price("t", aggression=0.5, hours_to_res=72)["fill_prob_estimate"]
+        assert long > short, f"more time should raise fill prob: {long} !> {short}"
+    finally:
+        md.fetch_quote = orig
+    print("PASS test_fill_prob_rises_with_time")
 
 
 def _run_all():

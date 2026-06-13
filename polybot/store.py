@@ -201,7 +201,9 @@ def settle_position(trade_id: int, won: bool, size_usd: float, shares: float):
             "UPDATE trades SET status=?, pnl_usd=?, resolved_ts=? WHERE id=?",
             (status, pnl, datetime.datetime.utcnow().isoformat(), trade_id),
         )
-    return pnl
+    # Return the fee too so the caller can charge it to the bankroll cash, keeping
+    # the bankroll balance and the trade-ledger P&L reconciled (no drift).
+    return pnl, fee
 
 
 def today_pnl() -> float:
@@ -329,7 +331,7 @@ def record_daily_equity():
     return
 
 
-def real_daily_equity(limit: int = 60, start_balance: float = 500.0):
+def real_daily_equity(limit: int = 60, start_balance: float = None):
     """
     The REAL day-by-day equity curve, built ONLY from actual placed-and-settled
     trades — no simulated backfill base. Starts at the initial deposit and chains
@@ -339,6 +341,13 @@ def real_daily_equity(limit: int = 60, start_balance: float = 500.0):
     Returns rows oldest-first... actually newest-first to match daily_equity():
     (day, bets_settled, won, lost, day_profit, balance_after).
     """
+    if start_balance is None:
+        # Source from the real initial deposit, not a hardcoded constant.
+        try:
+            from .bankroll import summary as _bk_summary
+            start_balance = _bk_summary()["initial_deposit"]
+        except Exception:
+            start_balance = 500.0
     with _conn() as c:
         rows = c.execute(
             "SELECT substr(resolved_ts,1,10) AS day, "
