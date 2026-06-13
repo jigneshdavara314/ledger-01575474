@@ -207,16 +207,33 @@ def build_html() -> str:
         day_html = ['<tr><td colspan="5" class="empty">'
                     'No settled days yet — history fills in as bets resolve daily.</td></tr>']
 
-    # ---- category summary (simple, only resolved data) ----
+    # ---- category summary table (resolved data, richest per-category view) ----
+    # Count CURRENTLY-OPEN bets per category too, so each category row shows
+    # both settled performance and live exposure.
+    open_by_cat = {}
+    for _ts, _m, _sd, _sz, _pr, _e, _st, _pn, ocat, _h, _q, _sl in open_rows:
+        key = (ocat or "other")
+        open_by_cat[key] = open_by_cat.get(key, 0) + 1
+
     cat_rows = []
-    for cat, n, won, lost, pnl, staked in cats:
+    # sort by profit desc so the best earners are on top
+    for cat, n, won, lost, pnl, staked in sorted(cats, key=lambda r: -(r[4] or 0)):
         wr = (won / n * 100) if n else 0
+        roi = (pnl / staked * 100) if staked else 0
+        opn = open_by_cat.get(cat or "other", 0)
+        wr_cls = "pos" if wr >= 55 else ("neg" if wr < 50 else "")
         cat_rows.append(
-            f"<tr><td>{html.escape(cat or 'other')}</td>"
-            f"<td>{won}–{lost}</td><td>{wr:.0f}%</td>"
-            f"<td class='{_cls(pnl)}'>{_money(pnl)}</td></tr>")
+            f"<tr><td><b>{html.escape(cat or 'other')}</b></td>"
+            f"<td>{n}</td>"
+            f"<td><span class='pos'>{won}</span>–<span class='neg'>{lost}</span></td>"
+            f"<td class='{wr_cls}'>{wr:.0f}%</td>"
+            f"<td>${staked:,.2f}</td>"
+            f"<td class='{_cls(pnl)}'>{_money(pnl)}</td>"
+            f"<td class='{_cls(roi)}'>{roi:+.0f}%</td>"
+            f"<td>{opn}</td></tr>")
     if not cat_rows:
-        cat_rows = ['<tr><td colspan="4" class="empty">No settled bets yet.</td></tr>']
+        cat_rows = ['<tr><td colspan="8" class="empty">'
+                    'No settled bets yet — category breakdown fills in as bets resolve.</td></tr>']
 
     # ---- open bets ----
     open_html = []
@@ -377,6 +394,11 @@ def build_html() -> str:
       {cat_bars}
     </div>
   </div>
+
+  <h2>Results by category</h2>
+  <table><thead><tr><th>Category</th><th>Bets</th><th>W–L</th><th>Win %</th>
+    <th>Staked</th><th>Profit</th><th>ROI</th><th>Open</th></tr></thead>
+    <tbody>{''.join(cat_rows)}</tbody></table>
 
   <h2>Daily history (since {dep_date})</h2>
   <table><thead><tr><th>Day</th><th>Settled</th><th>W–L</th><th>Day profit</th>
