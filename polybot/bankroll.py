@@ -127,8 +127,11 @@ def summary() -> dict:
         staked_out = c.execute(
             "SELECT COALESCE(-SUM(amount),0) FROM bankroll_log WHERE kind='stake'"
         ).fetchone()[0]
+        # Exclude one-off reconciliation credits (e.g. seeding the bankroll to the
+        # 30-day backfill curve) from open-bet exposure — they are not bet payouts.
         paid_back = c.execute(
-            "SELECT COALESCE(SUM(amount),0) FROM bankroll_log WHERE kind='payout'"
+            "SELECT COALESCE(SUM(amount),0) FROM bankroll_log "
+            "WHERE kind='payout' AND COALESCE(note,'') NOT LIKE 'reconcile%'"
         ).fetchone()[0]
     # equity = cash balance + money still live in open bets
     open_exposure = round(staked_out - paid_back, 2)

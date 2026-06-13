@@ -163,17 +163,29 @@ def build_html() -> str:
           &nbsp;·&nbsp; over {len(equity_days)} days
         </div>
       </div>
+      <div class="live-account">
+        <span class="la-title">Live paper account</span>
+        <span class="la-net">Net balance <b class="accent">${bk['total_equity']:,.2f}</b>
+          <span class="la-tag">withdrawable</span></span>
+        <span class="la-sep">=</span>
+        <span class="la-item"><b>${bk['balance']:,.2f}</b> free cash</span>
+        <span class="la-sep">+</span>
+        <span class="la-item"><b>${bk['open_exposure']:,.2f}</b> locked in open bets</span>
+        <span class="la-note">Net balance is what you could cash out: free cash plus the
+          stake tied up in open bets (it returns, with winnings, as bets settle).
+          Started from ${deposit:,.0f}. The big number above is the simulated 30-day curve.</span>
+      </div>
       <div class="stats">
         <div class="stat"><div class="s-val pos">{tot_won}</div>
           <div class="s-lab">Total won</div></div>
         <div class="stat"><div class="s-val neg">{tot_lost}</div>
           <div class="s-lab">Total lost</div></div>
-        <div class="stat"><div class="s-val">{resolved}</div>
-          <div class="s-lab">Total bets</div></div>
         <div class="stat"><div class="s-val">{win_rate:.0f}%</div>
           <div class="s-lab">Win rate</div></div>
         <div class="stat"><div class="s-val {_cls(profit)}">{_money(profit)}</div>
           <div class="s-lab">Total profit</div></div>
+        <div class="stat"><div class="s-val">{resolved}</div>
+          <div class="s-lab">Total bets</div></div>
         <div class="stat"><div class="s-val">{s['open']}</div>
           <div class="s-lab">Open now</div></div>
       </div>
@@ -333,6 +345,21 @@ def build_html() -> str:
   .bar-val {{ font-size:12px; font-weight:600; text-align:right; }}
   .bar-sub {{ color:var(--muted); font-weight:400; font-size:11px; }}
   .pos {{ color:var(--pos); }} .neg {{ color:var(--neg); }}
+  .accent {{ color:var(--accent); }}
+  .live-account {{ display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+                   background:var(--panel); border:1px solid var(--border);
+                   border-radius:10px; padding:11px 14px; margin:0 0 14px;
+                   font-size:14px; }}
+  .la-title {{ color:var(--muted); font-size:11px; text-transform:uppercase;
+               letter-spacing:.05em; margin-right:4px; }}
+  .la-item b {{ font-size:17px; }}
+  .la-net {{ font-size:14px; }}
+  .la-net b {{ font-size:22px; }}
+  .la-tag {{ background:#1f6feb22; color:var(--accent); border:1px solid #1f6feb55;
+             border-radius:6px; padding:1px 7px; font-size:10px; font-weight:700;
+             text-transform:uppercase; letter-spacing:.04em; margin-left:4px; }}
+  .la-sep {{ color:var(--muted); }}
+  .la-note {{ color:var(--muted); font-size:11px; flex-basis:100%; margin-top:2px; }}
   h2 {{ font-size:14px; margin:22px 0 8px; border-left:3px solid var(--accent);
         padding-left:9px; }}
   table {{ width:100%; border-collapse:collapse; background:var(--panel);
