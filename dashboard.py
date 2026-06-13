@@ -215,25 +215,42 @@ def build_html() -> str:
         key = (ocat or "other")
         open_by_cat[key] = open_by_cat.get(key, 0) + 1
 
+    # Show EVERY category we've bet in — settled OR currently open — so the
+    # report reflects all activity, not just categories that happen to have
+    # resolved bets yet. Categories with only open bets show "pending".
+    settled_cats = {(r[0] or "other"): r for r in cats}
+    all_cat_names = set(settled_cats) | set(open_by_cat)
+
     cat_rows = []
-    # sort by profit desc so the best earners are on top
-    for cat, n, won, lost, pnl, staked in sorted(cats, key=lambda r: -(r[4] or 0)):
-        wr = (won / n * 100) if n else 0
-        roi = (pnl / staked * 100) if staked else 0
-        opn = open_by_cat.get(cat or "other", 0)
-        wr_cls = "pos" if wr >= 55 else ("neg" if wr < 50 else "")
-        cat_rows.append(
-            f"<tr><td><b>{html.escape(cat or 'other')}</b></td>"
-            f"<td>{n}</td>"
-            f"<td><span class='pos'>{won}</span>–<span class='neg'>{lost}</span></td>"
-            f"<td class='{wr_cls}'>{wr:.0f}%</td>"
-            f"<td>${staked:,.2f}</td>"
-            f"<td class='{_cls(pnl)}'>{_money(pnl)}</td>"
-            f"<td class='{_cls(roi)}'>{roi:+.0f}%</td>"
-            f"<td>{opn}</td></tr>")
+    for name in sorted(all_cat_names,
+                       key=lambda c: -((settled_cats.get(c) or (0,0,0,0,0,0))[4] or 0)):
+        row = settled_cats.get(name)
+        opn = open_by_cat.get(name, 0)
+        if row:
+            _c, n, won, lost, pnl, staked = row
+            wr = (won / n * 100) if n else 0
+            roi = (pnl / staked * 100) if staked else 0
+            wr_cls = "pos" if wr >= 55 else ("neg" if wr < 50 else "")
+            cat_rows.append(
+                f"<tr><td><b>{html.escape(name)}</b></td>"
+                f"<td>{n}</td>"
+                f"<td><span class='pos'>{won}</span>–<span class='neg'>{lost}</span></td>"
+                f"<td class='{wr_cls}'>{wr:.0f}%</td>"
+                f"<td>${staked:,.2f}</td>"
+                f"<td class='{_cls(pnl)}'>{_money(pnl)}</td>"
+                f"<td class='{_cls(roi)}'>{roi:+.0f}%</td>"
+                f"<td>{opn}</td></tr>")
+        else:
+            # only open bets so far — no settled results to report
+            cat_rows.append(
+                f"<tr><td><b>{html.escape(name)}</b></td>"
+                f"<td>0</td><td>—</td>"
+                f"<td class='muted-cell'>pending</td>"
+                f"<td>—</td><td>—</td><td>—</td>"
+                f"<td>{opn}</td></tr>")
     if not cat_rows:
         cat_rows = ['<tr><td colspan="8" class="empty">'
-                    'No settled bets yet — category breakdown fills in as bets resolve.</td></tr>']
+                    'No bets placed yet — category breakdown fills in as the bot trades.</td></tr>']
 
     # ---- open bets ----
     open_html = []
@@ -357,6 +374,19 @@ def build_html() -> str:
                         border:1px solid var(--border); border-radius:7px;
                         padding:6px 8px; font-size:13px; }}
   .budget-note {{ color:var(--muted); font-size:11.5px; }}
+  .tabs {{ display:flex; gap:4px; flex-wrap:wrap; border-bottom:1px solid var(--border);
+           margin:18px 0 16px; }}
+  .tab {{ background:transparent; color:var(--muted); border:none;
+          border-bottom:2px solid transparent; padding:10px 14px; font-size:13.5px;
+          font-weight:600; cursor:pointer; border-radius:7px 7px 0 0; }}
+  .tab:hover {{ color:var(--text); background:var(--panel); }}
+  .tab.active {{ color:var(--accent); border-bottom-color:var(--accent); }}
+  .panel-tab {{ display:none; }}
+  .panel-tab.active {{ display:block; animation:fade .2s ease; }}
+  @keyframes fade {{ from {{ opacity:0; }} to {{ opacity:1; }} }}
+  .panel-tab h2:first-child {{ margin-top:4px; }}
+  .note {{ color:var(--muted); font-size:12px; margin:0 0 10px; }}
+  .muted-cell {{ color:var(--muted); font-style:italic; }}
 </style></head>
 <body><div class="wrap">
   <h1>My Polymarket Portfolio</h1>
@@ -381,41 +411,74 @@ def build_html() -> str:
   </div>
   <pre id="output"></pre>
 
-  <h2>Balance over time</h2>
-  <div class="chart-box">{equity_svg}</div>
+  <nav class="tabs">
+    <button class="tab active" data-tab="overview" onclick="showTab('overview')">📈 Overview</button>
+    <button class="tab" data-tab="category" onclick="showTab('category')">📊 By Category</button>
+    <button class="tab" data-tab="history" onclick="showTab('history')">📅 Daily History</button>
+    <button class="tab" data-tab="open" onclick="showTab('open')">⏳ Open Bets ({len(open_rows)})</button>
+    <button class="tab" data-tab="settled" onclick="showTab('settled')">✅ Settled ({len(done_rows)})</button>
+  </nav>
 
-  <div class="chart-grid">
-    <div class="chart-card">
-      <div class="chart-title">Overall win rate</div>
-      {donut_svg}
+  <section class="panel-tab active" id="tab-overview">
+    <h2>Balance over time</h2>
+    <div class="chart-box">{equity_svg}</div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <div class="chart-title">Overall win rate</div>
+        {donut_svg}
+      </div>
+      <div class="chart-card wide">
+        <div class="chart-title">Win % by category</div>
+        {cat_bars}
+      </div>
     </div>
-    <div class="chart-card wide">
-      <div class="chart-title">Win % by category</div>
-      {cat_bars}
-    </div>
-  </div>
+  </section>
 
-  <h2>Results by category</h2>
-  <table><thead><tr><th>Category</th><th>Bets</th><th>W–L</th><th>Win %</th>
-    <th>Staked</th><th>Profit</th><th>ROI</th><th>Open</th></tr></thead>
-    <tbody>{''.join(cat_rows)}</tbody></table>
+  <section class="panel-tab" id="tab-category">
+    <h2>Results by category</h2>
+    <div class="note">Shows every category the bot has bet in. "pending" = bets
+      placed but not settled yet (results appear once games finish).</div>
+    <table><thead><tr><th>Category</th><th>Bets</th><th>W–L</th><th>Win %</th>
+      <th>Staked</th><th>Profit</th><th>ROI</th><th>Open</th></tr></thead>
+      <tbody>{''.join(cat_rows)}</tbody></table>
+  </section>
 
-  <h2>Daily history (since {dep_date})</h2>
-  <table><thead><tr><th>Day</th><th>Settled</th><th>W–L</th><th>Day profit</th>
-    <th>Balance</th></tr></thead>
-    <tbody>{''.join(day_html)}</tbody></table>
+  <section class="panel-tab" id="tab-history">
+    <h2>Daily history (since {dep_date})</h2>
+    <table><thead><tr><th>Day</th><th>Settled</th><th>W–L</th><th>Day profit</th>
+      <th>Balance</th></tr></thead>
+      <tbody>{''.join(day_html)}</tbody></table>
+  </section>
 
-  <h2>Open bets ({len(open_rows)})</h2>
-  <table><thead><tr><th>Side</th><th>Stake</th><th>Price</th><th>Category</th>
-    <th>Resolves</th><th>Market</th></tr></thead>
-    <tbody>{''.join(open_html)}</tbody></table>
+  <section class="panel-tab" id="tab-open">
+    <h2>Open bets ({len(open_rows)})</h2>
+    <table><thead><tr><th>Side</th><th>Stake</th><th>Price</th><th>Category</th>
+      <th>Resolves</th><th>Market</th></tr></thead>
+      <tbody>{''.join(open_html)}</tbody></table>
+  </section>
 
+  <section class="panel-tab" id="tab-settled">
   <h2>Settled bets ({len(done_rows)})</h2>
   <table><thead><tr><th>Date</th><th>Side</th><th>Stake</th><th>Result</th>
     <th>Profit</th><th>Market</th></tr></thead>
     <tbody>{''.join(done_html)}</tbody></table>
+  </section>
 </div>
 <script>
+function showTab(name) {{
+  document.querySelectorAll('.panel-tab').forEach(p =>
+    p.classList.toggle('active', p.id === 'tab-' + name));
+  document.querySelectorAll('.tab').forEach(t =>
+    t.classList.toggle('active', t.getAttribute('data-tab') === name));
+  try {{ localStorage.setItem('activeTab', name); }} catch(e) {{}}
+}}
+// Restore the last-viewed tab across the 60s auto-refresh so it doesn't reset.
+(function() {{
+  try {{
+    var t = localStorage.getItem('activeTab');
+    if (t && document.getElementById('tab-' + t)) showTab(t);
+  }} catch(e) {{}}
+}})();
 async function run(action) {{
   var btns = document.querySelectorAll('.btn'), st = document.getElementById('status'),
       out = document.getElementById('output');
