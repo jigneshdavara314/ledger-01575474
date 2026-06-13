@@ -168,6 +168,58 @@ def test_fillable_depth():
     print("PASS test_fillable_depth")
 
 
+def test_stable_unit_reproducible():
+    """The paper fill roll must be reproducible across processes (not salted)."""
+    from polybot.market_data import stable_unit
+    a = stable_unit("0xabc")
+    b = stable_unit("0xabc")
+    assert a == b, "stable_unit must be deterministic for the same key"
+    assert 0.0 <= a < 1.0, a
+    assert stable_unit("0xabc") != stable_unit("0xdef"), "different keys must differ"
+    print("PASS test_stable_unit_reproducible")
+
+
+def test_fill_prob_monotonic_in_band():
+    """fill_prob: ~certain at the ask, low near the bid, penalized on wide spread."""
+    import polybot.market_data as md
+    orig = md.fetch_quote
+    try:
+        # tight spread 0.40/0.44
+        def q_at(price):
+            md.fetch_quote = lambda t: {"mid": 0.42, "best_ask": 0.44,
+                                        "best_bid": 0.40, "spread": 0.04}
+            agg = (price - 0.42) / (0.44 - 0.42)
+            return md.limit_bid_price("t", aggression=agg)["fill_prob_estimate"]
+        at_ask = q_at(0.44)
+        at_mid = q_at(0.42)
+        assert at_ask > at_mid, (at_ask, at_mid)
+        assert at_ask > 0.8, at_ask          # crossing the ask ~ near-certain
+        assert at_mid < 0.7, at_mid          # mid is genuinely uncertain
+    finally:
+        md.fetch_quote = orig
+    print("PASS test_fill_prob_monotonic_in_band")
+
+
+def test_open_exposure_is_true_open_stake():
+    """bankroll.summary open_exposure must equal SUM(size_usd) of OPEN trades,
+    not a cash-log derivation that drifts by realized P&L."""
+    from polybot import config, store, bankroll
+    import tempfile, os
+    fd, path = tempfile.mkstemp(suffix=".db"); os.close(fd)
+    config.DB_PATH = path
+    store.init_db(); bankroll.init_bankroll()
+    from polybot.strategy import Signal
+    from polybot.market_data import Market
+    m = Market(condition_id="0xE", question="Q", token_id_yes="y", token_id_no="n",
+               price_yes=0.6, liquidity=1e5, volume=0, volume_24h=0, spread=0,
+               end_date="", hours_to_resolution=1, category="soccer", event_title="")
+    sig = Signal(market=m, side="NO", fair_prob=0.8, market_prob=0.4,
+                 edge=0.4, size_usd=25.0, reason="t", estimator="test")
+    store.record_trade(sig, {"mode": "PAPER", "status": "simulated"})
+    assert abs(bankroll.summary()["open_exposure"] - 25.0) < 1e-6, bankroll.summary()
+    print("PASS test_open_exposure_is_true_open_stake")
+
+
 def _run_all():
     fns = [v for k, v in globals().items() if k.startswith("test_") and callable(v)]
     failed = 0
