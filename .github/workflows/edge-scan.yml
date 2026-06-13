@@ -3,6 +3,11 @@ name: edge-scan
 # Manual trigger only. Commits edge_scan15_result.json back for review.
 
 on:
+  schedule:
+    # Continuous hunting: once daily at 06:00 UTC. Each run re-scans the latest
+    # 15-day window on GitHub's machines (never the user's PC) and commits the
+    # result + appends to an edge history log.
+    - cron: "0 6 * * *"
   workflow_dispatch:
     inputs:
       days:
@@ -29,19 +34,21 @@ jobs:
       - name: Install deps
         run: pip install -r requirements.txt
       - name: Run 15-day edge scan
+        env:
+          DAYS: ${{ github.event.inputs.days || '15' }}
         run: |
           echo "::group::edge scan"
-          PYTHONPATH=. python -m polybot.edge_scan15 ${{ github.event.inputs.days }} || true
+          PYTHONPATH=. python -m polybot.edge_scan15 "$DAYS" || true
           echo "::endgroup::"
-      - name: Commit result
+      - name: Commit result + append history
         run: |
           git config user.name "edge-scan-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add edge_scan15_result.json
+          git add edge_scan15_result.json edge_scan_history.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No result file produced."
           else
-            git commit -m "edge-scan: 15-day result [skip ci]"
+            git commit -m "edge-scan: latest 15-day result [skip ci]"
             git pull --rebase --autostash origin master || true
             git push
           fi

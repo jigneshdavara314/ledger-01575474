@@ -49,6 +49,16 @@ def wilson_lower(wins, n, z=1.96):
     return max(0.0, (centre - rad) / denom)
 
 
+def _z_for_family_wise(n_tests, alpha=0.05):
+    """Bonferroni-corrected z so that, testing n_tests cells, the chance ANY
+    null cell passes stays <= alpha overall. Without this, ~alpha*n_tests cells
+    pass by pure luck (the #1 false-positive source when scanning ~70 cells)."""
+    from statistics import NormalDist
+    per = alpha / max(1, n_tests)          # per-test two-tailed -> one-tailed below
+    # one-sided lower bound: use the (1 - per) quantile
+    return NormalDist().inv_cdf(1 - per)
+
+
 def family_of(q):
     ql = q.lower()
     if "exact score" in ql: return "exact_score"
@@ -140,9 +150,9 @@ def scan(days=DAYS, cap=2500):
         print("No observations."); return
     mid_day = days_sorted[len(days_sorted)//2]
 
-    # cell -> for each direction, list of (price_paid, won, day)
-    # direction: buy YES (win if yes_won, pay yes_price) or buy NO (win if !yes_won, pay 1-yes_price)
-    results = []
+    # --- PASS 1: enumerate every testable cell (n>=MIN_N) so we know HOW MANY
+    # hypotheses we are testing — required for the multiple-testing correction. ---
+    cells = []   # (fam, lo, hi, direction, recs)
     for fam in sorted({o[0] for o in obs}):
         for lo, hi in PRICE_BANDS:
             for direction in ("YES", "NO"):
@@ -154,39 +164,74 @@ def scan(days=DAYS, cap=2500):
                         price = yp; won = yw
                     else:
                         price = round(1 - yp, 4); won = not yw
-                    # band is on the PRICE PAID for the chosen side
                     if not (lo <= price < hi):
                         continue
                     recs.append((price, won, day))
-                n = len(recs)
-                if n < MIN_N:
-                    continue
-                wins = sum(1 for _, w, _ in recs if w)
-                wr = wins / n
-                avg_q = sum(p for p, _, _ in recs) / n
-                wl = wilson_lower(wins, n)
-                ev = wr * (1.0/avg_q) - 1.0 - FEE if avg_q > 0 else -1
-                ev_lb = wl * (1.0/avg_q) - 1.0 - FEE if avg_q > 0 else -1
-                # temporal OOS: first-half vs second-half by date
-                h1 = [(p, w) for p, w, d in recs if d > mid_day]   # earlier dates (d desc)
-                h2 = [(p, w) for p, w, d in recs if d <= mid_day]
-                wr1 = (sum(w for _, w in h1)/len(h1)) if h1 else 0
-                wr2 = (sum(w for _, w in h2)/len(h2)) if h2 else 0
-                breakeven = avg_q
-                # an edge: after-fee +EV, Wilson LB beats breakeven+margin, holds both halves
-                real = (ev > 0 and wl > breakeven + EDGE_MARGIN
-                        and wr1 > breakeven and wr2 > breakeven
-                        and len(h1) >= 8 and len(h2) >= 8)
-                results.append({
-                    "cell": f"{fam} | pay {direction} {lo:.2f}-{hi:.2f}",
-                    "n": n, "wins": wins, "win_rate": round(wr, 3),
-                    "avg_price": round(avg_q, 3), "breakeven": round(breakeven, 3),
-                    "ev": round(ev, 3), "ev_lower": round(ev_lb, 3),
-                    "wilson_lower": round(wl, 3),
-                    "oos": f"{wr1*100:.0f}/{wr2*100:.0f}",
-                    "verdict": "REAL" if real else (
-                        "promising" if ev > 0 and wl > breakeven else "noise"),
-                })
+                if len(recs) >= MIN_N:
+                    cells.append((fam, lo, hi, direction, recs))
+
+    n_tests = max(1, len(cells))
+    z_corr = _z_for_family_wise(n_tests)     # Bonferroni-corrected z (~3.0 for 70 cells)
+    print(f"Testing {n_tests} cells -> Bonferroni z = {z_corr:.2f} "
+          f"(vs naive 1.96). A cell must clear THIS bar to count.\n")
+
+    # --- PASS 2: rigorous per-cell math with all corrections. ---
+    results = []
+    for fam, lo, hi, direction, recs in cells:
+        n = len(recs)
+        wins = sum(1 for _, w, _ in recs if w)
+        wr = wins / n
+        avg_q = sum(p for p, _, _ in recs) / n
+        price_sd = (sum((p - avg_q) ** 2 for p, _, _ in recs) / n) ** 0.5
+
+        # PER-BET EV then averaged (correct; avoids Jensen bias of avg-price EV):
+        #   each bet pays $1 if won, costs its own price q_i -> profit (won/q_i - 1)
+        ev = sum((1.0 / p - 1.0) if w else (-1.0) for p, w, _ in recs) / n - FEE
+
+        # Bonferroni-corrected Wilson lower bound on the WIN RATE...
+        wl = wilson_lower(wins, n, z=z_corr)
+        # ...and the EV implied by that conservative win rate at the avg price.
+        ev_lb = wl * (1.0 / avg_q) - 1.0 - FEE if avg_q > 0 else -1
+
+        # Temporal OOS: split by date; each half must clear breakeven on its OWN
+        # (naive-z) Wilson lower bound, with a real minimum size per half.
+        h1 = [(p, w) for p, w, d in recs if d > mid_day]
+        h2 = [(p, w) for p, w, d in recs if d <= mid_day]
+        def half_lb(h):
+            if not h:
+                return 0.0, 0.0
+            q = sum(p for p, _ in h) / len(h)
+            w_ = sum(1 for _, w in h if w)
+            return wilson_lower(w_, len(h)), q
+        lb1, q1 = half_lb(h1)
+        lb2, q2 = half_lb(h2)
+        breakeven = avg_q
+
+        # CONTAMINATION GUARD: if prices within the band vary wildly, the cell is
+        # likely mislabeled/mixed -> distrust it.
+        clean = price_sd <= (hi - lo)        # sd should fit within the band width
+
+        # FULL GATE — a REAL edge must pass ALL of:
+        real = (
+            ev > 0                                 # profitable after fee (per-bet)
+            and ev_lb > 0                          # profitable even on the conservative bound
+            and wl > breakeven + EDGE_MARGIN       # Bonferroni-corrected LB beats price
+            and len(h1) >= 10 and len(h2) >= 10    # enough in each OOS half
+            and lb1 > q1 and lb2 > q2              # each half independently +edge (LB)
+            and clean                              # not contaminated
+        )
+        results.append({
+            "cell": f"{fam} | pay {direction} {lo:.2f}-{hi:.2f}",
+            "n": n, "wins": wins, "win_rate": round(wr, 3),
+            "avg_price": round(avg_q, 3), "price_sd": round(price_sd, 3),
+            "breakeven": round(breakeven, 3),
+            "ev": round(ev, 3), "ev_lower": round(ev_lb, 3),
+            "wilson_lower": round(wl, 3), "z_corr": round(z_corr, 2),
+            "oos": f"{lb1*100:.0f}>{q1*100:.0f} / {lb2*100:.0f}>{q2*100:.0f}",
+            "clean": clean,
+            "verdict": "REAL" if real else (
+                "promising" if ev > 0 and wl > breakeven else "noise"),
+        })
 
     results.sort(key=lambda r: -r["ev"])
     print("="*112)
@@ -209,14 +254,23 @@ def scan(days=DAYS, cap=2500):
         print("NO cell passed the full gate. (High win rates exist but are already "
               "priced in — EV<=0 — or fail the Wilson/OOS test.)")
 
-    # Write the result to disk so a cloud run can commit it back for review.
-    import json, os
-    out_path = os.path.join(os.path.dirname(__file__), "..", "edge_scan15_result.json")
-    with open(out_path, "w", encoding="utf-8") as f:
-        json.dump({"generated_utc": "cloud-run", "days": days,
+    # Write the latest result + APPEND a history line so continuous daily runs
+    # build a persistence signal: a real edge recurs across many days; a one-day
+    # fluke does not. (Confidence comes from re-appearance, not a single scan.)
+    import json, os, datetime as _dt
+    base = os.path.join(os.path.dirname(__file__), "..")
+    stamp = _dt.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    with open(os.path.join(base, "edge_scan15_result.json"), "w", encoding="utf-8") as f:
+        json.dump({"generated_utc": stamp, "days": days,
                    "n_observations": len(obs), "cells": results,
                    "passed_gate": reals}, f, indent=2)
-    print(f"\nResult written to {out_path}")
+    with open(os.path.join(base, "edge_scan_history.jsonl"), "a", encoding="utf-8") as f:
+        f.write(json.dumps({"ts": stamp, "days": days, "n_obs": len(obs),
+                            "passed": [{"cell": r["cell"], "n": r["n"],
+                                        "win_rate": r["win_rate"], "ev": r["ev"],
+                                        "wilson_lower": r["wilson_lower"]}
+                                       for r in reals]}) + "\n")
+    print(f"\nResult written; history appended ({len(reals)} passing cells).")
     return results
 
 
