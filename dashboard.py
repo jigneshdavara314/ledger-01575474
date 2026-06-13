@@ -169,13 +169,13 @@ def build_html() -> str:
             <div class="ic-val">${deposit:,.2f}</div>
             <div class="ic-sub">on {dep_date}</div>
           </div>
-          <div class="ic-box">
-            <div class="ic-lab">Net profit / loss</div>
+          <div class="ic-box clickable" onclick="showTab('history', true)" title="View day-by-day profit">
+            <div class="ic-lab">Net profit / loss <span class="ic-link">view daily ›</span></div>
             <div class="ic-val {pcls}">{_money(net_profit)}</div>
             <div class="ic-sub">{(net_profit/deposit*100) if deposit else 0:+.1f}% after invested</div>
           </div>
-          <div class="ic-box">
-            <div class="ic-lab">On stake</div>
+          <div class="ic-box clickable" onclick="showTab('open', true)" title="View open bets">
+            <div class="ic-lab">On stake <span class="ic-link">view bets ›</span></div>
             <div class="ic-val">${on_stake:,.2f}</div>
             <div class="ic-sub">live in open bets</div>
           </div>
@@ -344,6 +344,10 @@ def build_html() -> str:
   .ic-foot {{ color:var(--muted); font-size:12px; margin-top:12px;
               border-top:1px solid var(--border); padding-top:10px; }}
   .ic-foot b {{ color:var(--text); }}
+  .ic-box.clickable {{ cursor:pointer; transition:border-color .15s, transform .1s; }}
+  .ic-box.clickable:hover {{ border-color:var(--accent); transform:translateY(-1px); }}
+  .ic-link {{ color:var(--accent); font-size:10px; font-weight:700;
+              text-transform:none; letter-spacing:0; float:right; opacity:.85; }}
   .stats {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
             gap:10px; margin-bottom:18px; }}
   .stat {{ background:var(--panel); border:1px solid var(--border);
@@ -523,18 +527,23 @@ def build_html() -> str:
   </section>
 </div>
 <script>
-function showTab(name) {{
+function showTab(name, scroll) {{
   document.querySelectorAll('.panel-tab').forEach(p =>
     p.classList.toggle('active', p.id === 'tab-' + name));
   document.querySelectorAll('.tab').forEach(t =>
     t.classList.toggle('active', t.getAttribute('data-tab') === name));
   try {{ localStorage.setItem('activeTab', name); }} catch(e) {{}}
+  if (scroll) {{
+    var nav = document.querySelector('.tabs');
+    if (nav) nav.scrollIntoView({{behavior:'smooth', block:'start'}});
+  }}
 }}
-// Restore the last-viewed tab across the 60s auto-refresh so it doesn't reset.
+// Restore the last-viewed tab across the 60s auto-refresh so it doesn't reset
+// (no scroll on restore, so the page doesn't jump while you're reading the top).
 (function() {{
   try {{
     var t = localStorage.getItem('activeTab');
-    if (t && document.getElementById('tab-' + t)) showTab(t);
+    if (t && document.getElementById('tab-' + t)) showTab(t, false);
   }} catch(e) {{}}
 }})();
 async function run(action) {{
