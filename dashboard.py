@@ -178,10 +178,13 @@ def build_html() -> str:
       </div>
       <div class="caveat">
         ⚠️ This is a <b>simulated replay</b> of the strategy on real resolved
-        markets since {dep_date}. The win rate (~{win_rate:.0f}%) is real, but the
-        balance compounds bets into thin markets without depth limits — <b>live
-        fills would be smaller</b>, so real growth would be considerably lower.
-        Treat the value as the optimistic ceiling, not a promise.
+        markets since {dep_date} — real prices, real outcomes, our real rules.
+        The win rate (~{win_rate:.0f}%) is genuine. Every bet is now
+        <b>depth-limited</b> (capped at 3% of each market's actual traded volume),
+        so it no longer assumes unlimited size in thin markets — this is roughly
+        half the un-capped ceiling. One optimism remains: it assumes you got
+        <b>filled at the mid-life price</b> on each bet; real fills slip. Paper
+        only — not a promise.
       </div>
     """
 

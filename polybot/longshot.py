@@ -117,8 +117,13 @@ def find_longshot_fades(
     # Per-bet hard cap: never more than this share of the daily budget on one market.
     per_bet_cap = config.DAILY_BUDGET_USD * config.LONGSHOT_MAX_BET_FRAC
 
-    # Pull sports (exact-score subs) + tweets-markets (post-count range longshots)
-    cats = ["soccer", "nba", "mlb", "tennis", "esports", "tweets", "politics"]
+    # Pull sports (exact-score subs) + tweets-markets (post-count range longshots).
+    # Broadened for more breadth: the edge is the same favorite-longshot bias on
+    # spread/handicap/exact-score sub-markets, which exist across many sports and
+    # esports leagues. More categories = more safe places to deploy the same
+    # dollar (diversification), NOT bigger bets per market.
+    cats = ["soccer", "nba", "mlb", "nfl", "nhl", "tennis", "ufc", "boxing",
+            "cricket", "golf", "f1", "esports", "tweets", "politics"]
     markets = fetch_short_term_markets(max_hours=max_hours, categories=cats,
                                        limit_per_event=40)
 

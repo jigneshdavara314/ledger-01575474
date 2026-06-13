@@ -37,7 +37,7 @@ MODE = os.getenv("MODE", "PAPER").upper()
 
 # Only look at markets that resolve within this many hours.
 # 48h covers same-day and next-day: soccer, esports, tennis, nba.
-MAX_HOURS_TO_RESOLUTION = float(os.getenv("MAX_HOURS", "48"))
+MAX_HOURS_TO_RESOLUTION = float(os.getenv("MAX_HOURS", "120"))
 
 # Market categories to scan. These map to tag slugs on Polymarket.
 # Uncomment / add categories you want. Start with the fastest-resolving ones.
@@ -158,7 +158,7 @@ DAILY_BUDGET_USD = float(os.getenv("DAILY_BUDGET", "200"))
 LONGSHOT_STAKE_USD     = float(os.getenv("LONGSHOT_STAKE", "10.0"))
 LONGSHOT_MIN_LIQUIDITY = float(os.getenv("LONGSHOT_MIN_LIQ", "3000"))
 LONGSHOT_MIN_EDGE      = float(os.getenv("LONGSHOT_MIN_EDGE", "0.06"))
-LONGSHOT_MAX_BETS      = int(os.getenv("LONGSHOT_MAX_BETS", "20"))   # diversify
+LONGSHOT_MAX_BETS      = int(os.getenv("LONGSHOT_MAX_BETS", "40"))   # diversify
 # Mid-price bidding: 0.0 = bid at midpoint (best price, may not fill),
 # 1.0 = bid at ask (fills immediately). 0.4 leans toward a better price.
 LONGSHOT_BID_AGGRESSION = float(os.getenv("LONGSHOT_BID_AGG", "0.4"))
@@ -170,7 +170,7 @@ LONGSHOT_FILL_TOLERANCE = float(os.getenv("LONGSHOT_FILL_TOL", "0.02"))  # 2 cen
 LONGSHOT_MIN_STAKE      = float(os.getenv("LONGSHOT_MIN_STAKE", "1.0"))  # skip if thinner
 # Per-bet hard cap as a fraction of the daily budget (risk control — never put
 # more than this share of the day's money on one market).
-LONGSHOT_MAX_BET_FRAC   = float(os.getenv("LONGSHOT_MAX_BET_FRAC", "0.15"))  # 15%
+LONGSHOT_MAX_BET_FRAC   = float(os.getenv("LONGSHOT_MAX_BET_FRAC", "0.20"))  # 20%
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "trades.db")
 

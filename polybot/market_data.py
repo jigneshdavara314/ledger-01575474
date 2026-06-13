@@ -94,10 +94,18 @@ def _category_from_tags(tags: list) -> str:
         return "mlb"
     if any(s in tag_set for s in ["football", "nfl"]):
         return "nfl"
+    if any(s in tag_set for s in ["hockey", "nhl"]):
+        return "nhl"
     if any(s in tag_set for s in ["ufc", "mma"]):
         return "ufc"
+    if any(s in tag_set for s in ["boxing"]):
+        return "boxing"
+    if any(s in tag_set for s in ["cricket", "ipl"]):
+        return "cricket"
     if any(s in tag_set for s in ["golf", "pga", "pga-tour"]):
         return "golf"
+    if any(s in tag_set for s in ["f1", "formula-1", "formula-one", "motorsport"]):
+        return "f1"
     if any(s in tag_set for s in ["crypto", "bitcoin", "ethereum", "weekly",
                                    "multi-strikes", "hit-price", "crypto-prices"]):
         return "crypto"
