@@ -34,13 +34,11 @@ CALIB = {
         (0.35, 0.84, 9),    # exploratory: weak/noisy overpricing
         (0.55, 0.74, 15),
     ],
-    # Baseball Home-Run player props. Edge hunt (2026-06, n=64): NO won 93.8%,
-    # avg YES ~0.50, Wilson lower bound 85%, held out-of-sample. A confirmed
-    # favorite-longshot fade — people overpay that a hitter WILL homer.
-    "home_runs_ou": [
-        (0.35, 0.96, 30),   # deep "will homer" longshots: NO almost always wins
-        (0.55, 0.93, 34),   # the main measured bucket (avg YES ~0.50)
-    ],
+    # Baseball Home-Run props: REMOVED. The edge-hunt rates (~0.93-0.96) had no
+    # stored, reproducible artifact and an audit (2026-06) flagged them as
+    # unsupported. With no CALIB row, measured_no_win() falls back to the market
+    # price (no edge claimed) — the honest default until a real measurement is
+    # committed. The pattern is still scanned but sized at the market (exploratory).
 }
 
 # Below this sample size we shrink hard toward the market price (don't trust it).
@@ -89,6 +87,11 @@ def measured_no_win(question: str, yes_price: float, implied_no: float) -> dict:
     # Shrinkage blend toward the market-implied probability.
     w = n / (n + MIN_TRUST_N)
     est = w * measured + (1 - w) * implied_no
-    est = min(HARD_CAP, max(implied_no, est))  # never below the market NO price
+    # TWO-SIDED: cap optimism at HARD_CAP, but DO NOT floor at the market price.
+    # If the measured rate is at or below the market-implied NO probability, the
+    # estimate is allowed to come out at/below market -> the edge goes to zero or
+    # negative downstream and the bet is correctly vetoed. (Previously a max()
+    # floor meant the data could never veto a bet — a structural pro-bet bias.)
+    est = min(HARD_CAP, est)
     return {"est": round(est, 4), "n": n,
             "source": "measured" if n >= MIN_TRUST_N else "blended"}

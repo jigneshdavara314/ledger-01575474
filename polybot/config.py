@@ -188,6 +188,9 @@ LONGSHOT_MAX_PER_EVENT  = int(os.getenv("LONGSHOT_MAX_PER_EVENT", "3"))
 # in the cloud). Without this, the per-run budget is re-applied each run. This
 # caps TOTAL stake deployed across ALL of today's runs to the daily budget.
 LONGSHOT_DAILY_SPEND_CAP = os.getenv("LONGSHOT_DAILY_SPEND_CAP", "1") == "1"
+# Drawdown circuit breaker: stop opening NEW bets if total equity has fallen
+# below this fraction of the initial deposit (ruin guard). 0.70 = halt at -30%.
+DRAWDOWN_HALT_FRAC = float(os.getenv("DRAWDOWN_HALT_FRAC", "0.70"))
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "trades.db")
 

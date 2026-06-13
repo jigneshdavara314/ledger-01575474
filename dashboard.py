@@ -135,7 +135,8 @@ def build_html() -> str:
 
     open_rows = [r for r in rows if r[6] == "OPEN"]
     done_rows = [r for r in rows if r[6] in ("WON", "LOST")]
-    equity_days = store.daily_equity(60)  # newest first
+    sim_days = store.daily_equity(60)            # SIMULATED 30-day replay (labelled)
+    real_days = store.real_daily_equity(60)      # REAL trades only (headline history)
 
     daily_budget = config.daily_budget()
     deposit = bk["initial_deposit"]
@@ -215,14 +216,17 @@ def build_html() -> str:
     """
 
     # ---- charts ----
-    curve_points = [(d[0], d[5]) for d in reversed(equity_days)]  # oldest-first
+    curve_points = [(d[0], d[5]) for d in reversed(sim_days)]  # simulation, oldest-first
     equity_svg = _equity_chart(curve_points)
+    # Real curve for the headline daily-history chart (actual trades only).
+    real_curve_points = [(d[0], d[5]) for d in reversed(real_days)]
+    real_equity_svg = _equity_chart(real_curve_points)
     donut_svg = _donut(win_rate, "Win rate")
     cat_bars = _cat_bars(cats)
 
     # ---- daily history (real results, builds forward) ----
     day_html = []
-    for day, n_set, won, lost, dprofit, bal in equity_days:
+    for day, n_set, won, lost, dprofit, bal in real_days:
         day_html.append(
             f"<tr><td>{html.escape(day)}</td><td>{n_set}</td>"
             f"<td>{won}–{lost}</td>"
@@ -510,7 +514,10 @@ def build_html() -> str:
   </section>
 
   <section class="panel-tab" id="tab-history">
-    <h2>Daily history (since {dep_date})</h2>
+    <h2>Daily history — REAL trades only</h2>
+    <div class="note">Built only from bets the bot actually placed and settled,
+      starting at ${deposit:,.0f}. This is your true account history (no simulation).</div>
+    <div class="chart-box">{real_equity_svg}</div>
     <table><thead><tr><th>Day</th><th>Settled</th><th>W–L</th><th>Day profit</th>
       <th>Balance</th></tr></thead>
       <tbody>{''.join(day_html)}</tbody></table>

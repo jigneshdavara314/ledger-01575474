@@ -220,6 +220,48 @@ def test_open_exposure_is_true_open_stake():
     print("PASS test_open_exposure_is_true_open_stake")
 
 
+def test_shrinkage_is_two_sided():
+    """A measured rate at/below the market NO price must NOT be floored at market
+    — the data has to be able to veto a bet (produce <= market estimate)."""
+    from polybot import calib_table as ct
+    # Temporarily inject a deliberately pessimistic bucket.
+    saved = ct.CALIB.get("exact_score")
+    try:
+        ct.CALIB["exact_score"] = [(0.99, 0.40, 100)]  # measured 0.40, big n
+        # market NO = 0.60; with strong n the estimate must pull toward 0.40,
+        # i.e. BELOW the market -> negative edge -> bet vetoed downstream.
+        r = ct.measured_no_win("Exact Score: 2-1?", yes_price=0.40, implied_no=0.60)
+        assert r["est"] < 0.60, f"two-sided shrinkage broken: est={r['est']} not < market 0.60"
+    finally:
+        if saved is not None:
+            ct.CALIB["exact_score"] = saved
+    print("PASS test_shrinkage_is_two_sided")
+
+
+def test_home_runs_falls_back_to_market():
+    """The unsupported home-runs bucket was removed; sizing must default to the
+    market price (no fabricated edge)."""
+    from polybot.calib_table import measured_no_win
+    r = measured_no_win("Aaron Judge: Home Runs O/U 1.5", yes_price=0.45, implied_no=0.55)
+    assert r["source"] == "market", r
+    assert abs(r["est"] - 0.55) < 1e-9, r
+    print("PASS test_home_runs_falls_back_to_market")
+
+
+def test_drawdown_halt():
+    """Circuit breaker trips when equity falls below the ruin floor."""
+    from polybot import config, store, bankroll
+    import tempfile, os
+    fd, path = tempfile.mkstemp(suffix=".db"); os.close(fd)
+    config.DB_PATH = path
+    store.init_db(); bankroll.init_bankroll()
+    assert not bankroll.drawdown_halted(), "fresh $500 account should not be halted"
+    # Drain the bankroll below the floor (0.70 * 500 = 350).
+    bankroll.deduct_stake(200.0, note="big loss sim")  # balance 300, no open bets
+    assert bankroll.drawdown_halted(), "equity $300 < $350 floor should halt"
+    print("PASS test_drawdown_halt")
+
+
 def _run_all():
     fns = [v for k, v in globals().items() if k.startswith("test_") and callable(v)]
     failed = 0

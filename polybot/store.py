@@ -318,6 +318,34 @@ def record_daily_equity():
               round(profit or 0, 2), new_bal))
 
 
+def real_daily_equity(limit: int = 60, start_balance: float = 500.0):
+    """
+    The REAL day-by-day equity curve, built ONLY from actual placed-and-settled
+    trades — no simulated backfill base. Starts at the initial deposit and chains
+    each day's realized P&L. This is what the dashboard's headline daily history
+    shows; the simulated 30-day replay (daily_equity) is a SEPARATE, labelled curve.
+
+    Returns rows oldest-first... actually newest-first to match daily_equity():
+    (day, bets_settled, won, lost, day_profit, balance_after).
+    """
+    with _conn() as c:
+        rows = c.execute(
+            "SELECT substr(resolved_ts,1,10) AS day, "
+            "       SUM(status='WON') AS won, SUM(status='LOST') AS lost, "
+            "       COALESCE(SUM(pnl_usd),0) AS profit "
+            "FROM trades WHERE status IN ('WON','LOST') AND resolved_ts IS NOT NULL "
+            "GROUP BY day ORDER BY day ASC"
+        ).fetchall()
+    out = []
+    bal = start_balance
+    for day, won, lost, profit in rows:
+        bal = round(bal + (profit or 0), 2)
+        out.append((day, (won or 0) + (lost or 0), won or 0, lost or 0,
+                    round(profit or 0, 2), bal))
+    out.reverse()  # newest-first
+    return out[:limit]
+
+
 def daily_equity(limit: int = 60):
     init_daily_equity()
     with _conn() as c:

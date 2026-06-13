@@ -95,6 +95,17 @@ def can_afford(stake: float) -> bool:
     return balance() >= stake
 
 
+def drawdown_halted() -> bool:
+    """
+    Ruin guard: True if total equity has fallen below DRAWDOWN_HALT_FRAC of the
+    initial deposit. When True, callers must stop opening NEW positions (existing
+    ones still settle normally). A simple stop-loss circuit breaker.
+    """
+    s = summary()
+    floor = config.DRAWDOWN_HALT_FRAC * s["initial_deposit"]
+    return s["total_equity"] < floor
+
+
 def deduct_stake(stake: float, note: str = "") -> float:
     """Remove a stake from the balance when a bet is placed."""
     init_bankroll()

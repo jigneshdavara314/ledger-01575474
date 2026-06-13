@@ -294,6 +294,13 @@ def cmd_longshot(trade: bool = True):
     print(f"Bankroll available: ${bk0['balance']:.2f} cash "
           f"(deposit ${bk0['initial_deposit']:.0f}, equity ${bk0['total_equity']:.2f})\n")
 
+    # CIRCUIT BREAKER: stop opening new bets if drawn down past the ruin floor.
+    if trade and bankroll.drawdown_halted():
+        print(f"⛔ DRAWDOWN HALT: equity ${bk0['total_equity']:.2f} is below "
+              f"{config.DRAWDOWN_HALT_FRAC*100:.0f}% of the ${bk0['initial_deposit']:.0f} "
+              f"deposit. Not opening new bets (existing ones still settle).")
+        return
+
     placed = 0
     staked_total = 0.0
     skipped_nofill = 0
@@ -416,6 +423,14 @@ def cmd_lagwatch(trade: bool = True):
         print("   finished game matches a currently-open single-match market.)")
         return
 
+    # CIRCUIT BREAKER: same ruin guard as longshot.
+    from polybot import bankroll as _bk
+    if trade and _bk.drawdown_halted():
+        s = _bk.summary()
+        print(f"⛔ DRAWDOWN HALT: equity ${s['total_equity']:.2f} below "
+              f"{config.DRAWDOWN_HALT_FRAC*100:.0f}% of deposit. Not opening new lag bets.")
+        return
+
     print(f"Found {len(opps)} lag opportunit(ies):\n")
     placed = 0
     nofill = 0
@@ -456,6 +471,16 @@ def cmd_lagwatch(trade: bool = True):
                 continue
 
         size = config.STRATEGY.max_position_usd
+        # DAILY-SPEND GOVERNOR: lagwatch shares the bankroll, so it must also
+        # respect the daily budget across all of today's runs.
+        if config.LONGSHOT_DAILY_SPEND_CAP:
+            if store.staked_today() + size > config.daily_budget():
+                print(f"    -> skipped (daily budget reached: "
+                      f"${store.staked_today():.2f} >= ${config.daily_budget():.0f})\n")
+                continue
+        if not _bk.can_afford(size):
+            print(f"    -> skipped (insufficient bankroll ${_bk.balance():.2f})\n")
+            continue
         mkt = Market(
             condition_id=o.condition_id, question=o.question,
             token_id_yes=o.token_id if o.side == "YES" else "",
@@ -473,6 +498,9 @@ def cmd_lagwatch(trade: bool = True):
             estimator="lagwatch",
         )
         result = executor.execute(sig)
+        if result.get("recorded") is False:
+            print(f"    -> not filled live ({result.get('status')}) — not booked\n")
+            continue
         placed += 1
         print(f"    -> {result['mode']} {result['status']} @ {result.get('price')}\n")
 

@@ -132,16 +132,19 @@ def price_before_close(token_yes: str, fraction: float = 0.5) -> float:
 
         prices = [_safe_float(h.get("p")) for h in hist]
 
-        # Dead-market filter: require the price to have genuinely moved away
-        # from 0.50 at some point BEFORE the final-collapse region. If it never
-        # did, the market never formed a real opinion -> not a usable signal.
-        pre_collapse = prices[: int(len(prices) * 0.7)]
-        if not any(abs(p - 0.5) > 0.08 for p in pre_collapse):
-            return None
-
         idx = int(len(hist) * fraction)
         idx = max(0, min(len(hist) - 1, idx))
         p = prices[idx]
+
+        # Dead-market filter, NO LOOK-AHEAD: only inspect price action available
+        # AT OR BEFORE the entry point (idx). Previously this scanned up to 70% of
+        # the market's life — data from AFTER the 50% entry — which a live bettor
+        # could not see. Require the price to have moved away from 0.50 within the
+        # pre-entry window; if it never did, the market hadn't formed an opinion
+        # we could have acted on, so it's not a usable signal.
+        pre_entry = prices[: idx + 1]
+        if not any(abs(q - 0.5) > 0.08 for q in pre_entry):
+            return None
 
         # skip points at the placeholder 0.50 exactly, or already decided
         if p <= 0.02 or p >= 0.98 or abs(p - 0.5) < 0.001:

@@ -36,11 +36,12 @@ from .calib_table import measured_no_win
 #   "exploratory" = likely overpriced by analogy but not yet confirmed at n>=25
 LONGSHOT_TIERS = {
     "exact score":      "confirmed",    # soccer exact-score: +36% NO edge, n=32, CI clear
-    # Baseball player Home-Run props ("Player: Home Runs O/U 0.5/1.5"): people
-    # overpay that a hitter WILL homer; NO wins ~94% (n=64, +87% EV, WilsonLB 85%,
-    # held out-of-sample) — confirmed by the edge hunt (2026-06). NOTE: this is
-    # specific to HOME RUNS O/U; generic over/under is NOT an edge (it's -EV).
-    "home runs o/u":    "confirmed",
+    # Baseball player Home-Run props ("Player: Home Runs O/U 0.5/1.5"): the edge
+    # hunt suggested NO wins ~94%, but a follow-up audit (2026-06) found NO stored,
+    # reproducible artifact backing that number and the family is otherwise -EV.
+    # DEMOTED to exploratory (half stake) until a real measurement is committed.
+    # NOTE: still specific to HOME RUNS O/U; generic over/under is -EV.
+    "home runs o/u":    "exploratory",
     "spread:":          "exploratory",  # spread/handicap: same bias likely, not yet confirmed
     "handicap":         "exploratory",
     # Tweet-count RANGE markets ("post X-Y posts this week?"): same longshot bias
