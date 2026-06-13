@@ -103,6 +103,34 @@ class FadeSignal:
     fillable_usd: float = 0.0   # what the book can absorb near our price
 
 
+def _self_improve_mult(question: str) -> float:
+    """Stake multiplier from the day-by-day self-improvement state.
+    Returns 0.0 if this market's family was auto-DISABLED (decayed edge), else the
+    auto-tuned multiplier (default 1.0 when self-improve hasn't touched it). The
+    state file is written by polybot.self_improve; reading it here is how the
+    auto-tuned dials actually take effect in live sizing. Safe default = 1.0."""
+    try:
+        from .self_improve import load_state
+        state = load_state()
+    except Exception:
+        return 1.0
+    ql = question.lower()
+
+    def _fam_matches(cell_fam: str) -> bool:
+        # family labels are like "spread_handicap", "exact_score", "over_under";
+        # match if ANY of their word-parts appears in the question text.
+        parts = [p for p in cell_fam.replace("/", "_").split("_") if len(p) > 2]
+        return any(p in ql for p in parts) if parts else False
+
+    for cell in state.get("disabled", []):
+        if _fam_matches(cell.split("|")[0].strip()):
+            return 0.0
+    for cell, cfg in state.get("tiers", {}).items():
+        if _fam_matches(cell.split("|")[0].strip()):
+            return float(cfg.get("mult", 1.0))
+    return 1.0
+
+
 def _longshot_tier(q: str):
     """Return the confidence tier for a question, or None if not a longshot."""
     ql = q.lower()
@@ -181,9 +209,13 @@ def find_longshot_fades(
         if edge < config.LONGSHOT_MIN_EDGE:
             continue
 
-        # Desired stake from the budget, scaled by tier, then capped so no single
+        # Desired stake from the budget, scaled by tier, then by the SELF-IMPROVE
+        # multiplier (the day-by-day auto-tuned dial), then capped so no single
         # bet exceeds LONGSHOT_MAX_BET_FRAC of the daily budget (risk control).
-        desired_usd = round(stake_usd * TIER_STAKE_MULT[tier], 2)
+        si_mult = _self_improve_mult(m.question)
+        if si_mult == 0.0:                      # auto-disabled by the decay guard
+            continue
+        desired_usd = round(stake_usd * TIER_STAKE_MULT[tier] * si_mult, 2)
         desired_usd = round(min(desired_usd, per_bet_cap), 2)
 
         # REALISTIC SIZING: we bid BELOW the ask, so the honest immediately-
