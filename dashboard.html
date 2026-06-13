@@ -20,6 +20,21 @@
                  letter-spacing:.05em; }
   .hero-value { font-size:46px; font-weight:800; margin:6px 0; }
   .hero-sub { font-size:15px; color:var(--muted); }
+  .invest-card { background:linear-gradient(135deg,#161b22,#1c2333);
+                  border:1px solid var(--accent); border-radius:14px;
+                  padding:18px 18px 14px; margin-bottom:16px; }
+  .ic-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+             gap:12px; }
+  .ic-box { background:#0d111799; border:1px solid var(--border);
+             border-radius:11px; padding:14px 16px; }
+  .ic-box.highlight { border-color:var(--accent); background:#1f6feb18; }
+  .ic-lab { color:var(--muted); font-size:11px; text-transform:uppercase;
+             letter-spacing:.05em; }
+  .ic-val { font-size:30px; font-weight:800; margin:4px 0 2px; line-height:1.1; }
+  .ic-sub { color:var(--muted); font-size:11.5px; }
+  .ic-foot { color:var(--muted); font-size:12px; margin-top:12px;
+              border-top:1px solid var(--border); padding-top:10px; }
+  .ic-foot b { color:var(--text); }
   .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
             gap:10px; margin-bottom:18px; }
   .stat { background:var(--panel); border:1px solid var(--border);
@@ -124,28 +139,37 @@
 </style></head>
 <body><div class="wrap">
   <h1>My Polymarket Portfolio</h1>
-  <div class="gen">Updated 2026-06-13 17:11 · auto-refreshes every 60s · PAPER (no real money)</div>
+  <div class="gen">Updated 2026-06-13 17:13 · auto-refreshes every 60s · PAPER (no real money)</div>
 
   
-      <div class="hero">
-        <div class="hero-label">Invested $500 on 2026-05-13</div>
-        <div class="hero-value pos">$2,536.81</div>
-        <div class="hero-sub">
-          <span class="pos">+$2,036.81 (+407.4%)</span>
-          &nbsp;·&nbsp; over 32 days
+      <div class="invest-card">
+        <div class="ic-row">
+          <div class="ic-box">
+            <div class="ic-lab">Invested</div>
+            <div class="ic-val">$500.00</div>
+            <div class="ic-sub">on 2026-05-13</div>
+          </div>
+          <div class="ic-box">
+            <div class="ic-lab">Net profit / loss</div>
+            <div class="ic-val pos">+$2,036.81</div>
+            <div class="ic-sub">+407.4% after invested</div>
+          </div>
+          <div class="ic-box">
+            <div class="ic-lab">On stake</div>
+            <div class="ic-val">$211.65</div>
+            <div class="ic-sub">live in open bets</div>
+          </div>
+          <div class="ic-box highlight">
+            <div class="ic-lab">Net balance</div>
+            <div class="ic-val accent">$2,325.16</div>
+            <div class="ic-sub">free to invest or withdraw</div>
+          </div>
         </div>
-      </div>
-      <div class="live-account">
-        <span class="la-title">Live paper account</span>
-        <span class="la-net">Net balance <b class="accent">$500.00</b>
-          <span class="la-tag">withdrawable</span></span>
-        <span class="la-sep">=</span>
-        <span class="la-item"><b>$288.35</b> free cash</span>
-        <span class="la-sep">+</span>
-        <span class="la-item"><b>$211.65</b> locked in open bets</span>
-        <span class="la-note">Net balance is what you could cash out: free cash plus the
-          stake tied up in open bets (it returns, with winnings, as bets settle).
-          Started from $500. The big number above is the simulated 30-day curve.</span>
+        <div class="ic-foot">
+          Total account value <b>$2,536.81</b>
+          &nbsp;=&nbsp; $2,325.16 free &nbsp;+&nbsp; $211.65 on stake
+          &nbsp;·&nbsp; as bets settle, winnings move from stake into your net balance.
+        </div>
       </div>
       <div class="stats">
         <div class="stat"><div class="s-val pos">451</div>

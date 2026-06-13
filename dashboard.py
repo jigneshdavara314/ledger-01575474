@@ -153,27 +153,43 @@ def build_html() -> str:
     resolved = tot_won + tot_lost
     win_rate = (tot_won / resolved * 100) if resolved else 0
 
-    # ---- headline ----
+    # ---- headline: a plain investment statement ----
+    #   Invested  →  Net profit/loss  →  On stake (in open bets)  →  Net balance
+    # Net balance = free cash you can invest or withdraw right now.
+    net_profit = bk["profit"]              # equity - deposit
+    on_stake = bk["open_exposure"]         # locked in open bets
+    free_balance = bk["balance"]           # available to invest or withdraw
+    net_equity = bk["total_equity"]        # free + on stake (full account value)
+    pcls = _cls(net_profit)
     headline = f"""
-      <div class="hero">
-        <div class="hero-label">Invested ${deposit:,.0f} on {dep_date}</div>
-        <div class="hero-value {_cls(profit)}">${value:,.2f}</div>
-        <div class="hero-sub">
-          <span class="{_cls(profit)}">{_money(profit)} ({ret:+.1f}%)</span>
-          &nbsp;·&nbsp; over {len(equity_days)} days
+      <div class="invest-card">
+        <div class="ic-row">
+          <div class="ic-box">
+            <div class="ic-lab">Invested</div>
+            <div class="ic-val">${deposit:,.2f}</div>
+            <div class="ic-sub">on {dep_date}</div>
+          </div>
+          <div class="ic-box">
+            <div class="ic-lab">Net profit / loss</div>
+            <div class="ic-val {pcls}">{_money(net_profit)}</div>
+            <div class="ic-sub">{(net_profit/deposit*100) if deposit else 0:+.1f}% after invested</div>
+          </div>
+          <div class="ic-box">
+            <div class="ic-lab">On stake</div>
+            <div class="ic-val">${on_stake:,.2f}</div>
+            <div class="ic-sub">live in open bets</div>
+          </div>
+          <div class="ic-box highlight">
+            <div class="ic-lab">Net balance</div>
+            <div class="ic-val accent">${free_balance:,.2f}</div>
+            <div class="ic-sub">free to invest or withdraw</div>
+          </div>
         </div>
-      </div>
-      <div class="live-account">
-        <span class="la-title">Live paper account</span>
-        <span class="la-net">Net balance <b class="accent">${bk['total_equity']:,.2f}</b>
-          <span class="la-tag">withdrawable</span></span>
-        <span class="la-sep">=</span>
-        <span class="la-item"><b>${bk['balance']:,.2f}</b> free cash</span>
-        <span class="la-sep">+</span>
-        <span class="la-item"><b>${bk['open_exposure']:,.2f}</b> locked in open bets</span>
-        <span class="la-note">Net balance is what you could cash out: free cash plus the
-          stake tied up in open bets (it returns, with winnings, as bets settle).
-          Started from ${deposit:,.0f}. The big number above is the simulated 30-day curve.</span>
+        <div class="ic-foot">
+          Total account value <b>${net_equity:,.2f}</b>
+          &nbsp;=&nbsp; ${free_balance:,.2f} free &nbsp;+&nbsp; ${on_stake:,.2f} on stake
+          &nbsp;·&nbsp; as bets settle, winnings move from stake into your net balance.
+        </div>
       </div>
       <div class="stats">
         <div class="stat"><div class="s-val pos">{tot_won}</div>
@@ -313,6 +329,21 @@ def build_html() -> str:
                  letter-spacing:.05em; }}
   .hero-value {{ font-size:46px; font-weight:800; margin:6px 0; }}
   .hero-sub {{ font-size:15px; color:var(--muted); }}
+  .invest-card {{ background:linear-gradient(135deg,#161b22,#1c2333);
+                  border:1px solid var(--accent); border-radius:14px;
+                  padding:18px 18px 14px; margin-bottom:16px; }}
+  .ic-row {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+             gap:12px; }}
+  .ic-box {{ background:#0d111799; border:1px solid var(--border);
+             border-radius:11px; padding:14px 16px; }}
+  .ic-box.highlight {{ border-color:var(--accent); background:#1f6feb18; }}
+  .ic-lab {{ color:var(--muted); font-size:11px; text-transform:uppercase;
+             letter-spacing:.05em; }}
+  .ic-val {{ font-size:30px; font-weight:800; margin:4px 0 2px; line-height:1.1; }}
+  .ic-sub {{ color:var(--muted); font-size:11.5px; }}
+  .ic-foot {{ color:var(--muted); font-size:12px; margin-top:12px;
+              border-top:1px solid var(--border); padding-top:10px; }}
+  .ic-foot b {{ color:var(--text); }}
   .stats {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
             gap:10px; margin-bottom:18px; }}
   .stat {{ background:var(--panel); border:1px solid var(--border);
