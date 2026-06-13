@@ -258,12 +258,14 @@ def init_daily_equity():
 
 def record_daily_equity():
     """
-    Recompute TODAY's row from actual resolved-today trades + current balance.
-    Called after each resolve so the daily-history table reflects real results.
-    Idempotent: re-running the same day just overwrites today's row.
+    Recompute TODAY's row from actual resolved-today trades and CHAIN it onto the
+    running equity curve: balance_after = previous day's balance + today's profit.
+
+    This preserves the historical backfill (it does NOT reset to the live bankroll
+    balance, which would clobber the curve). Idempotent: re-running today just
+    recomputes today's profit and re-chains from the prior day.
     """
     import datetime
-    from . import bankroll
     init_daily_equity()
     day = datetime.datetime.utcnow().strftime("%Y-%m-%d")
     with _conn() as c:
@@ -273,8 +275,12 @@ def record_daily_equity():
             "WHERE status IN ('WON','LOST') AND resolved_ts LIKE ?",
             (day + "%",),
         ).fetchone()
-    bal = bankroll.summary()["total_equity"]
-    with _conn() as c:
+        # previous day's running balance (the most recent row BEFORE today)
+        prev = c.execute(
+            "SELECT balance_after FROM daily_equity WHERE day < ? "
+            "ORDER BY day DESC LIMIT 1", (day,)).fetchone()
+        prev_bal = prev[0] if prev else 500.0
+        new_bal = round(prev_bal + (profit or 0), 2)
         c.execute("""
             INSERT INTO daily_equity (day, bets_settled, won, lost, day_profit, balance_after)
             VALUES (?,?,?,?,?,?)
@@ -283,7 +289,7 @@ def record_daily_equity():
               lost=excluded.lost, day_profit=excluded.day_profit,
               balance_after=excluded.balance_after
         """, (day, (won or 0) + (lost or 0), won or 0, lost or 0,
-              round(profit or 0, 2), round(bal, 2)))
+              round(profit or 0, 2), new_bal))
 
 
 def daily_equity(limit: int = 60):
