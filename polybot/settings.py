@@ -39,7 +39,9 @@ def daily_budget() -> float:
     env = os.getenv("DAILY_BUDGET")
     if env:
         try:
-            return float(env)
+            # Clamp the env override to a sane range so a fat-fingered value
+            # (e.g. "500000") can't blow past the relative risk caps.
+            return max(1.0, min(float(env), 100_000.0))
         except ValueError:
             pass
     try:

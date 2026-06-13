@@ -263,6 +263,16 @@ def cmd_loop():
 # LONGSHOT — fade overpriced exact-score / spread longshots (buy NO)
 # ---------------------------------------------------------------------------
 
+def _event_group_key(question: str) -> str:
+    """Best-effort match identifier from a question when no event slug exists.
+    Most sub-market questions are 'Team A vs. Team B: <line>' — the part before
+    the colon is the match, so all its lines share one correlation group."""
+    q = (question or "").strip()
+    if ":" in q:
+        return q.split(":", 1)[0].strip().lower()
+    return q.lower()
+
+
 def cmd_longshot(trade: bool = True):
     """
     Find overpriced longshot markets (exact-score, spreads) and buy NO on each,
@@ -318,9 +328,12 @@ def cmd_longshot(trade: bool = True):
             print("     -> skipped (position cap)")
             continue
         # CORRELATION CAP: the sub-markets of one match resolve together, so they
-        # aren't independent diversification. Limit bets per event.
+        # aren't independent diversification. Limit bets per event. If the event
+        # slug is missing, fall back to the match name parsed from the question
+        # ("Team A vs. Team B: <line>") so the cap is NOT silently bypassed.
         slug = getattr(f.market, "event_slug", "") or ""
-        if slug and store.open_count_for_event(slug) >= config.LONGSHOT_MAX_PER_EVENT:
+        group_key = slug or _event_group_key(f.market.question)
+        if group_key and store.open_count_for_event_like(group_key) >= config.LONGSHOT_MAX_PER_EVENT:
             print(f"     -> skipped (per-event cap: already "
                   f"{config.LONGSHOT_MAX_PER_EVENT} bets on this match)")
             continue

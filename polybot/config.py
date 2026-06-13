@@ -167,6 +167,15 @@ DAILY_BUDGET_USD = daily_budget()
 LONGSHOT_STAKE_USD     = float(os.getenv("LONGSHOT_STAKE", "10.0"))
 LONGSHOT_MIN_LIQUIDITY = float(os.getenv("LONGSHOT_MIN_LIQ", "3000"))
 LONGSHOT_MIN_EDGE      = float(os.getenv("LONGSHOT_MIN_EDGE", "0.06"))
+# FRICTION MODEL (honest paper P&L). Real execution is worse than the quoted bid:
+#   - PAPER_SLIPPAGE: average price you actually pay ABOVE your bid (adverse
+#     selection — resting limits fill disproportionately when the market moves
+#     against you). Added to the entry NO price in paper.
+#   - PAPER_FEE_FRAC: round-trip fee/gas as a fraction of stake, deducted from
+#     P&L at settlement. Polymarket has no per-trade fee today, but gas + spread
+#     decay justify a small non-zero default so paper isn't free-money optimistic.
+PAPER_SLIPPAGE  = float(os.getenv("PAPER_SLIPPAGE", "0.01"))   # +1 cent worse fill
+PAPER_FEE_FRAC  = float(os.getenv("PAPER_FEE_FRAC", "0.01"))   # 1% round-trip drag
 LONGSHOT_MAX_BETS      = int(os.getenv("LONGSHOT_MAX_BETS", "40"))   # diversify
 # Mid-price bidding: 0.0 = bid at midpoint (best price, may not fill),
 # 1.0 = bid at ask (fills immediately). 0.4 leans toward a better price.

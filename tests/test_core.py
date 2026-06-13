@@ -28,23 +28,34 @@ def test_pnl_win_and_loss():
     m = Market(condition_id="0xT", question="Q", token_id_yes="y", token_id_no="n",
                price_yes=0.6, liquidity=1e5, volume=0, volume_24h=0, spread=0,
                end_date="", hours_to_resolution=1, category="soccer", event_title="")
-    # bet NO at 0.80 with $2 -> 2.5 shares
+    # Isolate the friction model for deterministic math: zero fee/slippage here.
+    config.PAPER_FEE_FRAC = 0.0
+    config.PAPER_SLIPPAGE = 0.0
+    # bet NO at 0.80 with $2 -> 2.5 shares (fill price passed explicitly)
     sig = Signal(market=m, side="NO", fair_prob=0.9, market_prob=0.80,
                  edge=0.1, size_usd=2.0, reason="t", estimator="test")
-    store.record_trade(sig, {"mode": "PAPER", "status": "simulated"})
+    store.record_trade(sig, {"mode": "PAPER", "status": "simulated", "price": 0.80})
     pos = store.open_positions()[0]
     trade_id, _, _, side, size, mktp, shares = pos
     assert abs(shares - 2.5) < 1e-6, f"shares should be 2.5, got {shares}"
 
-    # WIN: payout = shares*1 = 2.5, profit = 0.5
+    # WIN (no fee): payout = shares*1 = 2.5, profit = 0.5
     pnl = store.settle_position(trade_id, won=True, size_usd=size, shares=shares)
     assert abs(pnl - 0.5) < 1e-6, f"win pnl should be +0.5, got {pnl}"
 
     # LOSS case on a fresh bet
-    store.record_trade(sig, {"mode": "PAPER", "status": "simulated"})
+    store.record_trade(sig, {"mode": "PAPER", "status": "simulated", "price": 0.80})
     pos2 = [p for p in store.open_positions()][0]
     pnl2 = store.settle_position(pos2[0], won=False, size_usd=2.0, shares=2.5)
     assert abs(pnl2 - (-2.0)) < 1e-6, f"loss pnl should be -2.0, got {pnl2}"
+
+    # Now verify the FRICTION model bites: 1% fee on a $2 stake = $0.02 drag.
+    config.PAPER_FEE_FRAC = 0.01
+    store.record_trade(sig, {"mode": "PAPER", "status": "simulated", "price": 0.80})
+    p3 = [p for p in store.open_positions()][0]
+    pnl3 = store.settle_position(p3[0], won=True, size_usd=2.0, shares=2.5)
+    assert abs(pnl3 - (0.5 - 0.02)) < 1e-6, f"win pnl net of fee should be 0.48, got {pnl3}"
+    config.PAPER_FEE_FRAC = 0.0
     os.remove(path)
     print("PASS test_pnl_win_and_loss")
 

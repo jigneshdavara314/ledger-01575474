@@ -72,12 +72,17 @@ class Executor:
 
     # ------------------------------------------------------------------
     def _execute_paper(self, signal: Signal) -> dict:
-        # Paper assumes the (already fill-gated) bid fills at the bid price.
+        # Paper fills are NOT free money: real resting limits fill a bit WORSE
+        # than your bid (adverse selection). Mark the entry at bid + slippage,
+        # capped below 1.0. This feeds into recorded shares (size/price), so paper
+        # P&L is no longer the optimistic best-case the audit flagged.
+        slip = getattr(config, "PAPER_SLIPPAGE", 0.0)
+        fill_price = min(0.999, round(signal.market_prob + slip, 4))
         return {
             "mode": "PAPER",
             "status": "simulated",
             "filled_size": signal.size_usd,
-            "price": signal.market_prob,
+            "price": fill_price,
         }
 
     def _execute_live(self, signal: Signal) -> dict:
@@ -161,13 +166,13 @@ class Executor:
             return 0.0, fallback_price
 
     def _has_funds(self, usd: float) -> bool:
-        """Best-effort check of real USDC collateral before ordering."""
+        """Check real USDC collateral before ordering. FAIL-CLOSED: if we cannot
+        read the on-chain balance, we DON'T submit (refusing to risk real money
+        on an unknown balance is safer than failing open)."""
         try:
             bal = self._client.get_balance_allowance()
             # py-clob-client returns balances in USDC base units (6 decimals)
             avail = float(bal.get("balance", 0)) / 1e6
             return avail >= usd
         except Exception:
-            # if we can't read it, be conservative and allow the post to fail
-            # at the exchange rather than silently blocking — but log via status.
-            return True
+            return False  # fail-closed: no confirmed funds -> no order

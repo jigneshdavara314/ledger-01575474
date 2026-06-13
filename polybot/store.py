@@ -67,8 +67,14 @@ def init_db():
 
 
 def record_trade(signal: Signal, result: dict):
-    """Record a freshly-placed trade as an OPEN position."""
-    shares = round(signal.size_usd / signal.market_prob, 4) if signal.market_prob else 0.0
+    """Record a freshly-placed trade as an OPEN position.
+
+    Use the ACTUAL fill price from the executor result (which includes paper
+    slippage / the real LIVE matched price), not the quoted bid — so recorded
+    shares and downstream P&L reflect realistic execution, not the best case.
+    """
+    fill_price = result.get("price") or signal.market_prob
+    shares = round(signal.size_usd / fill_price, 4) if fill_price else 0.0
     estimator = getattr(signal, "estimator", "heuristic")
     category  = getattr(signal.market, "category", "other")
     hrs       = getattr(signal.market, "hours_to_resolution", None)
@@ -88,7 +94,7 @@ def record_trade(signal: Signal, result: dict):
                 signal.market.question,
                 signal.side,
                 signal.fair_prob,
-                signal.market_prob,
+                fill_price,            # actual fill (incl. paper slippage / real match)
                 signal.edge,
                 signal.size_usd,
                 shares,
@@ -137,6 +143,26 @@ def open_count_for_event(event_slug: str) -> int:
     return row[0]
 
 
+def open_count_for_event_like(group_key: str) -> int:
+    """Open bets matching an event group — by exact event_slug OR by the match
+    name parsed from the question (case-insensitive prefix before the colon).
+    Used so the per-event correlation cap still works when event_slug is empty."""
+    if not group_key:
+        return 0
+    gk = group_key.lower()
+    with _conn() as c:
+        try:
+            row = c.execute(
+                "SELECT COUNT(*) FROM trades WHERE status='OPEN' AND ("
+                "  LOWER(COALESCE(event_slug,'')) = ? "
+                "  OR LOWER(question) LIKE ? )",
+                (gk, gk + ":%"),
+            ).fetchone()
+        except Exception:
+            return 0
+    return row[0]
+
+
 def open_position_count() -> int:
     """Count only currently-open (unresolved) positions."""
     with _conn() as c:
@@ -158,12 +184,17 @@ def open_positions():
 
 
 def settle_position(trade_id: int, won: bool, size_usd: float, shares: float):
-    """Mark a position WON or LOST and write its realised P&L."""
+    """Mark a position WON or LOST and write its realised P&L, net of friction.
+
+    A round-trip fee/gas drag (config.PAPER_FEE_FRAC of stake) is deducted so the
+    paper P&L is not free-money optimistic — the same friction a live position
+    would bear. Applied to wins and losses alike."""
+    fee = round(getattr(config, "PAPER_FEE_FRAC", 0.0) * size_usd, 4)
     if won:
-        pnl = round(shares * 1.0 - size_usd, 4)   # each winning share pays $1
+        pnl = round(shares * 1.0 - size_usd - fee, 4)   # each winning share pays $1
         status = STATUS_WON
     else:
-        pnl = round(-size_usd, 4)                  # losing side pays nothing
+        pnl = round(-size_usd - fee, 4)                 # losing side pays nothing
         status = STATUS_LOST
     with _conn() as c:
         c.execute(
@@ -284,38 +315,18 @@ def init_daily_equity():
 
 def record_daily_equity():
     """
-    Recompute TODAY's row from actual resolved-today trades and CHAIN it onto the
-    running equity curve: balance_after = previous day's balance + today's profit.
+    DEPRECATED / no-op for the real curve.
 
-    This preserves the historical backfill (it does NOT reset to the live bankroll
-    balance, which would clobber the curve). Idempotent: re-running today just
-    recomputes today's profit and re-chains from the prior day.
+    This used to chain real daily P&L onto the SIMULATED 30-day backfill base
+    stored in daily_equity, producing a self-inconsistent hybrid table (an audit
+    flagged the 5x figure). The dashboard now builds the REAL curve on the fly
+    from actual trades via real_daily_equity(), so we no longer write real
+    results into the simulated table at all. The simulated backfill rows in
+    daily_equity are left untouched for the clearly-labelled simulation chart.
+
+    Kept as a no-op so existing callers (the resolve job) don't break.
     """
-    import datetime
-    init_daily_equity()
-    day = datetime.datetime.utcnow().strftime("%Y-%m-%d")
-    with _conn() as c:
-        won, lost, profit = c.execute(
-            "SELECT COALESCE(SUM(status='WON'),0), COALESCE(SUM(status='LOST'),0), "
-            "COALESCE(SUM(pnl_usd),0) FROM trades "
-            "WHERE status IN ('WON','LOST') AND resolved_ts LIKE ?",
-            (day + "%",),
-        ).fetchone()
-        # previous day's running balance (the most recent row BEFORE today)
-        prev = c.execute(
-            "SELECT balance_after FROM daily_equity WHERE day < ? "
-            "ORDER BY day DESC LIMIT 1", (day,)).fetchone()
-        prev_bal = prev[0] if prev else 500.0
-        new_bal = round(prev_bal + (profit or 0), 2)
-        c.execute("""
-            INSERT INTO daily_equity (day, bets_settled, won, lost, day_profit, balance_after)
-            VALUES (?,?,?,?,?,?)
-            ON CONFLICT(day) DO UPDATE SET
-              bets_settled=excluded.bets_settled, won=excluded.won,
-              lost=excluded.lost, day_profit=excluded.day_profit,
-              balance_after=excluded.balance_after
-        """, (day, (won or 0) + (lost or 0), won or 0, lost or 0,
-              round(profit or 0, 2), new_bal))
+    return
 
 
 def real_daily_equity(limit: int = 60, start_balance: float = 500.0):
