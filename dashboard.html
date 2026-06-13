@@ -26,6 +26,10 @@
            border-radius:10px; padding:14px; text-align:center; }
   .s-val { font-size:24px; font-weight:700; }
   .s-lab { color:var(--muted); font-size:11px; text-transform:uppercase; margin-top:2px; }
+  .caveat { background:#2a1f0e; border:1px solid #8a6d3b; border-radius:10px;
+             padding:12px 14px; color:#d8c08a; font-size:12.5px; line-height:1.5;
+             margin-bottom:22px; }
+  .caveat b { color:#f0d99a; }
   .pos { color:var(--pos); } .neg { color:var(--neg); }
   h2 { font-size:14px; margin:22px 0 8px; border-left:3px solid var(--accent);
         padding-left:9px; }
@@ -60,26 +64,33 @@
 </style></head>
 <body><div class="wrap">
   <h1>My Polymarket Portfolio</h1>
-  <div class="gen">Updated 2026-06-13 10:52 · auto-refreshes every 60s · PAPER (no real money)</div>
+  <div class="gen">Updated 2026-06-13 13:23 · auto-refreshes every 60s · PAPER (no real money)</div>
 
   
       <div class="hero">
         <div class="hero-label">Invested $500 on 2026-05-13</div>
-        <div class="hero-value ">$500.00</div>
+        <div class="hero-value pos">$4,718.99</div>
         <div class="hero-sub">
-          <span class="">+$0.00 (+0.0%)</span>
-          &nbsp;·&nbsp; $376.11 cash + $123.89 in play
+          <span class="pos">+$4,218.99 (+843.8%)</span>
+          &nbsp;·&nbsp; over 32 days
         </div>
       </div>
       <div class="stats">
-        <div class="stat"><div class="s-val">6–1</div>
+        <div class="stat"><div class="s-val">489–82</div>
           <div class="s-lab">Won – Lost</div></div>
         <div class="stat"><div class="s-val">86%</div>
           <div class="s-lab">Win rate</div></div>
+        <div class="stat"><div class="s-val">571</div>
+          <div class="s-lab">Total bets</div></div>
         <div class="stat"><div class="s-val">21</div>
-          <div class="s-lab">Open bets</div></div>
-        <div class="stat"><div class="s-val">7</div>
-          <div class="s-lab">Settled</div></div>
+          <div class="s-lab">Open now</div></div>
+      </div>
+      <div class="caveat">
+        ⚠️ This is a <b>simulated replay</b> of the strategy on real resolved
+        markets since 2026-05-13. The win rate (~86%) is real, but the
+        balance compounds bets into thin markets without depth limits — <b>live
+        fills would be smaller</b>, so real growth would be considerably lower.
+        Treat the value as the optimistic ceiling, not a promise.
       </div>
     
 
@@ -94,7 +105,7 @@
   <h2>Daily history (since 2026-05-13)</h2>
   <table><thead><tr><th>Day</th><th>Settled</th><th>W–L</th><th>Day profit</th>
     <th>Balance</th></tr></thead>
-    <tbody><tr><td>2026-06-13</td><td>7</td><td>6–1</td><td class='pos'>+$0.17</td><td>$500.17</td></tr></tbody></table>
+    <tbody><tr><td>2026-06-13</td><td>10</td><td>7–3</td><td class='pos'>+$9.13</td><td>$4,718.99</td></tr><tr><td>2026-06-12</td><td>20</td><td>18–2</td><td class='pos'>+$346.67</td><td>$4,709.86</td></tr><tr><td>2026-06-11</td><td>13</td><td>11–2</td><td class='pos'>+$77.25</td><td>$4,363.19</td></tr><tr><td>2026-06-10</td><td>20</td><td>15–5</td><td class='pos'>+$84.73</td><td>$4,285.94</td></tr><tr><td>2026-06-09</td><td>20</td><td>17–3</td><td class='pos'>+$111.31</td><td>$4,201.21</td></tr><tr><td>2026-06-08</td><td>20</td><td>19–1</td><td class='pos'>+$153.18</td><td>$4,089.90</td></tr><tr><td>2026-06-07</td><td>20</td><td>18–2</td><td class='pos'>+$115.73</td><td>$3,936.72</td></tr><tr><td>2026-06-06</td><td>20</td><td>17–3</td><td class='pos'>+$102.47</td><td>$3,820.99</td></tr><tr><td>2026-06-05</td><td>20</td><td>19–1</td><td class='pos'>+$144.77</td><td>$3,718.52</td></tr><tr><td>2026-06-04</td><td>20</td><td>19–1</td><td class='pos'>+$177.85</td><td>$3,573.75</td></tr><tr><td>2026-06-03</td><td>20</td><td>17–3</td><td class='pos'>+$75.08</td><td>$3,395.90</td></tr><tr><td>2026-06-02</td><td>18</td><td>16–2</td><td class='pos'>+$102.19</td><td>$3,320.82</td></tr><tr><td>2026-06-01</td><td>20</td><td>18–2</td><td class='pos'>+$120.48</td><td>$3,218.63</td></tr><tr><td>2026-05-31</td><td>15</td><td>12–3</td><td class='pos'>+$80.42</td><td>$3,098.15</td></tr><tr><td>2026-05-30</td><td>20</td><td>15–5</td><td class='pos'>+$68.77</td><td>$3,017.73</td></tr><tr><td>2026-05-29</td><td>20</td><td>16–4</td><td class='pos'>+$76.35</td><td>$2,948.96</td></tr><tr><td>2026-05-28</td><td>20</td><td>16–4</td><td class='pos'>+$85.87</td><td>$2,872.61</td></tr><tr><td>2026-05-27</td><td>20</td><td>17–3</td><td class='pos'>+$134.06</td><td>$2,786.74</td></tr><tr><td>2026-05-26</td><td>20</td><td>19–1</td><td class='pos'>+$205.14</td><td>$2,652.68</td></tr><tr><td>2026-05-25</td><td>15</td><td>12–3</td><td class='pos'>+$58.95</td><td>$2,447.54</td></tr><tr><td>2026-05-24</td><td>20</td><td>18–2</td><td class='pos'>+$166.46</td><td>$2,388.59</td></tr><tr><td>2026-05-23</td><td>20</td><td>15–5</td><td class='pos'>+$100.03</td><td>$2,222.13</td></tr><tr><td>2026-05-22</td><td>20</td><td>16–4</td><td class='pos'>+$84.73</td><td>$2,122.10</td></tr><tr><td>2026-05-21</td><td>20</td><td>15–5</td><td class='pos'>+$118.11</td><td>$2,037.37</td></tr><tr><td>2026-05-20</td><td>20</td><td>19–1</td><td class='pos'>+$209.60</td><td>$1,919.26</td></tr><tr><td>2026-05-19</td><td>20</td><td>19–1</td><td class='pos'>+$270.56</td><td>$1,709.66</td></tr><tr><td>2026-05-18</td><td>20</td><td>20–0</td><td class='pos'>+$349.85</td><td>$1,439.10</td></tr><tr><td>2026-05-17</td><td>20</td><td>16–4</td><td class='pos'>+$113.98</td><td>$1,089.25</td></tr><tr><td>2026-05-16</td><td>20</td><td>18–2</td><td class='pos'>+$341.75</td><td>$975.27</td></tr><tr><td>2026-05-15</td><td>5</td><td>3–2</td><td class='pos'>+$12.33</td><td>$633.52</td></tr><tr><td>2026-05-14</td><td>7</td><td>6–1</td><td class='pos'>+$79.09</td><td>$621.19</td></tr><tr><td>2026-05-13</td><td>8</td><td>6–2</td><td class='pos'>+$42.10</td><td>$542.10</td></tr></tbody></table>
 
   <h2>By category</h2>
   <table><thead><tr><th>Category</th><th>W–L</th><th>Win%</th><th>Profit</th></tr></thead>

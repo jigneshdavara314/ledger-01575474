@@ -47,32 +47,49 @@ def build_html() -> str:
 
     open_rows = [r for r in rows if r[6] == "OPEN"]
     done_rows = [r for r in rows if r[6] in ("WON", "LOST")]
-    equity_days = store.daily_equity(60)
+    equity_days = store.daily_equity(60)  # newest first
 
-    value = bk["total_equity"]
-    profit = bk["profit"]
-    ret = bk["return_pct"]
-    win_rate = s["win_rate"] * 100
+    deposit = bk["initial_deposit"]
+    # Headline value = the backfilled equity curve's latest balance (the real
+    # "what would $500 be now" answer). Falls back to live equity if no curve.
+    if equity_days:
+        value = equity_days[0][5]            # balance_after of most recent day
+        tot_won = sum(d[2] for d in equity_days)
+        tot_lost = sum(d[3] for d in equity_days)
+    else:
+        value = bk["total_equity"]
+        tot_won, tot_lost = s["won"], s["lost"]
+    profit = round(value - deposit, 2)
+    ret = round(profit / deposit * 100, 1) if deposit else 0
+    resolved = tot_won + tot_lost
+    win_rate = (tot_won / resolved * 100) if resolved else 0
 
     # ---- headline ----
     headline = f"""
       <div class="hero">
-        <div class="hero-label">Invested ${bk['initial_deposit']:,.0f} on {dep_date}</div>
+        <div class="hero-label">Invested ${deposit:,.0f} on {dep_date}</div>
         <div class="hero-value {_cls(profit)}">${value:,.2f}</div>
         <div class="hero-sub">
           <span class="{_cls(profit)}">{_money(profit)} ({ret:+.1f}%)</span>
-          &nbsp;·&nbsp; ${bk['balance']:,.2f} cash + ${bk['open_exposure']:,.2f} in play
+          &nbsp;·&nbsp; over {len(equity_days)} days
         </div>
       </div>
       <div class="stats">
-        <div class="stat"><div class="s-val">{s['won']}–{s['lost']}</div>
+        <div class="stat"><div class="s-val">{tot_won}–{tot_lost}</div>
           <div class="s-lab">Won – Lost</div></div>
         <div class="stat"><div class="s-val">{win_rate:.0f}%</div>
           <div class="s-lab">Win rate</div></div>
+        <div class="stat"><div class="s-val">{resolved}</div>
+          <div class="s-lab">Total bets</div></div>
         <div class="stat"><div class="s-val">{s['open']}</div>
-          <div class="s-lab">Open bets</div></div>
-        <div class="stat"><div class="s-val">{s['resolved']}</div>
-          <div class="s-lab">Settled</div></div>
+          <div class="s-lab">Open now</div></div>
+      </div>
+      <div class="caveat">
+        ⚠️ This is a <b>simulated replay</b> of the strategy on real resolved
+        markets since {dep_date}. The win rate (~{win_rate:.0f}%) is real, but the
+        balance compounds bets into thin markets without depth limits — <b>live
+        fills would be smaller</b>, so real growth would be considerably lower.
+        Treat the value as the optimistic ceiling, not a promise.
       </div>
     """
 
@@ -154,6 +171,10 @@ def build_html() -> str:
            border-radius:10px; padding:14px; text-align:center; }}
   .s-val {{ font-size:24px; font-weight:700; }}
   .s-lab {{ color:var(--muted); font-size:11px; text-transform:uppercase; margin-top:2px; }}
+  .caveat {{ background:#2a1f0e; border:1px solid #8a6d3b; border-radius:10px;
+             padding:12px 14px; color:#d8c08a; font-size:12.5px; line-height:1.5;
+             margin-bottom:22px; }}
+  .caveat b {{ color:#f0d99a; }}
   .pos {{ color:var(--pos); }} .neg {{ color:var(--neg); }}
   h2 {{ font-size:14px; margin:22px 0 8px; border-left:3px solid var(--accent);
         padding-left:9px; }}
