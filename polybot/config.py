@@ -151,7 +151,16 @@ MARKET_LIMIT  = int(os.getenv("MARKET_LIMIT",  "30"))
 # derived from this (budget / expected number of bets), scaled by tier confidence
 # and capped by real order-book depth. THIS is the main knob — set it to your
 # daily budget and the bot sizes each bet sensibly.
-DAILY_BUDGET_USD = float(os.getenv("DAILY_BUDGET", "200"))
+#
+# Read from settings.json (adjustable from the dashboard / one edit) so you can
+# scale your daily investment up later without code changes. Env var DAILY_BUDGET
+# still overrides for one-off runs. Use config.daily_budget() for a LIVE value
+# that reflects edits made during a running process (e.g. the local server).
+def daily_budget() -> float:
+    from .settings import daily_budget as _db
+    return _db()
+
+DAILY_BUDGET_USD = daily_budget()
 
 # Legacy flat per-bet stake — used only as a fallback / floor. The budget logic
 # above normally overrides this.

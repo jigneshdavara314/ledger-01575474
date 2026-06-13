@@ -316,16 +316,19 @@ def cmd_longshot(trade: bool = True):
                   f"${bankroll.balance():.2f} < ${f.size_usd:.2f})")
             continue
 
-        # HONEST FILL MODEL: a limit order below the ask may not fill. In paper
-        # mode we simulate this — only count the trade as filled with prob
-        # f.fill_prob. Use a deterministic hash so runs are reproducible and we
-        # don't depend on Math.random/time (keeps behavior stable).
-        fill_roll = (hash(f.market.condition_id) % 1000) / 1000.0
-        if fill_roll > f.fill_prob:
-            print(f"     -> limit NOT filled at {f.bid_price:.3f} "
-                  f"(would retry next scan or pay ask)")
-            skipped_nofill += 1
-            continue
+        # HONEST FILL MODEL: a limit order below the ask may not fill. In PAPER
+        # mode we SIMULATE this — only count the trade as filled with prob
+        # f.fill_prob, using a deterministic hash so runs are reproducible.
+        # In LIVE mode we DON'T simulate: we post the real limit order and let
+        # the exchange decide if it fills (this is the only paper/live divergence,
+        # and it's the correct one — you can't fake a fill you're really placing).
+        if config.MODE != "LIVE":
+            fill_roll = (hash(f.market.condition_id) % 1000) / 1000.0
+            if fill_roll > f.fill_prob:
+                print(f"     -> limit NOT filled at {f.bid_price:.3f} "
+                      f"(would retry next scan or pay ask)")
+                skipped_nofill += 1
+                continue
 
         sig = Signal(
             market=f.market, side="NO",
@@ -422,12 +425,14 @@ def cmd_lagwatch(trade: bool = True):
             print("    -> skipped (already open)\n")
             continue
 
-        # Honest fill model for the limit order (deterministic, reproducible).
-        fill_roll = (hash(o.condition_id) % 1000) / 1000.0
-        if fill_roll > fill_prob:
-            print(f"    -> limit NOT filled at {bid_price:.3f} (retry next scan)\n")
-            nofill += 1
-            continue
+        # Honest fill model (PAPER only — LIVE posts the real order and lets the
+        # exchange fill it). Deterministic roll so paper runs are reproducible.
+        if config.MODE != "LIVE":
+            fill_roll = (hash(o.condition_id) % 1000) / 1000.0
+            if fill_roll > fill_prob:
+                print(f"    -> limit NOT filled at {bid_price:.3f} (retry next scan)\n")
+                nofill += 1
+                continue
 
         size = config.STRATEGY.max_position_usd
         mkt = Market(

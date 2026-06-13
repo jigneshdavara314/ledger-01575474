@@ -65,7 +65,10 @@ def budget_base_stake() -> float:
         from .bankroll import balance
         pool = balance()
     except Exception:
-        pool = config.DAILY_BUDGET_USD
+        pool = config.daily_budget()
+    # Never plan to deploy more than the user's daily budget in a single day,
+    # even if the bankroll is large — this is the "invest $X/day" ceiling.
+    pool = min(pool, config.daily_budget())
     n = max(1, config.LONGSHOT_MAX_BETS)
     return max(pool / n, 0.0)
 
@@ -115,7 +118,7 @@ def find_longshot_fades(
     # Per-bet base derived from the daily budget (overrides the flat stake).
     stake_usd = stake_usd or budget_base_stake()
     # Per-bet hard cap: never more than this share of the daily budget on one market.
-    per_bet_cap = config.DAILY_BUDGET_USD * config.LONGSHOT_MAX_BET_FRAC
+    per_bet_cap = config.daily_budget() * config.LONGSHOT_MAX_BET_FRAC
 
     # Pull sports (exact-score subs) + tweets-markets (post-count range longshots).
     # Broadened for more breadth: the edge is the same favorite-longshot bias on

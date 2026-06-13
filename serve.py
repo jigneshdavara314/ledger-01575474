@@ -50,6 +50,18 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
             self.send_error(404)
 
     def do_POST(self):
+        # Adjust the daily investment budget (persists to settings.json).
+        if self.path.startswith("/set-budget/"):
+            raw = self.path[len("/set-budget/"):].strip("/")
+            try:
+                from polybot.settings import set_daily_budget
+                newval = set_daily_budget(float(raw))
+                # regenerate the dashboard so the new value shows immediately
+                subprocess.run([PYTHON, "dashboard.py"], capture_output=True, timeout=60)
+                self._send(200, f"Daily budget set to ${newval:,.2f}.", "text/plain")
+            except Exception as e:
+                self._send(400, f"Bad budget value: {e}", "text/plain")
+            return
         if not self.path.startswith("/run/"):
             self.send_error(404)
             return
