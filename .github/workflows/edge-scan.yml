@@ -4,10 +4,9 @@ name: edge-scan
 
 on:
   schedule:
-    # Continuous hunting: once daily at 06:00 UTC. Each run re-scans the latest
-    # 15-day window on GitHub's machines (never the user's PC) and commits the
-    # result + appends to an edge history log.
-    - cron: "0 6 * * *"
+    # Continuous hunting every 6 hours so candidates accumulate recurrence faster
+    # (a real edge proves itself sooner). Runs on GitHub's machines, never the PC.
+    - cron: "0 */6 * * *"
   workflow_dispatch:
     inputs:
       days:

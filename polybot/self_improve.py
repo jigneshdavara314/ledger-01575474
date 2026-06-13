@@ -36,13 +36,18 @@ LOG_PATH = os.path.join(BASE, "self_improve_log.jsonl")
 HISTORY_PATH = os.path.join(BASE, "edge_scan_history.jsonl")
 
 # --- bounds (safety rails) ---
-PROMOTE_DAYS = 5            # gate must pass on >=5 separate daily scans
-GRACE_DAYS = 3             # warnings before an underperforming edge is disabled
-TIER_MULT_MIN = 0.25       # never size below 25% of base
+# TWO-TRACK promotion so the bot is autonomous AND productive (new edges actually
+# get bet within days, not weeks) without weakening the bulletproof math gate —
+# we only change how fast a *passing* candidate gets trialed, never the gate itself.
+TRIAL_DAYS = 2             # clear the gate on >=2 days -> TRIAL at tiny stake
+TRIAL_MULT = 0.25         # trial stake = 25% of base (minimal risk on new edges)
+PROMOTE_DAYS = 5           # clear on >=5 days -> graduate trial to exploratory (0.5x)
+GRACE_DAYS = 2             # underperforming edge: warn/shrink, then disable fast
+TIER_MULT_MIN = 0.10       # floor before disable
 TIER_MULT_MAX = 1.0        # never auto-size above full stake
 RETUNE_STEP = 0.10         # max stake-multiplier change per day
 ROLLING_BETS = 30          # window for live win-rate evaluation
-MIN_EVAL_BETS = 12         # need this many settled bets to judge an edge
+MIN_EVAL_BETS = 10         # need this many settled bets to judge an edge
 
 
 def _today():
@@ -87,34 +92,51 @@ def _scan_history() -> list:
 
 # ---------------------------------------------------------------------------
 def promote(state: dict):
-    """Auto-add a candidate that cleared the bulletproof gate on >=PROMOTE_DAYS
-    distinct days. Added as exploratory (half stake); full stake stays manual."""
+    """Two-track auto-promotion from the bulletproof-gate recurrence history:
+      >=TRIAL_DAYS distinct days   -> TRIAL tier at TRIAL_MULT (tiny stake)
+      >=PROMOTE_DAYS distinct days -> graduate to EXPLORATORY (half stake)
+    A candidate must STILL clear the full math gate each of those days — we never
+    bet noise; we just start betting a *proven-recurring* edge sooner, small."""
     hist = _scan_history()
-    # count DISTINCT days each cell passed
     days_by_cell = defaultdict(set)
     for h in hist:
         day = (h.get("ts") or "")[:10]
         for p in h.get("passed", []):
             days_by_cell[p["cell"]].add(day)
     for cell, days in days_by_cell.items():
-        if cell in state["tiers"] or cell in state.get("disabled", []):
+        if cell in state.get("disabled", []):
             continue
-        if len(days) >= PROMOTE_DAYS:
+        nd = len(days)
+        cur = state["tiers"].get(cell)
+        if nd >= PROMOTE_DAYS and (not cur or cur.get("tier") != "exploratory"):
             state["tiers"][cell] = {"tier": "exploratory", "mult": 0.5,
-                                    "promoted": _today(), "source": "auto-recur"}
-            _log("PROMOTE", {"cell": cell, "recurred_days": len(days),
-                             "tier": "exploratory", "mult": 0.5})
+                                    "promoted": _today(), "recurred": nd,
+                                    "source": "auto-recur"}
+            _log("GRADUATE", {"cell": cell, "recurred_days": nd,
+                              "tier": "exploratory", "mult": 0.5})
+        elif nd >= TRIAL_DAYS and not cur:
+            state["tiers"][cell] = {"tier": "trial", "mult": TRIAL_MULT,
+                                    "promoted": _today(), "recurred": nd,
+                                    "source": "auto-trial"}
+            _log("TRIAL", {"cell": cell, "recurred_days": nd,
+                           "tier": "trial", "mult": TRIAL_MULT})
 
 
 # ---------------------------------------------------------------------------
-def _live_winrate(estimator_or_cat: str):
-    """Rolling live win-rate + avg price for recently-settled bets of a strategy."""
+def _cell_winrate(cell: str):
+    """Rolling live win-rate + breakeven for a CELL, judged on its OWN bets —
+    matched by the cell's family keyword against the trade question. So each
+    promoted edge is evaluated on its own performance, not the whole strategy."""
+    fam = cell.split("|")[0].strip()
+    parts = [p for p in fam.replace("/", "_").split("_") if len(p) > 2]
+    if not parts:
+        return None
+    like = "%" + parts[0] + "%"
     with store._conn() as c:
         rows = c.execute(
             "SELECT status, market_prob FROM trades "
-            "WHERE status IN ('WON','LOST') AND (estimator=? OR category=?) "
-            "ORDER BY id DESC LIMIT ?",
-            (estimator_or_cat, estimator_or_cat, ROLLING_BETS)).fetchall()
+            "WHERE status IN ('WON','LOST') AND LOWER(question) LIKE ? "
+            "ORDER BY id DESC LIMIT ?", (like, ROLLING_BETS)).fetchall()
     if len(rows) < MIN_EVAL_BETS:
         return None
     wins = sum(1 for s, _ in rows if s == "WON")
@@ -124,12 +146,13 @@ def _live_winrate(estimator_or_cat: str):
 
 
 def retune_and_demote(state: dict):
-    """Nudge stakes toward realized ROI; warn->improve->disable decaying edges."""
+    """Nudge stakes toward realized ROI; warn->improve->disable decaying edges.
+    Each cell judged on ITS OWN live bets. Trials with too few bets are left to
+    accumulate (not punished for lack of data)."""
     for cell, cfg in list(state["tiers"].items()):
-        # evaluate by the cell's source estimator if present, else skip live eval
-        ev = _live_winrate("longshot-fade")   # current single live estimator
+        ev = _cell_winrate(cell)
         if ev is None:
-            continue
+            continue   # not enough of this edge's own bets settled yet
         edge = ev["win_rate"] - ev["breakeven"]
         warns = state.setdefault("warnings", {})
         if ev["win_rate"] < ev["breakeven"]:

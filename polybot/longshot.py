@@ -55,7 +55,7 @@ LONGSHOT_PATTERNS = list(LONGSHOT_TIERS.keys())
 # Confirmed edges get a bigger share of the budget; exploratory ones get less
 # until they accumulate their own resolved sample. (Win probabilities come from
 # the empirical calib_table.)
-TIER_STAKE_MULT = {"confirmed": 1.0, "exploratory": 0.5}
+TIER_STAKE_MULT = {"confirmed": 1.0, "exploratory": 0.5, "trial": 0.25}
 
 
 def budget_base_stake() -> float:
@@ -127,17 +127,58 @@ def _self_improve_mult(question: str) -> float:
             return 0.0
     for cell, cfg in state.get("tiers", {}).items():
         if _fam_matches(cell.split("|")[0].strip()):
-            return float(cfg.get("mult", 1.0))
+            # The cell's TIER already sets the base stake via TIER_STAKE_MULT.
+            # The state `mult` is the retune-adjusted target; return it RELATIVE
+            # to the tier base so net (tier_base * this) == the tuned target,
+            # avoiding double-counting (a trial would otherwise be 0.25*0.25).
+            tier = cfg.get("tier", "exploratory")
+            base = TIER_STAKE_MULT.get(tier, 0.5) or 0.5
+            return float(cfg.get("mult", base)) / base
     return 1.0
 
 
+# Map self-promoted FAMILY names -> the question-text keywords that identify them,
+# so an edge the bot auto-discovers (stored by family in strategy_state.json) is
+# actually scanned and bet, not just recorded. This is the bridge from "promoted"
+# to "actually placing bids".
+_FAMILY_KEYWORDS = {
+    "over_under": ["o/u", "over/under"],
+    "spread_handicap": ["spread", "handicap"],
+    "exact_score": ["exact score"],
+    "moneyline": [" to win", "moneyline"],
+    "to_advance": ["to advance", "advance"],
+    "outright_winner": ["winner", "champion"],
+    "draw": ["draw"],
+    "tweet_range": ["posts from", "posts between"],
+}
+
+
+def _self_promoted_tier(ql: str):
+    """If the live self-improve state has an ACTIVE promoted family matching this
+    question, return its tier ('trial'/'exploratory'). Lets auto-discovered edges
+    actually get scanned. Returns None if no promoted family matches."""
+    try:
+        from .self_improve import load_state
+        tiers = load_state().get("tiers", {})
+    except Exception:
+        return None
+    for cell, cfg in tiers.items():
+        fam = cell.split("|")[0].strip()
+        for kw in _FAMILY_KEYWORDS.get(fam, []):
+            if kw in ql:
+                return cfg.get("tier", "exploratory")
+    return None
+
+
 def _longshot_tier(q: str):
-    """Return the confidence tier for a question, or None if not a longshot."""
+    """Return the confidence tier for a question, or None if not a longshot.
+    Checks the hardcoded confirmed/exploratory patterns first, then any family
+    the self-improvement engine has auto-promoted (trial/exploratory)."""
     ql = q.lower()
     for pat, tier in LONGSHOT_TIERS.items():
         if pat in ql:
             return tier
-    return None
+    return _self_promoted_tier(ql)
 
 
 def find_longshot_fades(
