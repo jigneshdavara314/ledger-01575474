@@ -20,8 +20,8 @@
                  letter-spacing:.05em; }
   .hero-value { font-size:46px; font-weight:800; margin:6px 0; }
   .hero-sub { font-size:15px; color:var(--muted); }
-  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:10px;
-            margin-bottom:24px; }
+  .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+            gap:10px; margin-bottom:18px; }
   .stat { background:var(--panel); border:1px solid var(--border);
            border-radius:10px; padding:14px; text-align:center; }
   .s-val { font-size:24px; font-weight:700; }
@@ -30,6 +30,27 @@
              padding:12px 14px; color:#d8c08a; font-size:12.5px; line-height:1.5;
              margin-bottom:22px; }
   .caveat b { color:#f0d99a; }
+  .chart-box { background:var(--panel); border:1px solid var(--border);
+                border-radius:12px; padding:14px; margin-bottom:14px; }
+  .chart { width:100%; height:auto; display:block; }
+  .grid { stroke:#21262d; stroke-width:1; }
+  .axlab { fill:var(--muted); font-size:10px; }
+  .chart-grid { display:grid; grid-template-columns:180px 1fr; gap:14px; margin-bottom:14px; }
+  @media(max-width:600px) { .chart-grid { grid-template-columns:1fr; } }
+  .chart-card { background:var(--panel); border:1px solid var(--border);
+                 border-radius:12px; padding:14px; }
+  .chart-title { color:var(--muted); font-size:11px; text-transform:uppercase;
+                  letter-spacing:.04em; margin-bottom:8px; }
+  .donut { width:130px; height:130px; display:block; margin:0 auto; }
+  .donut-pct { fill:var(--text); font-size:24px; font-weight:800; }
+  .donut-lab { fill:var(--muted); font-size:10px; }
+  .bars { display:flex; flex-direction:column; gap:8px; }
+  .bar-row { display:grid; grid-template-columns:130px 1fr 90px; align-items:center; gap:10px; }
+  .bar-name { font-size:12px; }
+  .bar-track { background:#21262d; border-radius:6px; height:16px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:6px; transition:width .4s; }
+  .bar-val { font-size:12px; font-weight:600; text-align:right; }
+  .bar-sub { color:var(--muted); font-weight:400; font-size:11px; }
   .pos { color:var(--pos); } .neg { color:var(--neg); }
   h2 { font-size:14px; margin:22px 0 8px; border-left:3px solid var(--accent);
         padding-left:9px; }
@@ -64,25 +85,29 @@
 </style></head>
 <body><div class="wrap">
   <h1>My Polymarket Portfolio</h1>
-  <div class="gen">Updated 2026-06-13 13:23 · auto-refreshes every 60s · PAPER (no real money)</div>
+  <div class="gen">Updated 2026-06-13 13:30 · auto-refreshes every 60s · PAPER (no real money)</div>
 
   
       <div class="hero">
         <div class="hero-label">Invested $500 on 2026-05-13</div>
-        <div class="hero-value pos">$4,718.99</div>
+        <div class="hero-value ">$500.00</div>
         <div class="hero-sub">
-          <span class="pos">+$4,218.99 (+843.8%)</span>
+          <span class="">+$0.00 (+0.0%)</span>
           &nbsp;·&nbsp; over 32 days
         </div>
       </div>
       <div class="stats">
-        <div class="stat"><div class="s-val">489–82</div>
-          <div class="s-lab">Won – Lost</div></div>
+        <div class="stat"><div class="s-val pos">488</div>
+          <div class="s-lab">Total won</div></div>
+        <div class="stat"><div class="s-val neg">80</div>
+          <div class="s-lab">Total lost</div></div>
+        <div class="stat"><div class="s-val">568</div>
+          <div class="s-lab">Total bets</div></div>
         <div class="stat"><div class="s-val">86%</div>
           <div class="s-lab">Win rate</div></div>
-        <div class="stat"><div class="s-val">571</div>
-          <div class="s-lab">Total bets</div></div>
-        <div class="stat"><div class="s-val">21</div>
+        <div class="stat"><div class="s-val ">+$0.00</div>
+          <div class="s-lab">Total profit</div></div>
+        <div class="stat"><div class="s-val">23</div>
           <div class="s-lab">Open now</div></div>
       </div>
       <div class="caveat">
@@ -102,19 +127,54 @@
   </div>
   <pre id="output"></pre>
 
+  <h2>Balance over time</h2>
+  <div class="chart-box">
+      <svg viewBox="0 0 860 240" class="chart" preserveAspectRatio="xMidYMid meet">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#f85149" stop-opacity="0.35"/>
+          <stop offset="1" stop-color="#f85149" stop-opacity="0"/>
+        </linearGradient></defs>
+        <line x1="34" y1="206.0" x2="826" y2="206.0" class="grid"/><text x="6" y="210.0" class="axlab">$500</text><line x1="34" y1="163.0" x2="826" y2="163.0" class="grid"/><text x="6" y="167.0" class="axlab">$1,552</text><line x1="34" y1="120.0" x2="826" y2="120.0" class="grid"/><text x="6" y="124.0" class="axlab">$2,605</text><line x1="34" y1="77.0" x2="826" y2="77.0" class="grid"/><text x="6" y="81.0" class="axlab">$3,657</text><line x1="34" y1="34.0" x2="826" y2="34.0" class="grid"/><text x="6" y="38.0" class="axlab">$4,710</text>
+        <path d="M 34.0,206.0 L 34.0,204.3 L 59.5,201.0 L 85.1,200.5 L 110.6,186.6 L 136.2,181.9 L 161.7,167.6 L 187.3,156.6 L 212.8,148.0 L 238.4,143.2 L 263.9,139.7 L 289.5,135.6 L 315.0,128.8 L 340.6,126.4 L 366.1,118.0 L 391.7,112.6 L 417.2,109.1 L 442.8,105.9 L 468.3,103.1 L 493.9,99.8 L 519.4,94.9 L 545.0,90.8 L 570.5,87.7 L 596.1,80.4 L 621.6,74.5 L 647.2,70.3 L 672.7,65.6 L 698.3,59.3 L 723.8,54.8 L 749.4,51.3 L 774.9,48.2 L 800.5,34.0 L 826.0,206.0 L 826.0,206.0 Z" fill="url(#g)"/>
+        <polyline points="34.0,204.3 59.5,201.0 85.1,200.5 110.6,186.6 136.2,181.9 161.7,167.6 187.3,156.6 212.8,148.0 238.4,143.2 263.9,139.7 289.5,135.6 315.0,128.8 340.6,126.4 366.1,118.0 391.7,112.6 417.2,109.1 442.8,105.9 468.3,103.1 493.9,99.8 519.4,94.9 545.0,90.8 570.5,87.7 596.1,80.4 621.6,74.5 647.2,70.3 672.7,65.6 698.3,59.3 723.8,54.8 749.4,51.3 774.9,48.2 800.5,34.0 826.0,206.0" fill="none" stroke="#f85149" stroke-width="2.5"/>
+        <text x="34.0" y="232" class="axlab" text-anchor="middle">05-13</text><text x="442.8" y="232" class="axlab" text-anchor="middle">05-29</text><text x="826.0" y="232" class="axlab" text-anchor="middle">06-13</text>
+      </svg>
+    </div>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="chart-title">Overall win rate</div>
+      
+      <svg viewBox="0 0 130 130" class="donut">
+        <circle cx="65.0" cy="65.0" r="48" fill="none" stroke="#30363d" stroke-width="12"/>
+        <circle cx="65.0" cy="65.0" r="48" fill="none" stroke="#3fb950" stroke-width="12"
+          stroke-dasharray="259.1 301.6" stroke-linecap="round"
+          transform="rotate(-90 65.0 65.0)"/>
+        <text x="65.0" y="63.0" text-anchor="middle" class="donut-pct">86%</text>
+        <text x="65.0" y="81.0" text-anchor="middle" class="donut-lab">Win rate</text>
+      </svg>
+    
+    </div>
+    <div class="chart-card wide">
+      <div class="chart-title">Win % by category</div>
+      <div class="bars">
+          <div class="bar-row">
+            <div class="bar-name">soccer</div>
+            <div class="bar-track"><div class="bar-fill" style="width:86%;background:#3fb950"></div></div>
+            <div class="bar-val">86% <span class="bar-sub">(6–1)</span></div>
+          </div></div>
+    </div>
+  </div>
+
   <h2>Daily history (since 2026-05-13)</h2>
   <table><thead><tr><th>Day</th><th>Settled</th><th>W–L</th><th>Day profit</th>
     <th>Balance</th></tr></thead>
-    <tbody><tr><td>2026-06-13</td><td>10</td><td>7–3</td><td class='pos'>+$9.13</td><td>$4,718.99</td></tr><tr><td>2026-06-12</td><td>20</td><td>18–2</td><td class='pos'>+$346.67</td><td>$4,709.86</td></tr><tr><td>2026-06-11</td><td>13</td><td>11–2</td><td class='pos'>+$77.25</td><td>$4,363.19</td></tr><tr><td>2026-06-10</td><td>20</td><td>15–5</td><td class='pos'>+$84.73</td><td>$4,285.94</td></tr><tr><td>2026-06-09</td><td>20</td><td>17–3</td><td class='pos'>+$111.31</td><td>$4,201.21</td></tr><tr><td>2026-06-08</td><td>20</td><td>19–1</td><td class='pos'>+$153.18</td><td>$4,089.90</td></tr><tr><td>2026-06-07</td><td>20</td><td>18–2</td><td class='pos'>+$115.73</td><td>$3,936.72</td></tr><tr><td>2026-06-06</td><td>20</td><td>17–3</td><td class='pos'>+$102.47</td><td>$3,820.99</td></tr><tr><td>2026-06-05</td><td>20</td><td>19–1</td><td class='pos'>+$144.77</td><td>$3,718.52</td></tr><tr><td>2026-06-04</td><td>20</td><td>19–1</td><td class='pos'>+$177.85</td><td>$3,573.75</td></tr><tr><td>2026-06-03</td><td>20</td><td>17–3</td><td class='pos'>+$75.08</td><td>$3,395.90</td></tr><tr><td>2026-06-02</td><td>18</td><td>16–2</td><td class='pos'>+$102.19</td><td>$3,320.82</td></tr><tr><td>2026-06-01</td><td>20</td><td>18–2</td><td class='pos'>+$120.48</td><td>$3,218.63</td></tr><tr><td>2026-05-31</td><td>15</td><td>12–3</td><td class='pos'>+$80.42</td><td>$3,098.15</td></tr><tr><td>2026-05-30</td><td>20</td><td>15–5</td><td class='pos'>+$68.77</td><td>$3,017.73</td></tr><tr><td>2026-05-29</td><td>20</td><td>16–4</td><td class='pos'>+$76.35</td><td>$2,948.96</td></tr><tr><td>2026-05-28</td><td>20</td><td>16–4</td><td class='pos'>+$85.87</td><td>$2,872.61</td></tr><tr><td>2026-05-27</td><td>20</td><td>17–3</td><td class='pos'>+$134.06</td><td>$2,786.74</td></tr><tr><td>2026-05-26</td><td>20</td><td>19–1</td><td class='pos'>+$205.14</td><td>$2,652.68</td></tr><tr><td>2026-05-25</td><td>15</td><td>12–3</td><td class='pos'>+$58.95</td><td>$2,447.54</td></tr><tr><td>2026-05-24</td><td>20</td><td>18–2</td><td class='pos'>+$166.46</td><td>$2,388.59</td></tr><tr><td>2026-05-23</td><td>20</td><td>15–5</td><td class='pos'>+$100.03</td><td>$2,222.13</td></tr><tr><td>2026-05-22</td><td>20</td><td>16–4</td><td class='pos'>+$84.73</td><td>$2,122.10</td></tr><tr><td>2026-05-21</td><td>20</td><td>15–5</td><td class='pos'>+$118.11</td><td>$2,037.37</td></tr><tr><td>2026-05-20</td><td>20</td><td>19–1</td><td class='pos'>+$209.60</td><td>$1,919.26</td></tr><tr><td>2026-05-19</td><td>20</td><td>19–1</td><td class='pos'>+$270.56</td><td>$1,709.66</td></tr><tr><td>2026-05-18</td><td>20</td><td>20–0</td><td class='pos'>+$349.85</td><td>$1,439.10</td></tr><tr><td>2026-05-17</td><td>20</td><td>16–4</td><td class='pos'>+$113.98</td><td>$1,089.25</td></tr><tr><td>2026-05-16</td><td>20</td><td>18–2</td><td class='pos'>+$341.75</td><td>$975.27</td></tr><tr><td>2026-05-15</td><td>5</td><td>3–2</td><td class='pos'>+$12.33</td><td>$633.52</td></tr><tr><td>2026-05-14</td><td>7</td><td>6–1</td><td class='pos'>+$79.09</td><td>$621.19</td></tr><tr><td>2026-05-13</td><td>8</td><td>6–2</td><td class='pos'>+$42.10</td><td>$542.10</td></tr></tbody></table>
+    <tbody><tr><td>2026-06-13</td><td>7</td><td>6–1</td><td class='pos'>+$0.17</td><td>$500.00</td></tr><tr><td>2026-06-12</td><td>20</td><td>18–2</td><td class='pos'>+$346.67</td><td>$4,709.86</td></tr><tr><td>2026-06-11</td><td>13</td><td>11–2</td><td class='pos'>+$77.25</td><td>$4,363.19</td></tr><tr><td>2026-06-10</td><td>20</td><td>15–5</td><td class='pos'>+$84.73</td><td>$4,285.94</td></tr><tr><td>2026-06-09</td><td>20</td><td>17–3</td><td class='pos'>+$111.31</td><td>$4,201.21</td></tr><tr><td>2026-06-08</td><td>20</td><td>19–1</td><td class='pos'>+$153.18</td><td>$4,089.90</td></tr><tr><td>2026-06-07</td><td>20</td><td>18–2</td><td class='pos'>+$115.73</td><td>$3,936.72</td></tr><tr><td>2026-06-06</td><td>20</td><td>17–3</td><td class='pos'>+$102.47</td><td>$3,820.99</td></tr><tr><td>2026-06-05</td><td>20</td><td>19–1</td><td class='pos'>+$144.77</td><td>$3,718.52</td></tr><tr><td>2026-06-04</td><td>20</td><td>19–1</td><td class='pos'>+$177.85</td><td>$3,573.75</td></tr><tr><td>2026-06-03</td><td>20</td><td>17–3</td><td class='pos'>+$75.08</td><td>$3,395.90</td></tr><tr><td>2026-06-02</td><td>18</td><td>16–2</td><td class='pos'>+$102.19</td><td>$3,320.82</td></tr><tr><td>2026-06-01</td><td>20</td><td>18–2</td><td class='pos'>+$120.48</td><td>$3,218.63</td></tr><tr><td>2026-05-31</td><td>15</td><td>12–3</td><td class='pos'>+$80.42</td><td>$3,098.15</td></tr><tr><td>2026-05-30</td><td>20</td><td>15–5</td><td class='pos'>+$68.77</td><td>$3,017.73</td></tr><tr><td>2026-05-29</td><td>20</td><td>16–4</td><td class='pos'>+$76.35</td><td>$2,948.96</td></tr><tr><td>2026-05-28</td><td>20</td><td>16–4</td><td class='pos'>+$85.87</td><td>$2,872.61</td></tr><tr><td>2026-05-27</td><td>20</td><td>17–3</td><td class='pos'>+$134.06</td><td>$2,786.74</td></tr><tr><td>2026-05-26</td><td>20</td><td>19–1</td><td class='pos'>+$205.14</td><td>$2,652.68</td></tr><tr><td>2026-05-25</td><td>15</td><td>12–3</td><td class='pos'>+$58.95</td><td>$2,447.54</td></tr><tr><td>2026-05-24</td><td>20</td><td>18–2</td><td class='pos'>+$166.46</td><td>$2,388.59</td></tr><tr><td>2026-05-23</td><td>20</td><td>15–5</td><td class='pos'>+$100.03</td><td>$2,222.13</td></tr><tr><td>2026-05-22</td><td>20</td><td>16–4</td><td class='pos'>+$84.73</td><td>$2,122.10</td></tr><tr><td>2026-05-21</td><td>20</td><td>15–5</td><td class='pos'>+$118.11</td><td>$2,037.37</td></tr><tr><td>2026-05-20</td><td>20</td><td>19–1</td><td class='pos'>+$209.60</td><td>$1,919.26</td></tr><tr><td>2026-05-19</td><td>20</td><td>19–1</td><td class='pos'>+$270.56</td><td>$1,709.66</td></tr><tr><td>2026-05-18</td><td>20</td><td>20–0</td><td class='pos'>+$349.85</td><td>$1,439.10</td></tr><tr><td>2026-05-17</td><td>20</td><td>16–4</td><td class='pos'>+$113.98</td><td>$1,089.25</td></tr><tr><td>2026-05-16</td><td>20</td><td>18–2</td><td class='pos'>+$341.75</td><td>$975.27</td></tr><tr><td>2026-05-15</td><td>5</td><td>3–2</td><td class='pos'>+$12.33</td><td>$633.52</td></tr><tr><td>2026-05-14</td><td>7</td><td>6–1</td><td class='pos'>+$79.09</td><td>$621.19</td></tr><tr><td>2026-05-13</td><td>8</td><td>6–2</td><td class='pos'>+$42.10</td><td>$542.10</td></tr></tbody></table>
 
-  <h2>By category</h2>
-  <table><thead><tr><th>Category</th><th>W–L</th><th>Win%</th><th>Profit</th></tr></thead>
-    <tbody><tr><td>soccer</td><td>6–1</td><td>86%</td><td class='pos'>+$0.17</td></tr></tbody></table>
-
-  <h2>Open bets (21)</h2>
+  <h2>Open bets (23)</h2>
   <table><thead><tr><th>Side</th><th>Stake</th><th>Price</th><th>Category</th>
     <th>Resolves</th><th>Market</th></tr></thead>
-    <tbody><tr><td><span class='side no'>NO</span></td><td>$10.16</td><td>0.55</td><td>esports</td><td>10h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Map Handicap: FUT (-1.5) vs B8 (+1.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$10.16</td><td>0.52</td><td>esports</td><td>10h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Map 3 Rounds Handicap: FUT Esports (-3.5) vs B8 (+3.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$10.16</td><td>0.52</td><td>esports</td><td>10h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Map 1 Rounds Handicap: FUT Esports (-3.5) vs B8 (+3.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$10.70</td><td>0.53</td><td>soccer</td><td>36h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Spread: Germany (-3.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$10.70</td><td>0.50</td><td>esports</td><td>10h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Game Handicap: BLG (-2.5) vs Team WE (+2.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$11.26</td><td>0.54</td><td>esports</td><td>10h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Map 3 Rounds Handicap: Natus Vincere (-3.5) vs TheMongolz (+3.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$11.26</td><td>0.49</td><td>esports</td><td>10h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Map 2 Rounds Handicap: Natus Vincere (-3.5) vs TheMongolz (+3.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$11.16</td><td>0.51</td><td>esports</td><td>16h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Game Handicap: GEN (-2.5) vs KT Rolster (+2.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$11.75</td><td>0.51</td><td>esports</td><td>3h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Map 3 Rounds Handicap: Team Heretics (-2.5) vs Team Vitality (+2.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$11.75</td><td>0.51</td><td>esports</td><td>2h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Map 3 Rounds Handicap: Team Falcons (-3.5) vs BetBoom Team (+3.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.77</td><td>nba</td><td>31h</td><td class='q'><a href="https://polymarket.com/event/nba-nyk-sas-2026-06-13" target="_blank" rel="noopener" class="mlink">Spread: Spurs (-14.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.73</td><td>nba</td><td>31h</td><td class='q'><a href="https://polymarket.com/event/nba-nyk-sas-2026-06-13" target="_blank" rel="noopener" class="mlink">1H Spread: Spurs (-10.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.69</td><td>soccer</td><td>25h</td><td class='q'><a href="https://polymarket.com/event/fifwc-qat-che-2026-06-13-more-markets" target="_blank" rel="noopener" class="mlink">Spread: Switzerland (-2.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.68</td><td>nba</td><td>31h</td><td class='q'><a href="https://polymarket.com/event/nba-nyk-sas-2026-06-13" target="_blank" rel="noopener" class="mlink">1H Spread: Knicks (-2.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.68</td><td>soccer</td><td>28h</td><td class='q'><a href="https://polymarket.com/event/fifwc-bra-mar-2026-06-13-more-markets" target="_blank" rel="noopener" class="mlink">Spread: Brazil (-1.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.64</td><td>nba</td><td>31h</td><td class='q'><a href="https://polymarket.com/event/nba-nyk-sas-2026-06-13" target="_blank" rel="noopener" class="mlink">1H Spread: Spurs (-7.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.55</td><td>nba</td><td>31h</td><td class='q'><a href="https://polymarket.com/event/nba-nyk-sas-2026-06-13" target="_blank" rel="noopener" class="mlink">1H Spread: Spurs (-4.5) ↗</a></td></tr><tr><td><span class='side yes'>YES</span></td><td>$2.00</td><td>0.95</td><td>soccer</td><td>26h</td><td class='q'><a href="https://polymarket.com/event/fifwc-qat-che-2026-06-13-more-markets" target="_blank" rel="noopener" class="mlink">Qatar vs. Switzerland: O/U 0.5 ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.95</td><td>soccer</td><td>29h</td><td class='q'><a href="https://polymarket.com/event/fifwc-bra-mar-2026-06-13-more-markets" target="_blank" rel="noopener" class="mlink">Spread: Morocco (-1.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.96</td><td>soccer</td><td>48h</td><td class='q'><a href="https://polymarket.com/event/fifwc-ger-kor-2026-06-14" target="_blank" rel="noopener" class="mlink">Will Germany vs. Curaçao end in a draw? ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.98</td><td>soccer</td><td>48h</td><td class='q'><a href="https://polymarket.com/event/fifwc-ger-kor-2026-06-14" target="_blank" rel="noopener" class="mlink">Will Curaçao win on 2026-06-14? ↗</a></td></tr></tbody></table>
+    <tbody><tr><td><span class='side no'>NO</span></td><td>$9.40</td><td>0.50</td><td>esports</td><td>10h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Map 3 Rounds Handicap: Team Falcons (-3.5) vs Monte (+3.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$18.81</td><td>0.75</td><td>soccer</td><td>11h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Exact Score: Any Other Score?</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$10.16</td><td>0.55</td><td>esports</td><td>10h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Map Handicap: FUT (-1.5) vs B8 (+1.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$10.16</td><td>0.52</td><td>esports</td><td>10h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Map 3 Rounds Handicap: FUT Esports (-3.5) vs B8 (+3.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$10.16</td><td>0.52</td><td>esports</td><td>10h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Map 1 Rounds Handicap: FUT Esports (-3.5) vs B8 (+3.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$10.70</td><td>0.53</td><td>soccer</td><td>36h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Spread: Germany (-3.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$10.70</td><td>0.50</td><td>esports</td><td>10h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Game Handicap: BLG (-2.5) vs Team WE (+2.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$11.26</td><td>0.54</td><td>esports</td><td>10h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Map 3 Rounds Handicap: Natus Vincere (-3.5) vs TheMongolz (+3.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$11.26</td><td>0.49</td><td>esports</td><td>10h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Map 2 Rounds Handicap: Natus Vincere (-3.5) vs TheMongolz (+3.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$11.16</td><td>0.51</td><td>esports</td><td>16h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Game Handicap: GEN (-2.5) vs KT Rolster (+2.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$11.75</td><td>0.51</td><td>esports</td><td>3h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Map 3 Rounds Handicap: Team Heretics (-2.5) vs Team Vitality (+2.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$11.75</td><td>0.51</td><td>esports</td><td>2h</td><td class='q'><a href="https://polymarket.com/markets" target="_blank" class="mlink">Map 3 Rounds Handicap: Team Falcons (-3.5) vs BetBoom Team (+3.5)</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.77</td><td>nba</td><td>31h</td><td class='q'><a href="https://polymarket.com/event/nba-nyk-sas-2026-06-13" target="_blank" rel="noopener" class="mlink">Spread: Spurs (-14.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.73</td><td>nba</td><td>31h</td><td class='q'><a href="https://polymarket.com/event/nba-nyk-sas-2026-06-13" target="_blank" rel="noopener" class="mlink">1H Spread: Spurs (-10.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.69</td><td>soccer</td><td>25h</td><td class='q'><a href="https://polymarket.com/event/fifwc-qat-che-2026-06-13-more-markets" target="_blank" rel="noopener" class="mlink">Spread: Switzerland (-2.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.68</td><td>nba</td><td>31h</td><td class='q'><a href="https://polymarket.com/event/nba-nyk-sas-2026-06-13" target="_blank" rel="noopener" class="mlink">1H Spread: Knicks (-2.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.68</td><td>soccer</td><td>28h</td><td class='q'><a href="https://polymarket.com/event/fifwc-bra-mar-2026-06-13-more-markets" target="_blank" rel="noopener" class="mlink">Spread: Brazil (-1.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.64</td><td>nba</td><td>31h</td><td class='q'><a href="https://polymarket.com/event/nba-nyk-sas-2026-06-13" target="_blank" rel="noopener" class="mlink">1H Spread: Spurs (-7.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$1.00</td><td>0.55</td><td>nba</td><td>31h</td><td class='q'><a href="https://polymarket.com/event/nba-nyk-sas-2026-06-13" target="_blank" rel="noopener" class="mlink">1H Spread: Spurs (-4.5) ↗</a></td></tr><tr><td><span class='side yes'>YES</span></td><td>$2.00</td><td>0.95</td><td>soccer</td><td>26h</td><td class='q'><a href="https://polymarket.com/event/fifwc-qat-che-2026-06-13-more-markets" target="_blank" rel="noopener" class="mlink">Qatar vs. Switzerland: O/U 0.5 ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.95</td><td>soccer</td><td>29h</td><td class='q'><a href="https://polymarket.com/event/fifwc-bra-mar-2026-06-13-more-markets" target="_blank" rel="noopener" class="mlink">Spread: Morocco (-1.5) ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.96</td><td>soccer</td><td>48h</td><td class='q'><a href="https://polymarket.com/event/fifwc-ger-kor-2026-06-14" target="_blank" rel="noopener" class="mlink">Will Germany vs. Curaçao end in a draw? ↗</a></td></tr><tr><td><span class='side no'>NO</span></td><td>$2.00</td><td>0.98</td><td>soccer</td><td>48h</td><td class='q'><a href="https://polymarket.com/event/fifwc-ger-kor-2026-06-14" target="_blank" rel="noopener" class="mlink">Will Curaçao win on 2026-06-14? ↗</a></td></tr></tbody></table>
 
   <h2>Settled bets (7)</h2>
   <table><thead><tr><th>Date</th><th>Side</th><th>Stake</th><th>Result</th>

@@ -28,6 +28,94 @@ def _cls(v):
     return "pos" if v > 0 else ("neg" if v < 0 else "")
 
 
+def _equity_chart(points, w=860, h=240, pad=34):
+    """Inline SVG line chart of balance over time. points = [(day, balance), ...]
+    oldest-first."""
+    if len(points) < 2:
+        return '<div class="note">Not enough days yet to chart.</div>'
+    days = [p[0] for p in points]
+    vals = [p[1] for p in points]
+    vmin, vmax = min(vals), max(vals)
+    if vmax == vmin:
+        vmax = vmin + 1
+    span = vmax - vmin
+    n = len(vals)
+
+    def x(i):
+        return pad + (w - 2 * pad) * i / (n - 1)
+
+    def y(v):
+        return h - pad - (h - 2 * pad) * (v - vmin) / span
+
+    # line + area path
+    line_pts = " ".join(f"{x(i):.1f},{y(v):.1f}" for i, v in enumerate(vals))
+    area = (f"M {x(0):.1f},{h-pad:.1f} L " +
+            " L ".join(f"{x(i):.1f},{y(v):.1f}" for i, v in enumerate(vals)) +
+            f" L {x(n-1):.1f},{h-pad:.1f} Z")
+    # gridlines + y labels (4 levels)
+    grid = ""
+    for k in range(5):
+        gv = vmin + span * k / 4
+        gy = y(gv)
+        grid += (f'<line x1="{pad}" y1="{gy:.1f}" x2="{w-pad}" y2="{gy:.1f}" '
+                 f'class="grid"/>'
+                 f'<text x="6" y="{gy+4:.1f}" class="axlab">${gv:,.0f}</text>')
+    # x labels: first, middle, last
+    xlabs = ""
+    for i in (0, n // 2, n - 1):
+        xlabs += f'<text x="{x(i):.1f}" y="{h-8}" class="axlab" text-anchor="middle">{days[i][5:]}</text>'
+    up = vals[-1] >= vals[0]
+    color = "#3fb950" if up else "#f85149"
+    return f"""
+      <svg viewBox="0 0 {w} {h}" class="chart" preserveAspectRatio="xMidYMid meet">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="{color}" stop-opacity="0.35"/>
+          <stop offset="1" stop-color="{color}" stop-opacity="0"/>
+        </linearGradient></defs>
+        {grid}
+        <path d="{area}" fill="url(#g)"/>
+        <polyline points="{line_pts}" fill="none" stroke="{color}" stroke-width="2.5"/>
+        {xlabs}
+      </svg>
+    """
+
+
+def _donut(pct, label, w=130):
+    """Win-rate donut: pct 0-100."""
+    import math
+    r, cx, cy, sw = 48, w/2, w/2, 12
+    circ = 2 * math.pi * r
+    filled = circ * (pct / 100)
+    color = "#3fb950" if pct >= 55 else ("#d8a23b" if pct >= 50 else "#f85149")
+    return f"""
+      <svg viewBox="0 0 {w} {w}" class="donut">
+        <circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="#30363d" stroke-width="{sw}"/>
+        <circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{color}" stroke-width="{sw}"
+          stroke-dasharray="{filled:.1f} {circ:.1f}" stroke-linecap="round"
+          transform="rotate(-90 {cx} {cy})"/>
+        <text x="{cx}" y="{cy-2}" text-anchor="middle" class="donut-pct">{pct:.0f}%</text>
+        <text x="{cx}" y="{cy+16}" text-anchor="middle" class="donut-lab">{label}</text>
+      </svg>
+    """
+
+
+def _cat_bars(cats):
+    """Horizontal win% bars per category."""
+    bars = []
+    for cat, n, won, lost, pnl, staked in cats:
+        wr = (won / n * 100) if n else 0
+        color = "#3fb950" if wr >= 55 else ("#d8a23b" if wr >= 50 else "#f85149")
+        bars.append(f"""
+          <div class="bar-row">
+            <div class="bar-name">{html.escape(cat or 'other')}</div>
+            <div class="bar-track"><div class="bar-fill" style="width:{wr:.0f}%;background:{color}"></div></div>
+            <div class="bar-val">{wr:.0f}% <span class="bar-sub">({won}–{lost})</span></div>
+          </div>""")
+    if not bars:
+        return '<div class="note">No settled bets yet.</div>'
+    return f'<div class="bars">{"".join(bars)}</div>'
+
+
 def _link(question, slug):
     label = html.escape((question or "")[:72])
     if slug:
@@ -75,12 +163,16 @@ def build_html() -> str:
         </div>
       </div>
       <div class="stats">
-        <div class="stat"><div class="s-val">{tot_won}–{tot_lost}</div>
-          <div class="s-lab">Won – Lost</div></div>
-        <div class="stat"><div class="s-val">{win_rate:.0f}%</div>
-          <div class="s-lab">Win rate</div></div>
+        <div class="stat"><div class="s-val pos">{tot_won}</div>
+          <div class="s-lab">Total won</div></div>
+        <div class="stat"><div class="s-val neg">{tot_lost}</div>
+          <div class="s-lab">Total lost</div></div>
         <div class="stat"><div class="s-val">{resolved}</div>
           <div class="s-lab">Total bets</div></div>
+        <div class="stat"><div class="s-val">{win_rate:.0f}%</div>
+          <div class="s-lab">Win rate</div></div>
+        <div class="stat"><div class="s-val {_cls(profit)}">{_money(profit)}</div>
+          <div class="s-lab">Total profit</div></div>
         <div class="stat"><div class="s-val">{s['open']}</div>
           <div class="s-lab">Open now</div></div>
       </div>
@@ -92,6 +184,12 @@ def build_html() -> str:
         Treat the value as the optimistic ceiling, not a promise.
       </div>
     """
+
+    # ---- charts ----
+    curve_points = [(d[0], d[5]) for d in reversed(equity_days)]  # oldest-first
+    equity_svg = _equity_chart(curve_points)
+    donut_svg = _donut(win_rate, "Win rate")
+    cat_bars = _cat_bars(cats)
 
     # ---- daily history (real results, builds forward) ----
     day_html = []
@@ -165,8 +263,8 @@ def build_html() -> str:
                  letter-spacing:.05em; }}
   .hero-value {{ font-size:46px; font-weight:800; margin:6px 0; }}
   .hero-sub {{ font-size:15px; color:var(--muted); }}
-  .stats {{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px;
-            margin-bottom:24px; }}
+  .stats {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+            gap:10px; margin-bottom:18px; }}
   .stat {{ background:var(--panel); border:1px solid var(--border);
            border-radius:10px; padding:14px; text-align:center; }}
   .s-val {{ font-size:24px; font-weight:700; }}
@@ -175,6 +273,27 @@ def build_html() -> str:
              padding:12px 14px; color:#d8c08a; font-size:12.5px; line-height:1.5;
              margin-bottom:22px; }}
   .caveat b {{ color:#f0d99a; }}
+  .chart-box {{ background:var(--panel); border:1px solid var(--border);
+                border-radius:12px; padding:14px; margin-bottom:14px; }}
+  .chart {{ width:100%; height:auto; display:block; }}
+  .grid {{ stroke:#21262d; stroke-width:1; }}
+  .axlab {{ fill:var(--muted); font-size:10px; }}
+  .chart-grid {{ display:grid; grid-template-columns:180px 1fr; gap:14px; margin-bottom:14px; }}
+  @media(max-width:600px) {{ .chart-grid {{ grid-template-columns:1fr; }} }}
+  .chart-card {{ background:var(--panel); border:1px solid var(--border);
+                 border-radius:12px; padding:14px; }}
+  .chart-title {{ color:var(--muted); font-size:11px; text-transform:uppercase;
+                  letter-spacing:.04em; margin-bottom:8px; }}
+  .donut {{ width:130px; height:130px; display:block; margin:0 auto; }}
+  .donut-pct {{ fill:var(--text); font-size:24px; font-weight:800; }}
+  .donut-lab {{ fill:var(--muted); font-size:10px; }}
+  .bars {{ display:flex; flex-direction:column; gap:8px; }}
+  .bar-row {{ display:grid; grid-template-columns:130px 1fr 90px; align-items:center; gap:10px; }}
+  .bar-name {{ font-size:12px; }}
+  .bar-track {{ background:#21262d; border-radius:6px; height:16px; overflow:hidden; }}
+  .bar-fill {{ height:100%; border-radius:6px; transition:width .4s; }}
+  .bar-val {{ font-size:12px; font-weight:600; text-align:right; }}
+  .bar-sub {{ color:var(--muted); font-weight:400; font-size:11px; }}
   .pos {{ color:var(--pos); }} .neg {{ color:var(--neg); }}
   h2 {{ font-size:14px; margin:22px 0 8px; border-left:3px solid var(--accent);
         padding-left:9px; }}
@@ -221,14 +340,24 @@ def build_html() -> str:
   </div>
   <pre id="output"></pre>
 
+  <h2>Balance over time</h2>
+  <div class="chart-box">{equity_svg}</div>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="chart-title">Overall win rate</div>
+      {donut_svg}
+    </div>
+    <div class="chart-card wide">
+      <div class="chart-title">Win % by category</div>
+      {cat_bars}
+    </div>
+  </div>
+
   <h2>Daily history (since {dep_date})</h2>
   <table><thead><tr><th>Day</th><th>Settled</th><th>W–L</th><th>Day profit</th>
     <th>Balance</th></tr></thead>
     <tbody>{''.join(day_html)}</tbody></table>
-
-  <h2>By category</h2>
-  <table><thead><tr><th>Category</th><th>W–L</th><th>Win%</th><th>Profit</th></tr></thead>
-    <tbody>{''.join(cat_rows)}</tbody></table>
 
   <h2>Open bets ({len(open_rows)})</h2>
   <table><thead><tr><th>Side</th><th>Stake</th><th>Price</th><th>Category</th>
