@@ -1,2 +1,3 @@
 {"ts": "2026-06-14T02:38:11Z", "days": 15, "n_obs": 2500, "passed": [{"cell": "other | pay NO 0.55-0.75", "n": 251, "win_rate": 0.765, "ev": 0.193, "wilson_lower": 0.677}]}
 {"ts": "2026-06-14T09:15:30Z", "days": 15, "n_obs": 2500, "passed": [{"cell": "other | pay NO 0.55-0.75", "n": 270, "win_rate": 0.759, "ev": 0.189, "wilson_lower": 0.673}]}
+{"ts": "2026-06-14T13:40:17Z", "days": 15, "n_obs": 2500, "passed": [{"cell": "other | pay NO 0.55-0.75", "n": 264, "win_rate": 0.758, "ev": 0.185, "wilson_lower": 0.671}]}
