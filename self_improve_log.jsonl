@@ -1,2 +1,4 @@
 {"ts": "2026-06-15T05:40:24.613824", "action": "TRIAL", "cell": "other | pay NO 0.55-0.75", "recurred_days": 2, "tier": "trial", "mult": 0.25}
 {"ts": "2026-06-15T05:40:24.613950", "action": "TRIAL", "cell": "over_under | pay YES 0.75-0.95", "recurred_days": 2, "tier": "trial", "mult": 0.25}
+{"ts": "2026-06-15T18:23:34.526787", "action": "TRIAL", "cell": "other | pay NO 0.55-0.75", "recurred_days": 2, "tier": "trial", "mult": 0.25}
+{"ts": "2026-06-15T18:23:34.526886", "action": "TRIAL", "cell": "over_under | pay YES 0.75-0.95", "recurred_days": 2, "tier": "trial", "mult": 0.25}
