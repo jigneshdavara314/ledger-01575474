@@ -1,6 +1,23 @@
 {
-  "tiers": {},
+  "tiers": {
+    "other | pay NO 0.55-0.75": {
+      "tier": "trial",
+      "mult": 0.35,
+      "promoted": "2026-06-15",
+      "recurred": 2,
+      "source": "auto-trial"
+    },
+    "over_under | pay YES 0.75-0.95": {
+      "tier": "trial",
+      "mult": 0.25,
+      "promoted": "2026-06-15",
+      "recurred": 2,
+      "source": "auto-trial"
+    }
+  },
   "disabled": [],
-  "warnings": {},
-  "updated": "2026-06-13"
+  "warnings": {
+    "other | pay NO 0.55-0.75": 0
+  },
+  "updated": "2026-06-15"
 }
