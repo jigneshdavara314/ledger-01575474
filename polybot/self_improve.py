@@ -99,10 +99,32 @@ def promote(state: dict):
     bet noise; we just start betting a *proven-recurring* edge sooner, small."""
     hist = _scan_history()
     days_by_cell = defaultdict(set)
+    latest_stats = {}   # cell -> most-recent rigorously-measured stats
     for h in hist:
         day = (h.get("ts") or "")[:10]
         for p in h.get("passed", []):
             days_by_cell[p["cell"]].add(day)
+            latest_stats[p["cell"]] = p   # later entries overwrite -> most recent
+
+    def _measured(cell):
+        """Carry the SCAN-MEASURED win-rate + Wilson lower bound + direction/band
+        onto the promoted cell, so live sizing can use the rigorous recurring
+        number (never a hardcoded guess). Direction/band parsed from the cell
+        label 'family | pay DIR lo-hi'."""
+        p = latest_stats.get(cell, {})
+        direction, lo, hi = None, None, None
+        try:
+            tail = cell.split("|", 1)[1].strip()         # "pay NO 0.55-0.75"
+            parts = tail.split()
+            direction = parts[1]                          # NO / YES
+            lo, hi = (float(x) for x in parts[2].split("-"))
+        except Exception:
+            pass
+        return {"measured_win": p.get("win_rate"),
+                "measured_wilson_lower": p.get("wilson_lower"),
+                "measured_n": p.get("n"),
+                "direction": direction, "band_lo": lo, "band_hi": hi}
+
     for cell, days in days_by_cell.items():
         if cell in state.get("disabled", []):
             continue
@@ -111,15 +133,18 @@ def promote(state: dict):
         if nd >= PROMOTE_DAYS and (not cur or cur.get("tier") != "exploratory"):
             state["tiers"][cell] = {"tier": "exploratory", "mult": 0.5,
                                     "promoted": _today(), "recurred": nd,
-                                    "source": "auto-recur"}
+                                    "source": "auto-recur", **_measured(cell)}
             _log("GRADUATE", {"cell": cell, "recurred_days": nd,
                               "tier": "exploratory", "mult": 0.5})
         elif nd >= TRIAL_DAYS and not cur:
             state["tiers"][cell] = {"tier": "trial", "mult": TRIAL_MULT,
                                     "promoted": _today(), "recurred": nd,
-                                    "source": "auto-trial"}
+                                    "source": "auto-trial", **_measured(cell)}
             _log("TRIAL", {"cell": cell, "recurred_days": nd,
                            "tier": "trial", "mult": TRIAL_MULT})
+        elif cur:
+            # keep the measured stats fresh on already-promoted cells
+            cur.update(_measured(cell))
 
 
 # ---------------------------------------------------------------------------

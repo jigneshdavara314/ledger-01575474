@@ -170,6 +170,36 @@ def _self_promoted_tier(ql: str):
     return None
 
 
+def _promoted_win(ql: str, no_price: float):
+    """For a self-promoted NO-direction edge whose measured price band contains
+    `no_price`, return its scan-measured Wilson lower bound + sample n. This is
+    the bridge that lets auto-discovered edges actually size a bet — using the
+    rigorous recurring measurement (cleared the bulletproof gate + multi-day
+    recurrence), never a hardcoded value. Returns None if no eligible cell.
+
+    Only NO-direction cells are usable: longshot.py bets NO. A YES-side promoted
+    edge is intentionally skipped (we never invert a measurement we didn't make)."""
+    try:
+        from .self_improve import load_state
+        tiers = load_state().get("tiers", {})
+    except Exception:
+        return None
+    for cell, cfg in tiers.items():
+        if cfg.get("direction") != "NO":
+            continue
+        wl = cfg.get("measured_wilson_lower")
+        lo, hi = cfg.get("band_lo"), cfg.get("band_hi")
+        if wl is None or lo is None or hi is None:
+            continue
+        if not (lo <= no_price < hi):       # price must be in the measured band
+            continue
+        fam = cell.split("|")[0].strip()
+        for kw in _FAMILY_KEYWORDS.get(fam, []):
+            if kw in ql:
+                return {"wl": float(wl), "n": int(cfg.get("measured_n") or 0)}
+    return None
+
+
 def _longshot_tier(q: str):
     """Return the confidence tier for a question, or None if not a longshot.
     Checks the hardcoded confirmed/exploratory patterns first, then any family
@@ -223,10 +253,22 @@ def find_longshot_fades(
         # thin. This replaces the old generic heuristic so sizing reflects the
         # real evidence we collected, not a guess.
         implied_no = no_price
-        win = measured_no_win(m.question, m.price_yes, implied_no)
-        est_win_prob = win["est"]
-        win_source = win["source"]
-        win_n = win["n"]
+        # First: if this market belongs to a SELF-PROMOTED NO-direction edge whose
+        # rigorously-measured price band contains our NO price, size on the SCAN-
+        # MEASURED Wilson lower bound (the same conservative basis as calib_table,
+        # but for an auto-discovered, multi-day-recurring edge). This is what lets
+        # discovered edges actually place bids. Falls back to the calib table /
+        # market otherwise — no hardcoded guesses anywhere.
+        promoted = _promoted_win(m.question.lower(), no_price)
+        if promoted is not None:
+            est_win_prob = promoted["wl"]
+            win_source = "promoted"
+            win_n = promoted["n"]
+        else:
+            win = measured_no_win(m.question, m.price_yes, implied_no)
+            est_win_prob = win["est"]
+            win_source = win["source"]
+            win_n = win["n"]
 
         # --- MID-PRICE BIDDING ---
         # Instead of paying the ask, fetch the live order book for the NO token

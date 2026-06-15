@@ -304,6 +304,34 @@ def test_fill_prob_rises_with_time():
     print("PASS test_fill_prob_rises_with_time")
 
 
+def test_promoted_edge_bridge():
+    """A self-promoted NO-direction edge must feed its scan-measured Wilson LB
+    into live sizing (only inside its band), and YES-direction cells must NOT bet."""
+    from polybot import self_improve as si, longshot
+    st = si.load_state()
+    saved = dict(st)
+    try:
+        st["tiers"] = {"over_under | pay NO 0.55-0.75": {
+            "tier": "trial", "direction": "NO", "band_lo": 0.55, "band_hi": 0.75,
+            "measured_win": 0.76, "measured_wilson_lower": 0.67, "measured_n": 250}}
+        st["disabled"] = []
+        si.save_state(st)
+        # in-band O/U NO market -> uses the measured Wilson LB
+        pw = longshot._promoted_win("belgium vs egypt: o/u 2.5", 0.64)
+        assert pw is not None and abs(pw["wl"] - 0.67) < 1e-9, pw
+        # out of band -> not used
+        assert longshot._promoted_win("belgium vs egypt: o/u 2.5", 0.40) is None
+        # YES-direction promoted cell must be skipped (we only bet NO)
+        st["tiers"] = {"over_under | pay YES 0.75-0.95": {
+            "tier": "trial", "direction": "YES", "band_lo": 0.75, "band_hi": 0.95,
+            "measured_wilson_lower": 0.85, "measured_n": 90}}
+        si.save_state(st)
+        assert longshot._promoted_win("match o/u 2.5", 0.80) is None
+    finally:
+        si.save_state({"tiers": {}, "disabled": [], "warnings": {}})
+    print("PASS test_promoted_edge_bridge")
+
+
 def _run_all():
     fns = [v for k, v in globals().items() if k.startswith("test_") and callable(v)]
     failed = 0
