@@ -2,13 +2,13 @@
   "tiers": {
     "other | pay NO 0.55-0.75": {
       "tier": "trial",
-      "mult": 0.65,
+      "mult": 0.75,
       "promoted": "2026-06-15",
       "recurred": 2,
       "source": "auto-trial",
-      "measured_win": 0.769,
-      "measured_wilson_lower": 0.678,
-      "measured_n": 242,
+      "measured_win": 0.772,
+      "measured_wilson_lower": 0.668,
+      "measured_n": 189,
       "direction": "NO",
       "band_lo": 0.55,
       "band_hi": 0.75
@@ -20,8 +20,8 @@
       "recurred": 2,
       "source": "auto-trial",
       "measured_win": 0.955,
-      "measured_wilson_lower": 0.853,
-      "measured_n": 110,
+      "measured_wilson_lower": 0.852,
+      "measured_n": 111,
       "direction": "YES",
       "band_lo": 0.75,
       "band_hi": 0.95
