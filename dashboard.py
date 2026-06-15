@@ -447,6 +447,20 @@ def build_html() -> str:
               border-radius:6px; padding:1px 8px; font-size:10px; font-weight:700;
               text-transform:uppercase; letter-spacing:.04em; margin-left:6px;
               vertical-align:middle; }}
+  .modal {{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.6);
+            align-items:center; justify-content:center; z-index:100; }}
+  .modal-card {{ background:var(--panel); border:1px solid var(--accent);
+                 border-radius:14px; padding:22px; max-width:460px; width:92%; }}
+  .modal-title {{ font-size:17px; font-weight:800; margin-bottom:10px; }}
+  .modal-body {{ font-size:13px; color:var(--text); line-height:1.5; }}
+  .modal-steps {{ margin:10px 0; padding-left:20px; color:var(--muted); }}
+  .modal-steps li {{ margin:5px 0; }}
+  .modal-steps a {{ color:var(--accent); }}
+  .modal-saved {{ color:var(--pos); font-size:12px; margin:6px 0; }}
+  .modal-input {{ width:100%; background:#0b0e13; color:var(--text);
+                  border:1px solid var(--border); border-radius:8px; padding:9px;
+                  font-size:13px; margin-top:8px; }}
+  .modal-actions {{ display:flex; gap:8px; justify-content:flex-end; margin-top:14px; }}
   .muted-cell {{ color:var(--muted); font-style:italic; }}
 </style></head>
 <body><div class="wrap">
@@ -536,6 +550,29 @@ def build_html() -> str:
     <tbody>{''.join(done_html)}</tbody></table>
   </section>
 </div>
+
+<div id="ghModal" class="modal">
+  <div class="modal-card">
+    <div class="modal-title">🔗 Connect GitHub (one-time)</div>
+    <div class="modal-body">
+      To let the buttons trigger the cloud bot from this public link, paste a GitHub
+      token. It is saved <b>only in this browser</b> — never on the page.
+      <ol class="modal-steps">
+        <li><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">
+          Open GitHub → create a fine-grained token ↗</a></li>
+        <li><b>Repository access</b> → Only select repositories → <b>ledger-01575474</b></li>
+        <li><b>Permissions</b> → Repository permissions → <b>Actions</b> → <b>Read and write</b></li>
+        <li>Generate, copy, and paste it below.</li>
+      </ol>
+      <div id="ghSaved" class="modal-saved"></div>
+      <input id="ghTokenInput" type="password" placeholder="github_pat_…" class="modal-input">
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="ghClose()">Cancel</button>
+      <button class="btn primary" onclick="ghSave()">Save token</button>
+    </div>
+  </div>
+</div>
 <script>
 function showTab(name, scroll) {{
   document.querySelectorAll('.panel-tab').forEach(p =>
@@ -607,11 +644,18 @@ async function run(action) {{
 }}
 
 function connectGitHub() {{
-  var cur = localStorage.getItem('ghToken') ? '(a token is already saved)' : '';
-  var tok = prompt('Paste a GitHub fine-grained token with "Actions: Read and write" ' +
-    'on the ledger-01575474 repo ONLY. Saved in this browser only. ' + cur);
-  if (tok) {{ localStorage.setItem('ghToken', tok.trim());
-    document.getElementById('status').textContent = 'GitHub connected ✓ (this browser)'; }}
+  document.getElementById('ghModal').style.display = 'flex';
+  var saved = localStorage.getItem('ghToken');
+  document.getElementById('ghSaved').textContent = saved ? '✓ A token is already saved in this browser.' : '';
+  document.getElementById('ghTokenInput').value = '';
+}}
+function ghClose() {{ document.getElementById('ghModal').style.display = 'none'; }}
+function ghSave() {{
+  var tok = document.getElementById('ghTokenInput').value.trim();
+  if (!tok) {{ return; }}
+  localStorage.setItem('ghToken', tok);
+  document.getElementById('status').textContent = 'GitHub connected ✓ (this browser only)';
+  ghClose();
 }}
 async function setBudget() {{
   var v = document.getElementById('budgetInput').value,
