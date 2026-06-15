@@ -59,10 +59,29 @@ def _z_for_family_wise(n_tests, alpha=0.05):
     return NormalDist().inv_cdf(1 - per)
 
 
+# CRYPTO CONTAMINATION GUARD: crypto up/down (and hit-price strikes) are a PROVEN
+# coin flip (no edge — see the 592-strategy backtest). They must NEVER be folded
+# into an "other" grab-bag that could then size a bet. Tag them as their own
+# family that the live scanner does NOT bet, so they can't silently leak in.
+_CRYPTO_HINTS = ["up or down", "bitcoin", "ethereum", "dogecoin", "solana",
+                 " btc ", " eth ", "above $", "below $", "hit $", "price of"]
+
+
 def family_of(q):
     ql = q.lower()
+    # Crypto first — hard quarantine before any other classification.
+    if any(h in ql for h in _CRYPTO_HINTS):
+        return "crypto_pricetail"          # quarantined; not bet by live scanner
     if "exact score" in ql: return "exact_score"
     if "spread" in ql or "handicap" in ql: return "spread_handicap"
+    # Player / esports props are checked BEFORE the generic over_under so a
+    # "Home Runs O/U" is a player_prop (specific), not lumped with team totals.
+    if "home runs" in ql or "strikeouts" in ql or "passing yards" in ql \
+            or "to record" in ql or "player" in ql: return "player_prop"
+    if "map " in ql or "rounds" in ql or "first blood" in ql or "kills" in ql \
+            or " cs2" in ql or "valorant" in ql: return "esports_prop"
+    if "posts from" in ql or "posts between" in ql or "tweets" in ql \
+            or "mentions" in ql: return "tweet_range"
     if re.search(r"o/u\s*\d", ql) or "over/under" in ql: return "over_under"
     if "moneyline" in ql or " to win" in ql or re.search(r"\bwin\b", ql): return "moneyline"
     if "to advance" in ql or "advance" in ql: return "to_advance"

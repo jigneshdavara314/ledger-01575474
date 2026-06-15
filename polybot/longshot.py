@@ -149,7 +149,13 @@ _FAMILY_KEYWORDS = {
     "to_advance": ["to advance", "advance"],
     "outright_winner": ["winner", "champion"],
     "draw": ["draw"],
-    "tweet_range": ["posts from", "posts between"],
+    "tweet_range": ["posts from", "posts between", "tweets", "mentions"],
+    # Sub-families carved out of "other" so auto-discovered edges in them can
+    # actually match live markets and place bids (the daily-breadth lever):
+    "player_prop": ["home runs", "strikeouts", "passing yards", "to record", "player"],
+    "esports_prop": ["map ", "rounds", "first blood", "kills", " cs2", "valorant"],
+    # NOTE: crypto_pricetail is DELIBERATELY ABSENT — crypto up/down is a proven
+    # coin flip; it is quarantined and must never be bet by the live scanner.
 }
 
 

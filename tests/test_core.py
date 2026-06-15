@@ -332,6 +332,21 @@ def test_promoted_edge_bridge():
     print("PASS test_promoted_edge_bridge")
 
 
+def test_crypto_quarantine_and_subfamilies():
+    """Crypto up/down must be quarantined (never a bettable family); player/esports
+    props must carve out of 'other'; crypto family must NOT be in the scanner."""
+    from polybot.edge_scan15 import family_of
+    from polybot.longshot import _FAMILY_KEYWORDS
+    assert family_of("Bitcoin Up or Down today?") == "crypto_pricetail"
+    assert family_of("Will ETH be above $4000?") == "crypto_pricetail"
+    assert family_of("Aaron Judge: Home Runs O/U 1.5") == "player_prop"
+    assert family_of("First Blood: Team Vitality") == "esports_prop"
+    assert family_of("Belgium vs Egypt: O/U 2.5") == "over_under"
+    # the live scanner must never recognize crypto as a bettable family
+    assert "crypto_pricetail" not in _FAMILY_KEYWORDS
+    print("PASS test_crypto_quarantine_and_subfamilies")
+
+
 def _run_all():
     fns = [v for k, v in globals().items() if k.startswith("test_") and callable(v)]
     failed = 0
