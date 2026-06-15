@@ -459,7 +459,13 @@ def build_html() -> str:
     <button class="btn primary" onclick="run('resolve')">Update results</button>
     <button class="btn" onclick="run('longshot')">Place today's bets</button>
     <button class="btn" onclick="location.reload()">Refresh</button>
+    <button class="btn" onclick="connectGitHub()" title="One-time: paste a token so the buttons work from this public link">🔗 Connect GitHub</button>
     <span id="status"></span>
+  </div>
+  <div class="note" style="margin-top:6px">
+    Note: the bot already runs automatically every ~15 min. These buttons are for
+    triggering an extra run on demand. On the public link they need a one-time
+    “Connect GitHub” token (stored only in your browser).
   </div>
   <div class="budget-box">
     <span class="budget-lab">Daily investment budget</span>
@@ -550,6 +556,13 @@ function showTab(name, scroll) {{
     if (t && document.getElementById('tab-' + t)) showTab(t, false);
   }} catch(e) {{}}
 }})();
+// On the LOCAL server we POST to /run/. On the public GitHub Pages link there is
+// no server, so we trigger the GitHub Actions workflow directly. The token is
+// NEVER stored in this page — it lives only in YOUR browser (localStorage), set
+// once via the "Connect" button, so a public viewer never sees it.
+var GH_REPO = "jigneshdavara314/ledger-01575474";
+function isLocal() {{ return location.hostname === "localhost" || location.hostname === "127.0.0.1"; }}
+
 async function run(action) {{
   var btns = document.querySelectorAll('.btn'), st = document.getElementById('status'),
       out = document.getElementById('output');
@@ -557,14 +570,48 @@ async function run(action) {{
   st.textContent = 'Running ' + action + '…';
   out.style.display = 'block'; out.textContent = 'Working…';
   try {{
-    var r = await fetch('/run/' + action, {{method:'POST'}});
-    out.textContent = await r.text();
-    st.textContent = 'Done. Reloading…';
-    setTimeout(() => location.reload(), 1500);
+    if (isLocal()) {{
+      var r = await fetch('/run/' + action, {{method:'POST'}});
+      out.textContent = await r.text();
+      st.textContent = 'Done. Reloading…';
+      setTimeout(() => location.reload(), 1500);
+    }} else {{
+      // public link -> trigger the GitHub workflow on demand
+      var tok = localStorage.getItem('ghToken');
+      if (!tok) {{
+        out.textContent = 'One-time setup: click "Connect GitHub" and paste a ' +
+          'fine-grained token (Actions: read+write on this repo only). It is saved ' +
+          'in THIS browser only, never on the page.';
+        st.textContent = 'Token needed.'; btns.forEach(b => b.disabled = false); return;
+      }}
+      var resp = await fetch('https://api.github.com/repos/' + GH_REPO +
+        '/actions/workflows/bot.yml/dispatches', {{
+        method: 'POST',
+        headers: {{ 'Authorization': 'token ' + tok, 'Accept': 'application/vnd.github+json' }},
+        body: JSON.stringify({{ ref: 'master' }})
+      }});
+      if (resp.status === 204) {{
+        out.textContent = 'Triggered the cloud bot run (' + action + '). It runs the ' +
+          'full cycle on GitHub; refresh in ~1-2 min to see results.';
+        st.textContent = 'Triggered ✓';
+      }} else {{
+        out.textContent = 'GitHub returned ' + resp.status + '. Token may be wrong/expired.';
+        st.textContent = 'Failed.';
+      }}
+      btns.forEach(b => b.disabled = false);
+    }}
   }} catch (e) {{
-    out.textContent = 'Error: ' + e + ' (buttons work only on the local server)';
+    out.textContent = 'Error: ' + e;
     st.textContent = 'Failed.'; btns.forEach(b => b.disabled = false);
   }}
+}}
+
+function connectGitHub() {{
+  var cur = localStorage.getItem('ghToken') ? '(a token is already saved)' : '';
+  var tok = prompt('Paste a GitHub fine-grained token with "Actions: Read and write" ' +
+    'on the ledger-01575474 repo ONLY. Saved in this browser only. ' + cur);
+  if (tok) {{ localStorage.setItem('ghToken', tok.trim());
+    document.getElementById('status').textContent = 'GitHub connected ✓ (this browser)'; }}
 }}
 async function setBudget() {{
   var v = document.getElementById('budgetInput').value,
