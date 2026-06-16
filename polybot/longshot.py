@@ -137,26 +137,10 @@ def _self_improve_mult(question: str) -> float:
     return 1.0
 
 
-# Map self-promoted FAMILY names -> the question-text keywords that identify them,
-# so an edge the bot auto-discovers (stored by family in strategy_state.json) is
-# actually scanned and bet, not just recorded. This is the bridge from "promoted"
-# to "actually placing bids".
-_FAMILY_KEYWORDS = {
-    "over_under": ["o/u", "over/under"],
-    "spread_handicap": ["spread", "handicap"],
-    "exact_score": ["exact score"],
-    "moneyline": [" to win", "moneyline"],
-    "to_advance": ["to advance", "advance"],
-    "outright_winner": ["winner", "champion"],
-    "draw": ["draw"],
-    "tweet_range": ["posts from", "posts between", "tweets", "mentions"],
-    # Sub-families carved out of "other" so auto-discovered edges in them can
-    # actually match live markets and place bids (the daily-breadth lever):
-    "player_prop": ["home runs", "strikeouts", "passing yards", "to record", "player"],
-    "esports_prop": ["map ", "rounds", "first blood", "kills", " cs2", "valorant"],
-    # NOTE: crypto_pricetail is DELIBERATELY ABSENT — crypto up/down is a proven
-    # coin flip; it is quarantined and must never be bet by the live scanner.
-}
+# Family -> question-text keywords the scanner matches a market by. Single source
+# of truth in taxonomy.py, so the discovery classifier (family_of) and this live
+# bridge can never drift apart (crypto_pricetail is deliberately absent there).
+from .taxonomy import FAMILY_KEYWORDS as _FAMILY_KEYWORDS
 
 
 def _self_promoted_tier(ql: str):

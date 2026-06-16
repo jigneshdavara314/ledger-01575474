@@ -43,23 +43,9 @@ FADE_MIN_YES = 0.10
 FADE_MAX_YES = 0.55
 
 
-# ---- pattern-family classification (the thing the edge actually lives in) ----
-
-def family_of(q: str):
-    ql = q.lower()
-    if "exact score" in ql:
-        return "exact_score"
-    if "spread:" in ql or "1h spread" in ql or "handicap" in ql:
-        return "spread_handicap"
-    if re.search(r"o/u \d", ql) or "over/under" in ql or " total " in ql:
-        return "over_under"
-    if "posts from" in ql or "posts between" in ql or "tweets" in ql:
-        return "tweet_range"
-    if re.search(r"win (the |their |on |vs)", ql) or " to win " in ql:
-        return "moneyline"
-    if "draw" in ql:
-        return "draw"
-    return "other"
+# Pattern-family classification — single source of truth (was duplicated here
+# with divergent rules; now imported so discovery and live betting can't drift).
+from .taxonomy import family_of
 
 
 SPORT_HINTS = {
