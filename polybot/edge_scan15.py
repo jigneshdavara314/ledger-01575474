@@ -135,24 +135,42 @@ def scan(days=DAYS, cap=5000):   # higher cap for the wider 45-day window
     candidates = _load_candidate_families()   # auto-discovered patterns to also test
     if candidates:
         print(f"(testing {len(candidates)} auto-discovered candidate families too)")
+    # 1) DEDUP FIRST (cheap, no API): one market per (event, family).
     seen = set()
-    obs = []   # each: (family, yes_price, yes_won, day)
-    checked = 0
+    todo = []   # markets that still need a price fetch
     for m in rows:
-        if checked >= cap:
+        if len(todo) >= cap:
             break
         fam = family_of_with_candidates(m["question"], candidates)
         ek = (event_key(m), fam)
         if ek in seen:
             continue
+        seen.add(ek)
+        todo.append((fam, m))
+
+    # 2) FETCH mid-life prices IN PARALLEL (the slow part — one HTTP call each).
+    # Serial fetching of thousands of markets blew past the CI timeout; a thread
+    # pool brings a 45-day scan from ~an hour down to a few minutes.
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    obs = []   # each: (family, yes_price, yes_won, day)
+
+    def _sample(item):
+        fam, m = item
         p = price_before_close(m["token_yes"], fraction=0.5)
         if p is None:
-            continue
-        checked += 1
-        seen.add(ek)
-        obs.append((fam, p, m["yes_won"], m["day"]))
-        if checked % 100 == 0:
-            print(f"  ...{checked} independent observations")
+            return None
+        return (fam, p, m["yes_won"], m["day"])
+
+    with ThreadPoolExecutor(max_workers=16) as ex:
+        futs = [ex.submit(_sample, it) for it in todo]
+        done = 0
+        for fu in as_completed(futs):
+            r = fu.result()
+            done += 1
+            if r is not None:
+                obs.append(r)
+            if done % 500 == 0:
+                print(f"  ...sampled {done}/{len(todo)} ({len(obs)} usable)")
 
     print(f"\n{len(obs)} INDEPENDENT observations (event-deduped).\n")
 
