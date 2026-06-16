@@ -1,5 +1,32 @@
 {
-  "tiers": {},
+  "tiers": {
+    "other | pay NO 0.55-0.75": {
+      "tier": "trial",
+      "mult": 0.25,
+      "promoted": "2026-06-16",
+      "recurred": 3,
+      "source": "auto-trial",
+      "measured_win": 0.77,
+      "measured_wilson_lower": 0.665,
+      "measured_n": 187,
+      "direction": "NO",
+      "band_lo": 0.55,
+      "band_hi": 0.75
+    },
+    "over_under | pay YES 0.75-0.95": {
+      "tier": "trial",
+      "mult": 0.25,
+      "promoted": "2026-06-16",
+      "recurred": 3,
+      "source": "auto-trial",
+      "measured_win": 0.956,
+      "measured_wilson_lower": 0.855,
+      "measured_n": 113,
+      "direction": "YES",
+      "band_lo": 0.75,
+      "band_hi": 0.95
+    }
+  },
   "disabled": [],
   "warnings": {},
   "updated": "2026-06-16"
