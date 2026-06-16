@@ -127,6 +127,26 @@ def test_grab_bag_and_crypto_never_promote():
     print("PASS test_grab_bag_and_crypto_never_promote")
 
 
+def test_discovery_excludes_crypto_and_novelty():
+    """Auto-discovery must NEVER queue crypto or novelty patterns as candidates."""
+    from polybot import discover_families as df
+    assert df._is_excluded("Will XRP reach $1.25 on June 16?")          # crypto
+    assert df._is_excluded("Will Trump say Fake News during UFC 250?")  # novelty
+    assert not df._is_excluded("Will the highest temperature exceed 80F?")  # legit
+    print("PASS test_discovery_excludes_crypto_and_novelty")
+
+
+def test_candidate_family_overlay():
+    """A queued candidate keyword turns an 'other' market into its own testable
+    family, without disturbing already-classified markets."""
+    from polybot.edge_scan15 import family_of_with_candidates
+    cands = [{"family": "auto_weather", "keyword": "will the highest", "occurrences": 50}]
+    assert family_of_with_candidates("Will the highest temp exceed 80F?", cands) == "auto_weather"
+    assert family_of_with_candidates("Exact Score: 2-1?", cands) == "exact_score"  # unaffected
+    assert family_of_with_candidates("Some random one-off question", cands) == "other"
+    print("PASS test_candidate_family_overlay")
+
+
 def _run_all():
     fns = [v for k, v in globals().items() if k.startswith("test_") and callable(v)]
     failed = 0

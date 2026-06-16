@@ -25,6 +25,7 @@ Run:  python -m polybot.edge_scan15
 """
 import datetime
 import math
+import os
 import re
 from collections import defaultdict
 
@@ -43,6 +44,33 @@ PRICE_BANDS = [(0.05, 0.25), (0.25, 0.45), (0.45, 0.55),
 
 # Statistics primitives come from the shared single-source module.
 from .stats import wilson_lower, bonferroni_z as _z_for_family_wise
+
+
+def _load_candidate_families():
+    """Auto-discovered candidate patterns (from discover_families). These get
+    TESTED through the same gate; they only ever bet if they pass + recur. Empty
+    list if no queue yet."""
+    import json
+    p = os.path.join(os.path.dirname(__file__), "..", "discovered_families.json")
+    try:
+        with open(p, encoding="utf-8") as f:
+            return json.load(f).get("candidates", [])
+    except Exception:
+        return []
+
+
+def family_of_with_candidates(question, candidates):
+    """family_of, but if it returns 'other', try to match a queued candidate
+    keyword so auto-discovered patterns become their own testable family."""
+    fam = family_of(question)
+    if fam != "other":
+        return fam
+    ql = question.lower()
+    for c in candidates:
+        kw = (c.get("keyword") or "").lower()
+        if kw and kw in ql:
+            return c.get("family") or fam
+    return fam
 
 
 # Classification comes from the single-source taxonomy module (no drift).
@@ -104,13 +132,16 @@ def scan(days=DAYS, cap=5000):   # higher cap for the wider 45-day window
 
     # collapse to ONE observation per (event, family) so we don't double-count
     # correlated sub-markets; keep the first sampled price for that event/family.
+    candidates = _load_candidate_families()   # auto-discovered patterns to also test
+    if candidates:
+        print(f"(testing {len(candidates)} auto-discovered candidate families too)")
     seen = set()
     obs = []   # each: (family, yes_price, yes_won, day)
     checked = 0
     for m in rows:
         if checked >= cap:
             break
-        fam = family_of(m["question"])
+        fam = family_of_with_candidates(m["question"], candidates)
         ek = (event_key(m), fam)
         if ek in seen:
             continue

@@ -1,0 +1,16 @@
+{
+  "candidates": [
+    {
+      "pattern": "will the highest",
+      "keyword": "will the highest",
+      "occurrences": 153,
+      "family": "auto_will_the_highest"
+    },
+    {
+      "pattern": "will the lowest",
+      "keyword": "will the lowest",
+      "occurrences": 22,
+      "family": "auto_will_the_lowest"
+    }
+  ]
+}
