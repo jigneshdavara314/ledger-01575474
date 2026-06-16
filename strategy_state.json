@@ -2,7 +2,7 @@
   "tiers": {
     "other | pay NO 0.55-0.75": {
       "tier": "trial",
-      "mult": 0.95,
+      "mult": 1.0,
       "promoted": "2026-06-15",
       "recurred": 2,
       "source": "auto-trial",
