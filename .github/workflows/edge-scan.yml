@@ -4,9 +4,11 @@ name: edge-scan
 
 on:
   schedule:
-    # Continuous hunting every 6 hours so candidates accumulate recurrence faster
-    # (a real edge proves itself sooner). Runs on GitHub's machines, never the PC.
-    - cron: "0 */6 * * *"
+    # Continuous hunting every 3 hours. More frequent than strictly needed, on
+    # purpose: GitHub's free scheduler sometimes SKIPS a tick under load, so a
+    # tighter cadence means a skipped run still leaves several scans/day. Runs on
+    # GitHub's machines, never the user's PC.
+    - cron: "0 */3 * * *"
   workflow_dispatch:
     inputs:
       days:
