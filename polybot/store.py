@@ -25,6 +25,14 @@ STATUS_OPEN = "OPEN"
 STATUS_WON = "WON"
 STATUS_LOST = "LOST"
 
+# Honesty guard: headline/performance views must NEVER count simulated/backtest
+# rows. Backfill rows are tagged condition_id LIKE 'bf-%' (and exec_status
+# 'backfill'). This SQL fragment excludes them everywhere a real-money-style
+# figure is shown — belt-and-suspenders so the public dashboard can never again
+# display backtest numbers as if they were real bets, even if such rows reappear.
+_REAL_ONLY = ("condition_id NOT LIKE 'bf-%' "
+              "AND COALESCE(exec_status,'') != 'backfill'")
+
 
 def _conn():
     return sqlite3.connect(config.DB_PATH)
@@ -229,7 +237,7 @@ def category_summary() -> list:
                       COALESCE(SUM(pnl_usd),0) as pnl,
                       COALESCE(SUM(size_usd),0) as staked
                FROM trades
-               WHERE status IN (?,?)
+               WHERE status IN (?,?) AND """ + _REAL_ONLY + """
                GROUP BY category
                ORDER BY pnl DESC""",
             (STATUS_WON, STATUS_LOST, STATUS_WON, STATUS_LOST),
@@ -354,6 +362,7 @@ def real_daily_equity(limit: int = 60, start_balance: float = None):
             "       SUM(status='WON') AS won, SUM(status='LOST') AS lost, "
             "       COALESCE(SUM(pnl_usd),0) AS profit "
             "FROM trades WHERE status IN ('WON','LOST') AND resolved_ts IS NOT NULL "
+            f"      AND {_REAL_ONLY} "
             "GROUP BY day ORDER BY day ASC"
         ).fetchall()
     out = []
@@ -376,34 +385,39 @@ def daily_equity(limit: int = 60):
 
 def recent_trades(limit: int = 30):
     with _conn() as c:
-        # event_slug may not exist on very old DBs; COALESCE guards it
+        # event_slug may not exist on very old DBs; COALESCE guards it.
+        # Real bets only — never display simulated/backfill rows.
         rows = c.execute(
             "SELECT ts, mode, side, size_usd, market_prob, edge, status, pnl_usd, "
             "category, hours_to_res, question, COALESCE(event_slug,'') "
-            "FROM trades ORDER BY id DESC LIMIT ?",
+            "FROM trades WHERE " + _REAL_ONLY + " ORDER BY id DESC LIMIT ?",
             (limit,),
         ).fetchall()
     return rows
 
 
 def performance_summary() -> dict:
-    """Aggregate win rate, P&L and ROI over all RESOLVED positions."""
+    """Aggregate win rate, P&L and ROI over all RESOLVED positions (REAL only —
+    simulated/backfill rows are excluded so the headline never overstates)."""
     with _conn() as c:
         total, open_n = c.execute(
-            "SELECT COUNT(*), SUM(status=?) FROM trades", (STATUS_OPEN,)
+            "SELECT COUNT(*), SUM(status=?) FROM trades WHERE " + _REAL_ONLY,
+            (STATUS_OPEN,)
         ).fetchone()
         won = c.execute(
-            "SELECT COUNT(*) FROM trades WHERE status=?", (STATUS_WON,)
+            "SELECT COUNT(*) FROM trades WHERE status=? AND " + _REAL_ONLY,
+            (STATUS_WON,)
         ).fetchone()[0]
         lost = c.execute(
-            "SELECT COUNT(*) FROM trades WHERE status=?", (STATUS_LOST,)
+            "SELECT COUNT(*) FROM trades WHERE status=? AND " + _REAL_ONLY,
+            (STATUS_LOST,)
         ).fetchone()[0]
         staked = c.execute(
-            "SELECT COALESCE(SUM(size_usd),0) FROM trades WHERE status IN (?,?)",
+            "SELECT COALESCE(SUM(size_usd),0) FROM trades WHERE status IN (?,?) AND " + _REAL_ONLY,
             (STATUS_WON, STATUS_LOST),
         ).fetchone()[0]
         pnl = c.execute(
-            "SELECT COALESCE(SUM(pnl_usd),0) FROM trades WHERE status IN (?,?)",
+            "SELECT COALESCE(SUM(pnl_usd),0) FROM trades WHERE status IN (?,?) AND " + _REAL_ONLY,
             (STATUS_WON, STATUS_LOST),
         ).fetchone()[0]
 

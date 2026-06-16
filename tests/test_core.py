@@ -347,6 +347,34 @@ def test_crypto_quarantine_and_subfamilies():
     print("PASS test_crypto_quarantine_and_subfamilies")
 
 
+def test_headline_excludes_simulated_rows():
+    """Honesty guard: performance_summary / real_daily_equity must NEVER count
+    simulated backfill (bf-) rows, so the public dashboard can't overstate again."""
+    from polybot import config, store
+    import tempfile, os, datetime
+    fd, path = tempfile.mkstemp(suffix=".db"); os.close(fd)
+    config.DB_PATH = path
+    store.init_db()
+    import sqlite3
+    c = sqlite3.connect(path)
+    now = datetime.datetime.utcnow().isoformat()
+    # one REAL win (+small) and one fake simulated bf- win (+huge)
+    c.execute("INSERT INTO trades (ts,mode,condition_id,question,side,market_prob,size_usd,shares,status,exec_status,pnl_usd,resolved_ts,category) "
+              "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+              (now,'PAPER','real-1','Real bet','NO',0.6,10,16.6,'WON','simulated',6.6,now,'soccer'))
+    c.execute("INSERT INTO trades (ts,mode,condition_id,question,side,market_prob,size_usd,shares,status,exec_status,pnl_usd,resolved_ts,category) "
+              "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+              (now,'PAPER','bf-1','Sim bet','NO',0.5,999,1998,'WON','backfill',999,now,'soccer'))
+    c.commit(); c.close()
+    s = store.performance_summary()
+    assert s['resolved'] == 1, f"only the 1 real trade should count, got {s['resolved']}"
+    assert abs(s['pnl_usd'] - 6.6) < 1e-6, f"sim +999 must be excluded, pnl={s['pnl_usd']}"
+    cats = store.category_summary()
+    assert sum(r[4] for r in cats) < 100, "category pnl must exclude the sim row"
+    os.remove(path)
+    print("PASS test_headline_excludes_simulated_rows")
+
+
 def _run_all():
     fns = [v for k, v in globals().items() if k.startswith("test_") and callable(v)]
     failed = 0
