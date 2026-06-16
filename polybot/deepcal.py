@@ -36,14 +36,7 @@ def classify_subtype(question: str) -> str:
     return "other"
 
 
-def wilson_ci(wins, n, z=1.96):
-    if n == 0:
-        return (0.0, 0.0)
-    p = wins / n
-    d = 1 + z*z/n
-    c = (p + z*z/(2*n)) / d
-    m = (z * math.sqrt(p*(1-p)/n + z*z/(4*n*n))) / d
-    return (max(0, c - m), min(1, c + m))
+from .stats import wilson_ci  # single source of truth
 
 
 def fetch_resolved_for_category(category: str, max_pages: int = 25) -> list:

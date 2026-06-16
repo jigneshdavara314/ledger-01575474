@@ -306,29 +306,31 @@ def test_fill_prob_rises_with_time():
 
 def test_promoted_edge_bridge():
     """A self-promoted NO-direction edge must feed its scan-measured Wilson LB
-    into live sizing (only inside its band), and YES-direction cells must NOT bet."""
+    into live sizing (only inside its band), and YES-direction cells must NOT bet.
+
+    Uses a TEMP state file so the test never touches the real (git-tracked)
+    strategy_state.json — a prior version reset it to {} and could wipe live tiers.
+    """
     from polybot import self_improve as si, longshot
-    st = si.load_state()
-    saved = dict(st)
+    orig_path = si.STATE_PATH
+    fd, tmp = tempfile.mkstemp(suffix=".json"); os.close(fd)
+    si.STATE_PATH = tmp
     try:
-        st["tiers"] = {"over_under | pay NO 0.55-0.75": {
+        si.save_state({"tiers": {"over_under | pay NO 0.55-0.75": {
             "tier": "trial", "direction": "NO", "band_lo": 0.55, "band_hi": 0.75,
-            "measured_win": 0.76, "measured_wilson_lower": 0.67, "measured_n": 250}}
-        st["disabled"] = []
-        si.save_state(st)
-        # in-band O/U NO market -> uses the measured Wilson LB
+            "measured_win": 0.76, "measured_wilson_lower": 0.67, "measured_n": 250}},
+            "disabled": [], "warnings": {}})
         pw = longshot._promoted_win("belgium vs egypt: o/u 2.5", 0.64)
         assert pw is not None and abs(pw["wl"] - 0.67) < 1e-9, pw
-        # out of band -> not used
         assert longshot._promoted_win("belgium vs egypt: o/u 2.5", 0.40) is None
-        # YES-direction promoted cell must be skipped (we only bet NO)
-        st["tiers"] = {"over_under | pay YES 0.75-0.95": {
+        si.save_state({"tiers": {"over_under | pay YES 0.75-0.95": {
             "tier": "trial", "direction": "YES", "band_lo": 0.75, "band_hi": 0.95,
-            "measured_wilson_lower": 0.85, "measured_n": 90}}
-        si.save_state(st)
+            "measured_wilson_lower": 0.85, "measured_n": 90}},
+            "disabled": [], "warnings": {}})
         assert longshot._promoted_win("match o/u 2.5", 0.80) is None
     finally:
-        si.save_state({"tiers": {}, "disabled": [], "warnings": {}})
+        si.STATE_PATH = orig_path
+        os.remove(tmp)
     print("PASS test_promoted_edge_bridge")
 
 

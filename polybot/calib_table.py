@@ -52,18 +52,7 @@ MIN_TRUST_N = 25
 HARD_CAP = 0.97
 
 
-def _wilson_lower(rate: float, n: int, z: float = 1.96) -> float:
-    """Wilson score lower bound for a proportion — a conservative win-rate floor
-    that widens (drops further below the point estimate) as n shrinks."""
-    import math
-    if n <= 0:
-        return rate
-    wins = rate * n
-    p = wins / n
-    denom = 1 + z * z / n
-    centre = p + z * z / (2 * n)
-    rad = z * math.sqrt((p * (1 - p) + z * z / (4 * n)) / n)
-    return max(0.0, (centre - rad) / denom)
+from .stats import wilson_lower_rate as _wilson_lower  # single source of truth
 
 
 def _subtype_for(question: str) -> str:

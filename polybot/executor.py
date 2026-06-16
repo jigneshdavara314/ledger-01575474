@@ -65,8 +65,13 @@ class Executor:
                 filled,
                 note=f"{signal.side} {signal.market.question[:40]}",
             )
-        except Exception:
-            pass
+        except Exception as e:
+            # Do NOT silently swallow: a failed deduction after the trade is
+            # booked desyncs the ledger. Surface it loudly so it's visible in the
+            # run log / CI instead of quietly corrupting the bankroll.
+            print(f"[executor] WARNING: bankroll.deduct_stake failed after booking "
+                  f"trade (${filled} {signal.side}): {e} — LEDGER MAY BE OUT OF SYNC")
+            result["bankroll_error"] = str(e)
         result["recorded"] = True
         return result
 

@@ -2,10 +2,8 @@
 {"ts": "2026-06-15T05:40:24.613950", "action": "TRIAL", "cell": "over_under | pay YES 0.75-0.95", "recurred_days": 2, "tier": "trial", "mult": 0.25}
 {"ts": "2026-06-15T18:23:34.526787", "action": "TRIAL", "cell": "other | pay NO 0.55-0.75", "recurred_days": 2, "tier": "trial", "mult": 0.25}
 {"ts": "2026-06-15T18:23:34.526886", "action": "TRIAL", "cell": "over_under | pay YES 0.75-0.95", "recurred_days": 2, "tier": "trial", "mult": 0.25}
-<<<<<<< Updated upstream
 {"ts": "2026-06-15T18:38:08.013453", "action": "TRIAL", "cell": "other | pay NO 0.55-0.75", "recurred_days": 2, "tier": "trial", "mult": 0.25}
 {"ts": "2026-06-15T18:38:08.013529", "action": "TRIAL", "cell": "over_under | pay YES 0.75-0.95", "recurred_days": 2, "tier": "trial", "mult": 0.25}
-=======
 {"ts": "2026-06-16T05:22:11.079055", "action": "TRIAL", "cell": "other | pay NO 0.55-0.75", "recurred_days": 2, "tier": "trial", "mult": 0.25}
 {"ts": "2026-06-16T05:22:11.080057", "action": "TRIAL", "cell": "over_under | pay YES 0.75-0.95", "recurred_days": 2, "tier": "trial", "mult": 0.25}
 {"ts": "2026-06-16T05:22:18.311755", "action": "TRIAL", "cell": "other | pay NO 0.55-0.75", "recurred_days": 2, "tier": "trial", "mult": 0.25}
@@ -16,6 +14,5 @@
 {"ts": "2026-06-16T05:23:45.574657", "action": "TRIAL", "cell": "over_under | pay YES 0.75-0.95", "recurred_days": 2, "tier": "trial", "mult": 0.25}
 {"ts": "2026-06-16T05:23:54.055394", "action": "TRIAL", "cell": "other | pay NO 0.55-0.75", "recurred_days": 2, "tier": "trial", "mult": 0.25}
 {"ts": "2026-06-16T05:23:54.056392", "action": "TRIAL", "cell": "over_under | pay YES 0.75-0.95", "recurred_days": 2, "tier": "trial", "mult": 0.25}
->>>>>>> Stashed changes
 {"ts": "2026-06-16T05:52:58.543739", "action": "TRIAL", "cell": "other | pay NO 0.55-0.75", "recurred_days": 3, "tier": "trial", "mult": 0.25}
 {"ts": "2026-06-16T05:52:58.543849", "action": "TRIAL", "cell": "over_under | pay YES 0.75-0.95", "recurred_days": 3, "tier": "trial", "mult": 0.25}

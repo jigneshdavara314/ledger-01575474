@@ -612,7 +612,7 @@ def cmd_history():
     print(f"{'time':20} {'mode':5} {'side':4} {'$':>6} {'price':>6} {'edge':>7} "
           f"{'status':7} {'pnl':>8} {'cat':>9} {'hrs':>5}  question")
     print("-" * 120)
-    for ts, mode, side, size, price, edge, status, pnl, cat, hrs, q in rows:
+    for ts, mode, side, size, price, edge, status, pnl, cat, hrs, q, _slug in rows:
         pnl_str = f"{pnl:>+8.2f}" if pnl is not None else f"{'':>8}"
         hrs_str = f"{hrs:5.1f}" if hrs else "    ?"
         cat_str = (cat or "other")[:9]

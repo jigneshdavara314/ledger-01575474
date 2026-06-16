@@ -55,17 +55,33 @@ def _today():
 
 
 def load_state() -> dict:
+    empty = {"tiers": {}, "disabled": [], "warnings": {}, "updated": None}
+    if not os.path.exists(STATE_PATH):
+        return empty
     try:
         with open(STATE_PATH) as f:
             return json.load(f)
     except Exception:
-        return {"tiers": {}, "disabled": [], "warnings": {}, "updated": None}
+        # File exists but is unreadable/corrupt — preserve it for inspection
+        # rather than silently overwriting learned tiers with empty defaults.
+        try:
+            os.replace(STATE_PATH, STATE_PATH + ".corrupt")
+        except Exception:
+            pass
+        return empty
 
 
 def save_state(state: dict):
+    """ATOMIC write: serialize to a temp file then os.replace() into place, so a
+    crash mid-write can never leave a truncated/corrupt state.json that would
+    silently reset all learned tiers to empty defaults on the next load."""
     state["updated"] = _today()
-    with open(STATE_PATH, "w") as f:
+    tmp = STATE_PATH + ".tmp"
+    with open(tmp, "w") as f:
         json.dump(state, f, indent=2)
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(tmp, STATE_PATH)
 
 
 def _log(action: str, detail: dict):

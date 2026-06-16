@@ -4,3 +4,5 @@ python-dotenv>=1.0.0
 openai>=1.40.0
 # Real (LIVE) trading on Polymarket — official client
 py-clob-client>=0.19.0
+# Testing (CI gates the bot cycle on a green test run)
+pytest>=8.0.0

@@ -93,15 +93,7 @@ def sport_of(q: str):
     return best
 
 
-def wilson_lower(wins: int, n: int, z: float = 1.96) -> float:
-    """Wilson score interval lower bound for a proportion."""
-    if n == 0:
-        return 0.0
-    p = wins / n
-    denom = 1 + z * z / n
-    centre = p + z * z / (2 * n)
-    rad = z * math.sqrt((p * (1 - p) + z * z / (4 * n)) / n)
-    return max(0.0, (centre - rad) / denom)
+from .stats import wilson_lower  # single source of truth
 
 
 def _ev_no(no_win_rate: float, avg_no_price: float) -> float:

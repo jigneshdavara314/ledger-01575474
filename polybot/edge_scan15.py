@@ -39,24 +39,8 @@ PRICE_BANDS = [(0.05, 0.25), (0.25, 0.45), (0.45, 0.55),
                (0.55, 0.75), (0.75, 0.95)]
 
 
-def wilson_lower(wins, n, z=1.96):
-    if n == 0:
-        return 0.0
-    p = wins / n
-    denom = 1 + z * z / n
-    centre = p + z * z / (2 * n)
-    rad = z * math.sqrt((p * (1 - p) + z * z / (4 * n)) / n)
-    return max(0.0, (centre - rad) / denom)
-
-
-def _z_for_family_wise(n_tests, alpha=0.05):
-    """Bonferroni-corrected z so that, testing n_tests cells, the chance ANY
-    null cell passes stays <= alpha overall. Without this, ~alpha*n_tests cells
-    pass by pure luck (the #1 false-positive source when scanning ~70 cells)."""
-    from statistics import NormalDist
-    per = alpha / max(1, n_tests)          # per-test two-tailed -> one-tailed below
-    # one-sided lower bound: use the (1 - per) quantile
-    return NormalDist().inv_cdf(1 - per)
+# Statistics primitives come from the shared single-source module.
+from .stats import wilson_lower, bonferroni_z as _z_for_family_wise
 
 
 # CRYPTO CONTAMINATION GUARD: crypto up/down (and hit-price strikes) are a PROVEN
@@ -102,7 +86,10 @@ def fetch_window(days=DAYS):
     """Resolved markets in the last `days` days, with clean binary outcome + a
     mid-life YES price. One row per market (event dedup happens later)."""
     out = []
-    today = datetime.date(2026, 6, 14)
+    # Use the ACTUAL current date so the scan window rolls forward each run.
+    # (A hardcoded date forever replayed one fixed window, silently defeating the
+    # cross-day recurrence gate that promotion depends on.)
+    today = datetime.datetime.utcnow().date()
     for d in range(days):
         day = (today - datetime.timedelta(days=d)).isoformat()
         offset = 0
