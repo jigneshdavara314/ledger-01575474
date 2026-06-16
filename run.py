@@ -633,6 +633,7 @@ COMMANDS = {
     "resolve": cmd_resolve,
     "history": cmd_history,
     "report":  cmd_report,
+    "report-daily": lambda: __import__("polybot.daily_report", fromlist=["print_table"]).print_table(),
     "bankroll": cmd_bankroll,
     "status":  cmd_status,
 }

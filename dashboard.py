@@ -218,6 +218,25 @@ def build_html() -> str:
     donut_svg = _donut(win_rate, "Win rate")
     cat_bars = _cat_bars(cats)
 
+    # ---- daily operations report (what the automation did each day) ----
+    from polybot import daily_report
+    ops_rows = daily_report.build(60)          # up to 60 days; JS filters client-side
+    ops_html = []
+    for r in ops_rows:
+        ops_html.append(
+            f"<tr data-day='{r['day']}'>"
+            f"<td>{r['day']}</td>"
+            f"<td>{r['edges_found']}</td>"
+            f"<td>{r['new_promoted']}</td>"
+            f"<td>{r['bids_placed']}</td>"
+            f"<td>${r['invested']:,.2f}</td>"
+            f"<td><span class='pos'>{r['won']}</span>–<span class='neg'>{r['lost']}</span></td>"
+            f"<td>{r['win_rate']:.0f}%</td>"
+            f"<td class='{_cls(r['pnl'])}'>{_money(r['pnl'])}</td>"
+            f"<td class='{_cls(r['roi'])}'>{r['roi']:+.0f}%</td></tr>")
+    if not ops_html:
+        ops_html = ["<tr><td colspan='9' class='empty'>No automation activity recorded yet.</td></tr>"]
+
     # ---- daily history (real results, builds forward) ----
     day_html = []
     for day, n_set, won, lost, dprofit, bal in real_days:
@@ -443,6 +462,18 @@ def build_html() -> str:
   @keyframes fade {{ from {{ opacity:0; }} to {{ opacity:1; }} }}
   .panel-tab h2:first-child {{ margin-top:4px; }}
   .note {{ color:var(--muted); font-size:12px; margin:0 0 10px; }}
+  .filterbar {{ display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin:8px 0 12px; }}
+  .fbtn {{ background:var(--panel); color:var(--muted); border:1px solid var(--border);
+           border-radius:7px; padding:6px 12px; font-size:12.5px; cursor:pointer; }}
+  .fbtn:hover {{ color:var(--text); }}
+  .fbtn.active {{ background:#1f6feb22; color:var(--accent); border-color:var(--accent); }}
+  .fdate {{ color:var(--muted); font-size:12px; margin-left:6px; }}
+  .fdate input {{ background:#0b0e13; color:var(--text); border:1px solid var(--border);
+                  border-radius:6px; padding:4px 6px; font-size:12px; }}
+  .ops-totals {{ display:flex; gap:14px; flex-wrap:wrap; background:var(--panel);
+                 border:1px solid var(--border); border-radius:10px; padding:12px 14px;
+                 margin-bottom:12px; font-size:13px; }}
+  .ops-totals b {{ font-size:17px; }}
   .sim-tag {{ background:#8a6d3b22; color:#d8a23b; border:1px solid #8a6d3b;
               border-radius:6px; padding:1px 8px; font-size:10px; font-weight:700;
               text-transform:uppercase; letter-spacing:.04em; margin-left:6px;
@@ -494,6 +525,7 @@ def build_html() -> str:
 
   <nav class="tabs">
     <button class="tab active" data-tab="overview" onclick="showTab('overview')">📈 Overview</button>
+    <button class="tab" data-tab="dailyops" onclick="showTab('dailyops')">🤖 Daily Ops</button>
     <button class="tab" data-tab="category" onclick="showTab('category')">📊 By Category</button>
     <button class="tab" data-tab="history" onclick="showTab('history')">📅 Daily History</button>
     <button class="tab" data-tab="open" onclick="showTab('open')">⏳ Open Bets ({len(open_rows)})</button>
@@ -516,6 +548,26 @@ def build_html() -> str:
         {cat_bars}
       </div>
     </div>
+  </section>
+
+  <section class="panel-tab" id="tab-dailyops">
+    <h2>Daily operations — what the automation did</h2>
+    <div class="filterbar">
+      <button class="fbtn active" onclick="opsFilter('all',this)">All</button>
+      <button class="fbtn" onclick="opsFilter('today',this)">Today</button>
+      <button class="fbtn" onclick="opsFilter('yesterday',this)">Yesterday</button>
+      <button class="fbtn" onclick="opsFilter('month',this)">This month</button>
+      <button class="fbtn" onclick="opsFilter('lastmonth',this)">Last month</button>
+      <span class="fdate">from <input type="date" id="opsFrom" onchange="opsFilter('range',null)">
+        to <input type="date" id="opsTo" onchange="opsFilter('range',null)"></span>
+    </div>
+    <div id="opsTotals" class="ops-totals"></div>
+    <table id="opsTable"><thead><tr>
+      <th>Day</th><th>Edges found</th><th>New edges</th><th>Bids</th><th>Invested</th>
+      <th>W–L</th><th>Win %</th><th>P&amp;L</th><th>ROI</th></tr></thead>
+      <tbody>{''.join(ops_html)}</tbody></table>
+    <div class="note">Edges found = patterns that passed the bulletproof gate that day ·
+      New edges = families auto-promoted to a bet · Bids/Invested/P&amp;L = real placed trades.</div>
   </section>
 
   <section class="panel-tab" id="tab-category">
@@ -584,6 +636,51 @@ function showTab(name, scroll) {{
     var nav = document.querySelector('.tabs');
     if (nav) nav.scrollIntoView({{behavior:'smooth', block:'start'}});
   }}
+  if (name === 'dailyops') opsFilter('all', null);
+}}
+
+// Client-side date filtering of the Daily Ops table (works on the static page).
+function opsFilter(mode, btn) {{
+  var rows = document.querySelectorAll('#opsTable tbody tr[data-day]');
+  var now = new Date();
+  function iso(d) {{ return d.toISOString().slice(0,10); }}
+  var today = iso(now);
+  var y = new Date(now); y.setDate(now.getDate()-1); var yest = iso(y);
+  var mPrefix = today.slice(0,7);
+  var lm = new Date(now.getFullYear(), now.getMonth()-1, 1);
+  var lmPrefix = iso(lm).slice(0,7);
+  var from = (document.getElementById('opsFrom')||{{}}).value;
+  var to = (document.getElementById('opsTo')||{{}}).value;
+  // highlight active preset button
+  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  var tot = {{edges:0,nw:0,bids:0,inv:0,won:0,lost:0,pnl:0}};
+  rows.forEach(function(r) {{
+    var d = r.getAttribute('data-day'); var show = true;
+    if (mode==='today') show = (d===today);
+    else if (mode==='yesterday') show = (d===yest);
+    else if (mode==='month') show = d.startsWith(mPrefix);
+    else if (mode==='lastmonth') show = d.startsWith(lmPrefix);
+    else if (mode==='range') show = (!from||d>=from) && (!to||d<=to);
+    r.style.display = show ? '' : 'none';
+    if (show) {{
+      var c = r.children;
+      tot.edges += +c[1].textContent||0; tot.nw += +c[2].textContent||0;
+      tot.bids += +c[3].textContent||0;
+      tot.inv += parseFloat(c[4].textContent.replace(/[$,]/g,''))||0;
+      tot.won += +c[5].textContent.split('–')[0]||0;
+      tot.lost += +c[5].textContent.split('–')[1]||0;
+      tot.pnl += parseFloat(c[7].textContent.replace(/[+$,]/g,''))||0;
+    }}
+  }});
+  var res = tot.won+tot.lost;
+  var wr = res ? Math.round(tot.won/res*100) : 0;
+  var pcls = tot.pnl>=0 ? 'pos' : 'neg';
+  document.getElementById('opsTotals').innerHTML =
+    'Edges found <b>'+tot.edges+'</b> &nbsp;·&nbsp; New edges <b>'+tot.nw+'</b> &nbsp;·&nbsp; '+
+    'Bids <b>'+tot.bids+'</b> &nbsp;·&nbsp; Invested <b>$'+tot.inv.toFixed(2)+'</b> &nbsp;·&nbsp; '+
+    'Win <b>'+wr+'%</b> ('+tot.won+'–'+tot.lost+') &nbsp;·&nbsp; '+
+    'P&L <b class="'+pcls+'">'+(tot.pnl>=0?'+':'')+'$'+tot.pnl.toFixed(2)+'</b>';
 }}
 // Restore the last-viewed tab across the 60s auto-refresh so it doesn't reset
 // (no scroll on restore, so the page doesn't jump while you're reading the top).
