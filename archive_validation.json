@@ -1,0 +1,110 @@
+[
+  {
+    "family": "crypto_pricetail",
+    "n": 326187,
+    "yes_won_pct": 47.2,
+    "no_won_pct": 52.8
+  },
+  {
+    "family": "other",
+    "n": 142591,
+    "yes_won_pct": 31.0,
+    "no_won_pct": 69.0
+  },
+  {
+    "family": "over_under",
+    "n": 114514,
+    "yes_won_pct": 46.2,
+    "no_won_pct": 53.8
+  },
+  {
+    "family": "spread_handicap",
+    "n": 54532,
+    "yes_won_pct": 39.3,
+    "no_won_pct": 60.7
+  },
+  {
+    "family": "esports_prop",
+    "n": 51074,
+    "yes_won_pct": 46.3,
+    "no_won_pct": 53.7
+  },
+  {
+    "family": "moneyline",
+    "n": 45949,
+    "yes_won_pct": 22.4,
+    "no_won_pct": 77.6
+  },
+  {
+    "family": "outright_winner",
+    "n": 17908,
+    "yes_won_pct": 46.1,
+    "no_won_pct": 53.9
+  },
+  {
+    "family": "draw",
+    "n": 11623,
+    "yes_won_pct": 25.8,
+    "no_won_pct": 74.2
+  },
+  {
+    "family": "novelty_says",
+    "n": 10751,
+    "yes_won_pct": 44.2,
+    "no_won_pct": 55.8
+  },
+  {
+    "family": "esports_objective",
+    "n": 5039,
+    "yes_won_pct": 31.6,
+    "no_won_pct": 68.4
+  },
+  {
+    "family": "both_teams_score",
+    "n": 4993,
+    "yes_won_pct": 53.2,
+    "no_won_pct": 46.8
+  },
+  {
+    "family": "exact_score",
+    "n": 4729,
+    "yes_won_pct": 5.9,
+    "no_won_pct": 94.1
+  },
+  {
+    "family": "player_prop",
+    "n": 4563,
+    "yes_won_pct": 9.2,
+    "no_won_pct": 90.8
+  },
+  {
+    "family": "tweet_range",
+    "n": 3514,
+    "yes_won_pct": 5.7,
+    "no_won_pct": 94.3
+  },
+  {
+    "family": "to_advance",
+    "n": 754,
+    "yes_won_pct": 33.3,
+    "no_won_pct": 66.7
+  },
+  {
+    "family": "method_of_victory",
+    "n": 392,
+    "yes_won_pct": 25.0,
+    "no_won_pct": 75.0
+  },
+  {
+    "family": "to_qualify",
+    "n": 299,
+    "yes_won_pct": 32.1,
+    "no_won_pct": 67.9
+  },
+  {
+    "family": "winning_margin",
+    "n": 91,
+    "yes_won_pct": 20.9,
+    "no_won_pct": 79.1
+  }
+]
