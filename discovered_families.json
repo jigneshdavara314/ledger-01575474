@@ -3,14 +3,8 @@
     {
       "pattern": "will the highest",
       "keyword": "will the highest",
-      "occurrences": 152,
+      "occurrences": 11,
       "family": "auto_will_the_highest"
-    },
-    {
-      "pattern": "will the lowest",
-      "keyword": "will the lowest",
-      "occurrences": 19,
-      "family": "auto_will_the_lowest"
     }
   ]
 }
