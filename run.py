@@ -264,13 +264,9 @@ def cmd_loop():
 # ---------------------------------------------------------------------------
 
 def _event_group_key(question: str) -> str:
-    """Best-effort match identifier from a question when no event slug exists.
-    Most sub-market questions are 'Team A vs. Team B: <line>' — the part before
-    the colon is the match, so all its lines share one correlation group."""
-    q = (question or "").strip()
-    if ":" in q:
-        return q.split(":", 1)[0].strip().lower()
-    return q.lower()
+    """Delegates to the engine (single source of truth)."""
+    from polybot.engine import event_group_key
+    return event_group_key(question)
 
 
 def cmd_longshot(trade: bool = True):
@@ -311,6 +307,7 @@ def cmd_longshot(trade: bool = True):
               f"deposit. Not opening new bets (existing ones still settle).")
         return
 
+    from polybot import engine
     placed = 0
     staked_total = 0.0
     skipped_nofill = 0
@@ -321,61 +318,18 @@ def cmd_longshot(trade: bool = True):
               f"{f.market.question[:38]}")
         if not trade:
             continue
-        if store.already_open(f.market.condition_id):
-            print("     -> skipped (already open)")
+        # ALL risk gates now live in the testable engine module.
+        gate = engine.run_gates(f.market.condition_id, f.market.question,
+                                f.size_usd, getattr(f.market, "event_slug", "") or "")
+        if not gate.ok:
+            print(f"     -> skipped ({gate.reason})")
             continue
-        if store.open_position_count() >= 50:
-            print("     -> skipped (position cap)")
+        # Honest fill model (PAPER simulates; LIVE always attempts) — in engine.
+        if not engine.should_attempt(f.fill_prob, f.market.condition_id):
+            print(f"     -> limit NOT filled at {f.bid_price:.3f} "
+                  f"(would retry next scan or pay ask)")
+            skipped_nofill += 1
             continue
-        # CORRELATION CAP: the sub-markets of one match resolve together, so they
-        # aren't independent diversification. Limit bets per event. If the event
-        # slug is missing, fall back to the match name parsed from the question
-        # ("Team A vs. Team B: <line>") so the cap is NOT silently bypassed.
-        slug = getattr(f.market, "event_slug", "") or ""
-        group_key = slug or _event_group_key(f.market.question)
-        if group_key and store.open_count_for_event_like(group_key) >= config.LONGSHOT_MAX_PER_EVENT:
-            print(f"     -> skipped (per-event cap: already "
-                  f"{config.LONGSHOT_MAX_PER_EVENT} bets on this match)")
-            continue
-        # DAILY-SPEND GOVERNOR: cap TOTAL stake across all of today's runs to the
-        # daily budget (the scan runs many times/day; without this the budget is
-        # re-applied each run).
-        if config.LONGSHOT_DAILY_SPEND_CAP:
-            already = store.staked_today()
-            if already + f.size_usd > config.daily_budget():
-                print(f"     -> skipped (daily budget reached: "
-                      f"${already:.2f} staked today >= ${config.daily_budget():.0f})")
-                continue
-        # AGGREGATE EXPOSURE CEILING: cap total live stake as a fraction of equity.
-        if not bankroll.exposure_ok(f.size_usd):
-            print(f"     -> skipped (aggregate exposure ceiling "
-                  f"{config.AGG_EXPOSURE_FRAC*100:.0f}% of equity reached)")
-            continue
-        # COMPOUNDING GUARD: don't bet money we don't have in the bankroll.
-        if not bankroll.can_afford(f.size_usd):
-            print(f"     -> skipped (insufficient bankroll: "
-                  f"${bankroll.balance():.2f} < ${f.size_usd:.2f})")
-            continue
-
-        # HONEST FILL MODEL: a limit order below the ask may not fill. In PAPER
-        # mode we SIMULATE this — count the trade as filled only if a STABLE
-        # (reproducible) uniform draw falls under f.fill_prob, which itself is a
-        # function of where the bid sits in the live bid/ask band and the spread.
-        # In LIVE mode we DON'T simulate: we post the real limit order and let
-        # the exchange decide (this is the only paper/live divergence, and it's
-        # the correct one — you can't fake a fill you're really placing).
-        if config.MODE != "LIVE":
-            from polybot.market_data import stable_unit
-            import datetime as _dt
-            # Salt the roll with the UTC day so the fill is reproducible WITHIN a
-            # scan but RE-SAMPLED across days (adds honest fill-risk variance — a
-            # market that missed today gets a fresh chance tomorrow).
-            roll_key = f"{f.market.condition_id}:{_dt.datetime.utcnow():%Y-%m-%d}"
-            if stable_unit(roll_key) > f.fill_prob:
-                print(f"     -> limit NOT filled at {f.bid_price:.3f} "
-                      f"(would retry next scan or pay ask)")
-                skipped_nofill += 1
-                continue
 
         sig = Signal(
             market=f.market, side="NO",
@@ -480,31 +434,17 @@ def cmd_lagwatch(trade: bool = True):
 
         if not trade:
             continue
-        if store.already_open(o.condition_id):
-            print("    -> skipped (already open)\n")
-            continue
-
-        # Honest fill model (PAPER only — LIVE posts the real order and lets the
-        # exchange fill it). Stable, reproducible roll vs the price-based fill_prob.
-        if config.MODE != "LIVE":
-            from polybot.market_data import stable_unit
-            import datetime as _dt
-            roll_key = f"{o.condition_id}:{_dt.datetime.utcnow():%Y-%m-%d}"
-            if stable_unit(roll_key) > fill_prob:
-                print(f"    -> limit NOT filled at {bid_price:.3f} (retry next scan)\n")
-                nofill += 1
-                continue
-
+        from polybot import engine
         size = config.STRATEGY.max_position_usd
-        # DAILY-SPEND GOVERNOR: lagwatch shares the bankroll, so it must also
-        # respect the daily budget across all of today's runs.
-        if config.LONGSHOT_DAILY_SPEND_CAP:
-            if store.staked_today() + size > config.daily_budget():
-                print(f"    -> skipped (daily budget reached: "
-                      f"${store.staked_today():.2f} >= ${config.daily_budget():.0f})\n")
-                continue
-        if not _bk.can_afford(size):
-            print(f"    -> skipped (insufficient bankroll ${_bk.balance():.2f})\n")
+        # Same testable gate chain as longshot (no copy-pasted guards).
+        gate = engine.run_gates(o.condition_id, o.question, size)
+        if not gate.ok:
+            print(f"    -> skipped ({gate.reason})\n")
+            continue
+        # Honest fill model (PAPER simulates; LIVE attempts) — shared engine.
+        if not engine.should_attempt(fill_prob, o.condition_id):
+            print(f"    -> limit NOT filled at {bid_price:.3f} (retry next scan)\n")
+            nofill += 1
             continue
         mkt = Market(
             condition_id=o.condition_id, question=o.question,
