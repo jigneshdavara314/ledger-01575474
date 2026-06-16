@@ -1,10 +1,9 @@
 {
   "candidates": [
     {
-      "pattern": "will the highest",
+      "family": "extremum_highest",
       "keyword": "will the highest",
-      "occurrences": 11,
-      "family": "auto_will_the_highest"
+      "occurrences": 11
     }
   ]
 }
