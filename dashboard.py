@@ -203,11 +203,11 @@ def build_html() -> str:
           <div class="s-lab">Open now</div></div>
       </div>
       <div class="caveat">
-        ⚠️ <b>Paper / test money — no real funds.</b> This is a 30-day track record
-        of the strategy applied to real market outcomes (slippage + fees included).
-        Being honest about limits: the edge is measured on past resolved markets
-        and is <b>not yet proven on live open markets</b>, and the sample is still
-        thin. Treat results as a work-in-progress test of the edge, not a promise.
+        ⚠️ <b>Paper / test money — no real funds.</b> Every number here is from
+        <b>REAL bets the bot actually placed and settled</b> ({resolved} so far) —
+        no simulation or backtest mixed in. The sample is still <b>small and early</b>,
+        and the edge is <b>not yet proven on live open markets</b>. Treat results as
+        a genuine but early work-in-progress test of the edge, not a promise.
       </div>
     """
 
