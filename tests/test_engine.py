@@ -87,6 +87,31 @@ def test_should_attempt_live_always_true():
     assert engine.should_attempt(0.0, "cond-z", mode="PAPER") is False
 
 
+def test_yes_promoted_edge_matches():
+    """A promoted YES-direction edge must be recognized on the YES price within
+    its band (buy YES), and NOT treated as a NO bet."""
+    from polybot import self_improve as si, longshot
+    orig = si.STATE_PATH
+    fd, tmp = tempfile.mkstemp(suffix=".json"); os.close(fd)
+    si.STATE_PATH = tmp
+    try:
+        si.save_state({"tiers": {"over_under | pay YES 0.75-0.95": {
+            "tier": "trial", "direction": "YES", "band_lo": 0.75, "band_hi": 0.95,
+            "measured_win": 0.956, "measured_wilson_lower": 0.855, "measured_n": 113}},
+            "disabled": [], "warnings": {}})
+        # YES price 0.85 is in the band -> matched, sized on Wilson LB 0.855
+        py = longshot._promoted_win_yes("match o/u 2.5", 0.85)
+        assert py is not None and abs(py["wl"] - 0.855) < 1e-9, py
+        # YES price 0.60 (below band) -> no match
+        assert longshot._promoted_win_yes("match o/u 2.5", 0.60) is None
+        # the NO matcher must NOT fire on this YES cell
+        assert longshot._promoted_win("match o/u 2.5", 0.15) is None
+    finally:
+        si.STATE_PATH = orig
+        os.remove(tmp)
+    print("PASS test_yes_promoted_edge_matches")
+
+
 def _run_all():
     fns = [v for k, v in globals().items() if k.startswith("test_") and callable(v)]
     failed = 0

@@ -178,15 +178,20 @@ def _cell_winrate(cell: str):
     matched by the cell's family keyword against the trade question. So each
     promoted edge is evaluated on its own performance, not the whole strategy."""
     fam = cell.split("|")[0].strip()
-    parts = [p for p in fam.replace("/", "_").split("_") if len(p) > 2]
-    if not parts:
+    # Match this edge's live trades by the family's ACTUAL question keywords
+    # (e.g. over_under -> 'o/u','over/under') — the single-source FAMILY_KEYWORDS,
+    # not a broken '%over%' first-word guess that misses bare 'O/U 2.5'.
+    from .taxonomy import FAMILY_KEYWORDS
+    kws = FAMILY_KEYWORDS.get(fam)
+    if not kws:
         return None
-    like = "%" + parts[0] + "%"
+    where = " OR ".join("LOWER(question) LIKE ?" for _ in kws)
+    params = ["%" + k.lower() + "%" for k in kws]
     with store._conn() as c:
         rows = c.execute(
             "SELECT status, market_prob FROM trades "
-            "WHERE status IN ('WON','LOST') AND LOWER(question) LIKE ? "
-            "ORDER BY id DESC LIMIT ?", (like, ROLLING_BETS)).fetchall()
+            f"WHERE status IN ('WON','LOST') AND ({where}) "
+            "ORDER BY id DESC LIMIT ?", (*params, ROLLING_BETS)).fetchall()
     if len(rows) < MIN_EVAL_BETS:
         return None
     wins = sum(1 for s, _ in rows if s == "WON")

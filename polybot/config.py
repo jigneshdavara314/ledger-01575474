@@ -179,7 +179,12 @@ PAPER_FEE_FRAC  = float(os.getenv("PAPER_FEE_FRAC", "0.01"))   # 1% round-trip d
 LONGSHOT_MAX_BETS      = int(os.getenv("LONGSHOT_MAX_BETS", "40"))   # diversify
 # Mid-price bidding: 0.0 = bid at midpoint (best price, may not fill),
 # 1.0 = bid at ask (fills immediately). 0.4 leans toward a better price.
-LONGSHOT_BID_AGGRESSION = float(os.getenv("LONGSHOT_BID_AGG", "0.4"))
+# 0.6 (closer to ask) recovers the ~35-60% of qualified +EV bets that 0.4 dropped
+# as "not filled". SAFE: edge is recomputed against the actual bid and must still
+# clear LONGSHOT_MIN_EDGE, so a worse bid that erases the edge auto-vetoes itself
+# — raising aggression can never create a -EV fill, only forgo a little price
+# improvement on bets that stay +EV. (Not 1.0: pure ask-taking discards all edge.)
+LONGSHOT_BID_AGGRESSION = float(os.getenv("LONGSHOT_BID_AGG", "0.6"))
 
 # Realistic-fill sizing: the actual stake is capped at the order-book depth
 # available within LONGSHOT_FILL_TOLERANCE of the best ask, so we never "bet"

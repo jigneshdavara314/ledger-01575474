@@ -332,7 +332,7 @@ def cmd_longshot(trade: bool = True):
             continue
 
         sig = Signal(
-            market=f.market, side="NO",
+            market=f.market, side=f.side,   # NO (fade) or YES (promoted favorite)
             fair_prob=f.est_win_prob, market_prob=f.bid_price,
             edge=round(f.est_win_prob - f.bid_price, 4), size_usd=f.size_usd,
             reason=f.reason, estimator="longshot-fade",
