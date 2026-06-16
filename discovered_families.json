@@ -1,9 +1,14 @@
 {
   "candidates": [
     {
-      "family": "extremum_highest",
+      "family": "extrema_highest",
       "keyword": "will the highest",
-      "occurrences": 11
+      "occurrences": 115
+    },
+    {
+      "family": "extrema_lowest",
+      "keyword": "will the lowest",
+      "occurrences": 8
     }
   ]
 }
