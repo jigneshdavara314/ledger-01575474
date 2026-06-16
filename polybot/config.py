@@ -16,6 +16,11 @@ load_dotenv()
 # ---------------------------------------------------------------------------
 OPENAI_API_KEY     = os.getenv("OPENAI_API_KEY", "")
 ANTHROPIC_API_KEY  = os.getenv("ANTHROPIC_API_KEY", "")
+# Optional Anthropic-compatible gateway (e.g. cloudeapi.omeecron.cloud, a drop-in
+# for the Anthropic Messages API). If set, the anthropic SDK is pointed here — no
+# other code changes needed. Used ONLY for family-classification (names/groups
+# patterns), never to estimate a probability or decide a bet.
+ANTHROPIC_BASE_URL = os.getenv("ANTHROPIC_BASE_URL", "")
 POLYGON_WALLET_PRIVATE_KEY = os.getenv("POLYGON_WALLET_PRIVATE_KEY", "")
 
 CLOB_HOST  = os.getenv("CLOB_HOST",  "https://clob.polymarket.com")

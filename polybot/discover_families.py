@@ -84,7 +84,12 @@ def _ai_refine(candidates: list) -> list:
         return candidates
     try:
         import anthropic
-        client = anthropic.Anthropic(api_key=config.ANTHROPIC_API_KEY)
+        # Point at the omeecron/cloudeapi gateway if configured (Anthropic-
+        # compatible drop-in); otherwise the real Anthropic API.
+        _kwargs = {"api_key": config.ANTHROPIC_API_KEY}
+        if getattr(config, "ANTHROPIC_BASE_URL", ""):
+            _kwargs["base_url"] = config.ANTHROPIC_BASE_URL
+        client = anthropic.Anthropic(**_kwargs)
         listing = "\n".join(f"- {c['keyword']} (x{c['occurrences']})" for c in candidates)
         msg = client.messages.create(
             model="claude-haiku-4-5-20251001", max_tokens=600,

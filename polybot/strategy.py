@@ -143,7 +143,10 @@ def estimate_fair_probability_claude(market: Market) -> Optional[float]:
         return None
     try:
         import anthropic
-        client = anthropic.Anthropic(api_key=config.ANTHROPIC_API_KEY)
+        _kw = {"api_key": config.ANTHROPIC_API_KEY}
+        if getattr(config, "ANTHROPIC_BASE_URL", ""):
+            _kw["base_url"] = config.ANTHROPIC_BASE_URL
+        client = anthropic.Anthropic(**_kw)
         resp = client.messages.create(
             model="claude-haiku-4-5-20251001",
             max_tokens=16,

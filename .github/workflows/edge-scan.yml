@@ -38,6 +38,7 @@ jobs:
       - name: Auto-discover candidate families (suggestions; gate still validates)
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
         run: |
           echo "::group::discover families"
           PYTHONPATH=. python -m polybot.discover_families || true
