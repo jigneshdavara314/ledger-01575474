@@ -97,6 +97,36 @@ def test_taxonomy_single_source_agreement():
     print("PASS test_taxonomy_single_source_agreement")
 
 
+def test_stats_numeric():
+    """Direct numeric checks on the centralized stats primitives."""
+    from polybot import stats
+    # Wilson LB sits below the observed rate and widens as n shrinks
+    assert stats.wilson_lower(90, 100) < 0.90
+    assert stats.wilson_lower(9, 10) < stats.wilson_lower(90, 100)  # thinner -> lower
+    # known value: 28/29 -> ~0.83 LB
+    assert 0.80 < stats.wilson_lower(28, 29) < 0.86
+    # Bonferroni z grows with the number of tests; 1 test = one-sided 95% ~1.645
+    assert stats.bonferroni_z(1) < stats.bonferroni_z(70) < 4.0
+    assert abs(stats.bonferroni_z(1) - 1.645) < 0.02   # one-sided 95%
+    # two-sided CI brackets the rate
+    lo, hi = stats.wilson_ci(50, 100)
+    assert lo < 0.5 < hi
+    print("PASS test_stats_numeric")
+
+
+def test_grab_bag_and_crypto_never_promote():
+    """The 'other' catch-all and quarantined crypto must NEVER auto-promote,
+    even if they recur past the day threshold."""
+    si, _ = _isolated_si()
+    for fam in ("other", "crypto_pricetail"):
+        cell = f"{fam} | pay NO 0.55-0.75"
+        _write_hist(si, cell, 9)               # way over threshold
+        st = {"tiers": {}, "disabled": [], "warnings": {}}
+        si.promote(st)
+        assert cell not in st["tiers"], f"{fam} must never promote"
+    print("PASS test_grab_bag_and_crypto_never_promote")
+
+
 def _run_all():
     fns = [v for k, v in globals().items() if k.startswith("test_") and callable(v)]
     failed = 0

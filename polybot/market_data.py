@@ -289,15 +289,14 @@ def fetch_resolution(condition_id: str) -> Optional[str]:
                 return "YES"
             if p_yes <= 0.01:
                 return "NO"
-        return None  # not resolved, or voided / 50-50
-    except Exception:
+        return None  # genuinely not resolved yet, or voided / 50-50
+    except Exception as e:
+        # Distinguish FETCH FAILURE from "not resolved": a silent None here would
+        # let a persistent API/schema break freeze every position OPEN forever and
+        # look like quiet markets. Surface it so the resolver/operator can see it.
+        print(f"[fetch_resolution] WARNING: could not fetch {condition_id}: {e} "
+              f"(treating as unresolved this cycle — NOT a confirmed no-resolution)")
         return None
-
-
-def fetch_order_book_spread(token_id: str) -> Optional[float]:
-    """Get live best-bid/best-ask spread from the CLOB for a token."""
-    quote = fetch_quote(token_id)
-    return quote["spread"] if quote else None
 
 
 def fetch_quote(token_id: str) -> Optional[dict]:

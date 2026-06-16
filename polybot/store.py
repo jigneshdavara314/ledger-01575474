@@ -214,6 +214,41 @@ def settle_position(trade_id: int, won: bool, size_usd: float, shares: float):
     return pnl, fee
 
 
+def settle_and_credit(trade_id: int, won: bool, size_usd: float, shares: float):
+    """ATOMIC settle + bankroll movements in ONE transaction (same DB file).
+
+    Previously settle_position (trades) and bankroll.credit_payout/fee ran in
+    SEPARATE transactions, so a crash between them left a trade marked resolved
+    but the cash never moved — permanent silent drift the resolve loop never
+    re-heals (it only revisits OPEN positions). Doing all writes under one
+    connection/commit removes that window. Returns (pnl, fee).
+    """
+    fee = round(getattr(config, "PAPER_FEE_FRAC", 0.0) * size_usd, 4)
+    payout = round(shares * 1.0, 4) if won else 0.0
+    if won:
+        pnl = round(shares * 1.0 - size_usd - fee, 4)
+        status = STATUS_WON
+    else:
+        pnl = round(-size_usd - fee, 4)
+        status = STATUS_LOST
+    now = datetime.datetime.utcnow().isoformat()
+    with _conn() as c:                       # single transaction for ALL writes
+        c.execute("UPDATE trades SET status=?, pnl_usd=?, resolved_ts=? WHERE id=?",
+                  (status, pnl, now, trade_id))
+        # apply bankroll movements inline (same connection) so they can't desync
+        def _move(kind, amount, note):
+            bal = c.execute("SELECT balance FROM bankroll WHERE id=1").fetchone()[0]
+            new = round(bal + amount, 4)
+            c.execute("UPDATE bankroll SET balance=? WHERE id=1", (new,))
+            c.execute("INSERT INTO bankroll_log (ts,kind,amount,balance_after,note) "
+                      "VALUES (?,?,?,?,?)", (now, kind, round(amount, 4), new, note))
+        if payout > 0:
+            _move("payout", payout, f"WON trade #{trade_id}")
+        if fee > 0:
+            _move("stake", -fee, f"fee trade #{trade_id}")
+    return pnl, fee
+
+
 def today_pnl() -> float:
     """Sum of realised P&L on trades resolved today (UTC)."""
     today = datetime.datetime.utcnow().strftime("%Y-%m-%d")

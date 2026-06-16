@@ -494,16 +494,10 @@ def cmd_resolve():
             print(f"  [pending] {question[:60]}")
             continue
         won = (winner == side)
-        pnl, fee = store.settle_position(trade_id, won, size_usd, shares)
-        # Compounding bankroll: credit the payout back. A win returns stake+profit
-        # (= shares * $1); a loss returns nothing (stake already deducted).
-        payout = round(shares * 1.0, 4) if won else 0.0
-        if payout > 0:
-            bankroll.credit_payout(payout, note=f"WON {question[:36]}")
-        # Charge the settlement fee to the bankroll too, so the cash balance and
-        # the trade-ledger P&L stay reconciled (no drifting profit numbers).
-        if fee > 0:
-            bankroll.deduct_stake(fee, note=f"fee {question[:32]}")
+        # ATOMIC: trade status + bankroll payout + fee all in ONE transaction,
+        # so a crash can't leave a resolved trade with the cash never moved.
+        bankroll.init_bankroll()
+        pnl, fee = store.settle_and_credit(trade_id, won, size_usd, shares)
         tag = "WON " if won else "LOST"
         print(f"  [{tag}]   {question[:48]}  (bet {side}, {winner} won)  pnl={pnl:+.2f}")
         settled += 1

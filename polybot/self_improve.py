@@ -113,12 +113,21 @@ def promote(state: dict):
       >=PROMOTE_DAYS distinct days -> graduate to EXPLORATORY (half stake)
     A candidate must STILL clear the full math gate each of those days — we never
     bet noise; we just start betting a *proven-recurring* edge sooner, small."""
+    # Families we will NEVER auto-promote, even if they clear the gate: the
+    # grab-bag "other" (un-classified — could be anything, can't be reasoned
+    # about) and quarantined crypto. Promoting a catch-all is how a non-edge
+    # sneaks into live betting; require a real, named family.
+    NON_PROMOTABLE = ("other", "crypto_pricetail")
+
     hist = _scan_history()
     days_by_cell = defaultdict(set)
     latest_stats = {}   # cell -> most-recent rigorously-measured stats
     for h in hist:
         day = (h.get("ts") or "")[:10]
         for p in h.get("passed", []):
+            fam = p["cell"].split("|")[0].strip()
+            if fam in NON_PROMOTABLE:
+                continue   # never promote a catch-all / quarantined family
             days_by_cell[p["cell"]].add(day)
             latest_stats[p["cell"]] = p   # later entries overwrite -> most recent
 

@@ -377,6 +377,38 @@ def test_headline_excludes_simulated_rows():
     print("PASS test_headline_excludes_simulated_rows")
 
 
+def test_settle_and_credit_atomic():
+    """settle_and_credit must move the trade status AND the bankroll cash in one
+    transaction, keeping ledger P&L and bankroll balance reconciled."""
+    from polybot import config, store, bankroll
+    import tempfile, os
+    fd, path = tempfile.mkstemp(suffix=".db"); os.close(fd)
+    config.DB_PATH = path
+    config.PAPER_FEE_FRAC = 0.0
+    store.init_db(); bankroll.init_bankroll()
+    from polybot.strategy import Signal
+    from polybot.market_data import Market
+    m = Market(condition_id="0xA", question="Q", token_id_yes="y", token_id_no="n",
+               price_yes=0.5, liquidity=1e5, volume=0, volume_24h=0, spread=0,
+               end_date="", hours_to_resolution=1, category="soccer", event_title="")
+    sig = Signal(market=m, side="NO", fair_prob=0.8, market_prob=0.5,
+                 edge=0.3, size_usd=10.0, reason="t", estimator="test")
+    store.record_trade(sig, {"mode": "PAPER", "status": "simulated", "price": 0.5})
+    bankroll.deduct_stake(10.0, note="bet")          # stake leaves cash
+    tid = store.open_positions()[0][0]
+    shares = 20.0  # $10 at 0.50
+    pnl, fee = store.settle_and_credit(tid, won=True, size_usd=10.0, shares=shares)
+    assert abs(pnl - 10.0) < 1e-6, pnl                # 20 payout - 10 stake
+    # trade is now resolved AND the $20 payout is back in cash
+    s = store.performance_summary()
+    assert s["resolved"] == 1 and s["won"] == 1
+    bk = bankroll.summary()
+    # started 500, -10 stake, +20 payout = 510
+    assert abs(bk["balance"] - 510.0) < 1e-6, bk["balance"]
+    os.remove(path)
+    print("PASS test_settle_and_credit_atomic")
+
+
 def _run_all():
     fns = [v for k, v in globals().items() if k.startswith("test_") and callable(v)]
     failed = 0
