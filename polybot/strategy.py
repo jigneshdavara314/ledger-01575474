@@ -146,6 +146,8 @@ def estimate_fair_probability_claude(market: Market) -> Optional[float]:
         _kw = {"api_key": config.ANTHROPIC_API_KEY}
         if getattr(config, "ANTHROPIC_BASE_URL", ""):
             _kw["base_url"] = config.ANTHROPIC_BASE_URL
+            _kw["default_headers"] = {
+                "Authorization": f"Bearer {config.ANTHROPIC_API_KEY}"}
         client = anthropic.Anthropic(**_kw)
         resp = client.messages.create(
             model="claude-haiku-4-5-20251001",

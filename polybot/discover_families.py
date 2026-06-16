@@ -89,6 +89,11 @@ def _ai_refine(candidates: list) -> list:
         _kwargs = {"api_key": config.ANTHROPIC_API_KEY}
         if getattr(config, "ANTHROPIC_BASE_URL", ""):
             _kwargs["base_url"] = config.ANTHROPIC_BASE_URL
+            # The omeecron gateway authenticates via 'Authorization: Bearer <key>',
+            # but the Anthropic SDK sends 'x-api-key'. Send BOTH so the gateway
+            # gets the Bearer header it expects (this was the 401 'Missing API key').
+            _kwargs["default_headers"] = {
+                "Authorization": f"Bearer {config.ANTHROPIC_API_KEY}"}
         client = anthropic.Anthropic(**_kwargs)
         listing = "\n".join(f"- {c['keyword']} (x{c['occurrences']})" for c in candidates)
         msg = client.messages.create(
