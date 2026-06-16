@@ -4,11 +4,12 @@ name: edge-scan
 
 on:
   schedule:
-    # Continuous hunting every 3 hours. More frequent than strictly needed, on
-    # purpose: GitHub's free scheduler sometimes SKIPS a tick under load, so a
-    # tighter cadence means a skipped run still leaves several scans/day. Runs on
-    # GitHub's machines, never the user's PC.
-    - cron: "0 */3 * * *"
+    # Hourly hunting. Honest note: more frequency finds little NEW edge (the
+    # 45-day data changes slowly), but it (a) confirms multi-day recurrence sooner,
+    # (b) catches newly-resolved markets faster, and (c) survives GitHub's
+    # occasionally-skipped scheduler ticks. The breadth levers (45d lookback, more
+    # families, classified 'other') are what actually surface MORE edges.
+    - cron: "0 * * * *"
   workflow_dispatch:
     inputs:
       days:

@@ -13,7 +13,8 @@ import re
 # coin flip (no edge). They are quarantined to their own family that the live
 # scanner NEVER bets, so they can't leak into a bettable bucket.
 CRYPTO_HINTS = ["up or down", "bitcoin", "ethereum", "dogecoin", "solana",
-                " btc ", " eth ", "above $", "below $", "hit $", "price of"]
+                " btc ", " eth ", " xrp", "cardano", "litecoin",
+                "above $", "below $", "hit $", "price of", "reach $", "trade above"]
 
 
 def family_of(question: str) -> str:
@@ -43,10 +44,33 @@ def family_of(question: str) -> str:
         return "moneyline"
     if "to advance" in ql or "advance" in ql:
         return "to_advance"
+    if "to qualify" in ql or "qualify to" in ql or "qualify for" in ql:
+        return "to_qualify"
+    # Esports in-game OBJECTIVE props (recurring, structured) — carved out of the
+    # old 'other' grab-bag where ~26% of markets were landing invisibly.
+    if any(k in ql for k in ("slay a dragon", "slay baron", "beat roshan",
+                             "destroy inhibitor", "destroy barrack",
+                             "both teams slay", "both teams destroy",
+                             "ends in daytime")):
+        return "esports_objective"
+    if "both teams to score" in ql or "both teams score" in ql or " btts" in ql:
+        return "both_teams_score"
+    # ITF / lower-tier tennis match winner markets (very high daily volume).
+    if "itf " in ql or "completed match:" in ql:
+        return "tennis_match"
+    if any(k in ql for k in ("method of victory", " by ko", "by decision",
+                             "by submission", " by tko")):
+        return "method_of_victory"
+    if "winning margin" in ql or "margin of victory" in ql:
+        return "winning_margin"
     if "winner" in ql or "champion" in ql:
         return "outright_winner"
     if "draw" in ql:
         return "draw"
+    # Novelty "will X say/happen" markets — classified (so they're TESTABLE) but
+    # likely noise; the gate will reject them unless they prove a real edge.
+    if ql.startswith("will ") and (" say " in ql or " said " in ql):
+        return "novelty_says"
     return "other"
 
 
@@ -64,4 +88,15 @@ FAMILY_KEYWORDS = {
     "tweet_range": ["posts from", "posts between", "tweets", "mentions"],
     "player_prop": ["home runs", "strikeouts", "passing yards", "to record", "player"],
     "esports_prop": ["map ", "rounds", "first blood", "kills", " cs2", "valorant"],
+    # Newly carved out of 'other' — bettable structured families:
+    "to_qualify": ["to qualify", "qualify to", "qualify for"],
+    "esports_objective": ["slay a dragon", "slay baron", "beat roshan",
+                          "destroy inhibitor", "destroy barrack",
+                          "both teams slay", "both teams destroy", "ends in daytime"],
+    "both_teams_score": ["both teams to score", "both teams score", "btts"],
+    "tennis_match": ["itf ", "completed match:"],
+    "method_of_victory": ["method of victory", "by ko", "by decision",
+                          "by submission", "by tko"],
+    "winning_margin": ["winning margin", "margin of victory"],
+    # NOTE: novelty_says and crypto_pricetail are DELIBERATELY ABSENT — never bet.
 }

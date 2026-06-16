@@ -31,7 +31,9 @@ from collections import defaultdict
 from . import config
 from .calibration import fetch_resolved_markets, price_before_close, _parse
 
-DAYS = 15
+DAYS = 45                   # 45-day lookback (~3x the markets of 15d) so more
+                            # cells reach n>=MIN_N and clear the Bonferroni bar —
+                            # the breadth that surfaces MORE real edges to bet.
 FEE = 0.01                  # ~1% round-trip friction (matches PAPER_FEE_FRAC)
 MIN_N = 20                  # minimum INDEPENDENT observations to consider a cell
 EDGE_MARGIN = 0.03          # Wilson LB must beat breakeven by this much
@@ -95,7 +97,7 @@ def fetch_window(days=DAYS):
     return out
 
 
-def scan(days=DAYS, cap=2500):
+def scan(days=DAYS, cap=5000):   # higher cap for the wider 45-day window
     rows = fetch_window(days)
     print(f"Fetched {len(rows)} resolved markets over {days} days. "
           f"Sampling mid-life prices (cap {cap})...\n")
