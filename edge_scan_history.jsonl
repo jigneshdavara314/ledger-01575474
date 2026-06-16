@@ -14,3 +14,4 @@
 =======
 {"ts": "2026-06-16T13:34:47Z", "days": 5, "n_obs": 765, "passed": []}
 >>>>>>> Stashed changes
+{"ts": "2026-06-16T13:41:52Z", "days": 15, "n_obs": 2623, "passed": [{"cell": "other | pay NO 0.55-0.75", "n": 141, "win_rate": 0.809, "ev": 0.295, "wilson_lower": 0.689}]}
