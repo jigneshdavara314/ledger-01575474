@@ -1,22 +1,24 @@
 {
   "candidates": [
     {
-      "pattern": "will the highest",
+      "family": "extremes_highest",
       "keyword": "will the highest",
-      "occurrences": 92,
-      "family": "auto_will_the_highest"
+      "occurrences": 165
     },
     {
-      "pattern": "jean-philippe mateta",
+      "family": "extremes_lowest",
+      "keyword": "will the lowest",
+      "occurrences": 22
+    },
+    {
+      "family": "player_performance",
       "keyword": "jean-philippe mateta",
-      "occurrences": 24,
-      "family": "auto_jean_philippe_mateta"
+      "occurrences": 18
     },
     {
-      "pattern": "warren za\u00efre-emery",
+      "family": "player_performance",
       "keyword": "warren za\u00efre-emery",
-      "occurrences": 9,
-      "family": "auto_warren_za_re_emery"
+      "occurrences": 8
     }
   ]
 }
