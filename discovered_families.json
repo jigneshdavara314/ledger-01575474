@@ -1,14 +1,16 @@
 {
   "candidates": [
     {
-      "family": "extrema",
+      "pattern": "will the highest",
       "keyword": "will the highest",
-      "occurrences": 130
+      "occurrences": 22,
+      "family": "auto_will_the_highest"
     },
     {
-      "family": "extrema",
-      "keyword": "will the lowest",
-      "occurrences": 11
+      "pattern": "trinc\u00e3o",
+      "keyword": "trinc\u00e3o",
+      "occurrences": 18,
+      "family": "auto_trinc_o"
     }
   ]
 }
