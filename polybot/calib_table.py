@@ -39,6 +39,19 @@ CALIB = {
         (0.35, 0.84, 9),    # exploratory: weak/noisy overpricing
         (0.55, 0.74, 15),
     ],
+    # DRAW markets ("will it be a draw?"). Price-aware test on the 1.1B-trade
+    # archive (n=8190, real fill prices): NO won 73.0% while trading at avg NO
+    # price 0.69 -> +0.041 after-fee EV. A genuine fade (people overpay "draw").
+    "draw": [
+        (0.45, 0.73, 8190),   # YES (draw) priced up to ~0.45 -> NO wins ~73%
+    ],
+    # NOVELTY "will X say/do Y" markets. Archive test (n=9531, real prices): NO
+    # won 54.9% at avg NO price 0.52 -> +0.048 after-fee EV. People overpay the
+    # "yes it'll happen" novelty side. (Previously quarantined as noise; the DATA
+    # showed a real edge — corrected.)
+    "novelty_says": [
+        (0.60, 0.549, 9531),  # NO wins ~55% but trades cheap enough to profit
+    ],
     # Baseball Home-Run props: REMOVED. The edge-hunt rates (~0.93-0.96) had no
     # stored, reproducible artifact and an audit (2026-06) flagged them as
     # unsupported. With no CALIB row, measured_no_win() falls back to the market
@@ -63,6 +76,11 @@ def _subtype_for(question: str) -> str:
         return "home_runs_ou"
     if "spread:" in q or "handicap" in q:
         return "spread/handicap"
+    # data-confirmed fades (archive price test, 2026-06):
+    if "draw" in q:
+        return "draw"
+    if q.startswith("will ") and (" say" in q or " said" in q or " tweet" in q):
+        return "novelty_says"
     return "other"
 
 

@@ -127,13 +127,15 @@ def test_grab_bag_and_crypto_never_promote():
     print("PASS test_grab_bag_and_crypto_never_promote")
 
 
-def test_discovery_excludes_crypto_and_novelty():
-    """Auto-discovery must NEVER queue crypto or novelty patterns as candidates."""
+def test_discovery_excludes_crypto():
+    """Auto-discovery must NEVER queue crypto patterns. (Novelty 'will X say' is
+    no longer excluded — the archive price test confirmed it's a real +EV fade,
+    now a recognized 'novelty_says' family.)"""
     from polybot import discover_families as df
-    assert df._is_excluded("Will XRP reach $1.25 on June 16?")          # crypto
-    assert df._is_excluded("Will Trump say Fake News during UFC 250?")  # novelty
-    assert not df._is_excluded("Will the highest temperature exceed 80F?")  # legit
-    print("PASS test_discovery_excludes_crypto_and_novelty")
+    assert df._is_excluded("Will XRP reach $1.25 on June 16?")            # crypto
+    assert df._is_excluded("Will BTC trade above $200k?")                  # crypto
+    assert not df._is_excluded("Will the highest temperature exceed 80F?") # legit
+    print("PASS test_discovery_excludes_crypto")
 
 
 def test_candidate_family_overlay():

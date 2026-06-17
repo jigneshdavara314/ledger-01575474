@@ -49,6 +49,16 @@ LONGSHOT_TIERS = {
     # in the hunt. Exploratory until more resolve. Recurs weekly (Trump/Musk/etc).
     "posts from":       "exploratory",
     "posts between":    "exploratory",
+    # DATA-CONFIRMED fades (1.1B-trade archive, price-aware test 2026-06):
+    #   draw: NO won 73% @ avg NO 0.69 -> +0.041 EV (n=8190)
+    #   novelty 'will X say...': NO won 55% @ avg 0.52 -> +0.048 EV (n=9531)
+    # Both sized off their measured CALIB rows (Wilson-LB shrunk). Exploratory
+    # until they accumulate their own live settled sample.
+    "draw":             "exploratory",
+    "will he say":      "exploratory",   # novelty "will X say Y" variants
+    "will she say":     "exploratory",
+    "will trump say":   "exploratory",
+    " say ":            "exploratory",   # broad novelty catch; calib subtype gates it
 }
 LONGSHOT_PATTERNS = list(LONGSHOT_TIERS.keys())
 

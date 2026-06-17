@@ -43,9 +43,10 @@ def _pattern_key(q: str) -> str:
 def _is_excluded(q: str) -> bool:
     ql = q.lower()
     if any(h in ql for h in CRYPTO_HINTS):
-        return True                      # crypto coin-flips: never
-    if ql.startswith("will ") and (" say" in ql or " tweet" in ql):
-        return True                      # novelty: likely noise
+        return True                      # crypto coin-flips: never bet
+    # (novelty 'will X say...' was previously excluded as noise, but the archive
+    # price test showed it's a REAL fade edge — now a recognized 'novelty_says'
+    # family, so it's no longer quarantined here.)
     return False
 
 
