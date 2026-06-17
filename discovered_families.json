@@ -1,24 +1,46 @@
 {
   "candidates": [
     {
-      "family": "extremes_highest",
+      "pattern": "will the highest",
       "keyword": "will the highest",
-      "occurrences": 165
+      "occurrences": 99,
+      "family": "auto_will_the_highest"
     },
     {
-      "family": "extremes_lowest",
+      "pattern": "will the lowest",
       "keyword": "will the lowest",
-      "occurrences": 22
+      "occurrences": 32,
+      "family": "auto_will_the_lowest"
     },
     {
-      "family": "player_performance",
-      "keyword": "jean-philippe mateta",
-      "occurrences": 18
+      "pattern": "jos\u00e9 manuel l\u00f3pez",
+      "keyword": "jos\u00e9 manuel l\u00f3pez",
+      "occurrences": 18,
+      "family": "auto_jos_manuel_l_pez"
     },
     {
-      "family": "player_performance",
-      "keyword": "warren za\u00efre-emery",
-      "occurrences": 8
+      "pattern": "giovani lo celso",
+      "keyword": "giovani lo celso",
+      "occurrences": 18,
+      "family": "auto_giovani_lo_celso"
+    },
+    {
+      "pattern": "alexis mac allister",
+      "keyword": "alexis mac allister",
+      "occurrences": 16,
+      "family": "auto_alexis_mac_allister"
+    },
+    {
+      "pattern": "anis hadj moussa",
+      "keyword": "anis hadj moussa",
+      "occurrences": 14,
+      "family": "auto_anis_hadj_moussa"
+    },
+    {
+      "pattern": "rodrigo de paul",
+      "keyword": "rodrigo de paul",
+      "occurrences": 11,
+      "family": "auto_rodrigo_de_paul"
     }
   ]
 }
