@@ -1,20 +1,9 @@
 {
   "candidates": [
     {
-<<<<<<< Updated upstream
-      "family": "superlative_max",
-      "keyword": "will_the_highest",
-      "occurrences": 8
-    },
-    {
-      "family": "political_outcomes",
-      "keyword": "mousa_tamar",
-      "occurrences": 8
-=======
-      "family": "extrema_ranking",
+      "family": "highest_value",
       "keyword": "will the highest",
       "occurrences": 11
->>>>>>> Stashed changes
     }
   ]
 }
