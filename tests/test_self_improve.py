@@ -147,6 +147,28 @@ def test_candidate_family_overlay():
     print("PASS test_candidate_family_overlay")
 
 
+def test_strategy_books_isolated():
+    """Each strategy has its own bankroll; deducting from one must NOT touch
+    another, and conservative_fade defers to the main bankroll."""
+    from polybot import config, store, bankroll, strategy_bankroll as sb, strategies
+    import tempfile, os
+    fd, path = tempfile.mkstemp(suffix=".db"); os.close(fd)
+    config.DB_PATH = path
+    store.init_db(); bankroll.init_bankroll(); sb.init()
+    # all 5 books exist, fresh ones at $500
+    sums = {s["strategy"]: s for s in sb.all_summaries()}
+    assert set(sums) == set(strategies.names())
+    assert abs(sums["aggressive_fade"]["balance"] - 500.0) < 1e-6
+    # deduct from one book; others unchanged
+    sb.deduct_stake("aggressive_fade", 50.0, note="t")
+    assert abs(sb.balance("aggressive_fade") - 450.0) < 1e-6
+    assert abs(sb.balance("confirmed_only") - 500.0) < 1e-6, "books must be isolated"
+    # conservative defers to main bankroll (carries the 'strategy' tag now)
+    assert sb.summary("conservative_fade")["strategy"] == "conservative_fade"
+    os.remove(path)
+    print("PASS test_strategy_books_isolated")
+
+
 def _run_all():
     fns = [v for k, v in globals().items() if k.startswith("test_") and callable(v)]
     failed = 0

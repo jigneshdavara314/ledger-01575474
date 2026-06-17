@@ -88,13 +88,19 @@ def record_trade(signal: Signal, result: dict):
     hrs       = getattr(signal.market, "hours_to_resolution", None)
     slug      = getattr(signal.market, "event_slug", "") or ""
     with _conn() as c:
+        # ensure the strategy tag column exists (multi-strategy tournament)
+        try:
+            c.execute("ALTER TABLE trades ADD COLUMN strategy TEXT")
+        except Exception:
+            pass
+        strategy = result.get("strategy", "conservative_fade")
         c.execute(
             """INSERT INTO trades
                (ts, mode, condition_id, question, side, fair_prob,
                 market_prob, edge, size_usd, shares, status, exec_status,
                 order_id, resolved_ts, pnl_usd, category, estimator, hours_to_res,
-                event_slug)
-               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                event_slug, strategy)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
             (
                 datetime.datetime.utcnow().isoformat(),
                 result.get("mode"),
@@ -110,7 +116,7 @@ def record_trade(signal: Signal, result: dict):
                 result.get("status"),
                 result.get("order_id"),
                 None, None,
-                category, estimator, hrs, slug,
+                category, estimator, hrs, slug, strategy,
             ),
         )
 

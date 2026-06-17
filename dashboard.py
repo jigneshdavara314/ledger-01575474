@@ -218,6 +218,41 @@ def build_html() -> str:
     donut_svg = _donut(win_rate, "Win rate")
     cat_bars = _cat_bars(cats)
 
+    # ---- strategy tournament leaderboard (5 strategies, separate books) ----
+    from polybot import strategy_bankroll, strategies as _strat
+    strat_rows = []
+    try:
+        for s in strategy_bankroll.all_summaries():
+            with store._conn() as _c:
+                try:
+                    w, l = _c.execute(
+                        "SELECT COALESCE(SUM(status='WON'),0), COALESCE(SUM(status='LOST'),0) "
+                        "FROM trades WHERE strategy=? AND status IN ('WON','LOST')",
+                        (s["strategy"],)).fetchone()
+                except Exception:
+                    w, l = 0, 0
+            res = (w or 0) + (l or 0)
+            wr = (w / res * 100) if res else 0
+            blurb = (_strat.get(s["strategy"]) or {}).get("blurb", "")
+            strat_rows.append((s, w or 0, l or 0, wr, blurb))
+        strat_rows.sort(key=lambda r: -r[0]["profit"])   # best earner on top
+    except Exception:
+        strat_rows = []
+
+    # ---- strategy leaderboard HTML ----
+    strat_html = []
+    for s, w, l, wr, blurb in strat_rows:
+        strat_html.append(
+            f"<tr><td><b>{html.escape(s['strategy'])}</b><div class='blurb'>{html.escape(blurb)}</div></td>"
+            f"<td class='{_cls(s['profit'])}'>{_money(s['profit'])}</td>"
+            f"<td>{s['return_pct']:+.1f}%</td>"
+            f"<td><span class='pos'>{w}</span>–<span class='neg'>{l}</span></td>"
+            f"<td>{wr:.0f}%</td>"
+            f"<td>${s['total_equity']:,.2f}</td>"
+            f"<td>${s['open_exposure']:,.2f}</td></tr>")
+    if not strat_html:
+        strat_html = ["<tr><td colspan='7' class='empty'>Strategy books initializing — bets appear as edges are found.</td></tr>"]
+
     # ---- daily operations report (what the automation did each day) ----
     from polybot import daily_report
     ops_rows = daily_report.build(60)          # up to 60 days; JS filters client-side
@@ -493,6 +528,7 @@ def build_html() -> str:
                   font-size:13px; margin-top:8px; }}
   .modal-actions {{ display:flex; gap:8px; justify-content:flex-end; margin-top:14px; }}
   .muted-cell {{ color:var(--muted); font-style:italic; }}
+  .blurb {{ color:var(--muted); font-size:11px; font-weight:400; margin-top:2px; }}
 </style></head>
 <body><div class="wrap">
   <h1>My Polymarket Portfolio</h1>
@@ -526,6 +562,7 @@ def build_html() -> str:
   <nav class="tabs">
     <button class="tab active" data-tab="overview" onclick="showTab('overview')">📈 Overview</button>
     <button class="tab" data-tab="dailyops" onclick="showTab('dailyops')">🤖 Daily Ops</button>
+    <button class="tab" data-tab="strategies" onclick="showTab('strategies')">🏆 Strategies</button>
     <button class="tab" data-tab="category" onclick="showTab('category')">📊 By Category</button>
     <button class="tab" data-tab="history" onclick="showTab('history')">📅 Daily History</button>
     <button class="tab" data-tab="open" onclick="showTab('open')">⏳ Open Bets ({len(open_rows)})</button>
@@ -568,6 +605,16 @@ def build_html() -> str:
       <tbody>{''.join(ops_html)}</tbody></table>
     <div class="note">Edges found = patterns that passed the bulletproof gate that day ·
       New edges = families auto-promoted to a bet · Bids/Invested/P&amp;L = real placed trades.</div>
+  </section>
+
+  <section class="panel-tab" id="tab-strategies">
+    <h2>Strategy tournament — which logic earns most</h2>
+    <div class="note">5 strategies run in parallel, each on its own $500 paper book.
+      Live P&amp;L decides the winner — no guessing. All are +EV-gated (looser ones
+      bet more, never -EV). Sorted by profit.</div>
+    <table><thead><tr><th>Strategy</th><th>Profit</th><th>Return</th><th>W–L</th>
+      <th>Win %</th><th>Equity</th><th>On stake</th></tr></thead>
+      <tbody>{''.join(strat_html)}</tbody></table>
   </section>
 
   <section class="panel-tab" id="tab-category">

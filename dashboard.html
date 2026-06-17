@@ -170,10 +170,11 @@
                   font-size:13px; margin-top:8px; }
   .modal-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:14px; }
   .muted-cell { color:var(--muted); font-style:italic; }
+  .blurb { color:var(--muted); font-size:11px; font-weight:400; margin-top:2px; }
 </style></head>
 <body><div class="wrap">
   <h1>My Polymarket Portfolio</h1>
-  <div class="gen">Updated 2026-06-17 14:03 · auto-refreshes every 60s · PAPER (no real money)</div>
+  <div class="gen">Updated 2026-06-17 19:49 · auto-refreshes every 60s · PAPER (no real money)</div>
 
   
       <div class="invest-card">
@@ -254,6 +255,7 @@
   <nav class="tabs">
     <button class="tab active" data-tab="overview" onclick="showTab('overview')">📈 Overview</button>
     <button class="tab" data-tab="dailyops" onclick="showTab('dailyops')">🤖 Daily Ops</button>
+    <button class="tab" data-tab="strategies" onclick="showTab('strategies')">🏆 Strategies</button>
     <button class="tab" data-tab="category" onclick="showTab('category')">📊 By Category</button>
     <button class="tab" data-tab="history" onclick="showTab('history')">📅 Daily History</button>
     <button class="tab" data-tab="open" onclick="showTab('open')">⏳ Open Bets (2)</button>
@@ -336,6 +338,16 @@
       <tbody><tr data-day='2026-06-17'><td>2026-06-17</td><td>1</td><td>0</td><td>0</td><td>$0.00</td><td><span class='pos'>0</span>–<span class='neg'>0</span></td><td>0%</td><td class=''>+$0.00</td><td class=''>+0%</td></tr><tr data-day='2026-06-16'><td>2026-06-16</td><td>3</td><td>2</td><td>1</td><td>$5.00</td><td><span class='pos'>0</span>–<span class='neg'>1</span></td><td>0%</td><td class='neg'>$-5.05</td><td class='neg'>-101%</td></tr><tr data-day='2026-06-15'><td>2026-06-15</td><td>2</td><td>2</td><td>0</td><td>$0.00</td><td><span class='pos'>14</span>–<span class='neg'>3</span></td><td>82%</td><td class='pos'>+$2.77</td><td class='pos'>+4%</td></tr><tr data-day='2026-06-14'><td>2026-06-14</td><td>2</td><td>0</td><td>0</td><td>$0.00</td><td><span class='pos'>0</span>–<span class='neg'>0</span></td><td>0%</td><td class=''>+$0.00</td><td class=''>+0%</td></tr><tr data-day='2026-06-13'><td>2026-06-13</td><td>0</td><td>0</td><td>17</td><td>$162.16</td><td><span class='pos'>14</span>–<span class='neg'>5</span></td><td>74%</td><td class='pos'>+$37.03</td><td class='pos'>+28%</td></tr><tr data-day='2026-06-12'><td>2026-06-12</td><td>0</td><td>0</td><td>21</td><td>$64.66</td><td><span class='pos'>0</span>–<span class='neg'>0</span></td><td>0%</td><td class=''>+$0.00</td><td class=''>+0%</td></tr></tbody></table>
     <div class="note">Edges found = patterns that passed the bulletproof gate that day ·
       New edges = families auto-promoted to a bet · Bids/Invested/P&amp;L = real placed trades.</div>
+  </section>
+
+  <section class="panel-tab" id="tab-strategies">
+    <h2>Strategy tournament — which logic earns most</h2>
+    <div class="note">5 strategies run in parallel, each on its own $500 paper book.
+      Live P&amp;L decides the winner — no guessing. All are +EV-gated (looser ones
+      bet more, never -EV). Sorted by profit.</div>
+    <table><thead><tr><th>Strategy</th><th>Profit</th><th>Return</th><th>W–L</th>
+      <th>Win %</th><th>Equity</th><th>On stake</th></tr></thead>
+      <tbody><tr><td><b>conservative_fade</b><div class='blurb'>Proven longshot-fade, strict gate</div></td><td class='pos'>+$34.75</td><td>+7.0%</td><td><span class='pos'>0</span>–<span class='neg'>0</span></td><td>0%</td><td>$534.75</td><td>$23.50</td></tr><tr><td><b>aggressive_fade</b><div class='blurb'>Looser gate + wider band — more bets, thinner edges</div></td><td class=''>+$0.00</td><td>+0.0%</td><td><span class='pos'>0</span>–<span class='neg'>0</span></td><td>0%</td><td>$500.00</td><td>$0.00</td></tr><tr><td><b>confirmed_only</b><div class='blurb'>Only artifact-backed confirmed families, full stake</div></td><td class=''>+$0.00</td><td>+0.0%</td><td><span class='pos'>0</span>–<span class='neg'>0</span></td><td>0%</td><td>$500.00</td><td>$0.00</td></tr><tr><td><b>promoted_only</b><div class='blurb'>Only self-discovered/promoted edges (tests the hunt)</div></td><td class=''>+$0.00</td><td>+0.0%</td><td><span class='pos'>0</span>–<span class='neg'>0</span></td><td>0%</td><td>$500.00</td><td>$0.00</td></tr><tr><td><b>lagwatch_only</b><div class='blurb'>Resolution-lag arbitrage only (different mechanism)</div></td><td class=''>+$0.00</td><td>+0.0%</td><td><span class='pos'>0</span>–<span class='neg'>0</span></td><td>0%</td><td>$500.00</td><td>$0.00</td></tr></tbody></table>
   </section>
 
   <section class="panel-tab" id="tab-category">

@@ -283,12 +283,23 @@ def _build_yes_signal(m, py, tier, stake_usd, per_bet_cap):
 def find_longshot_fades(
     max_hours: float = None,
     stake_usd: float = None,
+    min_edge: float = None,
+    band_lo: float = None,
+    band_hi: float = None,
 ) -> List[FadeSignal]:
     """
     Scan open short-term markets for overpriced longshots and propose a small
     NO bet on each. Returns a diversified list of fade signals.
+
+    min_edge / band_lo / band_hi let two STRATEGY VERSIONS run different gates off
+    the same scan (e.g. conservative 0.06/0.10-0.55 vs aggressive 0.04/0.07-0.60),
+    so a live A/B test decides which threshold actually earns. Default to config /
+    module constants (the conservative behavior) when not passed.
     """
     max_hours = max_hours or config.MAX_HOURS_TO_RESOLUTION
+    min_edge = config.LONGSHOT_MIN_EDGE if min_edge is None else min_edge
+    band_lo = FADE_MIN_YES if band_lo is None else band_lo
+    band_hi = FADE_MAX_YES if band_hi is None else band_hi
     # Per-bet hard cap: never more than this share of the daily budget on one market.
     per_bet_cap = config.daily_budget() * config.LONGSHOT_MAX_BET_FRAC
 

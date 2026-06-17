@@ -49,8 +49,11 @@ jobs:
           MODE: PAPER
           PROFILE: moderate
         run: |
-          echo "::group::longshot fades"
+          echo "::group::longshot fades (conservative book)"
           python run.py longshot || true
+          echo "::endgroup::"
+          echo "::group::strategy tournament (other 4 books)"
+          PYTHONPATH=. python run.py strategies || true
           echo "::endgroup::"
           echo "::group::lag arbitrage"
           python run.py lagwatch || true

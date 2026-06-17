@@ -269,6 +269,81 @@ def _event_group_key(question: str) -> str:
     return event_group_key(question)
 
 
+def _run_strategy(name, cfg, trade=True):
+    """Run ONE fade-strategy variant on its OWN bankroll book. Each strategy uses
+    its own gate/band/tier filter; bets are tagged with the strategy name so P&L
+    is attributable. Returns (placed, staked)."""
+    from polybot.longshot import find_longshot_fades
+    from polybot.strategy import Signal
+    from polybot import strategy_bankroll as sb, engine
+
+    fades = find_longshot_fades(min_edge=cfg.get("min_edge"),
+                                band_lo=cfg.get("band_lo"),
+                                band_hi=cfg.get("band_hi"))
+    # tier / promoted filter for this strategy
+    allowed = cfg.get("tiers")
+    if allowed:
+        fades = [f for f in fades if f.tier in allowed]
+    if cfg.get("promoted_only"):
+        fades = [f for f in fades if f.win_source == "promoted"]
+
+    placed = 0; staked = 0.0
+    for f in fades:
+        if not trade:
+            continue
+        if store.already_open(f.market.condition_id):
+            continue
+        # gate chain (per-event/exposure use the shared engine), but afford-check
+        # against THIS strategy's own book.
+        g = engine.run_gates(f.market.condition_id, f.market.question,
+                             f.size_usd, getattr(f.market, "event_slug", "") or "")
+        if not g.ok:
+            continue
+        if not sb.can_afford(name, f.size_usd):
+            continue
+        if not engine.should_attempt(f.fill_prob, f.market.condition_id):
+            continue
+        sig = Signal(market=f.market, side=f.side, fair_prob=f.est_win_prob,
+                     market_prob=f.bid_price,
+                     edge=round(f.est_win_prob - f.bid_price, 4),
+                     size_usd=f.size_usd, reason=f.reason, estimator="longshot-fade")
+        # execute against this strategy's book: record with strategy tag, deduct
+        # from the strategy bankroll (NOT the main one).
+        from polybot.executor import Executor
+        ex = Executor()
+        result = ex._execute_paper(sig) if config.MODE != "LIVE" else ex._execute_live(sig)
+        filled = float(result.get("filled_size", 0) or 0)
+        if filled <= 0:
+            continue
+        result["strategy"] = name
+        store.record_trade(sig, result)
+        sb.deduct_stake(name, filled, note=f"{name} {f.side}")
+        placed += 1; staked += filled
+    return placed, staked
+
+
+def cmd_strategies(trade: bool = True):
+    """Run the multi-strategy TOURNAMENT: each of the 5 strategies bets from its
+    own bankroll with its own logic, so live P&L decides which actually earns."""
+    from polybot import strategies, strategy_bankroll as sb
+    _banner(); store.init_db(); sb.init()
+    print("Running 5-strategy tournament (each on its own \$500 book):\n")
+    for name in strategies.names():
+        cfg = strategies.get(name)
+        if cfg["kind"] == "lagwatch":
+            print(f"  {name:18} -> (lagwatch runs via cmd_lagwatch)")
+            continue
+        if name == strategies.DEFAULT_STRATEGY:
+            # conservative uses the main book via the existing cmd_longshot path
+            print(f"  {name:18} -> (runs via cmd_longshot / main bankroll)")
+            continue
+        p, s = _run_strategy(name, cfg, trade=trade)
+        bk = sb.summary(name)
+        print(f"  {name:18} placed {p:>2} (\${s:>6.2f})  equity \${bk['total_equity']:.2f} "
+              f"profit \${bk['profit']:+.2f}")
+    print("\nSee the dashboard 'Strategies' leaderboard for the live comparison.")
+
+
 def cmd_longshot(trade: bool = True):
     """
     Find overpriced longshot markets (exact-score, spreads) and buy NO on each,
@@ -630,6 +705,7 @@ COMMANDS = {
     "trade":   lambda: _cmd_scan_all(trade=True),
     "lagwatch": cmd_lagwatch,
     "longshot": cmd_longshot,
+    "strategies": cmd_strategies,
     "resolve": cmd_resolve,
     "history": cmd_history,
     "report":  cmd_report,
