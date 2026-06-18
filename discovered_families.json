@@ -1,13 +1,83 @@
 {
   "candidates": [
     {
-      "family": "superlative_outcome",
-      "keyword": "will the highest",
-      "occurrences": 133
+      "family": "stock_highest_performer",
+      "keyword": "highest",
+      "occurrences": 8
     },
     {
-      "family": "creator_next_action",
-      "keyword": "will mrbeast's next",
+      "family": "stock_price_semiconductor",
+      "keyword": "micron",
+      "occurrences": 8
+    },
+    {
+      "family": "stock_price_semiconductor",
+      "keyword": "nvidia",
+      "occurrences": 8
+    },
+    {
+      "family": "stock_price_technology",
+      "keyword": "apple",
+      "occurrences": 8
+    },
+    {
+      "family": "stock_price_streaming",
+      "keyword": "netflix",
+      "occurrences": 8
+    },
+    {
+      "family": "stock_price_realestate",
+      "keyword": "opendoor",
+      "occurrences": 8
+    },
+    {
+      "family": "stock_price_technology",
+      "keyword": "google",
+      "occurrences": 8
+    },
+    {
+      "family": "stock_price_technology",
+      "keyword": "palantir",
+      "occurrences": 8
+    },
+    {
+      "family": "stock_price_technology",
+      "keyword": "meta",
+      "occurrences": 8
+    },
+    {
+      "family": "stock_price_automotive",
+      "keyword": "tesla",
+      "occurrences": 8
+    },
+    {
+      "family": "stock_price_ecommerce",
+      "keyword": "amazon",
+      "occurrences": 8
+    },
+    {
+      "family": "stock_price_technology",
+      "keyword": "microsoft",
+      "occurrences": 8
+    },
+    {
+      "family": "market_index",
+      "keyword": "sp500",
+      "occurrences": 8
+    },
+    {
+      "family": "stock_price_aerospace",
+      "keyword": "rocket_lab",
+      "occurrences": 8
+    },
+    {
+      "family": "stock_price_crypto",
+      "keyword": "coinbase",
+      "occurrences": 8
+    },
+    {
+      "family": "stock_price_travel",
+      "keyword": "airbnb",
       "occurrences": 8
     }
   ]
