@@ -1,19 +1,40 @@
 {
   "candidates": [
     {
-      "family": "extremes",
-      "keyword": "will_the_highest",
-      "occurrences": 8
+      "pattern": "will the highest",
+      "keyword": "will the highest",
+      "occurrences": 67,
+      "family": "auto_will_the_highest"
     },
     {
-      "family": "extremes",
-      "keyword": "will_the_lowest",
-      "occurrences": 8
+      "pattern": "nico o\u2019reilly",
+      "keyword": "nico o\u2019reilly",
+      "occurrences": 10,
+      "family": "auto_nico_o_reilly"
     },
     {
-      "family": "player_performance",
-      "keyword": "vitinha",
-      "occurrences": 8
+      "pattern": "will the lowest",
+      "keyword": "will the lowest",
+      "occurrences": 10,
+      "family": "auto_will_the_lowest"
+    },
+    {
+      "pattern": "kamal deen sulemana",
+      "keyword": "kamal deen sulemana",
+      "occurrences": 9,
+      "family": "auto_kamal_deen_sulemana"
+    },
+    {
+      "pattern": "michael amir murillo",
+      "keyword": "michael amir murillo",
+      "occurrences": 8,
+      "family": "auto_michael_amir_murillo"
+    },
+    {
+      "pattern": "jos\u00e9 luis rodr\u00edguez",
+      "keyword": "jos\u00e9 luis rodr\u00edguez",
+      "occurrences": 8,
+      "family": "auto_jos_luis_rodr_guez"
     }
   ]
 }
