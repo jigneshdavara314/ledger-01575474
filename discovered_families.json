@@ -1,40 +1,29 @@
 {
   "candidates": [
     {
-      "pattern": "will the highest",
-      "keyword": "will the highest",
-      "occurrences": 67,
-      "family": "auto_will_the_highest"
+      "family": "superlative_outcomes",
+      "keyword": "will_the_highest",
+      "occurrences": 8
     },
     {
-      "pattern": "nico o\u2019reilly",
-      "keyword": "nico o\u2019reilly",
-      "occurrences": 10,
-      "family": "auto_nico_o_reilly"
+      "family": "superlative_outcomes",
+      "keyword": "will_the_lowest",
+      "occurrences": 8
     },
     {
-      "pattern": "will the lowest",
-      "keyword": "will the lowest",
-      "occurrences": 10,
-      "family": "auto_will_the_lowest"
+      "family": "player_performance",
+      "keyword": "juan_fernando_quintero",
+      "occurrences": 8
     },
     {
-      "pattern": "kamal deen sulemana",
-      "keyword": "kamal deen sulemana",
-      "occurrences": 9,
-      "family": "auto_kamal_deen_sulemana"
+      "family": "player_performance",
+      "keyword": "prince_adu_kwabena",
+      "occurrences": 8
     },
     {
-      "pattern": "michael amir murillo",
-      "keyword": "michael amir murillo",
-      "occurrences": 8,
-      "family": "auto_michael_amir_murillo"
-    },
-    {
-      "pattern": "jos\u00e9 luis rodr\u00edguez",
-      "keyword": "jos\u00e9 luis rodr\u00edguez",
-      "occurrences": 8,
-      "family": "auto_jos_luis_rodr_guez"
+      "family": "player_performance",
+      "keyword": "kamal_deen_sulemana",
+      "occurrences": 8
     }
   ]
 }
