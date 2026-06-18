@@ -1,3 +1,14 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "family": "extremes",
+      "keyword": "highest",
+      "occurrences": 8
+    },
+    {
+      "family": "extremes",
+      "keyword": "lowest",
+      "occurrences": 8
+    }
+  ]
 }
