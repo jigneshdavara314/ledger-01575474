@@ -102,6 +102,67 @@ def test_resolution_price_fallback():
     print("PASS test_resolution_price_fallback")
 
 
+def test_resolution_void_50_50():
+    """A closed market with NO winner and a 50-50 flag is a VOID (cancelled/
+    refunded), not 'unresolved'. Returning None here was the bug that froze
+    positions OPEN for days."""
+    from polybot import market_data
+    class FlagResp:
+        status_code = 200
+        def raise_for_status(self): pass
+        def json(self):
+            return {"closed": True, "is_50_50_outcome": True,
+                    "tokens": [{"winner": False, "price": "0.5"},
+                               {"winner": False, "price": "0.5"}]}
+    class PriceResp:  # no flag, but both prices parked at ~0.5
+        status_code = 200
+        def raise_for_status(self): pass
+        def json(self):
+            return {"closed": True,
+                    "tokens": [{"winner": False, "price": "0.5"},
+                               {"winner": False, "price": "0.5"}]}
+    orig = market_data.requests.get
+    try:
+        market_data.requests.get = lambda *a, **k: FlagResp()
+        assert market_data.fetch_resolution("0xV1") == "VOID"
+        market_data.requests.get = lambda *a, **k: PriceResp()
+        assert market_data.fetch_resolution("0xV2") == "VOID"
+    finally:
+        market_data.requests.get = orig
+    print("PASS test_resolution_void_50_50")
+
+
+def test_settle_void_refunds_stake():
+    """A VOID settlement refunds the FULL stake, books 0 P&L, and marks the
+    trade VOID (not WON/LOST) so win-rate stats aren't polluted."""
+    from polybot import config, store, bankroll
+    import tempfile, os
+    fd, path = tempfile.mkstemp(suffix=".db"); os.close(fd)
+    config.DB_PATH = path
+    config.PAPER_FEE_FRAC = 0.0
+    store.init_db(); bankroll.init_bankroll()
+    from polybot.strategy import Signal
+    from polybot.market_data import Market
+    m = Market(condition_id="0xV", question="Q", token_id_yes="y", token_id_no="n",
+               price_yes=0.5, liquidity=1e5, volume=0, volume_24h=0, spread=0,
+               end_date="", hours_to_resolution=1, category="esports", event_title="")
+    sig = Signal(market=m, side="NO", fair_prob=0.8, market_prob=0.5,
+                 edge=0.3, size_usd=12.0, reason="t", estimator="test")
+    store.record_trade(sig, {"mode": "PAPER", "status": "simulated", "price": 0.5})
+    bankroll.deduct_stake(12.0, note="bet")          # stake leaves cash -> 488
+    tid = store.open_positions()[0][0]
+    refund = store.settle_void(tid, size_usd=12.0)
+    assert abs(refund - 12.0) < 1e-6, refund
+    bk = bankroll.summary()
+    assert abs(bk["balance"] - 500.0) < 1e-6, bk["balance"]   # full refund
+    s = store.performance_summary()
+    # a void is neither a win nor a loss
+    assert s.get("won", 0) == 0 and s.get("lost", 0) == 0, s
+    assert store.open_positions() == []                       # no longer OPEN
+    os.remove(path)
+    print("PASS test_settle_void_refunds_stake")
+
+
 # ---------------------------------------------------------------------------
 # Calibration table: measured data used when n large, market when no data
 # ---------------------------------------------------------------------------

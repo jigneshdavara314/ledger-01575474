@@ -261,7 +261,11 @@ def fetch_resolution(condition_id: str) -> Optional[str]:
     Token order matches clobTokenIds: index 0 = YES, index 1 = NO — so we
     decide by INDEX, not by the human label ("Over"/"Yes"/a player name).
 
-    Returns "YES", "NO", or None (not yet resolved / voided / unknown).
+    Returns:
+      "YES"  - YES side won
+      "NO"   - NO side won
+      "VOID" - market cancelled/refunded (50-50): no winner, stake returned
+      None   - not yet resolved / fetch failed (unknown)
     """
     try:
         resp = requests.get(
@@ -280,16 +284,26 @@ def fetch_resolution(condition_id: str) -> Optional[str]:
         if tokens[1].get("winner"):
             return "NO"
 
-        # Fallback: a closed market whose price has collapsed to a near-certain
-        # outcome (>= 0.99 / <= 0.01) is effectively resolved even if the
-        # winner flag hasn't propagated yet.
+        # VOID / cancelled market. When a market is closed but NEITHER token won
+        # (Polymarket flags is_50_50_outcome and parks both prices at 0.5), the
+        # event was annulled (e.g. an e-sports map that was never played) and all
+        # stakes are REFUNDED. Without this, such positions never get a winner and
+        # sit OPEN forever — the "stuck for days" bug. Settle as VOID -> refund.
         if m.get("closed"):
             p_yes = _safe_float(tokens[0].get("price"))
+            p_no = _safe_float(tokens[1].get("price"))
+            if m.get("is_50_50_outcome"):
+                return "VOID"
+            # Fallback: closed, neither winner, both prices ~0.5 = de-facto void.
+            if 0.4 <= p_yes <= 0.6 and 0.4 <= p_no <= 0.6:
+                return "VOID"
+            # A closed market whose price collapsed to a near-certain outcome is
+            # effectively resolved even if the winner flag hasn't propagated yet.
             if p_yes >= 0.99:
                 return "YES"
             if p_yes <= 0.01:
                 return "NO"
-        return None  # genuinely not resolved yet, or voided / 50-50
+        return None  # genuinely not resolved yet
     except Exception as e:
         # Distinguish FETCH FAILURE from "not resolved": a silent None here would
         # let a persistent API/schema break freeze every position OPEN forever and

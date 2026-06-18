@@ -352,8 +352,11 @@ def find_longshot_fades(
                 signals.append(sig)
             continue
 
-        # only fade genuine longshots in the sane band (NO-side path)
-        if not (FADE_MIN_YES <= m.price_yes <= FADE_MAX_YES):
+        # only fade genuine longshots in the sane band (NO-side path).
+        # Use the per-call band_lo/band_hi so each tournament STRATEGY actually
+        # applies its own band (e.g. aggressive_fade's wider 0.07-0.60). These
+        # default to the module FADE_MIN_YES/FADE_MAX_YES when not passed.
+        if not (band_lo <= m.price_yes <= band_hi):
             continue
 
         no_price = round(1.0 - m.price_yes, 4)
@@ -398,8 +401,10 @@ def find_longshot_fades(
             fill_prob = 1.0
 
         # Edge is now measured against the price we actually try to pay (bid).
+        # Gate on the per-call min_edge so each strategy uses its own threshold
+        # (conservative 0.06 vs aggressive 0.04) instead of always the config one.
         edge = round(est_win_prob - bid_price, 4)
-        if edge < config.LONGSHOT_MIN_EDGE:
+        if edge < min_edge:
             continue
 
         # Desired stake from the budget, scaled by tier, then by the SELF-IMPROVE

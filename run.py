@@ -568,10 +568,18 @@ def cmd_resolve():
         if winner is None:
             print(f"  [pending] {question[:60]}")
             continue
+        bankroll.init_bankroll()
+        # VOID: market cancelled/refunded (50-50). Refund the stake, book 0 P&L.
+        # Without this branch these positions never get a winner and sit OPEN
+        # forever — the "stuck for days" bug.
+        if winner == "VOID":
+            refund = store.settle_void(trade_id, size_usd)
+            print(f"  [VOID]   {question[:48]}  (cancelled — refunded ${refund:.2f})")
+            settled += 1
+            continue
         won = (winner == side)
         # ATOMIC: trade status + bankroll payout + fee all in ONE transaction,
         # so a crash can't leave a resolved trade with the cash never moved.
-        bankroll.init_bankroll()
         pnl, fee = store.settle_and_credit(trade_id, won, size_usd, shares)
         tag = "WON " if won else "LOST"
         print(f"  [{tag}]   {question[:48]}  (bet {side}, {winner} won)  pnl={pnl:+.2f}")

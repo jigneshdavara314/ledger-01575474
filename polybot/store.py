@@ -24,6 +24,7 @@ from .strategy import Signal
 STATUS_OPEN = "OPEN"
 STATUS_WON = "WON"
 STATUS_LOST = "LOST"
+STATUS_VOID = "VOID"   # market cancelled/refunded (50-50): stake returned, pnl 0
 
 # Honesty guard: headline/performance views must NEVER count simulated/backtest
 # rows. Backfill rows are tagged condition_id LIKE 'bf-%' (and exec_status
@@ -253,6 +254,27 @@ def settle_and_credit(trade_id: int, won: bool, size_usd: float, shares: float):
         if fee > 0:
             _move("stake", -fee, f"fee trade #{trade_id}")
     return pnl, fee
+
+
+def settle_void(trade_id: int, size_usd: float):
+    """ATOMIC void settlement: a cancelled/50-50 market REFUNDS the full stake
+    and books ZERO P&L (no fee on a void). The stake was deducted from the
+    bankroll when the bet was opened, so we credit it back here. Same single-
+    transaction discipline as settle_and_credit so trade-status and cash can't
+    desync. Returns the refunded amount.
+    """
+    now = datetime.datetime.utcnow().isoformat()
+    refund = round(size_usd, 4)
+    with _conn() as c:
+        c.execute("UPDATE trades SET status=?, pnl_usd=?, resolved_ts=? WHERE id=?",
+                  (STATUS_VOID, 0.0, now, trade_id))
+        bal = c.execute("SELECT balance FROM bankroll WHERE id=1").fetchone()[0]
+        new = round(bal + refund, 4)
+        c.execute("UPDATE bankroll SET balance=? WHERE id=1", (new,))
+        c.execute("INSERT INTO bankroll_log (ts,kind,amount,balance_after,note) "
+                  "VALUES (?,?,?,?,?)", (now, "refund", refund, new,
+                                        f"VOID trade #{trade_id} (market cancelled)"))
+    return refund
 
 
 def today_pnl() -> float:
