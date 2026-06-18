@@ -1,13 +1,13 @@
 {
   "candidates": [
     {
-      "family": "extremes",
-      "keyword": "highest",
-      "occurrences": 8
+      "family": "superlative_outcome",
+      "keyword": "will the highest",
+      "occurrences": 133
     },
     {
-      "family": "extremes",
-      "keyword": "lowest",
+      "family": "creator_next_action",
+      "keyword": "will mrbeast's next",
       "occurrences": 8
     }
   ]
