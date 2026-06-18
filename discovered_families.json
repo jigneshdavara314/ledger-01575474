@@ -1,29 +1,3 @@
 {
-  "candidates": [
-    {
-      "family": "superlative_outcomes",
-      "keyword": "will_the_highest",
-      "occurrences": 8
-    },
-    {
-      "family": "superlative_outcomes",
-      "keyword": "will_the_lowest",
-      "occurrences": 8
-    },
-    {
-      "family": "player_performance",
-      "keyword": "juan_fernando_quintero",
-      "occurrences": 8
-    },
-    {
-      "family": "player_performance",
-      "keyword": "prince_adu_kwabena",
-      "occurrences": 8
-    },
-    {
-      "family": "player_performance",
-      "keyword": "kamal_deen_sulemana",
-      "occurrences": 8
-    }
-  ]
+  "candidates": []
 }
