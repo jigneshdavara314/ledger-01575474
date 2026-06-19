@@ -1,14 +1,10 @@
 {
   "candidates": [
     {
-      "family": "lowest_value",
+      "pattern": "will the lowest",
       "keyword": "will the lowest",
-      "occurrences": 22
-    },
-    {
-      "family": "golf_individual",
-      "keyword": "will jason day",
-      "occurrences": 8
+      "occurrences": 22,
+      "family": "auto_will_the_lowest"
     }
   ]
 }
