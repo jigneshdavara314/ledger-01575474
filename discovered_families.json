@@ -1,9 +1,24 @@
 {
   "candidates": [
     {
-      "family": "extrema_max",
-      "keyword": "will the highest",
-      "occurrences": 11
+      "family": "highest_outcome",
+      "keyword": "highest",
+      "occurrences": 8
+    },
+    {
+      "family": "lowest_outcome",
+      "keyword": "lowest",
+      "occurrences": 8
+    },
+    {
+      "family": "table_tennis_women_singles",
+      "keyword": "women_singles",
+      "occurrences": 8
+    },
+    {
+      "family": "table_tennis_men_singles",
+      "keyword": "men_singles",
+      "occurrences": 8
     }
   ]
 }
