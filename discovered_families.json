@@ -1,23 +1,28 @@
 {
   "candidates": [
     {
-      "family": "highest_outcome",
-      "keyword": "highest",
+      "family": "commodity_price_extreme",
+      "keyword": "will_highest",
       "occurrences": 8
     },
     {
-      "family": "lowest_outcome",
-      "keyword": "lowest",
+      "family": "commodity_price_extreme",
+      "keyword": "will_lowest",
       "occurrences": 8
     },
     {
-      "family": "table_tennis_women_singles",
+      "family": "energy_commodity",
+      "keyword": "wti_crude",
+      "occurrences": 8
+    },
+    {
+      "family": "energy_commodity",
+      "keyword": "natural_gas",
+      "occurrences": 8
+    },
+    {
+      "family": "sports_tennis_women",
       "keyword": "women_singles",
-      "occurrences": 8
-    },
-    {
-      "family": "table_tennis_men_singles",
-      "keyword": "men_singles",
       "occurrences": 8
     }
   ]
