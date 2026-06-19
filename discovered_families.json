@@ -1,18 +1,13 @@
 {
   "candidates": [
     {
-      "family": "extremes",
-      "keyword": "will_the_highest",
-      "occurrences": 8
+      "family": "lowest_value",
+      "keyword": "will the lowest",
+      "occurrences": 22
     },
     {
-      "family": "extremes",
-      "keyword": "will_the_lowest",
-      "occurrences": 8
-    },
-    {
-      "family": "tennis",
-      "keyword": "women_singles",
+      "family": "golf_individual",
+      "keyword": "will jason day",
       "occurrences": 8
     }
   ]
