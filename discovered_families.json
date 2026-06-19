@@ -1,46 +1,44 @@
 {
   "candidates": [
     {
-      "pattern": "will the highest",
-      "keyword": "will the highest",
-      "occurrences": 143,
-      "family": "auto_will_the_highest"
-    },
-    {
-      "pattern": "will natural gas",
+      "family": "commodity_prices",
       "keyword": "will natural gas",
-      "occurrences": 12,
-      "family": "auto_will_natural_gas"
+      "occurrences": 12
     },
     {
-      "pattern": "will wti crude",
+      "family": "commodity_prices",
       "keyword": "will wti crude",
-      "occurrences": 12,
-      "family": "auto_will_wti_crude"
+      "occurrences": 12
     },
     {
-      "pattern": "will the lowest",
-      "keyword": "will the lowest",
-      "occurrences": 11,
-      "family": "auto_will_the_lowest"
-    },
-    {
-      "pattern": "will gold (xauusd)",
+      "family": "commodity_prices",
       "keyword": "will gold (xauusd)",
-      "occurrences": 10,
-      "family": "auto_will_gold_xauusd"
+      "occurrences": 9
     },
     {
-      "pattern": "will silver (xagusd)",
-      "keyword": "will silver (xagusd)",
-      "occurrences": 8,
-      "family": "auto_will_silver_xagusd"
+      "family": "price_extremes",
+      "keyword": "will the highest",
+      "occurrences": 168
     },
     {
-      "pattern": "will mrbeast's next",
-      "keyword": "will mrbeast's next",
-      "occurrences": 8,
-      "family": "auto_will_mrbeast_s_next"
+      "family": "price_extremes",
+      "keyword": "will the lowest",
+      "occurrences": 10
+    },
+    {
+      "family": "sports_player",
+      "keyword": "mathew leckie",
+      "occurrences": 8
+    },
+    {
+      "family": "table_tennis_singles",
+      "keyword": "wtt - women's singles",
+      "occurrences": 8
+    },
+    {
+      "family": "table_tennis_singles",
+      "keyword": "wtt - men's singles",
+      "occurrences": 8
     }
   ]
 }
