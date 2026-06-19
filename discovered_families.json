@@ -1,29 +1,46 @@
 {
   "candidates": [
     {
-      "family": "commodity_price_extreme",
-      "keyword": "will_highest",
-      "occurrences": 8
+      "pattern": "will the highest",
+      "keyword": "will the highest",
+      "occurrences": 143,
+      "family": "auto_will_the_highest"
     },
     {
-      "family": "commodity_price_extreme",
-      "keyword": "will_lowest",
-      "occurrences": 8
+      "pattern": "will natural gas",
+      "keyword": "will natural gas",
+      "occurrences": 12,
+      "family": "auto_will_natural_gas"
     },
     {
-      "family": "energy_commodity",
-      "keyword": "wti_crude",
-      "occurrences": 8
+      "pattern": "will wti crude",
+      "keyword": "will wti crude",
+      "occurrences": 12,
+      "family": "auto_will_wti_crude"
     },
     {
-      "family": "energy_commodity",
-      "keyword": "natural_gas",
-      "occurrences": 8
+      "pattern": "will the lowest",
+      "keyword": "will the lowest",
+      "occurrences": 11,
+      "family": "auto_will_the_lowest"
     },
     {
-      "family": "sports_tennis_women",
-      "keyword": "women_singles",
-      "occurrences": 8
+      "pattern": "will gold (xauusd)",
+      "keyword": "will gold (xauusd)",
+      "occurrences": 10,
+      "family": "auto_will_gold_xauusd"
+    },
+    {
+      "pattern": "will silver (xagusd)",
+      "keyword": "will silver (xagusd)",
+      "occurrences": 8,
+      "family": "auto_will_silver_xagusd"
+    },
+    {
+      "pattern": "will mrbeast's next",
+      "keyword": "will mrbeast's next",
+      "occurrences": 8,
+      "family": "auto_will_mrbeast_s_next"
     }
   ]
 }
