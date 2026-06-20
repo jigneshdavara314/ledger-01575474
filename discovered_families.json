@@ -1,46 +1,34 @@
 {
   "candidates": [
     {
-      "pattern": "will the highest",
-      "keyword": "will the highest",
-      "occurrences": 33,
-      "family": "auto_will_the_highest"
+      "family": "extremes",
+      "keyword": "highest",
+      "occurrences": 8
     },
     {
-      "pattern": "matheus cunha",
-      "keyword": "matheus cunha",
-      "occurrences": 18,
-      "family": "auto_matheus_cunha"
+      "family": "extremes",
+      "keyword": "lowest",
+      "occurrences": 8
     },
     {
-      "pattern": "raphinha",
+      "family": "sports_player",
+      "keyword": "irefan_can_kahveci",
+      "occurrences": 8
+    },
+    {
+      "family": "sports_player",
+      "keyword": "julio_cesar_enciso",
+      "occurrences": 8
+    },
+    {
+      "family": "sports_player",
+      "keyword": "baris_alper_yilmaz",
+      "occurrences": 8
+    },
+    {
+      "family": "sports_player",
       "keyword": "raphinha",
-      "occurrences": 17,
-      "family": "auto_raphinha"
-    },
-    {
-      "pattern": "jean-ricner bellegarde",
-      "keyword": "jean-ricner bellegarde",
-      "occurrences": 13,
-      "family": "auto_jean_ricner_bellegarde"
-    },
-    {
-      "pattern": "casemiro",
-      "keyword": "casemiro",
-      "occurrences": 12,
-      "family": "auto_casemiro"
-    },
-    {
-      "pattern": "\u00e9derson",
-      "keyword": "\u00e9derson",
-      "occurrences": 10,
-      "family": "auto_derson"
-    },
-    {
-      "pattern": "will the game go to extra innings?",
-      "keyword": "will the game go to extra innings?",
-      "occurrences": 9,
-      "family": "auto_will_the_game_go_to_extr"
+      "occurrences": 12
     }
   ]
 }
