@@ -1,43 +1,18 @@
 {
   "candidates": [
     {
-      "family": "commodity_prices",
-      "keyword": "will natural gas",
-      "occurrences": 12
-    },
-    {
-      "family": "commodity_prices",
-      "keyword": "will wti crude",
-      "occurrences": 12
-    },
-    {
-      "family": "commodity_prices",
-      "keyword": "will gold (xauusd)",
-      "occurrences": 9
-    },
-    {
-      "family": "price_extremes",
-      "keyword": "will the highest",
-      "occurrences": 168
-    },
-    {
-      "family": "price_extremes",
-      "keyword": "will the lowest",
-      "occurrences": 10
-    },
-    {
-      "family": "sports_player",
-      "keyword": "mathew leckie",
+      "family": "superlatives",
+      "keyword": "highest",
       "occurrences": 8
     },
     {
-      "family": "table_tennis_singles",
-      "keyword": "wtt - women's singles",
+      "family": "superlatives",
+      "keyword": "lowest",
       "occurrences": 8
     },
     {
-      "family": "table_tennis_singles",
-      "keyword": "wtt - men's singles",
+      "family": "player_outcomes",
+      "keyword": "mathew_leckie",
       "occurrences": 8
     }
   ]
