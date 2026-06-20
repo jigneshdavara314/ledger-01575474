@@ -1,34 +1,24 @@
 {
   "candidates": [
     {
-      "family": "extremes",
-      "keyword": "highest",
-      "occurrences": 8
+      "family": "will_highest",
+      "keyword": "will the highest",
+      "occurrences": 103
     },
     {
-      "family": "extremes",
-      "keyword": "lowest",
-      "occurrences": 8
+      "family": "player_performance",
+      "keyword": "julio c\u00e9sar enciso",
+      "occurrences": 20
     },
     {
-      "family": "sports_player",
-      "keyword": "irefan_can_kahveci",
-      "occurrences": 8
+      "family": "player_performance",
+      "keyword": "i\u0307rfan can kahveci",
+      "occurrences": 16
     },
     {
-      "family": "sports_player",
-      "keyword": "julio_cesar_enciso",
-      "occurrences": 8
-    },
-    {
-      "family": "sports_player",
-      "keyword": "baris_alper_yilmaz",
-      "occurrences": 8
-    },
-    {
-      "family": "sports_player",
-      "keyword": "raphinha",
-      "occurrences": 12
+      "family": "player_performance",
+      "keyword": "bar\u0131\u015f alper y\u0131lmaz",
+      "occurrences": 14
     }
   ]
 }
