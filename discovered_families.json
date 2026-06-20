@@ -1,19 +1,14 @@
 {
   "candidates": [
     {
-      "family": "extrema",
+      "family": "highest_value",
       "keyword": "will the highest",
-      "occurrences": 147
+      "occurrences": 33
     },
     {
-      "family": "extrema",
-      "keyword": "will the lowest",
-      "occurrences": 32
-    },
-    {
-      "family": "tennis_qualification",
-      "keyword": "lexus eastbourne open, qualification",
-      "occurrences": 11
+      "family": "mrbeast_next",
+      "keyword": "will mrbeast's next",
+      "occurrences": 16
     }
   ]
 }
