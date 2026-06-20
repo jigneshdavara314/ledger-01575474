@@ -1,19 +1,19 @@
 {
   "candidates": [
     {
-      "family": "value_extremes_high",
+      "family": "extrema",
       "keyword": "will the highest",
-      "occurrences": 144
+      "occurrences": 147
     },
     {
-      "family": "value_extremes_low",
+      "family": "extrema",
       "keyword": "will the lowest",
-      "occurrences": 29
+      "occurrences": 32
     },
     {
       "family": "tennis_qualification",
       "keyword": "lexus eastbourne open, qualification",
-      "occurrences": 13
+      "occurrences": 11
     }
   ]
 }
