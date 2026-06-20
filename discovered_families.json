@@ -1,13 +1,18 @@
 {
   "candidates": [
     {
-      "family": "highest_value",
+      "family": "extreme_value",
       "keyword": "will the highest",
-      "occurrences": 33
+      "occurrences": 144
     },
     {
-      "family": "mrbeast_next",
-      "keyword": "will mrbeast's next",
+      "family": "extreme_value",
+      "keyword": "will the lowest",
+      "occurrences": 11
+    },
+    {
+      "family": "athlete_specific",
+      "keyword": "ange-yoan bonny",
       "occurrences": 16
     }
   ]
