@@ -1,24 +1,14 @@
 {
   "candidates": [
     {
-      "family": "will_highest",
+      "family": "highest_metric",
       "keyword": "will the highest",
-      "occurrences": 103
+      "occurrences": 22
     },
     {
-      "family": "player_performance",
-      "keyword": "julio c\u00e9sar enciso",
-      "occurrences": 20
-    },
-    {
-      "family": "player_performance",
-      "keyword": "i\u0307rfan can kahveci",
-      "occurrences": 16
-    },
-    {
-      "family": "player_performance",
-      "keyword": "bar\u0131\u015f alper y\u0131lmaz",
-      "occurrences": 14
+      "family": "tennis_womens_singles",
+      "keyword": "wtt - women's singles",
+      "occurrences": 8
     }
   ]
 }
