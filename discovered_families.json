@@ -1,19 +1,19 @@
 {
   "candidates": [
     {
-      "family": "extremes_high",
-      "keyword": "highest",
-      "occurrences": 8
+      "family": "value_extremes_high",
+      "keyword": "will the highest",
+      "occurrences": 144
     },
     {
-      "family": "extremes_low",
-      "keyword": "lowest",
-      "occurrences": 8
+      "family": "value_extremes_low",
+      "keyword": "will the lowest",
+      "occurrences": 29
     },
     {
-      "family": "table_tennis_mens_singles",
-      "keyword": "wtt",
-      "occurrences": 8
+      "family": "tennis_qualification",
+      "keyword": "lexus eastbourne open, qualification",
+      "occurrences": 13
     }
   ]
 }
