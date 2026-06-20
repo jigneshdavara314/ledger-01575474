@@ -1,13 +1,18 @@
 {
   "candidates": [
     {
-      "family": "highest_metric",
-      "keyword": "will the highest",
-      "occurrences": 22
+      "family": "extremes_high",
+      "keyword": "highest",
+      "occurrences": 8
     },
     {
-      "family": "tennis_womens_singles",
-      "keyword": "wtt - women's singles",
+      "family": "extremes_low",
+      "keyword": "lowest",
+      "occurrences": 8
+    },
+    {
+      "family": "table_tennis_mens_singles",
+      "keyword": "wtt",
       "occurrences": 8
     }
   ]
