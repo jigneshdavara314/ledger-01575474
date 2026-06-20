@@ -1,19 +1,46 @@
 {
   "candidates": [
     {
-      "family": "superlatives",
-      "keyword": "highest",
-      "occurrences": 8
+      "pattern": "will the highest",
+      "keyword": "will the highest",
+      "occurrences": 33,
+      "family": "auto_will_the_highest"
     },
     {
-      "family": "superlatives",
-      "keyword": "lowest",
-      "occurrences": 8
+      "pattern": "matheus cunha",
+      "keyword": "matheus cunha",
+      "occurrences": 18,
+      "family": "auto_matheus_cunha"
     },
     {
-      "family": "player_outcomes",
-      "keyword": "mathew_leckie",
-      "occurrences": 8
+      "pattern": "raphinha",
+      "keyword": "raphinha",
+      "occurrences": 17,
+      "family": "auto_raphinha"
+    },
+    {
+      "pattern": "jean-ricner bellegarde",
+      "keyword": "jean-ricner bellegarde",
+      "occurrences": 13,
+      "family": "auto_jean_ricner_bellegarde"
+    },
+    {
+      "pattern": "casemiro",
+      "keyword": "casemiro",
+      "occurrences": 12,
+      "family": "auto_casemiro"
+    },
+    {
+      "pattern": "\u00e9derson",
+      "keyword": "\u00e9derson",
+      "occurrences": 10,
+      "family": "auto_derson"
+    },
+    {
+      "pattern": "will the game go to extra innings?",
+      "keyword": "will the game go to extra innings?",
+      "occurrences": 9,
+      "family": "auto_will_the_game_go_to_extr"
     }
   ]
 }
