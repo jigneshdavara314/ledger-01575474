@@ -1,10 +1,19 @@
 {
   "candidates": [
     {
-      "pattern": "will the highest",
+      "family": "extrema_maximum",
       "keyword": "will the highest",
-      "occurrences": 66,
-      "family": "auto_will_the_highest"
+      "occurrences": 44
+    },
+    {
+      "family": "extrema_minimum",
+      "keyword": "will the lowest",
+      "occurrences": 22
+    },
+    {
+      "family": "sequence_next",
+      "keyword": "will the next",
+      "occurrences": 18
     }
   ]
 }
