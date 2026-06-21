@@ -1,19 +1,24 @@
 {
   "candidates": [
     {
-      "family": "extreme_value",
+      "family": "extreme_high",
       "keyword": "will the highest",
-      "occurrences": 144
+      "occurrences": 73
     },
     {
-      "family": "extreme_value",
+      "family": "extreme_low",
       "keyword": "will the lowest",
       "occurrences": 11
     },
     {
-      "family": "athlete_specific",
-      "keyword": "ange-yoan bonny",
-      "occurrences": 16
+      "family": "ufc_event",
+      "keyword": "ufc fight night",
+      "occurrences": 9
+    },
+    {
+      "family": "fight_distance",
+      "keyword": "fight to go",
+      "occurrences": 9
     }
   ]
 }
