@@ -1,22 +1,19 @@
 {
   "candidates": [
     {
-      "pattern": "will the highest",
+      "family": "ranking_highest",
       "keyword": "will the highest",
-      "occurrences": 172,
-      "family": "auto_will_the_highest"
+      "occurrences": 139
     },
     {
-      "pattern": "will the lowest",
+      "family": "ranking_lowest",
       "keyword": "will the lowest",
-      "occurrences": 22,
-      "family": "auto_will_the_lowest"
+      "occurrences": 22
     },
     {
-      "pattern": "anis ben slimane",
+      "family": "person",
       "keyword": "anis ben slimane",
-      "occurrences": 14,
-      "family": "auto_anis_ben_slimane"
+      "occurrences": 13
     }
   ]
 }
