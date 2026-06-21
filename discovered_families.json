@@ -1,24 +1,22 @@
 {
   "candidates": [
     {
-      "family": "extreme_high",
+      "pattern": "will the highest",
       "keyword": "will the highest",
-      "occurrences": 73
+      "occurrences": 172,
+      "family": "auto_will_the_highest"
     },
     {
-      "family": "extreme_low",
+      "pattern": "will the lowest",
       "keyword": "will the lowest",
-      "occurrences": 11
+      "occurrences": 22,
+      "family": "auto_will_the_lowest"
     },
     {
-      "family": "ufc_event",
-      "keyword": "ufc fight night",
-      "occurrences": 9
-    },
-    {
-      "family": "fight_distance",
-      "keyword": "fight to go",
-      "occurrences": 9
+      "pattern": "anis ben slimane",
+      "keyword": "anis ben slimane",
+      "occurrences": 14,
+      "family": "auto_anis_ben_slimane"
     }
   ]
 }
