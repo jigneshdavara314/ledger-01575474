@@ -1,28 +1,24 @@
 {
   "candidates": [
     {
-      "pattern": "will the highest",
-      "keyword": "will the highest",
-      "occurrences": 176,
-      "family": "auto_will_the_highest"
+      "family": "extreme_values",
+      "keyword": "highest_lowest",
+      "occurrences": 8
     },
     {
-      "pattern": "will the lowest",
-      "keyword": "will the lowest",
-      "occurrences": 33,
-      "family": "auto_will_the_lowest"
+      "family": "athlete_performance",
+      "keyword": "football_players",
+      "occurrences": 8
     },
     {
-      "pattern": "will the next",
-      "keyword": "will the next",
-      "occurrences": 18,
-      "family": "auto_will_the_next"
+      "family": "baseball_events",
+      "keyword": "run_inning",
+      "occurrences": 8
     },
     {
-      "pattern": "lexus eastbourne open, qualification",
-      "keyword": "lexus eastbourne open, qualification",
-      "occurrences": 9,
-      "family": "auto_lexus_eastbourne_open_qu"
+      "family": "gaming_content",
+      "keyword": "streamer",
+      "occurrences": 8
     }
   ]
 }
