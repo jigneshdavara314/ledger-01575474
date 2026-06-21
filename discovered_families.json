@@ -1,40 +1,39 @@
 {
   "candidates": [
     {
-      "pattern": "will the highest",
+      "family": "comparative_player_stat",
       "keyword": "will the highest",
-      "occurrences": 32,
-      "family": "auto_will_the_highest"
+      "occurrences": 147
     },
     {
-      "pattern": "feras al brikan",
-      "keyword": "feras al brikan",
-      "occurrences": 15,
-      "family": "auto_feras_al_brikan"
+      "family": "comparative_player_stat",
+      "keyword": "will the lowest",
+      "occurrences": 11
     },
     {
-      "pattern": "salem al dawsari",
-      "keyword": "salem al dawsari",
-      "occurrences": 14,
-      "family": "auto_salem_al_dawsari"
+      "family": "player_performance",
+      "keyword": "charles de ketelaere",
+      "occurrences": 18
     },
     {
-      "pattern": "will there be a run scored in the first inning?",
-      "keyword": "will there be a run scored in the first inning?",
-      "occurrences": 12,
-      "family": "auto_will_there_be_a_run_scor"
+      "family": "player_performance",
+      "keyword": "matias fernandez-pardo",
+      "occurrences": 17
     },
     {
-      "pattern": "rodri",
-      "keyword": "rodri",
-      "occurrences": 10,
-      "family": "auto_rodri"
+      "family": "player_performance",
+      "keyword": "kevin de bruyne",
+      "occurrences": 14
     },
     {
-      "pattern": "pedri",
-      "keyword": "pedri",
-      "occurrences": 9,
-      "family": "auto_pedri"
+      "family": "player_performance",
+      "keyword": "maxim de cuyper",
+      "occurrences": 13
+    },
+    {
+      "family": "game_format",
+      "keyword": "will the game go to extra innings",
+      "occurrences": 8
     }
   ]
 }
