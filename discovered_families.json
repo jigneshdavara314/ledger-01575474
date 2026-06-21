@@ -1,19 +1,28 @@
 {
   "candidates": [
     {
-      "family": "extrema_maximum",
+      "pattern": "will the highest",
       "keyword": "will the highest",
-      "occurrences": 44
+      "occurrences": 176,
+      "family": "auto_will_the_highest"
     },
     {
-      "family": "extrema_minimum",
+      "pattern": "will the lowest",
       "keyword": "will the lowest",
-      "occurrences": 22
+      "occurrences": 33,
+      "family": "auto_will_the_lowest"
     },
     {
-      "family": "sequence_next",
+      "pattern": "will the next",
       "keyword": "will the next",
-      "occurrences": 18
+      "occurrences": 18,
+      "family": "auto_will_the_next"
+    },
+    {
+      "pattern": "lexus eastbourne open, qualification",
+      "keyword": "lexus eastbourne open, qualification",
+      "occurrences": 9,
+      "family": "auto_lexus_eastbourne_open_qu"
     }
   ]
 }
