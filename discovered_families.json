@@ -1,24 +1,40 @@
 {
   "candidates": [
     {
-      "family": "extreme_values",
-      "keyword": "highest_lowest",
-      "occurrences": 8
+      "pattern": "will the highest",
+      "keyword": "will the highest",
+      "occurrences": 32,
+      "family": "auto_will_the_highest"
     },
     {
-      "family": "athlete_performance",
-      "keyword": "football_players",
-      "occurrences": 8
+      "pattern": "feras al brikan",
+      "keyword": "feras al brikan",
+      "occurrences": 15,
+      "family": "auto_feras_al_brikan"
     },
     {
-      "family": "baseball_events",
-      "keyword": "run_inning",
-      "occurrences": 8
+      "pattern": "salem al dawsari",
+      "keyword": "salem al dawsari",
+      "occurrences": 14,
+      "family": "auto_salem_al_dawsari"
     },
     {
-      "family": "gaming_content",
-      "keyword": "streamer",
-      "occurrences": 8
+      "pattern": "will there be a run scored in the first inning?",
+      "keyword": "will there be a run scored in the first inning?",
+      "occurrences": 12,
+      "family": "auto_will_there_be_a_run_scor"
+    },
+    {
+      "pattern": "rodri",
+      "keyword": "rodri",
+      "occurrences": 10,
+      "family": "auto_rodri"
+    },
+    {
+      "pattern": "pedri",
+      "keyword": "pedri",
+      "occurrences": 9,
+      "family": "auto_pedri"
     }
   ]
 }
