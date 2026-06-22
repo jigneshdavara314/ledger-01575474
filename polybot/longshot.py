@@ -416,12 +416,18 @@ def find_longshot_fades(
         desired_usd = round(stake_usd * TIER_STAKE_MULT[tier] * si_mult, 2)
         desired_usd = round(min(desired_usd, per_bet_cap), 2)
 
-        # REALISTIC SIZING: we bid BELOW the ask, so the honest immediately-
-        # fillable size is the ask-side depth available AT OR BELOW our actual
-        # bid price — not bid+tolerance (which counts liquidity priced above us
-        # that we won't reach). This is the conservative, correct side of the
-        # book for a resting buy; we never "bet" more than that thin slice.
-        depth = fillable_depth(m.token_id_no, max_price=bid_price)
+        # REALISTIC SIZING: size on the order-book depth genuinely reachable for
+        # this bet. We bid between the mid and the ask, so the liquidity we can
+        # actually capture is the ask-side depth up to (and including) the ASK —
+        # i.e. what a seller is offering right now and what we'd fill against as
+        # the book moves to us. Measuring depth only AT-OR-BELOW our sub-ask bid
+        # is wrong: there is essentially NEVER resting size priced below the best
+        # ask, so that check returned $0 for ~every market and silently zeroed
+        # every stake — the bug that froze longshot betting after 2026-06-13.
+        # Whether the resting bid fills is modelled separately by fill_prob; the
+        # SIZE is the real reachable depth, not phantom liquidity. We cap the
+        # price ceiling at the ask (never count depth priced above the ask).
+        depth = fillable_depth(m.token_id_no, max_price=ask_price)
         fillable_usd = depth["usd"] if depth else 0.0
         actual_stake = round(min(desired_usd, fillable_usd), 2)
 

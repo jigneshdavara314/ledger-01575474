@@ -209,11 +209,15 @@ def test_lagwatch_single_match_guard():
 # ---------------------------------------------------------------------------
 def test_limit_bid_price_bounds():
     from polybot import market_data
+    orig = market_data.fetch_quote                 # restore: leaking this stub
     market_data.fetch_quote = lambda t: {"best_bid": 0.90, "best_ask": 0.96,
                                           "mid": 0.93, "spread": 0.06}
-    q = market_data.limit_bid_price("tok", aggression=0.5)
-    assert q["bid"] < q["price"] <= q["ask"], "bid price must be within the book"
-    assert 0.93 <= q["price"] <= 0.96
+    try:
+        q = market_data.limit_bid_price("tok", aggression=0.5)
+        assert q["bid"] < q["price"] <= q["ask"], "bid price must be within the book"
+        assert 0.93 <= q["price"] <= 0.96
+    finally:
+        market_data.fetch_quote = orig
     print("PASS test_limit_bid_price_bounds")
 
 
@@ -240,6 +244,66 @@ def test_fillable_depth():
     finally:
         market_data.requests.get = orig
     print("PASS test_fillable_depth")
+
+
+def test_fade_sizing_not_zero_at_sub_ask_bid():
+    """REGRESSION: a fade bid rests BELOW the ask, but depth almost always sits
+    AT the ask. Sizing on depth<=bid returned $0 for ~every market and silently
+    zeroed every stake (the bug that froze longshot betting after 2026-06-13).
+    Sizing must use depth up to the ASK so a genuine, liquid +edge market is
+    actually bettable. We build a market with a real edge and a normal book
+    (size resting at the best ask, none below it) and assert a non-zero stake."""
+    import polybot.longshot as L
+    from polybot import config, market_data, store, bankroll
+    import tempfile, os
+    # Isolate from any DB/fee state leaked by earlier tests (which mutate
+    # config.DB_PATH and then delete the file) — _self_improve_mult reads the DB.
+    fd, _p = tempfile.mkstemp(suffix=".db"); os.close(fd)
+    config.DB_PATH = _p
+    config.PAPER_FEE_FRAC = 0.0
+    store.init_db(); bankroll.init_bankroll()
+    from polybot.market_data import Market
+
+    # One liquid, in-band, confirmed-tier market with a real measured edge.
+    mkt = Market(condition_id="0xEDGE",
+                 question="Exact Score: Any Other Score?",
+                 token_id_yes="y", token_id_no="n",
+                 price_yes=0.445, liquidity=73000.0, volume=0, volume_24h=0,
+                 spread=0.01, end_date="", hours_to_resolution=24.0,
+                 category="soccer", event_title="")
+
+    # Patch the exact functions find_longshot_fades calls (robust to any leaked
+    # fetch_quote/requests stub from other tests). A NORMAL book: bid 0.55,
+    # ask 0.56, depth (12k) resting AT the ask, NOTHING below it.
+    orig_fetch = L.fetch_short_term_markets
+    orig_bid = L.limit_bid_price
+    orig_depth = L.fillable_depth
+    L.fetch_short_term_markets = lambda *a, **k: [mkt]
+    L.limit_bid_price = lambda tok, aggression=0.5, hours_to_res=None: {
+        "price": 0.558, "mid": 0.555, "ask": 0.56, "bid": 0.55,
+        "spread": 0.01, "fill_prob_estimate": 0.7}
+    # depth ONLY at/below max_price: empty below the ask, full at the ask.
+    L.fillable_depth = lambda tok, max_price: (
+        {"usd": 6720.0, "shares": 12000.0, "levels": 1, "best_ask": 0.56}
+        if max_price >= 0.56 else
+        {"usd": 0.0, "shares": 0.0, "levels": 0, "best_ask": 0.56})
+    try:
+        sigs = L.find_longshot_fades()
+        assert len(sigs) == 1, f"expected 1 bettable signal, got {len(sigs)}"
+        s = sigs[0]
+        assert s.size_usd >= config.LONGSHOT_MIN_STAKE, s.size_usd
+        assert s.fillable_usd > 0, ("sizing collapsed to $0 — the sub-ask-depth "
+                                    "bug is back")
+        assert s.est_win_prob - s.bid_price >= config.LONGSHOT_MIN_EDGE
+    finally:
+        L.fetch_short_term_markets = orig_fetch
+        L.limit_bid_price = orig_bid
+        L.fillable_depth = orig_depth
+        try:
+            os.remove(_p)
+        except OSError:
+            pass
+    print("PASS test_fade_sizing_not_zero_at_sub_ask_bid")
 
 
 def test_stable_unit_reproducible():
