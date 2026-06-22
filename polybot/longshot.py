@@ -59,6 +59,17 @@ LONGSHOT_TIERS = {
     "will she say":     "exploratory",
     "will trump say":   "exploratory",
     " say ":            "exploratory",   # broad novelty catch; calib subtype gates it
+    # Soccer player props ("<Name>: N+ goals/assists/shots"): the discovered edge
+    # ('other | pay NO 0.55-0.75', n=203, 79.3%). Archive price test confirms:
+    # NO wins 93.5% @ avg NO 0.617 -> +0.505 EV in the 0.55-0.75 band, but is
+    # CATASTROPHIC (-0.89 EV) below 0.45 — so the calib row + band gate it tightly.
+    # Exploratory (small stake) until it builds its own live settled sample.
+    "+ goals":          "exploratory",
+    "+ assists":        "exploratory",
+    "+ shots":          "exploratory",
+    "+ saves":          "exploratory",
+    "+ tackles":        "exploratory",
+    "+ passes":         "exploratory",
 }
 LONGSHOT_PATTERNS = list(LONGSHOT_TIERS.keys())
 

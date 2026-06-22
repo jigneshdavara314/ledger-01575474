@@ -52,6 +52,21 @@ CALIB = {
     "novelty_says": [
         (0.60, 0.549, 9531),  # NO wins ~55% but trades cheap enough to profit
     ],
+    # SOCCER PLAYER PROPS ("<Name>: N+ goals/assists/shots"). The discovered edge
+    # ('other | pay NO 0.55-0.75', live scan n=203, 79.3%). Archive price test
+    # (real fill prices) confirms it is BAND-SPECIFIC:
+    #   NO 0.55-0.75  (YES 0.25-0.45): NO won 93.5% @ avg NO 0.617 -> +0.505 EV  ** REAL **
+    #   NO 0.45-0.55  (YES 0.45-0.55): too few to call
+    #   NO < 0.45     (YES > 0.55):    NO won  4.3% -> -0.892 EV  ** CATASTROPHIC **
+    # So we ONLY claim the edge for YES in 0.25-0.45. The first matching row wins,
+    # so the <=0.25 row defers to market (no data that deep), the <=0.45 row carries
+    # the measured edge, and ANYTHING above 0.45 has NO row -> falls back to market
+    # (no edge claimed), which correctly vetoes the catastrophic high-NO-price band.
+    "player_prop": [
+        (0.25, None,  0),    # deeper than measured: defer to market (no claim)
+        (0.45, 0.935, 31),   # the measured edge band (NO 0.55-0.75)
+        # (no row above 0.45 -> market fallback -> no edge -> veto)
+    ],
     # Baseball Home-Run props: REMOVED. The edge-hunt rates (~0.93-0.96) had no
     # stored, reproducible artifact and an audit (2026-06) flagged them as
     # unsupported. With no CALIB row, measured_no_win() falls back to the market
@@ -81,6 +96,13 @@ def _subtype_for(question: str) -> str:
         return "draw"
     if q.startswith("will ") and (" say" in q or " said" in q or " tweet" in q):
         return "novelty_says"
+    # soccer player props: "<Name>: N+ goals/assists/shots/..." (archive-confirmed
+    # band-specific fade). US-sport props (home runs/strikeouts) have no calib row
+    # yet, so only the "N+ <stat>" soccer pattern maps here.
+    import re as _re
+    if _re.search(r":\s*\d+\+\s*(goal|assist|shot|save|tackle|pass|block|"
+                  r"clearance|interception|point|rebound|three)", q):
+        return "player_prop"
     return "other"
 
 
@@ -107,6 +129,9 @@ def measured_no_win(question: str, yes_price: float, implied_no: float) -> dict:
         if yes_price <= upper:
             measured, n = rate, count
             break
+    # measured is None either when no bucket matched (price above all uppers) OR
+    # when the matched bucket explicitly carries rate=None ("defer to market, no
+    # edge claimed here"). Both mean: fall back to the market price, no edge.
     if measured is None:
         return {"est": implied_no, "n": 0, "source": "market"}
 

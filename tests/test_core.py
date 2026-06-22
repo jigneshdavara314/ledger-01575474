@@ -189,7 +189,41 @@ def test_longshot_tiers():
     assert _longshot_tier("Spread: Brazil (-1.5)") == "exploratory"
     assert _longshot_tier("Map Handicap: VIT (-1.5)") == "exploratory"
     assert _longshot_tier("Will Brazil win?") is None
+    # soccer player props (discovered edge, now a named bettable family)
+    assert _longshot_tier("Kylian Mbappe: 2+ goals") == "exploratory"
+    assert _longshot_tier("Bradley Barcola: 3+ shots") == "exploratory"
     print("PASS test_longshot_tiers")
+
+
+def test_player_prop_classification_and_band_gate():
+    """The discovered 'other | pay NO 0.55-0.75' edge is soccer player props.
+    They must (1) classify as player_prop (out of 'other', so promotable +
+    keyword-bridged) and (2) the calibration must claim the fade edge ONLY in the
+    archive-validated NO 0.55-0.75 band and VETO the catastrophic high-NO band
+    (NO<0.45 won just 4.3% -> -0.89 EV)."""
+    from polybot.taxonomy import family_of, FAMILY_KEYWORDS
+    from polybot.calib_table import measured_no_win
+
+    # (1) classification — soccer props leave 'other'; team totals/halftime do not.
+    assert family_of("Kylian Mbappe: 2+ goals") == "player_prop"
+    assert family_of("Marcus Thuram: 1+ assists") == "player_prop"
+    assert family_of("Bradley Barcola: 3+ shots") == "player_prop"
+    assert family_of("France leading at halftime?") != "player_prop"
+    assert family_of("Belgium vs Egypt: O/U 2.5") == "over_under"
+    # keyword bridge exists so a promoted player_prop cell can match live markets
+    assert any("+ goals" in k for k in FAMILY_KEYWORDS["player_prop"])
+
+    # (2) band gating. YES 0.30 -> NO 0.70 is IN the measured band -> claims edge.
+    w_good = measured_no_win("Mbappe: 2+ goals", 0.30, 0.70)
+    assert w_good["est"] > 0.70, w_good            # edge claimed (NO undervalued)
+    assert w_good["source"] in ("measured", "blended")
+    # YES 0.70 -> NO 0.30 is the CATASTROPHIC band -> NO edge (defers to market).
+    w_bad = measured_no_win("Mbappe: 2+ goals", 0.70, 0.30)
+    assert w_bad["source"] == "market" and abs(w_bad["est"] - 0.30) < 1e-9, w_bad
+    # YES 0.50 -> NO 0.50 (between bands) -> also no edge claimed.
+    w_mid = measured_no_win("Mbappe: 2+ goals", 0.50, 0.50)
+    assert w_mid["source"] == "market", w_mid
+    print("PASS test_player_prop_classification_and_band_gate")
 
 
 # ---------------------------------------------------------------------------

@@ -30,8 +30,16 @@ def family_of(question: str) -> str:
         return "spread_handicap"
     # Player / esports props BEFORE generic over_under so "Home Runs O/U" is a
     # player_prop (specific), not lumped with team totals.
+    #   - US-sport props: "home runs", "strikeouts", "passing yards", ...
+    #   - Soccer player props: "<Name>: N+ goals|assists|shots|saves|tackles|
+    #     passes" (and "goals + assists"). These were landing in 'other' — the
+    #     archive shows fading them (buy NO) at NO 0.55-0.75 wins ~93% (the
+    #     discovered 'other | pay NO 0.55-0.75' edge is really player props).
     if any(k in ql for k in ("home runs", "strikeouts", "passing yards",
                              "to record", "player")):
+        return "player_prop"
+    if re.search(r":\s*\d+\+\s*(goal|assist|shot|save|tackle|pass|block|"
+                 r"clearance|interception|point|rebound|three)", ql):
         return "player_prop"
     if any(k in ql for k in ("map ", "rounds", "first blood", "kills",
                              " cs2", "valorant")):
@@ -86,7 +94,10 @@ FAMILY_KEYWORDS = {
     "outright_winner": ["winner", "champion"],
     "draw": ["draw"],
     "tweet_range": ["posts from", "posts between", "tweets", "mentions"],
-    "player_prop": ["home runs", "strikeouts", "passing yards", "to record", "player"],
+    "player_prop": ["home runs", "strikeouts", "passing yards", "to record", "player",
+                    "+ goals", "+ assists", "+ shots", "+ saves", "+ tackles",
+                    "+ passes", "+ blocks", "+ goals + assists", "+ points",
+                    "+ rebounds", "+ threes"],
     "esports_prop": ["map ", "rounds", "first blood", "kills", " cs2", "valorant"],
     # Newly carved out of 'other' — bettable structured families:
     "to_qualify": ["to qualify", "qualify to", "qualify for"],
