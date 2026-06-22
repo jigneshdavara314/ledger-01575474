@@ -1,34 +1,34 @@
 {
   "candidates": [
     {
-      "family": "performance_rankings",
-      "keyword": "will the highest",
-      "occurrences": 86
-    },
-    {
-      "family": "performance_rankings",
-      "keyword": "will the lowest",
-      "occurrences": 57
-    },
-    {
-      "family": "player_performance",
-      "keyword": "nicol\u00e1s de la cruz",
+      "family": "extreme_values",
+      "keyword": "highest",
       "occurrences": 8
     },
     {
-      "family": "player_performance",
+      "family": "extreme_values",
+      "keyword": "lowest",
+      "occurrences": 8
+    },
+    {
+      "family": "sports_performers",
       "keyword": "zizo",
-      "occurrences": 14
+      "occurrences": 18
     },
     {
-      "family": "player_performance",
-      "keyword": "juan manuel sanabria",
-      "occurrences": 14
-    },
-    {
-      "family": "player_performance",
+      "family": "sports_performers",
       "keyword": "trezeguet",
-      "occurrences": 9
+      "occurrences": 18
+    },
+    {
+      "family": "public_figure_activity",
+      "keyword": "elon_post",
+      "occurrences": 8
+    },
+    {
+      "family": "event_occurrence",
+      "keyword": "will_there_be",
+      "occurrences": 8
     }
   ]
 }
