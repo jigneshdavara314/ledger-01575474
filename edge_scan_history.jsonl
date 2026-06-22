@@ -63,3 +63,4 @@
 {"ts": "2026-06-22T15:23:56Z", "days": 45, "n_obs": 2514, "passed": [{"cell": "other | pay NO 0.55-0.75", "n": 203, "win_rate": 0.793, "ev": 0.248, "wilson_lower": 0.694}]}
 {"ts": "2026-06-22T19:26:01Z", "days": 45, "n_obs": 2529, "passed": [{"cell": "other | pay NO 0.55-0.75", "n": 209, "win_rate": 0.804, "ev": 0.271, "wilson_lower": 0.707}]}
 {"ts": "2026-06-22T22:03:08Z", "days": 45, "n_obs": 2524, "passed": [{"cell": "other | pay NO 0.55-0.75", "n": 207, "win_rate": 0.816, "ev": 0.294, "wilson_lower": 0.721}]}
+{"ts": "2026-06-22T23:25:48Z", "days": 45, "n_obs": 2528, "passed": [{"cell": "other | pay NO 0.55-0.75", "n": 208, "win_rate": 0.817, "ev": 0.294, "wilson_lower": 0.722}]}

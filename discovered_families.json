@@ -1,19 +1,14 @@
 {
   "candidates": [
     {
-      "family": "extrema_high",
+      "family": "rank_extremes",
       "keyword": "will the highest",
-      "occurrences": 89
+      "occurrences": 146
     },
     {
-      "family": "extrema_low",
+      "family": "rank_extremes",
       "keyword": "will the lowest",
-      "occurrences": 11
-    },
-    {
-      "family": "wimbledon_atp_qual",
-      "keyword": "wimbledon, qualification atp",
-      "occurrences": 16
+      "occurrences": 14
     }
   ]
 }
