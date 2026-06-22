@@ -1,19 +1,19 @@
 {
   "candidates": [
     {
+      "family": "extrema_high",
+      "keyword": "will the highest",
+      "occurrences": 159
+    },
+    {
+      "family": "extrema_low",
+      "keyword": "will the lowest",
+      "occurrences": 33
+    },
+    {
       "family": "tennis_qualification",
-      "keyword": "wimbledon atp",
-      "occurrences": 8
-    },
-    {
-      "family": "extremum_outcome",
-      "keyword": "highest",
-      "occurrences": 8
-    },
-    {
-      "family": "political_departure",
-      "keyword": "starmer out",
-      "occurrences": 8
+      "keyword": "wimbledon, qualification atp",
+      "occurrences": 25
     }
   ]
 }
