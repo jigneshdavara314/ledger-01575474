@@ -39,12 +39,19 @@ CALIB = {
     # trades actually executed, not market averages — 2026-06-23) refuted it:
     # NO 0.55-0.75 EV -0.004, NO 0.45-0.55 EV -0.037. The earlier "edge" was
     # survivorship bias in averaging. No row -> falls back to market (no edge).
-    # DRAW markets ("will it be a draw?"). ENTRY-PRICE test (real executed trade
-    # prices, n=9227): NO won 70.9% @ avg NO 0.699 -> +0.005 EV (THIN but positive,
-    # survives where spread/over_under did not). Kept conservative & exploratory.
-    # (The earlier +0.041 from market-AVG prices was inflated; entry price is +0.005.)
+    # DRAW markets ("will it be a draw?"). ENTRY-PRICE test (win rate at the price
+    # trades ACTUALLY executed — the honest measure, 2026-06-23) confirms draw is a
+    # GENUINE band-graded fade (the one family besides exact_score/novelty that
+    # survives at entry prices — unlike over_under/spread/player_prop which were
+    # survivorship-biased and removed). Per real-entry band:
+    #   NO 0.65-0.75 (YES 0.25-0.35): 75.8% @ 0.714, n=4520 -> +0.052 EV
+    #   NO 0.55-0.65 (YES 0.35-0.45): 70.7% @ 0.610, n= 869 -> +0.148 EV
+    #   NO 0.45-0.55 (YES 0.45-0.55): 60.3% @ 0.499, n= 378 -> +0.199 EV
+    # (Edge is BIGGER when NO is cheaper — correct.) Disjoint ascending YES uppers:
     "draw": [
-        (0.45, 0.709, 9227),   # YES(draw)<=0.45 (NO>=0.55): entry-price NO-win 70.9%
+        (0.35, 0.758, 4520),   # YES 0.25-0.35 (NO 0.65-0.75)
+        (0.45, 0.707, 869),    # YES 0.35-0.45 (NO 0.55-0.65)
+        (0.55, 0.603, 378),    # YES 0.45-0.55 (NO 0.45-0.55)
     ],
     # NOVELTY "will X say/do Y" markets. Archive test (n=9531, real prices): NO
     # won 54.9% at avg NO price 0.52 -> +0.048 after-fee EV. People overpay the
