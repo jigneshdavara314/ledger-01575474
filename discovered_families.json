@@ -1,39 +1,34 @@
 {
   "candidates": [
     {
-      "family": "comparative_player_stat",
+      "family": "performance_rankings",
       "keyword": "will the highest",
-      "occurrences": 147
+      "occurrences": 86
     },
     {
-      "family": "comparative_player_stat",
+      "family": "performance_rankings",
       "keyword": "will the lowest",
-      "occurrences": 11
+      "occurrences": 57
     },
     {
       "family": "player_performance",
-      "keyword": "charles de ketelaere",
-      "occurrences": 18
+      "keyword": "nicol\u00e1s de la cruz",
+      "occurrences": 8
     },
     {
       "family": "player_performance",
-      "keyword": "matias fernandez-pardo",
-      "occurrences": 17
-    },
-    {
-      "family": "player_performance",
-      "keyword": "kevin de bruyne",
+      "keyword": "zizo",
       "occurrences": 14
     },
     {
       "family": "player_performance",
-      "keyword": "maxim de cuyper",
-      "occurrences": 13
+      "keyword": "juan manuel sanabria",
+      "occurrences": 14
     },
     {
-      "family": "game_format",
-      "keyword": "will the game go to extra innings",
-      "occurrences": 8
+      "family": "player_performance",
+      "keyword": "trezeguet",
+      "occurrences": 9
     }
   ]
 }
