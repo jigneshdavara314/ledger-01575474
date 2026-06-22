@@ -35,15 +35,16 @@ CALIB = {
         (0.45, 0.931, 29),  # the confirmed bucket (measured 0.931, CI[0.78,0.981])
         (0.60, 0.88, 8),    # higher-priced "longshots" — less edge, smaller n
     ],
-    "spread/handicap": [
-        (0.35, 0.84, 9),    # exploratory: weak/noisy overpricing
-        (0.55, 0.74, 15),
-    ],
-    # DRAW markets ("will it be a draw?"). Price-aware test on the 1.1B-trade
-    # archive (n=8190, real fill prices): NO won 73.0% while trading at avg NO
-    # price 0.69 -> +0.041 after-fee EV. A genuine fade (people overpay "draw").
+    # SPREAD/HANDICAP: REMOVED. A rigorous ENTRY-PRICE test (win rate at the price
+    # trades actually executed, not market averages — 2026-06-23) refuted it:
+    # NO 0.55-0.75 EV -0.004, NO 0.45-0.55 EV -0.037. The earlier "edge" was
+    # survivorship bias in averaging. No row -> falls back to market (no edge).
+    # DRAW markets ("will it be a draw?"). ENTRY-PRICE test (real executed trade
+    # prices, n=9227): NO won 70.9% @ avg NO 0.699 -> +0.005 EV (THIN but positive,
+    # survives where spread/over_under did not). Kept conservative & exploratory.
+    # (The earlier +0.041 from market-AVG prices was inflated; entry price is +0.005.)
     "draw": [
-        (0.45, 0.73, 8190),   # YES (draw) priced up to ~0.45 -> NO wins ~73%
+        (0.45, 0.709, 9227),   # YES(draw)<=0.45 (NO>=0.55): entry-price NO-win 70.9%
     ],
     # NOVELTY "will X say/do Y" markets. Archive test (n=9531, real prices): NO
     # won 54.9% at avg NO price 0.52 -> +0.048 after-fee EV. People overpay the
@@ -52,20 +53,18 @@ CALIB = {
     "novelty_says": [
         (0.60, 0.549, 9531),  # NO wins ~55% but trades cheap enough to profit
     ],
-    # SOCCER PLAYER PROPS ("<Name>: N+ goals/assists/shots"). The discovered edge
-    # ('other | pay NO 0.55-0.75', live scan n=203, 79.3%). Archive price test
-    # (real fill prices) confirms it is BAND-SPECIFIC:
-    #   NO 0.55-0.75  (YES 0.25-0.45): NO won 93.5% @ avg NO 0.617 -> +0.505 EV  ** REAL **
-    #   NO 0.45-0.55  (YES 0.45-0.55): too few to call
-    #   NO < 0.45     (YES > 0.55):    NO won  4.3% -> -0.892 EV  ** CATASTROPHIC **
-    # So we ONLY claim the edge for YES in 0.25-0.45. The first matching row wins,
-    # so the <=0.25 row defers to market (no data that deep), the <=0.45 row carries
-    # the measured edge, and ANYTHING above 0.45 has NO row -> falls back to market
-    # (no edge claimed), which correctly vetoes the catastrophic high-NO-price band.
+    # SOCCER PLAYER PROPS ("<Name>: N+ goals/assists/shots"). CORRECTED 2026-06-23.
+    # The earlier row claimed +0.505 EV for NO 0.55-0.75 from market-AVERAGE prices.
+    # A rigorous ENTRY-PRICE test (win rate at the price trades ACTUALLY executed)
+    # REFUTED that band: NO 0.55-0.75 -> 61.2% @ 0.634 = -0.045 EV (survivorship
+    # bias in the averaging). The edge that survives at entry prices is the
+    # SHALLOWER band: NO 0.45-0.55 -> 53.8% @ 0.500 = +0.066 EV (n=104). So we
+    # claim ONLY that band and DEFER everywhere else.
+    #   - YES <=0.45 (NO 0.55-0.95): rate=None -> market (no claim; -EV at entry)
+    #   - YES 0.45-0.55 (NO 0.45-0.55): the entry-price-confirmed edge
     "player_prop": [
-        (0.25, None,  0),    # deeper than measured: defer to market (no claim)
-        (0.45, 0.935, 31),   # the measured edge band (NO 0.55-0.75)
-        # (no row above 0.45 -> market fallback -> no edge -> veto)
+        (0.45, None,  0),     # NO>=0.55: refuted at entry price -> defer to market
+        (0.55, 0.538, 104),   # NO 0.45-0.55: entry-price-confirmed +0.066 EV
     ],
     # Baseball Home-Run props: REMOVED. The edge-hunt rates (~0.93-0.96) had no
     # stored, reproducible artifact and an audit (2026-06) flagged them as
