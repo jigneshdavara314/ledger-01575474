@@ -271,8 +271,11 @@ def _build_yes_signal(m, py, tier, stake_usd, per_bet_cap):
     desired_usd = round(stake_usd * TIER_STAKE_MULT[tier] * si_mult, 2)
     desired_usd = round(min(desired_usd, per_bet_cap), 2)
 
-    # depth on the YES token at/below our bid (correct side of the book)
-    depth = fillable_depth(m.token_id_yes, max_price=bid_price)
+    # depth on the YES token up to the ASK — the price we'd actually fill at.
+    # (Sizing at the sub-ask bid returns $0 because no size rests below the ask;
+    # that was the bug that zeroed every stake — see the NO path for the full
+    # explanation. Whether the resting bid fills is modelled by fill_prob.)
+    depth = fillable_depth(m.token_id_yes, max_price=ask_price)
     fillable_usd = depth["usd"] if depth else 0.0
     actual_stake = round(min(desired_usd, fillable_usd), 2)
     if actual_stake < config.LONGSHOT_MIN_STAKE:
