@@ -1,33 +1,18 @@
 {
   "candidates": [
     {
-      "family": "extreme_values",
+      "family": "tennis_qualification",
+      "keyword": "wimbledon atp",
+      "occurrences": 8
+    },
+    {
+      "family": "extremum_outcome",
       "keyword": "highest",
       "occurrences": 8
     },
     {
-      "family": "extreme_values",
-      "keyword": "lowest",
-      "occurrences": 8
-    },
-    {
-      "family": "sports_performers",
-      "keyword": "zizo",
-      "occurrences": 18
-    },
-    {
-      "family": "sports_performers",
-      "keyword": "trezeguet",
-      "occurrences": 18
-    },
-    {
-      "family": "public_figure_activity",
-      "keyword": "elon_post",
-      "occurrences": 8
-    },
-    {
-      "family": "event_occurrence",
-      "keyword": "will_there_be",
+      "family": "political_departure",
+      "keyword": "starmer out",
       "occurrences": 8
     }
   ]
