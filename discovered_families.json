@@ -3,17 +3,17 @@
     {
       "family": "extrema_high",
       "keyword": "will the highest",
-      "occurrences": 159
+      "occurrences": 89
     },
     {
       "family": "extrema_low",
       "keyword": "will the lowest",
-      "occurrences": 33
+      "occurrences": 11
     },
     {
-      "family": "tennis_qualification",
+      "family": "wimbledon_atp_qual",
       "keyword": "wimbledon, qualification atp",
-      "occurrences": 25
+      "occurrences": 16
     }
   ]
 }
