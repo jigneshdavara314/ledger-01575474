@@ -487,10 +487,69 @@ def test_promoted_edge_bridge():
             "measured_wilson_lower": 0.85, "measured_n": 90}},
             "disabled": [], "warnings": {}})
         assert longshot._promoted_win("match o/u 2.5", 0.80) is None
+        # YES-direction promoted edge must be readable via the YES bridge (and NOT
+        # leak into the NO bridge) — this is what promoted_only bets.
+        py = longshot._promoted_win_yes("match o/u 2.5", 0.80)
+        assert py is not None and abs(py["wl"] - 0.85) < 1e-9, py
+        assert longshot._promoted_win("match o/u 2.5", 0.80) is None  # not NO
     finally:
         si.STATE_PATH = orig_path
         os.remove(tmp)
     print("PASS test_promoted_edge_bridge")
+
+
+def test_promoted_only_keeps_yes_direction_edge():
+    """REGRESSION (lever #1): promoted_only filters on win_source=='promoted'. A
+    YES-direction promoted edge produces a BUY-YES signal tagged win_source=
+    'promoted', so promoted_only must KEEP it (it was previously dropped only
+    because the depth bug zeroed every signal, not a direction bug)."""
+    import polybot.longshot as L
+    from polybot import self_improve as si, config
+    from polybot.strategies import get
+    from polybot.market_data import Market
+    import tempfile, os
+
+    orig_path = si.STATE_PATH
+    fd, tmp = tempfile.mkstemp(suffix=".json"); os.close(fd)
+    si.STATE_PATH = tmp
+    # one liquid over_under market with YES priced inside a promoted YES band
+    mkt = Market(condition_id="0xOU", question="Belgium vs Egypt: O/U 2.5",
+                 token_id_yes="y", token_id_no="n", price_yes=0.80, liquidity=5e4,
+                 volume=0, volume_24h=0, spread=0.01, end_date="",
+                 hours_to_resolution=10.0, category="soccer", event_title="")
+    orig_fetch = L.fetch_short_term_markets
+    orig_bid = L.limit_bid_price
+    orig_depth = L.fillable_depth
+    try:
+        si.save_state({"tiers": {"over_under | pay YES 0.75-0.95": {
+            "tier": "trial", "direction": "YES", "band_lo": 0.75, "band_hi": 0.95,
+            "measured_wilson_lower": 0.92, "measured_n": 120}},
+            "disabled": [], "warnings": {}})
+        L.fetch_short_term_markets = lambda *a, **k: [mkt]
+        L.limit_bid_price = lambda tok, aggression=0.5, hours_to_res=None: {
+            "price": 0.802, "mid": 0.80, "ask": 0.805, "bid": 0.795,
+            "spread": 0.01, "fill_prob_estimate": 0.7}
+        L.fillable_depth = lambda tok, max_price: (
+            {"usd": 9000.0, "shares": 11000.0, "levels": 1, "best_ask": 0.805}
+            if max_price >= 0.805 else
+            {"usd": 0.0, "shares": 0.0, "levels": 0, "best_ask": 0.805})
+
+        cfg = get("promoted_only")
+        fades = L.find_longshot_fades(min_edge=cfg["min_edge"],
+                                      band_lo=cfg["band_lo"], band_hi=cfg["band_hi"])
+        if cfg.get("tiers"):
+            fades = [f for f in fades if f.tier in cfg["tiers"]]
+        if cfg.get("promoted_only"):
+            fades = [f for f in fades if f.win_source == "promoted"]
+        assert len(fades) == 1, f"promoted_only should keep the YES edge, got {len(fades)}"
+        assert fades[0].side == "YES" and fades[0].win_source == "promoted"
+    finally:
+        si.STATE_PATH = orig_path
+        L.fetch_short_term_markets = orig_fetch
+        L.limit_bid_price = orig_bid
+        L.fillable_depth = orig_depth
+        os.remove(tmp)
+    print("PASS test_promoted_only_keeps_yes_direction_edge")
 
 
 def test_crypto_quarantine_and_subfamilies():
