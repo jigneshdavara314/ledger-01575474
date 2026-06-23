@@ -600,6 +600,31 @@ def test_promoted_only_keeps_yes_direction_edge():
     print("PASS test_promoted_only_keeps_yes_direction_edge")
 
 
+def test_strategy_family_isolation():
+    """ISOLATION (user requirement): a new/experimental edge must NEVER leak into
+    the proven strategies' books. The proven strategies whitelist PROVEN_FAMILIES;
+    experimental edges live in EXPERIMENTAL_FAMILIES (bet only by experimental_fade).
+    The two sets must be DISJOINT, and the proven strategies must exclude every
+    experimental family."""
+    from polybot import strategies as S
+    proven = set(S.PROVEN_FAMILIES)
+    experimental = set(S.EXPERIMENTAL_FAMILIES)
+    # the whole point: no family is both proven AND experimental
+    assert proven.isdisjoint(experimental), (proven & experimental)
+
+    # conservative/aggressive must be locked to proven families and reject every
+    # experimental one.
+    for name in ("conservative_fade", "aggressive_fade"):
+        allow = set(S.get(name).get("families_allow") or ())
+        assert allow == proven, (name, allow)
+        assert allow.isdisjoint(experimental), (name, allow & experimental)
+    # experimental_fade bets ONLY experimental families.
+    assert set(S.get("experimental_fade")["families_allow"]) == experimental
+    # confirmed_only is the strictest (exact_score only).
+    assert set(S.get("confirmed_only")["families_allow"]) == {"exact_score"}
+    print("PASS test_strategy_family_isolation")
+
+
 def test_crypto_quarantine_and_subfamilies():
     """Crypto up/down must be quarantined (never a bettable family); player/esports
     props must carve out of 'other'; crypto family must NOT be in the scanner."""

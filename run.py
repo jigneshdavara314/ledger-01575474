@@ -286,6 +286,17 @@ def _run_strategy(name, cfg, trade=True):
         fades = [f for f in fades if f.tier in allowed]
     if cfg.get("promoted_only"):
         fades = [f for f in fades if f.win_source == "promoted"]
+    # FAMILY ISOLATION — so a new/experimental edge can NEVER affect a strategy it
+    # isn't meant for. families_allow = whitelist (bet only these); families_deny =
+    # blacklist (never bet these). This is what keeps the proven strategies locked
+    # to PROVEN_FAMILIES while new edges are quarantined to experimental_fade.
+    from polybot.taxonomy import family_of
+    fam_allow = cfg.get("families_allow")
+    fam_deny = cfg.get("families_deny")
+    if fam_allow:
+        fades = [f for f in fades if family_of(f.market.question) in fam_allow]
+    if fam_deny:
+        fades = [f for f in fades if family_of(f.market.question) not in fam_deny]
 
     placed = 0; staked = 0.0
     for f in fades:
