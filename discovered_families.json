@@ -1,18 +1,13 @@
 {
   "candidates": [
     {
-      "family": "extrema_high",
-      "keyword": "will the highest",
-      "occurrences": 121
+      "family": "value_extremes",
+      "keyword": "highest",
+      "occurrences": 8
     },
     {
-      "family": "extrema_low",
-      "keyword": "will the lowest",
-      "occurrences": 34
-    },
-    {
-      "family": "extra_innings",
-      "keyword": "will the game go to extra innings",
+      "family": "value_extremes",
+      "keyword": "lowest",
       "occurrences": 8
     }
   ]
