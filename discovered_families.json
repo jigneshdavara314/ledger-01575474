@@ -1,14 +1,19 @@
 {
   "candidates": [
     {
-      "family": "rank_extremes",
-      "keyword": "will the highest",
-      "occurrences": 146
+      "family": "max_outcome",
+      "keyword": "highest",
+      "occurrences": 8
     },
     {
-      "family": "rank_extremes",
-      "keyword": "will the lowest",
-      "occurrences": 14
+      "family": "min_outcome",
+      "keyword": "lowest",
+      "occurrences": 8
+    },
+    {
+      "family": "period_event",
+      "keyword": "first_inning_run",
+      "occurrences": 8
     }
   ]
 }
