@@ -1,18 +1,18 @@
 {
   "candidates": [
     {
-      "family": "max_outcome",
-      "keyword": "highest",
-      "occurrences": 8
+      "family": "extrema_high",
+      "keyword": "will the highest",
+      "occurrences": 121
     },
     {
-      "family": "min_outcome",
-      "keyword": "lowest",
-      "occurrences": 8
+      "family": "extrema_low",
+      "keyword": "will the lowest",
+      "occurrences": 34
     },
     {
-      "family": "period_event",
-      "keyword": "first_inning_run",
+      "family": "extra_innings",
+      "keyword": "will the game go to extra innings",
       "occurrences": 8
     }
   ]
