@@ -71,6 +71,13 @@ def family_of(question: str) -> str:
         return "method_of_victory"
     if "winning margin" in ql or "margin of victory" in ql:
         return "winning_margin"
+    # WEATHER / temperature markets ("Will the highest/lowest temperature ..."):
+    # resolve daily, and the favorite-longshot fade is STRONG + entry-price/OOS
+    # confirmed (n~76k, both halves +EV across NO 0.55-0.85). A genuine recurring
+    # edge — carved out of 'other' so it's bettable.
+    if any(k in ql for k in ("highest temperature", "lowest temperature",
+                             "high temperature", "temperature in")):
+        return "weather_temp"
     if "winner" in ql or "champion" in ql:
         return "outright_winner"
     if "draw" in ql:
@@ -93,6 +100,8 @@ FAMILY_KEYWORDS = {
     "to_advance": ["to advance", "advance"],
     "outright_winner": ["winner", "champion"],
     "draw": ["draw"],
+    "weather_temp": ["highest temperature", "lowest temperature",
+                     "high temperature", "temperature in"],
     "tweet_range": ["posts from", "posts between", "tweets", "mentions"],
     "player_prop": ["home runs", "strikeouts", "passing yards", "to record", "player",
                     "+ goals", "+ assists", "+ shots", "+ saves", "+ tackles",

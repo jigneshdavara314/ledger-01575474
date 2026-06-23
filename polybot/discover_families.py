@@ -118,9 +118,23 @@ def _ai_refine(candidates: list) -> list:
     return candidates
 
 
+def _normalize_keyword(kw: str) -> str:
+    """Discovered keywords must MATCH real question text (substring, lowercased).
+    The AI refine step often returns snake_case ('will_the_highest'), which can
+    NEVER be a substring of 'Will the highest temperature...' — silently breaking
+    the discover->scan->bet loop. Normalize: underscores->spaces, collapse spaces,
+    lowercase. This is what makes auto-discovered families actually matchable live."""
+    import re as _re
+    return _re.sub(r"\s+", " ", (kw or "").replace("_", " ")).strip().lower()
+
+
 def run(pages: int = 20):
     cands = discover(pages=pages)
     cands = _ai_refine(cands)
+    # normalize every keyword so it can match live question text (fixes snake_case)
+    for c in cands:
+        c["keyword"] = _normalize_keyword(c.get("keyword", ""))
+    cands = [c for c in cands if c["keyword"]]   # drop any that normalized to empty
     with open(QUEUE_PATH, "w", encoding="utf-8") as f:
         json.dump({"candidates": cands}, f, indent=2)
     print(f"[discover] {len(cands)} candidate families queued "

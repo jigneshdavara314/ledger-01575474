@@ -60,6 +60,18 @@ CALIB = {
     "novelty_says": [
         (0.60, 0.549, 9531),  # NO wins ~55% but trades cheap enough to profit
     ],
+    # WEATHER / temperature ("Will the highest/lowest temperature ..."). The
+    # recurring edge the hunt flagged 46x, finally validated at ENTRY prices with
+    # both OOS halves +EV and HUGE samples (resolves daily -> high-frequency):
+    #   NO 0.75-0.85 (YES 0.15-0.25): ~86% n=31798 -> +0.05 EV
+    #   NO 0.65-0.75 (YES 0.25-0.35): ~79% n=25606 -> +0.10 EV
+    #   NO 0.55-0.65 (YES 0.35-0.45): ~73% n=18964 -> +0.20 EV
+    # Edge grows as NO gets cheaper (correct). Disjoint ascending YES uppers:
+    "weather_temp": [
+        (0.25, 0.86, 31798),   # YES 0.15-0.25 (NO 0.75-0.85)
+        (0.35, 0.79, 25606),   # YES 0.25-0.35 (NO 0.65-0.75)
+        (0.45, 0.73, 18964),   # YES 0.35-0.45 (NO 0.55-0.65)
+    ],
     # TWEET-COUNT RANGE markets ("Posts from X June A-B", "X posts 100-200 times?").
     # NEW edge found 2026-06-23 by the rigorous ENTRY-PRICE + OOS sweep (the one
     # genuinely new family that passed BOTH out-of-sample halves +EV, where

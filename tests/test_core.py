@@ -617,17 +617,22 @@ def test_discovered_family_closes_self_improve_loop():
     fd, tmp = tempfile.mkstemp(suffix=".json"); os.close(fd)
     si.STATE_PATH = tmp
     try:
-        # a discovered family with its keyword (mimics discover_families output)
+        # a NOVEL discovered family + keyword that is NOT in the static taxonomy
+        # (so it can only be matched via the discovered-keyword fallback).
+        novel_kw = "total dragons slain in series"
         with open(disc_path, "w") as fh:
-            json.dump({"candidates": [{"family": "extremes_highest",
-                                       "keyword": "will the highest", "occurrences": 11}]}, fh)
+            json.dump({"candidates": [{"family": "dragon_total",
+                                       "keyword": novel_kw, "occurrences": 11}]}, fh)
+        from polybot.taxonomy import family_of
+        # precondition: the static classifier does NOT know this -> 'other'
+        assert family_of("Q: " + novel_kw + " over 5?") == "other"
         # self-improve promotes it (NO-direction measured band)
-        si.save_state({"tiers": {"extremes_highest | pay NO 0.55-0.75": {
+        si.save_state({"tiers": {"dragon_total | pay NO 0.55-0.75": {
             "tier": "trial", "direction": "NO", "band_lo": 0.55, "band_hi": 0.75,
             "measured_win": 0.84, "measured_wilson_lower": 0.78, "measured_n": 270}},
             "disabled": [], "warnings": {}})
-        q = "will the highest temperature in nyc be above 95f?"
-        # scannable via the discovered keyword (not in static FAMILY_KEYWORDS)
+        q = "will the " + novel_kw + " be over 5?"
+        # scannable via the DISCOVERED keyword (not in static FAMILY_KEYWORDS)
         assert L._longshot_tier(q) == "trial", "discovered family must be scannable"
         pw = L._promoted_win(q, 0.65)
         assert pw is not None and abs(pw["wl"] - 0.78) < 1e-9, pw  # bettable

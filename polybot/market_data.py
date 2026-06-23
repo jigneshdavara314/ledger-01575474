@@ -111,6 +111,8 @@ def _category_from_tags(tags: list) -> str:
         return "crypto"
     if "tweets-markets" in tag_set:
         return "tweets"
+    if any(s in tag_set for s in ["weather", "temperature", "climate"]):
+        return "weather"
     if any(s in tag_set for s in ["politics", "elections", "global-elections"]):
         return "politics"
     return "other"

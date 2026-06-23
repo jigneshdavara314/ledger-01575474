@@ -76,6 +76,11 @@ LONGSHOT_TIERS = {
     "by decision":      "exploratory",
     "by submission":    "exploratory",
     " by tko":          "exploratory",
+    # WEATHER/temperature: STRONG entry-price+OOS edge (n~76k, all bands +EV both
+    # halves), and resolves DAILY -> high-frequency recurring edge.
+    "highest temperature": "exploratory",
+    "lowest temperature":  "exploratory",
+    "temperature in":      "exploratory",
 }
 LONGSHOT_PATTERNS = list(LONGSHOT_TIERS.keys())
 
@@ -192,7 +197,11 @@ def _family_keywords(fam: str):
         with open(p) as fh:
             for c in (json.load(fh).get("candidates") or []):
                 if c.get("family") == fam and c.get("keyword"):
-                    kws.append(c["keyword"].lower())
+                    # normalize defensively: underscores->spaces so an un-normalized
+                    # snake_case keyword still matches real question text.
+                    kw = c["keyword"].replace("_", " ").strip().lower()
+                    if kw:
+                        kws.append(kw)
     except Exception:
         pass
     return kws
@@ -361,7 +370,7 @@ def find_longshot_fades(
     # esports leagues. More categories = more safe places to deploy the same
     # dollar (diversification), NOT bigger bets per market.
     cats = ["soccer", "nba", "mlb", "nfl", "nhl", "tennis", "ufc", "boxing",
-            "cricket", "golf", "f1", "esports", "tweets", "politics"]
+            "cricket", "golf", "f1", "esports", "tweets", "politics", "weather"]
     markets = fetch_short_term_markets(max_hours=max_hours, categories=cats,
                                        limit_per_event=40)
 
