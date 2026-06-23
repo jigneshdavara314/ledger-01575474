@@ -180,6 +180,33 @@ def test_calib_table():
     print("PASS test_calib_table")
 
 
+def test_entry_price_validated_edges_band_gating():
+    """The 2026-06-23 entry-price + OOS validated NEW edges must claim an edge ONLY
+    in their confirmed band and DEFER (market) outside it — incl. deeper bands that
+    FAILED OOS. Guards against re-introducing survivorship-biased / extrapolated rows."""
+    from polybot.calib_table import measured_no_win
+
+    # esports_prop (first-blood/map-win): robust ONLY at NO 0.55-0.65 (YES 0.35-0.45)
+    assert measured_no_win("First Blood: Team X", 0.40, 0.60)["source"] == "measured"
+    # deeper band failed OOS -> must defer
+    assert measured_no_win("First Blood: Team X", 0.25, 0.75)["source"] == "market"
+    # shallower (NO<0.55) -> no row -> market
+    assert measured_no_win("First Blood: Team X", 0.50, 0.50)["source"] == "market"
+
+    # tweet_range: claims NO 0.60-0.75; deeper than measured (NO>=0.75) defers
+    assert measured_no_win("Posts from Elon June 1-7?", 0.28, 0.72)["source"] == "measured"
+    assert measured_no_win("Posts from Elon June 1-7?", 0.20, 0.80)["source"] == "market"
+
+    # method_of_victory: only NO 0.75-0.85 (YES<=0.25) confirmed
+    assert measured_no_win("Method of victory: Jones by KO", 0.20, 0.80)["source"] == "measured"
+    assert measured_no_win("Method of victory: Jones by KO", 0.45, 0.55)["source"] == "market"
+
+    # esports MAP-HANDICAP must route to spread_handicap (refuted) -> market, NOT
+    # get the esports_prop rate (the classification-mismatch trap).
+    assert measured_no_win("Map 1 Rounds Handicap: VIT (-1.5)", 0.40, 0.60)["source"] == "market"
+    print("PASS test_entry_price_validated_edges_band_gating")
+
+
 # ---------------------------------------------------------------------------
 # Longshot classification + tier
 # ---------------------------------------------------------------------------

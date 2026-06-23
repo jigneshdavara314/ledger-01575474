@@ -70,9 +70,34 @@ CALIB = {
     # Many mutually-exclusive ranges, each overpriced -> fade (buy NO). Disjoint
     # ascending YES uppers; deeper-than-0.25 defers to market (no data that deep).
     "tweet_range": [
+        (0.25, None, 0),       # YES<=0.25 (NO>=0.75): not measured this deep -> defer
         (0.30, 0.752, 3161),   # YES 0.25-0.30 (NO 0.70-0.75)
         (0.35, 0.702, 2992),   # YES 0.30-0.35 (NO 0.65-0.70)
         (0.40, 0.684, 1901),   # YES 0.35-0.40 (NO 0.60-0.65) — robust OOS
+    ],
+    # ESPORTS PROPS (first-blood / kills / "win Map N" — what family_of routes to
+    # esports_prop; map/round HANDICAPS route to spread_handicap instead). CORRECTED
+    # 2026-06-23 after a handicap-vs-nonhandicap OOS split: my first rates were
+    # inflated by including handicaps and by non-OOS aggregation. Re-measured on
+    # NON-HANDICAP esports (what actually gets bet here), only ONE band survives the
+    # strict both-OOS-halves bar:
+    #   NO 0.55-0.65 (YES 0.35-0.45): ROBUST (h0 +0.237 n1102 / h1 +0.035 n1146)
+    #   NO 0.65-0.75 / 0.75-0.85: one OOS half NEGATIVE -> NOT robust -> defer.
+    # (esports HANDICAP NO 0.55-0.65 was also robust but tiny n=98/90; not wired
+    #  separately until it has more sample.)
+    "esports_prop": [
+        (0.35, None, 0),       # YES<=0.35 (NO>=0.65): failed OOS -> defer to market
+        (0.45, 0.65, 2248),    # YES 0.35-0.45 (NO 0.55-0.65) — the only OOS-robust band.
+        # Rate set CONSERVATIVELY to 0.65 (the non-handicap OOS EVs of +0.237/+0.035
+        # at avg NO~0.60 imply ~0.68; we round DOWN to avoid over-claiming, and the
+        # Wilson-LB shrink barely moves a rate this size at n=2248).
+        # (YES>0.45 i.e. NO<0.55: no row -> market; not measured/relevant)
+    ],
+    # METHOD OF VICTORY (UFC/boxing "by KO/decision/submission"). PARTIAL: only the
+    # NO 0.75-0.85 band passed OOS (both halves +EV, but small n=30/65); the other
+    # bands had insufficient sample, so they DEFER to market. Conservative single row.
+    "method_of_victory": [
+        (0.25, 0.929, 95),     # YES <=0.25 (NO 0.75-0.85): OOS-robust, small n
     ],
     # SOCCER PLAYER PROPS ("<Name>: N+ goals/assists/shots"). CORRECTED 2026-06-23.
     # The earlier row claimed +0.505 EV for NO 0.55-0.75 from market-AVERAGE prices.

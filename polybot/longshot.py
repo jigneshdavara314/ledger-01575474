@@ -59,17 +59,23 @@ LONGSHOT_TIERS = {
     "will she say":     "exploratory",
     "will trump say":   "exploratory",
     " say ":            "exploratory",   # broad novelty catch; calib subtype gates it
-    # Soccer player props ("<Name>: N+ goals/assists/shots"): the discovered edge
-    # ('other | pay NO 0.55-0.75', n=203, 79.3%). Archive price test confirms:
-    # NO wins 93.5% @ avg NO 0.617 -> +0.505 EV in the 0.55-0.75 band, but is
-    # CATASTROPHIC (-0.89 EV) below 0.45 — so the calib row + band gate it tightly.
-    # Exploratory (small stake) until it builds its own live settled sample.
+    # Soccer player props ("<Name>: N+ goals/assists/shots"). NOTE: a rigorous
+    # entry-price test REFUTED the deep band; the calib row now only claims a thin
+    # shallow band (NO 0.45-0.55) which Wilson-shrinks to near-veto. Scanned so it
+    # can build a live sample, but it rarely clears the gate (correct/honest).
     "+ goals":          "exploratory",
     "+ assists":        "exploratory",
     "+ shots":          "exploratory",
     "+ saves":          "exploratory",
     "+ tackles":        "exploratory",
     "+ passes":         "exploratory",
+    # Method-of-victory (UFC/boxing "by KO/decision/submission"): entry-price+OOS
+    # confirmed at NO 0.75-0.85 only (small n) — calib gates it to that band.
+    "method of victory": "exploratory",
+    " by ko":           "exploratory",
+    "by decision":      "exploratory",
+    "by submission":    "exploratory",
+    " by tko":          "exploratory",
 }
 LONGSHOT_PATTERNS = list(LONGSHOT_TIERS.keys())
 
