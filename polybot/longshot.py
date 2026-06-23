@@ -176,6 +176,28 @@ def _self_improve_mult(question: str) -> float:
 from .taxonomy import FAMILY_KEYWORDS as _FAMILY_KEYWORDS
 
 
+def _family_keywords(fam: str):
+    """Keywords to match a family to a live market question. Static taxonomy first;
+    then a FALLBACK to auto-DISCOVERED families' keywords (discovered_families.json).
+    This closes the self-improvement loop: when the hunt discovers a NEW family
+    (e.g. 'extremes_highest' = weather) and self-improve promotes it, the live
+    scanner can actually find + bet its markets WITHOUT a manual taxonomy edit.
+    Crypto stays quarantined (never in either source)."""
+    kws = list(_FAMILY_KEYWORDS.get(fam, []))
+    if kws:
+        return kws
+    try:
+        import json, os
+        p = os.path.join(os.path.dirname(__file__), "..", "discovered_families.json")
+        with open(p) as fh:
+            for c in (json.load(fh).get("candidates") or []):
+                if c.get("family") == fam and c.get("keyword"):
+                    kws.append(c["keyword"].lower())
+    except Exception:
+        pass
+    return kws
+
+
 def _self_promoted_tier(ql: str):
     """If the live self-improve state has an ACTIVE promoted family matching this
     question, return its tier ('trial'/'exploratory'). Lets auto-discovered edges
@@ -187,7 +209,7 @@ def _self_promoted_tier(ql: str):
         return None
     for cell, cfg in tiers.items():
         fam = cell.split("|")[0].strip()
-        for kw in _FAMILY_KEYWORDS.get(fam, []):
+        for kw in _family_keywords(fam):
             if kw in ql:
                 return cfg.get("tier", "exploratory")
     return None
@@ -217,7 +239,7 @@ def _promoted_win(ql: str, no_price: float):
         if not (lo <= no_price < hi):       # price must be in the measured band
             continue
         fam = cell.split("|")[0].strip()
-        for kw in _FAMILY_KEYWORDS.get(fam, []):
+        for kw in _family_keywords(fam):
             if kw in ql:
                 return {"wl": float(wl), "n": int(cfg.get("measured_n") or 0)}
     return None
@@ -244,7 +266,7 @@ def _promoted_win_yes(ql: str, yes_price: float):
         if not (lo <= yes_price < hi):       # YES price must be in the measured band
             continue
         fam = cell.split("|")[0].strip()
-        for kw in _FAMILY_KEYWORDS.get(fam, []):
+        for kw in _family_keywords(fam):
             if kw in ql:
                 return {"wl": float(wl), "n": int(cfg.get("measured_n") or 0),
                         "lo": lo, "hi": hi}

@@ -600,6 +600,47 @@ def test_promoted_only_keeps_yes_direction_edge():
     print("PASS test_promoted_only_keeps_yes_direction_edge")
 
 
+def test_discovered_family_closes_self_improve_loop():
+    """SELF-IMPROVEMENT LOOP: a DISCOVERED family (not in the static taxonomy) that
+    gets promoted must become scannable AND bettable via its discovered keyword —
+    otherwise discovery is a dead end (the bug: discovered edges could be promoted
+    but the live scanner never surfaced/bet them, so it never 'self-improved')."""
+    from polybot import self_improve as si
+    import polybot.longshot as L
+    import tempfile, os, json
+    orig_state = si.STATE_PATH
+    # point the discovered-families file the helper reads at a temp one
+    disc_path = os.path.join(os.path.dirname(L.__file__), "..", "discovered_families.json")
+    orig_disc = None
+    if os.path.exists(disc_path):
+        orig_disc = open(disc_path).read()
+    fd, tmp = tempfile.mkstemp(suffix=".json"); os.close(fd)
+    si.STATE_PATH = tmp
+    try:
+        # a discovered family with its keyword (mimics discover_families output)
+        with open(disc_path, "w") as fh:
+            json.dump({"candidates": [{"family": "extremes_highest",
+                                       "keyword": "will the highest", "occurrences": 11}]}, fh)
+        # self-improve promotes it (NO-direction measured band)
+        si.save_state({"tiers": {"extremes_highest | pay NO 0.55-0.75": {
+            "tier": "trial", "direction": "NO", "band_lo": 0.55, "band_hi": 0.75,
+            "measured_win": 0.84, "measured_wilson_lower": 0.78, "measured_n": 270}},
+            "disabled": [], "warnings": {}})
+        q = "will the highest temperature in nyc be above 95f?"
+        # scannable via the discovered keyword (not in static FAMILY_KEYWORDS)
+        assert L._longshot_tier(q) == "trial", "discovered family must be scannable"
+        pw = L._promoted_win(q, 0.65)
+        assert pw is not None and abs(pw["wl"] - 0.78) < 1e-9, pw  # bettable
+    finally:
+        si.STATE_PATH = orig_state
+        if orig_disc is not None:
+            open(disc_path, "w").write(orig_disc)
+        else:
+            os.remove(disc_path)
+        os.remove(tmp)
+    print("PASS test_discovered_family_closes_self_improve_loop")
+
+
 def test_per_strategy_open_check_is_independent():
     """TOURNAMENT INDEPENDENCE: each strategy book bets on its OWN open positions,
     not the global set. If the main book holds a market, a tournament strategy must
