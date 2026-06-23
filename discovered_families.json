@@ -1,14 +1,14 @@
 {
   "candidates": [
     {
-      "family": "value_extremes",
-      "keyword": "highest",
+      "family": "tennis_wta_qualification",
+      "keyword": "wimbledon qualification wta",
       "occurrences": 8
     },
     {
-      "family": "value_extremes",
-      "keyword": "lowest",
-      "occurrences": 8
+      "family": "extremes_highest",
+      "keyword": "will the highest",
+      "occurrences": 11
     }
   ]
 }
