@@ -122,13 +122,27 @@ def record_trade(signal: Signal, result: dict):
         )
 
 
-def already_open(condition_id: str) -> bool:
-    """True only if we currently hold an UNRESOLVED position in this market."""
+def already_open(condition_id: str, strategy: str = None) -> bool:
+    """True if we currently hold an UNRESOLVED position in this market.
+
+    strategy=None -> ANY book (the main-bankroll path: don't double-bet a market).
+    strategy="x"  -> only THAT strategy's book. The tournament strategies each run
+    on a SEPARATE bankroll and must bet independently, so they check their OWN
+    open position, not the global one — otherwise once the main book bets a market,
+    every tournament strategy is blocked from it (the bug that left the tournament
+    books idle)."""
     with _conn() as c:
-        row = c.execute(
-            "SELECT COUNT(*) FROM trades WHERE condition_id = ? AND status = ?",
-            (condition_id, STATUS_OPEN),
-        ).fetchone()
+        if strategy is None:
+            row = c.execute(
+                "SELECT COUNT(*) FROM trades WHERE condition_id = ? AND status = ?",
+                (condition_id, STATUS_OPEN),
+            ).fetchone()
+        else:
+            row = c.execute(
+                "SELECT COUNT(*) FROM trades WHERE condition_id = ? AND status = ? "
+                "AND COALESCE(strategy,'') = ?",
+                (condition_id, STATUS_OPEN, strategy),
+            ).fetchone()
     return row[0] > 0
 
 

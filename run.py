@@ -302,7 +302,9 @@ def _run_strategy(name, cfg, trade=True):
     for f in fades:
         if not trade:
             continue
-        if store.already_open(f.market.condition_id):
+        # per-strategy open check: each tournament book bets independently (the
+        # main book's position must NOT block this strategy's own book).
+        if store.already_open(f.market.condition_id, strategy=name):
             continue
         # gate chain (per-event/exposure use the shared engine), but afford-check
         # against THIS strategy's own book.

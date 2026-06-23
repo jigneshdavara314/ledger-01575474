@@ -600,6 +600,34 @@ def test_promoted_only_keeps_yes_direction_edge():
     print("PASS test_promoted_only_keeps_yes_direction_edge")
 
 
+def test_per_strategy_open_check_is_independent():
+    """TOURNAMENT INDEPENDENCE: each strategy book bets on its OWN open positions,
+    not the global set. If the main book holds a market, a tournament strategy must
+    still be able to bet it in its own book (the bug that left tournament books idle:
+    a global already_open blocked every strategy once any book held the market)."""
+    from polybot import config, store, bankroll
+    import tempfile, os
+    fd, path = tempfile.mkstemp(suffix=".db"); os.close(fd)
+    config.DB_PATH = path
+    store.init_db(); bankroll.init_bankroll()
+    from polybot.strategy import Signal
+    from polybot.market_data import Market
+    m = Market(condition_id="0xSHARED", question="Q", token_id_yes="y", token_id_no="n",
+               price_yes=0.5, liquidity=1e5, volume=0, volume_24h=0, spread=0,
+               end_date="", hours_to_resolution=1, category="soccer", event_title="")
+    sig = Signal(market=m, side="NO", fair_prob=0.8, market_prob=0.5, edge=0.3,
+                 size_usd=5, reason="t", estimator="x")
+    # record an OPEN position tagged conservative_fade
+    store.record_trade(sig, {"mode": "PAPER", "status": "simulated", "price": 0.5,
+                             "strategy": "conservative_fade"})
+    # global check sees it; conservative sees its own; experimental_fade does NOT.
+    assert store.already_open("0xSHARED") is True
+    assert store.already_open("0xSHARED", strategy="conservative_fade") is True
+    assert store.already_open("0xSHARED", strategy="experimental_fade") is False
+    os.remove(path)
+    print("PASS test_per_strategy_open_check_is_independent")
+
+
 def test_strategy_family_isolation():
     """ISOLATION (user requirement): a new/experimental edge must NEVER leak into
     the proven strategies' books. The proven strategies whitelist PROVEN_FAMILIES;
