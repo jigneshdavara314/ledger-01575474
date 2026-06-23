@@ -103,6 +103,32 @@ class Executor:
         cancelled so they don't rest and fill later unexpectedly. A pre-check
         guards against ordering more than the live USDC balance allows.
         """
+        price = signal.market_prob
+
+        # --- LIVE SAFETY RAILS (fail closed; block real money on any breach) ---
+        # Checked FIRST — before importing the trading library or touching the
+        # client — so the kill-switch works even if py_clob_client is unavailable.
+        # 0) emergency kill-switch: blocks ALL real orders instantly.
+        if getattr(config, "LIVE_KILL_SWITCH", False):
+            return {"mode": "LIVE", "status": "blocked_kill_switch",
+                    "filled_size": 0.0, "price": price, "order_id": None}
+        # 1) per-bet hard cap (absolute USDC ceiling for the trial).
+        max_bet = getattr(config, "LIVE_MAX_BET_USD", 0.0)
+        if max_bet and signal.size_usd > max_bet + 1e-9:
+            return {"mode": "LIVE", "status": f"blocked_over_bet_cap_{max_bet:g}",
+                    "filled_size": 0.0, "price": price, "order_id": None}
+        # 2) daily spend cap: today's real stake + this bet must stay under the cap.
+        max_daily = getattr(config, "LIVE_MAX_DAILY_USD", 0.0)
+        if max_daily:
+            try:
+                spent = store.live_spend_today()
+            except Exception:
+                spent = max_daily   # fail closed: can't verify -> assume capped
+            if spent + signal.size_usd > max_daily + 1e-9:
+                return {"mode": "LIVE",
+                        "status": f"blocked_daily_cap_{max_daily:g}_spent_{spent:g}",
+                        "filled_size": 0.0, "price": price, "order_id": None}
+
         from py_clob_client.clob_types import OrderArgs
         from py_clob_client.order_builder.constants import BUY
 
@@ -111,7 +137,6 @@ class Executor:
             if signal.side == "YES"
             else signal.market.token_id_no
         )
-        price = signal.market_prob
         shares = round(signal.size_usd / price, 2) if price else 0.0
 
         # --- affordability check against REAL on-chain USDC (not just SQLite) ---

@@ -35,6 +35,20 @@ CHAIN_ID   = int(os.getenv("CHAIN_ID", "137"))  # Polygon mainnet
 # ---------------------------------------------------------------------------
 MODE = os.getenv("MODE", "PAPER").upper()
 
+# ---------------------------------------------------------------------------
+# LIVE-TRADING SAFETY RAILS (only consulted when MODE=LIVE). These are HARD
+# ceilings for a small, controlled real-money trial — defaults are deliberately
+# tiny so flipping MODE=LIVE without setting them can only ever risk a few
+# dollars per bet, never the whole wallet. All fail CLOSED (a bet that would
+# exceed a cap is skipped, never silently shrunk past the floor and forced).
+#   LIVE_MAX_BET_USD     : absolute hard cap on a single real order, in USDC.
+#   LIVE_MAX_DAILY_USD   : max total real USDC the bot may stake across one UTC day.
+#   LIVE_KILL_SWITCH     : set "1"/"true" to BLOCK all real orders instantly,
+#                          regardless of MODE (an out-of-band emergency stop).
+LIVE_MAX_BET_USD   = float(os.getenv("LIVE_MAX_BET_USD", "5"))      # $5/bet trial cap
+LIVE_MAX_DAILY_USD = float(os.getenv("LIVE_MAX_DAILY_USD", "25"))   # $25/day trial cap
+LIVE_KILL_SWITCH   = os.getenv("LIVE_KILL_SWITCH", "").lower() in ("1", "true", "yes")
+
 
 # ---------------------------------------------------------------------------
 # Short-term market targeting

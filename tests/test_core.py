@@ -648,6 +648,54 @@ def test_settle_and_credit_atomic():
     print("PASS test_settle_and_credit_atomic")
 
 
+def test_live_safety_rails_block_real_orders():
+    """LIVE rails must FAIL CLOSED before any real order is placed: kill-switch,
+    per-bet cap, and daily cap each return a 'blocked_*' result with $0 filled and
+    NO order id — so a bug/misconfig can never drain a real wallet. We stub the
+    client so the test never touches the network; the guards return before it."""
+    from polybot import config, executor as ex_mod
+    from polybot.strategy import Signal
+    from polybot.market_data import Market
+
+    m = Market(condition_id="x", question="q", token_id_yes="y", token_id_no="n",
+               price_yes=0.5, liquidity=1e4, volume=0, volume_24h=0, spread=0.01,
+               end_date="", hours_to_resolution=5, category="soccer", event_title="")
+
+    # build an Executor WITHOUT going through __init__'s live-client wiring
+    ex = ex_mod.Executor.__new__(ex_mod.Executor)
+    ex.mode = "LIVE"
+    class BoomClient:   # any use of the client = test failure (guards must precede it)
+        def __getattr__(self, _): raise AssertionError("client touched before guard")
+    ex._client = BoomClient()
+
+    saved = (config.LIVE_KILL_SWITCH, config.LIVE_MAX_BET_USD, config.LIVE_MAX_DAILY_USD)
+    try:
+        # 1) kill-switch blocks everything
+        config.LIVE_KILL_SWITCH = True
+        config.LIVE_MAX_BET_USD = 5; config.LIVE_MAX_DAILY_USD = 25
+        s = Signal(market=m, side="NO", fair_prob=0.7, market_prob=0.5, edge=0.2,
+                   size_usd=3, reason="t", estimator="x")
+        r = ex._execute_live(s)
+        assert r["status"] == "blocked_kill_switch" and r["filled_size"] == 0.0, r
+        assert r["order_id"] is None
+
+        # 2) per-bet cap blocks an oversized bet
+        config.LIVE_KILL_SWITCH = False
+        big = Signal(market=m, side="NO", fair_prob=0.7, market_prob=0.5, edge=0.2,
+                     size_usd=50, reason="t", estimator="x")   # > $5 cap
+        r = ex._execute_live(big)
+        assert r["status"].startswith("blocked_over_bet_cap") and r["filled_size"] == 0.0, r
+
+        # 3) daily cap blocks once today's spend + this bet exceeds the ceiling
+        config.LIVE_MAX_DAILY_USD = 2   # below the $3 bet -> must block
+        r = ex._execute_live(s)
+        assert r["status"].startswith("blocked_daily_cap") and r["filled_size"] == 0.0, r
+    finally:
+        (config.LIVE_KILL_SWITCH, config.LIVE_MAX_BET_USD,
+         config.LIVE_MAX_DAILY_USD) = saved
+    print("PASS test_live_safety_rails_block_real_orders")
+
+
 def _run_all():
     fns = [v for k, v in globals().items() if k.startswith("test_") and callable(v)]
     failed = 0

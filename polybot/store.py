@@ -277,6 +277,21 @@ def settle_void(trade_id: int, size_usd: float):
     return refund
 
 
+def live_spend_today() -> float:
+    """Total REAL USDC staked today (UTC) on LIVE-mode fills — used to enforce the
+    LIVE_MAX_DAILY_USD safety cap. Counts only genuinely-submitted live orders
+    (mode LIVE / exec_status submitted-like), not paper rows."""
+    today = datetime.datetime.utcnow().strftime("%Y-%m-%d")
+    with _conn() as c:
+        row = c.execute(
+            "SELECT COALESCE(SUM(size_usd),0) FROM trades "
+            "WHERE ts LIKE ? AND mode='LIVE' "
+            "AND COALESCE(exec_status,'') NOT IN ('simulated','backfill')",
+            (today + "%",),
+        ).fetchone()
+    return round(row[0] or 0.0, 2)
+
+
 def today_pnl() -> float:
     """Sum of realised P&L on trades resolved today (UTC)."""
     today = datetime.datetime.utcnow().strftime("%Y-%m-%d")
