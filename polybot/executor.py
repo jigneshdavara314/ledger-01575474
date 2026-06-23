@@ -77,12 +77,18 @@ class Executor:
 
     # ------------------------------------------------------------------
     def _execute_paper(self, signal: Signal) -> dict:
-        # Paper fills are NOT free money: real resting limits fill a bit WORSE
-        # than your bid (adverse selection). Mark the entry at bid + slippage,
-        # capped below 1.0. This feeds into recorded shares (size/price), so paper
-        # P&L is no longer the optimistic best-case the audit flagged.
+        # Paper fills are NOT free money: a resting limit BELOW the ask only fills
+        # when a seller crosses down to us, and in practice that fill lands at a
+        # WORSE price than our bid (adverse selection). The honest, conservative
+        # model: if the signal carries the live ASK, assume we pay the ASK (the
+        # realistic price a marketable-ish limit actually clears at) rather than the
+        # optimistic bid. Fall back to bid + PAPER_SLIPPAGE only when no book
+        # context is available. We never assume a fill BETTER than our own bid.
+        bid = signal.market_prob
         slip = getattr(config, "PAPER_SLIPPAGE", 0.0)
-        fill_price = min(0.999, round(signal.market_prob + slip, 4))
+        ask = getattr(signal, "ask_price", None)
+        fill_price = ask if (ask and ask >= bid) else (bid + slip)
+        fill_price = min(0.999, round(max(bid, fill_price), 4))
         return {
             "mode": "PAPER",
             "status": "simulated",

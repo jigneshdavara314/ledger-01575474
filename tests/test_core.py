@@ -350,6 +350,28 @@ def test_stable_unit_reproducible():
     print("PASS test_stable_unit_reproducible")
 
 
+def test_paper_fill_pays_the_ask_not_the_bid():
+    """ACCURACY: paper fills must model the realistic price a sub-ask resting limit
+    actually clears at (the ASK), not the optimistic bid+flat-slippage. This shrinks
+    the paper->live gap so paper P&L predicts live. Never assume better than the bid."""
+    from polybot.executor import Executor
+    from polybot.strategy import Signal
+    from polybot.market_data import Market
+    m = Market(condition_id="x", question="q", token_id_yes="y", token_id_no="n",
+               price_yes=0.5, liquidity=1e4, volume=0, volume_24h=0, spread=0.02,
+               end_date="", hours_to_resolution=5, category="soccer", event_title="")
+    ex = Executor()
+    # bid 0.55, ask 0.58 -> fill at the ASK (0.58), the realistic adverse fill
+    s = Signal(market=m, side="NO", fair_prob=0.7, market_prob=0.55, edge=0.15,
+               size_usd=10, reason="t", estimator="longshot-fade", ask_price=0.58)
+    assert ex._execute_paper(s)["price"] == 0.58, "must pay the ask, not the bid"
+    # no book context -> fall back to bid + slippage (still >= bid)
+    s2 = Signal(market=m, side="NO", fair_prob=0.7, market_prob=0.55, edge=0.15,
+                size_usd=10, reason="t", estimator="longshot-fade")
+    assert ex._execute_paper(s2)["price"] >= 0.55, "fallback must not beat the bid"
+    print("PASS test_paper_fill_pays_the_ask_not_the_bid")
+
+
 def test_fill_prob_monotonic_in_band():
     """fill_prob: ~certain at the ask, low near the bid, penalized on wide spread."""
     import polybot.market_data as md

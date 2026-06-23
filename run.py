@@ -306,7 +306,8 @@ def _run_strategy(name, cfg, trade=True):
         sig = Signal(market=f.market, side=f.side, fair_prob=f.est_win_prob,
                      market_prob=f.bid_price,
                      edge=round(f.est_win_prob - f.bid_price, 4),
-                     size_usd=f.size_usd, reason=f.reason, estimator="longshot-fade")
+                     size_usd=f.size_usd, reason=f.reason, estimator="longshot-fade",
+                     ask_price=f.ask_price)
         # execute against this strategy's book: record with strategy tag, deduct
         # from the strategy bankroll (NOT the main one).
         from polybot.executor import Executor
@@ -411,6 +412,7 @@ def cmd_longshot(trade: bool = True):
             fair_prob=f.est_win_prob, market_prob=f.bid_price,
             edge=round(f.est_win_prob - f.bid_price, 4), size_usd=f.size_usd,
             reason=f.reason, estimator="longshot-fade",
+            ask_price=f.ask_price,
         )
         result = executor.execute(sig)
         # Honor the ACTUAL fill: in LIVE an unfilled limit isn't a bet.
@@ -535,7 +537,7 @@ def cmd_lagwatch(trade: bool = True):
             fair_prob=0.99, market_prob=bid_price,
             edge=profit, size_usd=size,
             reason=f"lag-arb: {o.game.winner} already won {o.game.home_score}-{o.game.away_score}",
-            estimator="lagwatch",
+            estimator="lagwatch", ask_price=ask_price,
         )
         result = executor.execute(sig)
         if result.get("recorded") is False:

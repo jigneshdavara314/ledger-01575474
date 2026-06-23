@@ -26,11 +26,15 @@ class Signal:
     market: Market
     side: str             # "YES" or "NO"
     fair_prob: float      # our estimate of true probability of that side
-    market_prob: float    # what the market charges for that side
+    market_prob: float    # what the market charges for that side (our bid)
     edge: float           # fair_prob - market_prob (positive = profitable)
     size_usd: float       # how much to stake
     reason: str
     estimator: str        # "heuristic" | "openai" | "claude"
+    # Live order-book context (optional) so the PAPER fill model can price a
+    # resting sub-ask limit realistically (fills near the ASK, not the bid) instead
+    # of a flat slippage guess. None -> fall back to bid + PAPER_SLIPPAGE.
+    ask_price: float = None
 
 
 # ---------------------------------------------------------------------------
