@@ -323,6 +323,57 @@ def category_summary() -> list:
     return rows
 
 
+def edge_confidence() -> list:
+    """Per-EDGE (family) live track record + readiness, for the confidence report.
+
+    Groups RESOLVED real trades by their canonical family (taxonomy.family_of on
+    the question — the same classification we bet by), and for each computes:
+      n, won, lost, win_rate, the WILSON LOWER BOUND of the live win-rate, net
+      P&L, ROI, and whether the edge has enough live evidence to size up.
+
+    This MEASURES the proof accruing per edge (it does not fabricate it): an edge
+    is 'ready' to graduate only once it has its own settled sample whose Wilson
+    lower bound still clears breakeven — i.e. the LIVE results, not a backtest,
+    robustly support a bigger stake. Returns a list of dicts sorted by readiness.
+    """
+    from .taxonomy import family_of
+    from .stats import wilson_lower_rate
+    from collections import defaultdict
+    agg = defaultdict(lambda: {"n": 0, "won": 0, "pnl": 0.0, "staked": 0.0,
+                               "be_sum": 0.0})
+    with _conn() as c:
+        rows = c.execute(
+            "SELECT question, status, COALESCE(pnl_usd,0), COALESCE(size_usd,0), "
+            "COALESCE(market_prob,0) FROM trades "
+            "WHERE status IN (?,?) AND " + _REAL_ONLY,
+            (STATUS_WON, STATUS_LOST),
+        ).fetchall()
+    for q, status, pnl, size, price in rows:
+        fam = family_of(q or "")
+        a = agg[fam]
+        a["n"] += 1
+        a["won"] += 1 if status == STATUS_WON else 0
+        a["pnl"] += pnl
+        a["staked"] += size
+        a["be_sum"] += price          # breakeven = avg entry price (need win >= price)
+    out = []
+    for fam, a in agg.items():
+        n, won = a["n"], a["won"]
+        wr = won / n if n else 0.0
+        wlb = wilson_lower_rate(wr, n) if n else 0.0
+        breakeven = (a["be_sum"] / n) if n else 0.0
+        roi = (a["pnl"] / a["staked"]) if a["staked"] else 0.0
+        # READY: enough live settlements AND the Wilson lower bound of the live
+        # win-rate still beats the price we paid (robustly +EV on its OWN record).
+        ready = n >= 15 and wlb > breakeven
+        out.append({"family": fam, "n": n, "won": won, "lost": n - won,
+                    "win_rate": round(wr, 3), "wilson_lower": round(wlb, 3),
+                    "breakeven": round(breakeven, 3), "pnl": round(a["pnl"], 2),
+                    "roi": round(roi, 3), "ready": ready})
+    out.sort(key=lambda d: (-d["ready"], -d["n"]))
+    return out
+
+
 def init_snapshots():
     """Table recording a daily snapshot of bids placed + market capacity."""
     with _conn() as c:

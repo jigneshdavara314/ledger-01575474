@@ -706,6 +706,35 @@ def cmd_status():
 # Main
 # ---------------------------------------------------------------------------
 
+def cmd_confidence():
+    """Per-EDGE proof tracker: how much LIVE settled evidence each edge has, and
+    whether it's earned the right to size up. Measures the path to trusting each
+    edge (it does not fabricate growth)."""
+    store.init_db()
+    rows = store.edge_confidence()
+    print("=" * 72)
+    print("  EDGE CONFIDENCE  (live settled record per family — is the edge real?)")
+    print("=" * 72)
+    if not rows:
+        print("  No resolved trades yet. Place bets, wait, 'resolve', then check back.")
+        return
+    print(f"  {'family':18}{'n':>4}{'W':>4}{'L':>4}{'win%':>6}{'wLB':>6}"
+          f"{'b/e':>6}{'pnl':>9}{'roi':>7}  ready?")
+    print(f"  {'-'*18}{'-'*4}{'-'*4}{'-'*4}{'-'*6}{'-'*6}{'-'*6}{'-'*9}{'-'*7}  ------")
+    for d in rows:
+        flag = "READY->UP" if d["ready"] else (f"need {15-d['n']}+" if d["n"] < 15
+                                               else "edge weak")
+        print(f"  {d['family']:18}{d['n']:>4}{d['won']:>4}{d['lost']:>4}"
+              f"{d['win_rate']*100:>5.0f}%{d['wilson_lower']*100:>5.0f}%"
+              f"{d['breakeven']*100:>5.0f}%${d['pnl']:>+8.2f}{d['roi']*100:>+6.0f}%  {flag}")
+    print("-" * 72)
+    print("  wLB = Wilson lower bound of the LIVE win-rate (conservative).")
+    print("  READY->UP = 15+ live settlements AND wLB still beats break-even:")
+    print("            this edge has earned a bigger stake on its OWN results.")
+    print("  This is how the bot scales HONESTLY: edges graduate by proving")
+    print("  themselves live, not by assuming a backtest holds.")
+
+
 COMMANDS = {
     "scout":   cmd_scout,
     "export":  cmd_export,
@@ -719,6 +748,7 @@ COMMANDS = {
     "resolve": cmd_resolve,
     "history": cmd_history,
     "report":  cmd_report,
+    "confidence": cmd_confidence,
     "report-daily": lambda: __import__("polybot.daily_report", fromlist=["print_table"]).print_table(),
     "bankroll": cmd_bankroll,
     "status":  cmd_status,
