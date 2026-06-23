@@ -60,6 +60,20 @@ CALIB = {
     "novelty_says": [
         (0.60, 0.549, 9531),  # NO wins ~55% but trades cheap enough to profit
     ],
+    # TWEET-COUNT RANGE markets ("Posts from X June A-B", "X posts 100-200 times?").
+    # NEW edge found 2026-06-23 by the rigorous ENTRY-PRICE + OOS sweep (the one
+    # genuinely new family that passed BOTH out-of-sample halves +EV, where
+    # over_under/spread/etc. all failed). At real trade-entry prices:
+    #   NO 0.60-0.65 (YES 0.35-0.40): 68.4% n=1901 -> +0.083 EV  (both OOS halves +)
+    #   NO 0.65-0.70 (YES 0.30-0.35): 70.2% n=2992 -> +0.030 EV
+    #   NO 0.70-0.75 (YES 0.25-0.30): 75.2% n=3161 -> +0.026 EV
+    # Many mutually-exclusive ranges, each overpriced -> fade (buy NO). Disjoint
+    # ascending YES uppers; deeper-than-0.25 defers to market (no data that deep).
+    "tweet_range": [
+        (0.30, 0.752, 3161),   # YES 0.25-0.30 (NO 0.70-0.75)
+        (0.35, 0.702, 2992),   # YES 0.30-0.35 (NO 0.65-0.70)
+        (0.40, 0.684, 1901),   # YES 0.35-0.40 (NO 0.60-0.65) — robust OOS
+    ],
     # SOCCER PLAYER PROPS ("<Name>: N+ goals/assists/shots"). CORRECTED 2026-06-23.
     # The earlier row claimed +0.505 EV for NO 0.55-0.75 from market-AVERAGE prices.
     # A rigorous ENTRY-PRICE test (win rate at the price trades ACTUALLY executed)
@@ -90,26 +104,13 @@ from .stats import wilson_lower_rate as _wilson_lower  # single source of truth
 
 
 def _subtype_for(question: str) -> str:
-    q = question.lower()
-    if "exact score" in q:
-        return "exact_score"
-    if "home runs o/u" in q:
-        return "home_runs_ou"
-    if "spread:" in q or "handicap" in q:
-        return "spread/handicap"
-    # data-confirmed fades (archive price test, 2026-06):
-    if "draw" in q:
-        return "draw"
-    if q.startswith("will ") and (" say" in q or " said" in q or " tweet" in q):
-        return "novelty_says"
-    # soccer player props: "<Name>: N+ goals/assists/shots/..." (archive-confirmed
-    # band-specific fade). US-sport props (home runs/strikeouts) have no calib row
-    # yet, so only the "N+ <stat>" soccer pattern maps here.
-    import re as _re
-    if _re.search(r":\s*\d+\+\s*(goal|assist|shot|save|tackle|pass|block|"
-                  r"clearance|interception|point|rebound|three)", q):
-        return "player_prop"
-    return "other"
+    """The calibration key for a market = its canonical family. Delegates to
+    taxonomy.family_of so classification has ONE source of truth (shared by both
+    discovery and the live scanner) — no drift between "what we measured" and
+    "what we bet". CALIB is keyed by those family names; a family with no CALIB
+    entry simply falls back to the market price (no edge claimed)."""
+    from .taxonomy import family_of
+    return family_of(question)
 
 
 def measured_no_win(question: str, yes_price: float, implied_no: float) -> dict:
@@ -125,6 +126,17 @@ def measured_no_win(question: str, yes_price: float, implied_no: float) -> dict:
     honest way to use a small backtest without over-betting it.
     """
     subtype = _subtype_for(question)
+    # HONESTY GUARD: the player_prop calib was measured ONLY on soccer count props
+    # ("<Name>: N+ goals/assists/shots/..."). US-sport props ("Home Runs O/U 1.5",
+    # "Passing Yards O/U") also classify as player_prop but were NOT in that sample,
+    # so we must NOT claim the soccer rate for them — defer to market (no fabricated
+    # cross-sport edge) until separately measured.
+    if subtype == "player_prop":
+        import re as _re
+        if not _re.search(r":\s*\d+\+\s*(goal|assist|shot|save|tackle|pass|block|"
+                          r"clearance|interception|point|rebound|three)",
+                          question.lower()):
+            return {"est": implied_no, "n": 0, "source": "market"}
     rows = CALIB.get(subtype)
     if not rows:
         return {"est": implied_no, "n": 0, "source": "market"}
