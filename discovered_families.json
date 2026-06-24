@@ -1,15 +1,9 @@
 {
   "candidates": [
     {
-      "pattern": "wimbledon, qualification atp",
-      "keyword": "wimbledon, qualification atp",
-      "occurrences": 15,
-      "family": "auto_wimbledon_qualification"
-    },
-    {
       "pattern": "wimbledon, qualification wta",
       "keyword": "wimbledon, qualification wta",
-      "occurrences": 11,
+      "occurrences": 19,
       "family": "auto_wimbledon_qualification"
     }
   ]
