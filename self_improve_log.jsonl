@@ -17,3 +17,5 @@
 {"ts": "2026-06-16T05:52:58.543739", "action": "TRIAL", "cell": "other | pay NO 0.55-0.75", "recurred_days": 3, "tier": "trial", "mult": 0.25}
 {"ts": "2026-06-16T05:52:58.543849", "action": "TRIAL", "cell": "over_under | pay YES 0.75-0.95", "recurred_days": 3, "tier": "trial", "mult": 0.25}
 {"ts": "2026-06-23T23:18:32.358614", "action": "WARN_IMPROVE", "cell": "over_under | pay YES 0.75-0.95", "live_win": 0.727, "breakeven": 0.821, "new_mult": 0.15, "warnings": 1}
+{"ts": "2026-06-24T01:29:02.203986", "action": "WARN_IMPROVE", "cell": "over_under | pay YES 0.75-0.95", "live_win": 0.692, "breakeven": 0.817, "new_mult": 0.1, "warnings": 2}
+{"ts": "2026-06-24T01:29:02.204066", "action": "DISABLE", "cell": "over_under | pay YES 0.75-0.95", "reason": "underperformed after grace", "warnings": 2}
