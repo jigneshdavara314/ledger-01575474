@@ -1,3 +1,9 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "family": "tennis_qualification",
+      "keyword": "wimbledon atp",
+      "occurrences": 8
+    }
+  ]
 }
