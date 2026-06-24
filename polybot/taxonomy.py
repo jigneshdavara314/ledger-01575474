@@ -28,6 +28,11 @@ def family_of(question: str) -> str:
         return "exact_score"
     if "spread" in ql or "handicap" in ql:
         return "spread_handicap"
+    # Esports "any player <feat>" — must precede player_prop (which greedily
+    # matches the substring "player"). Validated esports_any_player_feat edge.
+    if re.search(r"(map|game) \d+:?\s*any player "
+                 r"(rampage|ultra kill|godlike|ace|first blood)", ql):
+        return "esports_any_player_feat"
     # Player / esports props BEFORE generic over_under so "Home Runs O/U" is a
     # player_prop (specific), not lumped with team totals.
     #   - US-sport props: "home runs", "strikeouts", "passing yards", ...
@@ -78,6 +83,28 @@ def family_of(question: str) -> str:
     if any(k in ql for k in ("highest temperature", "lowest temperature",
                              "high temperature", "temperature in")):
         return "weather_temp"
+    # --- Entry-price + OOS validated families (2026-06-24 archive hunt) ---
+    # AI "best/top model by date" cohorts (~13-15 firms, ~89% NO base). EV +0.266.
+    if re.search(r"have the (best|top) (coding )?ai model (at the end of|on) ", ql):
+        return "ai_best_model_by_date"
+    # Approval/disapproval rating narrow bands. EV +0.240.
+    if re.search(r"(approval|disapproval) rating "
+                 r"(be (between|greater than|[0-9.]+% or)|of)", ql):
+        return "approval_rating_band"
+    # (esports_any_player_feat handled earlier, before player_prop)
+    # Geopolitical "will <country> strike <target> by date" — overpriced longshots.
+    # Country-gated so it doesn't catch bowling/labor "strike". EV +0.229.
+    if re.search(r"will (the us|the u\.s\.|israel|iran|russia|ukraine|india|"
+                 r"pakistan)[^?]* strike ", ql):
+        return "geopolitical_strike_event"
+    # Company "beat quarterly earnings" — MARGINAL (probationary, small stake).
+    if re.search(r"\([a-z]+\) beat quarterly earnings|"
+                 r"will [a-z .&]+ beat quarterly earnings", ql):
+        return "company_beat_quarterly_earnings"
+    # Novelty "will X say <QUOTED phrase>" — a SPECIFIC, validated subtype (EV
+    # +0.104, n=1693). MUST precede generic novelty_says below.
+    if ql.startswith("will ") and " say " in ql and '"' in ql:
+        return "politician_say_phrase"
     if "winner" in ql or "champion" in ql:
         return "outright_winner"
     if "draw" in ql:
@@ -102,6 +129,16 @@ FAMILY_KEYWORDS = {
     "draw": ["draw"],
     "weather_temp": ["highest temperature", "lowest temperature",
                      "high temperature", "temperature in"],
+    # Entry-price+OOS validated families (2026-06-24):
+    "ai_best_model_by_date": ["best ai model", "top ai model",
+                              "best coding ai model", "top coding ai model"],
+    "approval_rating_band": ["approval rating", "disapproval rating"],
+    "esports_any_player_feat": ["any player rampage", "any player ultra kill",
+                                "any player godlike", "any player ace",
+                                "any player first blood"],
+    "geopolitical_strike_event": [" strike "],  # country-gated in family_of
+    "company_beat_quarterly_earnings": ["beat quarterly earnings"],
+    "politician_say_phrase": ['say "'],  # quoted-phrase gated in family_of
     "tweet_range": ["posts from", "posts between", "tweets", "mentions"],
     "player_prop": ["home runs", "strikeouts", "passing yards", "to record", "player",
                     "+ goals", "+ assists", "+ shots", "+ saves", "+ tackles",

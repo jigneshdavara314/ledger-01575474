@@ -682,16 +682,37 @@ def test_every_calib_family_is_scannable_and_bridged():
     from polybot.calib_table import CALIB
     from polybot.taxonomy import FAMILY_KEYWORDS
     import polybot.longshot as L
+    from polybot.taxonomy import family_of
     missing_bridge = [f for f in CALIB if f not in FAMILY_KEYWORDS]
     assert not missing_bridge, f"CALIB families missing keyword bridge: {missing_bridge}"
-    # each family must be scannable via at least one of its bridge keywords
-    not_scannable = []
+    # Representative real question per family — some families are REGEX-gated in
+    # family_of (not plain substrings), so a naive "will the <kw> happen?" probe
+    # can't reach them. Each probe must classify to its family AND be scannable.
+    probes = {
+        "exact_score": "Exact Score: 2-1?",
+        "draw": "Will the match end in a draw?",
+        "novelty_says": "Will Trump say something today?",
+        "weather_temp": "Will the highest temperature in NYC be above 90?",
+        "tweet_range": "Posts from Elon June 1-7?",
+        "esports_prop": "First Blood: Team Vitality",
+        "method_of_victory": "Method of victory: by KO",
+        "player_prop": "Mbappe: 2+ goals",
+        "ai_best_model_by_date": "Will Anthropic have the best AI model at the end of November 2025?",
+        "approval_rating_band": "Will Trump approval rating be between 46.0% and 46.9% on April 18?",
+        "esports_any_player_feat": "Game 1: Any player ultra kill?",
+        "geopolitical_strike_event": "Will Israel strike Lebanon on January 15, 2026?",
+        "politician_say_phrase": 'Will Trump say "canada" 7+ times during Carney visit?',
+        "company_beat_quarterly_earnings": "Will GameStop (GME) beat quarterly earnings?",
+    }
+    problems = []
     for fam in CALIB:
-        kws = FAMILY_KEYWORDS.get(fam, [])
-        probe = f"will the {kws[0]} happen?" if kws else fam
-        if L._longshot_tier(probe.lower()) is None:
-            not_scannable.append(fam)
-    assert not not_scannable, f"CALIB families not scannable: {not_scannable}"
+        q = probes.get(fam)
+        assert q, f"add a probe question for new CALIB family {fam}"
+        if family_of(q) != fam:
+            problems.append(f"{fam}: probe classifies as {family_of(q)}")
+        elif L._longshot_tier(q.lower()) is None:
+            problems.append(f"{fam}: classifies right but NOT scannable")
+    assert not problems, f"wiring gaps: {problems}"
     print("PASS test_every_calib_family_is_scannable_and_bridged")
 
 

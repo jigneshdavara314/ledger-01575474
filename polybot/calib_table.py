@@ -72,6 +72,44 @@ CALIB = {
         (0.35, 0.79, 25606),   # YES 0.25-0.35 (NO 0.65-0.75)
         (0.45, 0.73, 18964),   # YES 0.35-0.45 (NO 0.55-0.65)
     ],
+    # --- 5 REAL families from the 2026-06-24 entry-price+OOS archive hunt ---
+    # Only OOS-passing bands wired; rate=None floors below the deepest validated
+    # band so we never extrapolate into unvalidated/failed deep prices.
+    # AI best-model-by-date (~89% NO base; EV +0.266). 0.65-0.75 + 0.75-0.85 robust;
+    # 0.55-0.65 FAILED one OOS half -> defers.
+    "ai_best_model_by_date": [
+        (0.25, 0.956, 503),    # YES 0.15-0.25 (NO 0.75-0.85)
+        (0.35, 0.894, 341),    # YES 0.25-0.35 (NO 0.65-0.75) BEST
+        (0.45, None, 0),       # NO 0.55-0.65 failed OOS -> market
+    ],
+    # Approval/disapproval rating bands. ONLY 0.55-0.65 passed OOS. EV +0.240.
+    "approval_rating_band": [
+        (0.35, None, 0),       # NO>=0.65 negative/failed -> market
+        (0.45, 0.743, 109),    # YES 0.35-0.45 (NO 0.55-0.65) ONLY
+    ],
+    # Esports "any player <feat>" — ONLY 0.75-0.85 has n>=30/half both +EV. EV +0.234.
+    "esports_any_player_feat": [
+        (0.25, 1.00, 66),      # YES 0.15-0.25 (NO 0.75-0.85) ONLY (HARD_CAP applies)
+        (0.45, None, 0),       # shallower bands too thin / one half negative -> market
+    ],
+    # Geopolitical strike-by-date — ALL THREE bands robust (most stable, n=807). EV +0.229.
+    "geopolitical_strike_event": [
+        (0.25, 0.857, 580),    # YES 0.15-0.25 (NO 0.75-0.85)
+        (0.35, 0.863, 807),    # YES 0.25-0.35 (NO 0.65-0.75) BEST
+        (0.45, 0.674, 973),    # YES 0.35-0.45 (NO 0.55-0.65)
+    ],
+    # Politician "say <quoted phrase>" — ALL THREE bands robust, huge n. EV +0.104.
+    "politician_say_phrase": [
+        (0.25, 0.854, 1730),   # YES 0.15-0.25 (NO 0.75-0.85)
+        (0.35, 0.732, 1694),   # YES 0.25-0.35 (NO 0.65-0.75)
+        (0.45, 0.663, 1693),   # YES 0.35-0.45 (NO 0.55-0.65) BEST EV
+    ],
+    # Company "beat quarterly earnings" — MARGINAL (worse-half +0.021, small n).
+    # ONLY 0.55-0.65; deeper bands collapse on OOS. Probationary.
+    "company_beat_quarterly_earnings": [
+        (0.35, None, 0),       # deeper bands failed OOS -> market
+        (0.45, 0.622, 45),     # YES 0.35-0.45 (NO 0.55-0.65) ONLY — marginal
+    ],
     # TWEET-COUNT RANGE markets ("Posts from X June A-B", "X posts 100-200 times?").
     # NEW edge found 2026-06-23 by the rigorous ENTRY-PRICE + OOS sweep (the one
     # genuinely new family that passed BOTH out-of-sample halves +EV, where

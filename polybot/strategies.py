@@ -39,7 +39,11 @@ PROVEN_FAMILIES = ("exact_score", "draw", "novelty_says", "over_under")
 # experimental strategy until they build their own live settled track record.
 # (Promote into PROVEN_FAMILIES only after `run.py confidence` shows them READY.)
 EXPERIMENTAL_FAMILIES = ("tweet_range", "esports_prop", "method_of_victory",
-                         "player_prop", "weather_temp")
+                         "player_prop", "weather_temp",
+                         # 2026-06-24 entry-price+OOS validated batch:
+                         "ai_best_model_by_date", "approval_rating_band",
+                         "esports_any_player_feat", "geopolitical_strike_event",
+                         "politician_say_phrase", "company_beat_quarterly_earnings")
 
 # name -> config. `kind` selects the betting mechanism; the rest are knobs.
 STRATEGIES = {
