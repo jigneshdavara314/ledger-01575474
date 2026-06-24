@@ -49,15 +49,21 @@ jobs:
           MODE: PAPER
           PROFILE: moderate
         run: |
-          echo "::group::longshot fades (conservative book)"
-          python run.py longshot || true
-          echo "::endgroup::"
-          echo "::group::strategy tournament (other 4 books)"
-          PYTHONPATH=. python run.py strategies || true
-          echo "::endgroup::"
-          echo "::group::lag arbitrage"
-          python run.py lagwatch || true
-          echo "::endgroup::"
+          # GitHub heavily THROTTLES scheduled crons on free runners — the */15
+          # schedule actually fires only ~every few hours, so a single scan per run
+          # catches very few in-band markets. To compensate, LOOP the bet-generating
+          # commands several times within this one job (markets re-price between
+          # passes), so each cron firing covers multiple snapshots instead of one.
+          # resolve / self-improve / report run ONCE at the end.
+          PASSES="${BOT_PASSES:-5}"
+          for i in $(seq 1 "$PASSES"); do
+            echo "::group::bet pass $i/$PASSES"
+            python run.py longshot || true
+            PYTHONPATH=. python run.py strategies || true
+            python run.py lagwatch || true
+            echo "::endgroup::"
+            if [ "$i" -lt "$PASSES" ]; then sleep 60; fi
+          done
           echo "::group::resolve settled positions"
           python run.py resolve || true
           echo "::endgroup::"
