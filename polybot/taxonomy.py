@@ -118,5 +118,9 @@ FAMILY_KEYWORDS = {
     "method_of_victory": ["method of victory", "by ko", "by decision",
                           "by submission", "by tko"],
     "winning_margin": ["winning margin", "margin of victory"],
-    # NOTE: novelty_says and crypto_pricetail are DELIBERATELY ABSENT — never bet.
+    # novelty_says IS a validated edge now (archive-confirmed) — bridge it so a
+    # promoted novelty cell can match live markets.
+    "novelty_says": ["will he say", "will she say", "will trump say", " say ",
+                     " said ", " tweet"],
+    # NOTE: crypto_pricetail is DELIBERATELY ABSENT — proven coin-flip, never bet.
 }

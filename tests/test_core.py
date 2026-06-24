@@ -674,6 +674,27 @@ def test_per_strategy_open_check_is_independent():
     print("PASS test_per_strategy_open_check_is_independent")
 
 
+def test_every_calib_family_is_scannable_and_bridged():
+    """WIRING CONSISTENCY: every family with a measured CALIB row MUST be (a) in the
+    FAMILY_KEYWORDS bridge and (b) scannable via _longshot_tier — otherwise a
+    validated edge is silently never bet (the esports_prop gap: had a calib row +
+    keywords but no LONGSHOT_TIERS pattern -> tier None -> never scanned)."""
+    from polybot.calib_table import CALIB
+    from polybot.taxonomy import FAMILY_KEYWORDS
+    import polybot.longshot as L
+    missing_bridge = [f for f in CALIB if f not in FAMILY_KEYWORDS]
+    assert not missing_bridge, f"CALIB families missing keyword bridge: {missing_bridge}"
+    # each family must be scannable via at least one of its bridge keywords
+    not_scannable = []
+    for fam in CALIB:
+        kws = FAMILY_KEYWORDS.get(fam, [])
+        probe = f"will the {kws[0]} happen?" if kws else fam
+        if L._longshot_tier(probe.lower()) is None:
+            not_scannable.append(fam)
+    assert not not_scannable, f"CALIB families not scannable: {not_scannable}"
+    print("PASS test_every_calib_family_is_scannable_and_bridged")
+
+
 def test_strategy_family_isolation():
     """ISOLATION (user requirement): a new/experimental edge must NEVER leak into
     the proven strategies' books. The proven strategies whitelist PROVEN_FAMILIES;

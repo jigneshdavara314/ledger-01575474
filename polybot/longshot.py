@@ -284,12 +284,26 @@ def _promoted_win_yes(ql: str, yes_price: float):
 
 def _longshot_tier(q: str):
     """Return the confidence tier for a question, or None if not a longshot.
-    Checks the hardcoded confirmed/exploratory patterns first, then any family
-    the self-improvement engine has auto-promoted (trial/exploratory)."""
+    Order: (1) hardcoded confirmed/exploratory patterns; (2) ANY family that has a
+    measured CALIB row (so a validated edge is ALWAYS scannable — closes the wiring
+    gap where a family had a calib row + keyword bridge but no LONGSHOT_TIERS
+    pattern, e.g. esports_prop, and so was silently never scanned); (3) families
+    the self-improvement engine has auto-promoted."""
     ql = q.lower()
     for pat, tier in LONGSHOT_TIERS.items():
         if pat in ql:
             return tier
+    # any CALIB-backed family is bettable -> make it scannable. exact_score is the
+    # only 'confirmed' tier; everything else with a measured row is 'exploratory'.
+    # The calib band-gate still decides whether it actually clears the edge.
+    try:
+        from .taxonomy import family_of
+        from .calib_table import CALIB
+        fam = family_of(q)
+        if fam in CALIB:
+            return "confirmed" if fam == "exact_score" else "exploratory"
+    except Exception:
+        pass
     return _self_promoted_tier(ql)
 
 
