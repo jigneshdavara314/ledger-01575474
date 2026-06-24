@@ -1,3 +1,34 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "family": "draft_prospect",
+      "keyword": "caleb wilson",
+      "occurrences": 8
+    },
+    {
+      "family": "draft_prospect",
+      "keyword": "aj dybantsa",
+      "occurrences": 8
+    },
+    {
+      "family": "draft_prospect",
+      "keyword": "cameron boozer",
+      "occurrences": 8
+    },
+    {
+      "family": "draft_prospect",
+      "keyword": "darryn peterson",
+      "occurrences": 8
+    },
+    {
+      "family": "baseball_game_events",
+      "keyword": "first inning run",
+      "occurrences": 8
+    },
+    {
+      "family": "baseball_game_events",
+      "keyword": "extra innings",
+      "occurrences": 8
+    }
+  ]
 }
