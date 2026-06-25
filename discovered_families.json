@@ -1,22 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "wimbledon, qualification atp",
-      "keyword": "wimbledon, qualification atp",
-      "occurrences": 10,
-      "family": "auto_wimbledon_qualification"
-    },
-    {
-      "pattern": "wimbledon, qualification wta",
-      "keyword": "wimbledon, qualification wta",
-      "occurrences": 10,
-      "family": "auto_wimbledon_qualification"
-    },
-    {
-      "pattern": "will durable goods",
-      "keyword": "will durable goods",
-      "occurrences": 8,
-      "family": "auto_will_durable_goods"
-    }
-  ]
+  "candidates": []
 }
