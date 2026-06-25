@@ -1,9 +1,10 @@
 {
   "candidates": [
     {
-      "family": "baseball_game_duration",
-      "keyword": "extra innings",
-      "occurrences": 8
+      "pattern": "will czechia be",
+      "keyword": "will czechia be",
+      "occurrences": 9,
+      "family": "auto_will_czechia_be"
     }
   ]
 }
