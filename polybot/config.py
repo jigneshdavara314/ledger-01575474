@@ -21,6 +21,12 @@ ANTHROPIC_API_KEY  = os.getenv("ANTHROPIC_API_KEY", "")
 # other code changes needed. Used ONLY for family-classification (names/groups
 # patterns), never to estimate a probability or decide a bet.
 ANTHROPIC_BASE_URL = os.getenv("ANTHROPIC_BASE_URL", "")
+# MASTER SWITCH for the AI (omeecron) family-naming step. DISABLED by default —
+# the AI was only used to prettify discovered-family names, never to bet, so it is
+# off unless you explicitly set USE_AI_REFINE=1. With it off, discovery uses pure
+# keyword grouping (no external AI call at all). This makes "AI is off" explicit
+# and avoids silent fallback when a gateway key is wrong/expired.
+USE_AI_REFINE = os.getenv("USE_AI_REFINE", "").lower() in ("1", "true", "yes")
 POLYGON_WALLET_PRIVATE_KEY = os.getenv("POLYGON_WALLET_PRIVATE_KEY", "")
 
 CLOB_HOST  = os.getenv("CLOB_HOST",  "https://clob.polymarket.com")

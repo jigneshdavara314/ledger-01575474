@@ -142,7 +142,13 @@ def estimate_fair_probability_claude(market: Market) -> Optional[float]:
     Claude is particularly good at sports/esports markets because it can
     reason about team form, tournament context, and common market biases.
     Uses claude-haiku-4-5 (fast + cheap) for quick scanning.
+
+    NOTE: legacy/unused — the live bot decides bets from the measured calibration
+    table, not an AI estimate. Gated behind USE_AI_REFINE (off by default) so no
+    AI call is ever made unless explicitly re-enabled.
     """
+    if not getattr(config, "USE_AI_REFINE", False):
+        return None
     if not config.ANTHROPIC_API_KEY:
         return None
     try:

@@ -22,6 +22,7 @@ import os
 import re
 from collections import Counter
 
+from . import config
 from .calibration import fetch_resolved_markets
 from .taxonomy import family_of, CRYPTO_HINTS
 
@@ -77,10 +78,13 @@ def discover(pages: int = 20) -> list:
 
 
 def _ai_refine(candidates: list) -> list:
-    """If an Anthropic key is present, ask Claude to name/merge the candidate
-    groups more sensibly. AI ONLY names/groups — it never scores or bets. Falls
-    back to the keyword grouping if no key or any error."""
+    """If the AI refine switch is ON and an Anthropic key is present, ask Claude to
+    name/merge the candidate groups more sensibly. AI ONLY names/groups — it never
+    scores or bets. DISABLED by default (USE_AI_REFINE); falls back to pure keyword
+    grouping when off, no key, or any error."""
     from . import config
+    if not getattr(config, "USE_AI_REFINE", False):
+        return candidates                      # AI disabled -> keyword grouping only
     if not getattr(config, "ANTHROPIC_API_KEY", ""):
         return candidates
     try:
@@ -138,7 +142,7 @@ def run(pages: int = 20):
     with open(QUEUE_PATH, "w", encoding="utf-8") as f:
         json.dump({"candidates": cands}, f, indent=2)
     print(f"[discover] {len(cands)} candidate families queued "
-          f"(AI={'on' if os.getenv('ANTHROPIC_API_KEY') else 'off'}):")
+          f"(AI={'on' if getattr(config, 'USE_AI_REFINE', False) else 'off'}):")
     for c in cands[:12]:
         print(f"  {c['occurrences']:>3}x  {c.get('family','?'):24} kw='{c.get('keyword','')}'")
     print("These are SUGGESTIONS — each must still pass the full edge-scan gate to bet.")
