@@ -391,13 +391,27 @@ def find_longshot_fades(
     markets = fetch_short_term_markets(max_hours=max_hours, categories=cats,
                                        limit_per_event=40)
 
-    # Pre-count candidate markets (tier-matching + liquid) so the per-bet base
-    # divides the pool across the EXPECTED number of bets, not the hard cap of 40.
+    # Pre-count candidate markets so the per-bet base divides the pool across the
+    # EXPECTED number of bets. Counting ALL tier+liquid markets (e.g. 191) badly
+    # UNDER-sizes each bet, because only the handful that also fall in the fade band
+    # AND show a positive calibrated edge will actually clear the gate (~5-11/day).
+    # Require band + a cheap calib edge probe so the base reflects real bet count
+    # (e.g. base ~$13 -> ~$48 on good days). Per-bet caps + fillable depth still
+    # bound the actual stake, so this can't over-bet.
     if stake_usd is None:
-        n_candidates = sum(
-            1 for m in markets
-            if _longshot_tier(m.question) is not None
-            and m.liquidity >= config.LONGSHOT_MIN_LIQUIDITY)
+        n_candidates = 0
+        for m in markets:
+            if _longshot_tier(m.question) is None:
+                continue
+            if m.liquidity < config.LONGSHOT_MIN_LIQUIDITY:
+                continue
+            if not (FADE_MIN_YES <= m.price_yes <= FADE_MAX_YES):
+                continue
+            no_price = round(1.0 - m.price_yes, 4)
+            est = measured_no_win(m.question, m.price_yes, no_price)["est"]
+            if est - no_price >= config.LONGSHOT_MIN_EDGE:
+                n_candidates += 1
+        n_candidates = max(1, n_candidates)   # avoid div-by-zero; >=1 keeps a sane base
         stake_usd = budget_base_stake(n_candidates)
 
     signals: List[FadeSignal] = []
