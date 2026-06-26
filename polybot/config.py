@@ -55,6 +55,15 @@ LIVE_MAX_BET_USD   = float(os.getenv("LIVE_MAX_BET_USD", "5"))      # $5/bet tri
 LIVE_MAX_DAILY_USD = float(os.getenv("LIVE_MAX_DAILY_USD", "25"))   # $25/day trial cap
 LIVE_KILL_SWITCH   = os.getenv("LIVE_KILL_SWITCH", "").lower() in ("1", "true", "yes")
 
+# LAGWATCH master switch — DISABLED by default. The resolution-lag arb mechanism
+# mis-matched player-prop / set-winner / "extra innings" markets to finished GAMES
+# (it only checks 'win' in the question + a loose team-name match), so it bet
+# coin-flips and near-impossible props thinking they were already decided. Live
+# record was 2W/4L, net -$20.20 (wins paid ~$0.0005, losses -$5.05). Off until the
+# matching is made strict (require a true "Will <team> win <single match>" market
+# AND exclude set/period/prop sub-markets). Re-enable with USE_LAGWATCH=1.
+USE_LAGWATCH = os.getenv("USE_LAGWATCH", "").lower() in ("1", "true", "yes")
+
 
 # ---------------------------------------------------------------------------
 # Short-term market targeting

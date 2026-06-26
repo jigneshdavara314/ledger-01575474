@@ -473,6 +473,13 @@ def cmd_lagwatch(trade: bool = True):
     Find sports games that just finished (known winner via ESPN) where the
     Polymarket market still prices the winner below 1.00, and paper-buy them.
     """
+    # DISABLED by default — the matcher mis-fired on player-prop/set-winner/prop
+    # markets and lost real money (2W/4L, -$20.20). Off until the matching is
+    # fixed to require a true single-match "Will <team> win" market.
+    if not getattr(config, "USE_LAGWATCH", False):
+        print("lagwatch is DISABLED (USE_LAGWATCH off) — the matcher mis-fired on "
+              "non-game markets and lost money. Skipping. See config.py.")
+        return
     from polybot.lagwatch import find_lag_opportunities
     from polybot.market_data import Market, limit_bid_price
     from polybot.strategy import Signal

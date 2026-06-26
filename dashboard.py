@@ -131,6 +131,18 @@ def build_html() -> str:
     s = store.performance_summary()
     cats = store.category_summary()
     rows = store.recent_trades(200)
+
+    # ARMED EDGES: every validated family the bot CAN bet (calibrated + auto-promoted),
+    # so you can see the full arsenal is loaded even before a given one has a market
+    # priced in its edge band. This answers "why do I only see a few categories?" —
+    # the rest are armed and waiting for a qualifying market.
+    try:
+        from polybot.calib_table import CALIB
+        from polybot.self_improve import load_state
+        armed = sorted(set(CALIB.keys()) |
+                       {c.split("|")[0].strip() for c in load_state().get("tiers", {})})
+    except Exception:
+        armed = []
     generated = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
     open_rows = [r for r in rows if r[6] == "OPEN"]
@@ -619,11 +631,21 @@ def build_html() -> str:
 
   <section class="panel-tab" id="tab-category">
     <h2>Results by category</h2>
-    <div class="note">Shows every category the bot has bet in. "pending" = bets
-      placed but not settled yet (results appear once games finish).</div>
+    <div class="note">This table lists only categories the bot has actually
+      <b>placed bets</b> in — a category can't show a row until it has a bet.
+      "pending" = bets placed but not settled yet. If a category you expect is
+      missing, it just hasn't had a market priced in its edge band yet (see
+      "Edges armed" below — the full set is loaded and waiting).</div>
     <table><thead><tr><th>Category</th><th>Bets</th><th>W–L</th><th>Win %</th>
       <th>Staked</th><th>Profit</th><th>ROI</th><th>Open</th></tr></thead>
       <tbody>{''.join(cat_rows)}</tbody></table>
+    <h3 style="margin-top:18px">Edges armed ({len(armed)} validated families)</h3>
+    <div class="note">Every data-validated edge the bot is ready to bet the moment
+      a market is priced in its band. The bot stays disciplined — it only bets when
+      the edge is real, so fewer categories than this will have bets on any given day.</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
+      {''.join(f'<span style="background:#1e293b;border:1px solid #334155;border-radius:6px;padding:3px 9px;font-size:13px">{fam}</span>' for fam in armed)}
+    </div>
   </section>
 
   <section class="panel-tab" id="tab-history">
