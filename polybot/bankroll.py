@@ -170,19 +170,24 @@ def summary() -> dict:
     with _conn() as c:
         bal, dep = c.execute(
             "SELECT balance, initial_deposit FROM bankroll WHERE id=1").fetchone()
-        # True money tied up right now = stakes on OPEN positions.
+        # MAIN-BOOK ONLY: tournament strategies have their OWN bankrolls
+        # (strategy_books); their open stakes and realized P&L must NOT count toward
+        # the main bankroll, or main equity is overstated (the $27.59 bug). The main
+        # book owns trades with no strategy tag or the default 'conservative_fade'.
+        _MAIN = "(COALESCE(strategy,'') IN ('','conservative_fade'))"
         try:
             open_exposure = c.execute(
-                "SELECT COALESCE(SUM(size_usd),0) FROM trades WHERE status='OPEN'"
+                "SELECT COALESCE(SUM(size_usd),0) FROM trades "
+                "WHERE status='OPEN' AND " + _MAIN
             ).fetchone()[0] or 0.0
         except Exception:
             open_exposure = 0.0
-        # REALIZED P&L = sum of pnl on SETTLED real trades (the honest headline).
+        # REALIZED P&L = sum of pnl on SETTLED real MAIN-book trades (honest headline).
         try:
             realized = c.execute(
                 "SELECT COALESCE(SUM(pnl_usd),0) FROM trades "
                 "WHERE status IN ('WON','LOST') AND condition_id NOT LIKE 'bf-%' "
-                "AND COALESCE(exec_status,'') != 'backfill'"
+                "AND COALESCE(exec_status,'') != 'backfill' AND " + _MAIN
             ).fetchone()[0] or 0.0
         except Exception:
             realized = 0.0

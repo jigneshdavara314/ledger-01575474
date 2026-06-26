@@ -578,24 +578,22 @@ def cmd_resolve():
     from polybot import bankroll
     print(f"Checking {len(positions)} open positions for resolution...\n")
     settled = 0
-    for trade_id, cond_id, question, side, size_usd, mkt_prob, shares in positions:
+    for trade_id, cond_id, question, side, size_usd, mkt_prob, shares, strategy in positions:
         winner = fetch_resolution(cond_id)
         if winner is None:
             print(f"  [pending] {question[:60]}")
             continue
         bankroll.init_bankroll()
-        # VOID: market cancelled/refunded (50-50). Refund the stake, book 0 P&L.
-        # Without this branch these positions never get a winner and sit OPEN
-        # forever — the "stuck for days" bug.
+        # Route settlement to the OWNING book (main vs the trade's strategy book) so
+        # tournament payouts/refunds don't mis-credit the main bankroll.
         if winner == "VOID":
-            refund = store.settle_void(trade_id, size_usd)
+            refund = store.settle_void(trade_id, size_usd, strategy=strategy)
             print(f"  [VOID]   {question[:48]}  (cancelled — refunded ${refund:.2f})")
             settled += 1
             continue
         won = (winner == side)
-        # ATOMIC: trade status + bankroll payout + fee all in ONE transaction,
-        # so a crash can't leave a resolved trade with the cash never moved.
-        pnl, fee = store.settle_and_credit(trade_id, won, size_usd, shares)
+        pnl, fee = store.settle_and_credit(trade_id, won, size_usd, shares,
+                                           strategy=strategy)
         tag = "WON " if won else "LOST"
         print(f"  [{tag}]   {question[:48]}  (bet {side}, {winner} won)  pnl={pnl:+.2f}")
         settled += 1

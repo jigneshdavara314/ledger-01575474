@@ -36,7 +36,7 @@ def test_pnl_win_and_loss():
                  edge=0.1, size_usd=2.0, reason="t", estimator="test")
     store.record_trade(sig, {"mode": "PAPER", "status": "simulated", "price": 0.80})
     pos = store.open_positions()[0]
-    trade_id, _, _, side, size, mktp, shares = pos
+    trade_id, _, _, side, size, mktp, shares, _strat = pos
     assert abs(shares - 2.5) < 1e-6, f"shares should be 2.5, got {shares}"
 
     # WIN (no fee): payout = shares*1 = 2.5, profit = 0.5
@@ -375,6 +375,42 @@ def test_stable_unit_reproducible():
     assert 0.0 <= a < 1.0, a
     assert stable_unit("0xabc") != stable_unit("0xdef"), "different keys must differ"
     print("PASS test_stable_unit_reproducible")
+
+
+def test_tournament_trade_does_not_credit_main_bankroll():
+    """P&L ROUTING (production-critical): a tournament-strategy trade funds from its
+    OWN book, so its settlement must credit that book — NOT the main bankroll.
+    Crediting main a payout it never funded overstated main equity ($27.59 bug)."""
+    from polybot import config, store, bankroll, strategy_bankroll as sb
+    import tempfile, os
+    fd, path = tempfile.mkstemp(suffix=".db"); os.close(fd)
+    config.DB_PATH = path
+    config.PAPER_FEE_FRAC = 0.0
+    store.init_db(); bankroll.init_bankroll(); sb.init()
+    from polybot.strategy import Signal
+    from polybot.market_data import Market
+    m = Market(condition_id="0xT", question="Q", token_id_yes="y", token_id_no="n",
+               price_yes=0.5, liquidity=1e5, volume=0, volume_24h=0, spread=0,
+               end_date="", hours_to_resolution=1, category="soccer", event_title="")
+    sig = Signal(market=m, side="NO", fair_prob=0.8, market_prob=0.5, edge=0.3,
+                 size_usd=10, reason="t", estimator="x")
+    # record + fund from a TOURNAMENT book (aggressive_fade), not main
+    store.record_trade(sig, {"mode": "PAPER", "status": "simulated", "price": 0.5,
+                             "strategy": "aggressive_fade"})
+    sb.deduct_stake("aggressive_fade", 10.0, note="bet")
+    main_before = bankroll.summary()["balance"]
+    agg_before = sb.balance("aggressive_fade")
+    tid = store.open_positions()[0][0]
+    store.settle_and_credit(tid, won=True, size_usd=10.0, shares=20.0,
+                            strategy="aggressive_fade")
+    # main bankroll cash must be UNCHANGED (it never funded this bet)
+    assert abs(bankroll.summary()["balance"] - main_before) < 1e-6, "main wrongly credited"
+    # the tournament book got the $20 payout
+    assert abs(sb.balance("aggressive_fade") - (agg_before + 20.0)) < 1e-6
+    # main headline equity must NOT include this tournament trade's P&L
+    assert abs(bankroll.summary()["realized_profit"]) < 1e-6, "tournament pnl leaked to main"
+    os.remove(path)
+    print("PASS test_tournament_trade_does_not_credit_main_bankroll")
 
 
 def test_headline_profit_is_realized_not_open_inflated():

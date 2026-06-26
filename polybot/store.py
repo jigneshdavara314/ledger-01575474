@@ -202,12 +202,15 @@ def open_position_count() -> int:
 
 
 def open_positions():
-    """Return (id, condition_id, question, side, size_usd, market_prob, shares)
-    for every open position, so the resolver can settle them."""
+    """Return (id, condition_id, question, side, size_usd, market_prob, shares,
+    strategy) for every open position, so the resolver can settle each to the book
+    that funded it. The strategy tag is REQUIRED for correct accounting: tournament
+    trades fund from their own strategy_books, so their payout/refund must go back
+    there — not the main bankroll (the bug that overstated main equity)."""
     with _conn() as c:
         return c.execute(
-            "SELECT id, condition_id, question, side, size_usd, market_prob, shares "
-            "FROM trades WHERE status = ?",
+            "SELECT id, condition_id, question, side, size_usd, market_prob, shares, "
+            "COALESCE(strategy,'') FROM trades WHERE status = ?",
             (STATUS_OPEN,),
         ).fetchall()
 
@@ -235,14 +238,26 @@ def settle_position(trade_id: int, won: bool, size_usd: float, shares: float):
     return pnl, fee
 
 
-def settle_and_credit(trade_id: int, won: bool, size_usd: float, shares: float):
-    """ATOMIC settle + bankroll movements in ONE transaction (same DB file).
+def _is_main_book(strategy) -> bool:
+    """The main bankroll owns trades with no strategy tag OR the default strategy
+    (conservative_fade defers to the main book). Everything else is a tournament
+    book that must be credited via strategy_bankroll — crediting the main bankroll
+    a payout it never funded was the $27.59 equity-overstatement bug."""
+    try:
+        from .strategies import DEFAULT_STRATEGY
+    except Exception:
+        DEFAULT_STRATEGY = "conservative_fade"
+    return (strategy or "") in ("", DEFAULT_STRATEGY)
 
-    Previously settle_position (trades) and bankroll.credit_payout/fee ran in
-    SEPARATE transactions, so a crash between them left a trade marked resolved
-    but the cash never moved — permanent silent drift the resolve loop never
-    re-heals (it only revisits OPEN positions). Doing all writes under one
-    connection/commit removes that window. Returns (pnl, fee).
+
+def settle_and_credit(trade_id: int, won: bool, size_usd: float, shares: float,
+                      strategy: str = None):
+    """ATOMIC settle (trade status + P&L) + route the cash to the OWNING book.
+
+    Trade-status/pnl write is atomic here. The cash movement goes to the book that
+    FUNDED the stake: the main bankroll for main/default trades, else the trade's
+    strategy_book (tournament trades fund from their own book at open, so their
+    payout/fee must return there — not the main bankroll). Returns (pnl, fee).
     """
     fee = round(getattr(config, "PAPER_FEE_FRAC", 0.0) * size_usd, 4)
     payout = round(shares * 1.0, 4) if won else 0.0
@@ -253,41 +268,49 @@ def settle_and_credit(trade_id: int, won: bool, size_usd: float, shares: float):
         pnl = round(-size_usd - fee, 4)
         status = STATUS_LOST
     now = datetime.datetime.utcnow().isoformat()
-    with _conn() as c:                       # single transaction for ALL writes
+    with _conn() as c:
         c.execute("UPDATE trades SET status=?, pnl_usd=?, resolved_ts=? WHERE id=?",
                   (status, pnl, now, trade_id))
-        # apply bankroll movements inline (same connection) so they can't desync
-        def _move(kind, amount, note):
-            bal = c.execute("SELECT balance FROM bankroll WHERE id=1").fetchone()[0]
-            new = round(bal + amount, 4)
-            c.execute("UPDATE bankroll SET balance=? WHERE id=1", (new,))
-            c.execute("INSERT INTO bankroll_log (ts,kind,amount,balance_after,note) "
-                      "VALUES (?,?,?,?,?)", (now, kind, round(amount, 4), new, note))
+        if _is_main_book(strategy):
+            def _move(kind, amount, note):
+                bal = c.execute("SELECT balance FROM bankroll WHERE id=1").fetchone()[0]
+                new = round(bal + amount, 4)
+                c.execute("UPDATE bankroll SET balance=? WHERE id=1", (new,))
+                c.execute("INSERT INTO bankroll_log (ts,kind,amount,balance_after,note) "
+                          "VALUES (?,?,?,?,?)", (now, kind, round(amount, 4), new, note))
+            if payout > 0:
+                _move("payout", payout, f"WON trade #{trade_id}")
+            if fee > 0:
+                _move("stake", -fee, f"fee trade #{trade_id}")
+    # tournament book moves happen OUTSIDE the trades transaction (separate table)
+    if not _is_main_book(strategy):
+        from . import strategy_bankroll as sb
         if payout > 0:
-            _move("payout", payout, f"WON trade #{trade_id}")
+            sb.credit_payout(strategy, payout, note=f"WON trade #{trade_id}")
         if fee > 0:
-            _move("stake", -fee, f"fee trade #{trade_id}")
+            sb.deduct_stake(strategy, fee, note=f"fee trade #{trade_id}")
     return pnl, fee
 
 
-def settle_void(trade_id: int, size_usd: float):
-    """ATOMIC void settlement: a cancelled/50-50 market REFUNDS the full stake
-    and books ZERO P&L (no fee on a void). The stake was deducted from the
-    bankroll when the bet was opened, so we credit it back here. Same single-
-    transaction discipline as settle_and_credit so trade-status and cash can't
-    desync. Returns the refunded amount.
-    """
+def settle_void(trade_id: int, size_usd: float, strategy: str = None):
+    """ATOMIC void settlement: refund the full stake to the OWNING book, book 0 P&L.
+    Routes the refund to the strategy book for tournament trades (not the main
+    bankroll). Returns the refunded amount."""
     now = datetime.datetime.utcnow().isoformat()
     refund = round(size_usd, 4)
     with _conn() as c:
         c.execute("UPDATE trades SET status=?, pnl_usd=?, resolved_ts=? WHERE id=?",
                   (STATUS_VOID, 0.0, now, trade_id))
-        bal = c.execute("SELECT balance FROM bankroll WHERE id=1").fetchone()[0]
-        new = round(bal + refund, 4)
-        c.execute("UPDATE bankroll SET balance=? WHERE id=1", (new,))
-        c.execute("INSERT INTO bankroll_log (ts,kind,amount,balance_after,note) "
-                  "VALUES (?,?,?,?,?)", (now, "refund", refund, new,
-                                        f"VOID trade #{trade_id} (market cancelled)"))
+        if _is_main_book(strategy):
+            bal = c.execute("SELECT balance FROM bankroll WHERE id=1").fetchone()[0]
+            new = round(bal + refund, 4)
+            c.execute("UPDATE bankroll SET balance=? WHERE id=1", (new,))
+            c.execute("INSERT INTO bankroll_log (ts,kind,amount,balance_after,note) "
+                      "VALUES (?,?,?,?,?)", (now, "refund", refund, new,
+                                            f"VOID trade #{trade_id} (market cancelled)"))
+    if not _is_main_book(strategy):
+        from . import strategy_bankroll as sb
+        sb.credit_payout(strategy, refund, note=f"VOID refund trade #{trade_id}")
     return refund
 
 
