@@ -80,32 +80,60 @@ def _category_from_tags(tags: list) -> str:
         return "other"
     tag_set = {(t.get("slug", "") if isinstance(t, dict) else str(t)).lower() for t in tags}
 
-    # Priority order — more specific first
-    if any(s in tag_set for s in ["counter-strike-2", "valorant", "league-of-legends",
-                                   "esports", "dota-2", "fortnite"]):
+    # Priority order — more specific first. Slug lists broadened so sport VARIANTS
+    # aren't stranded in 'other' (cs2, wnba, ice-hockey, mls, international-cricket,
+    # etc.) — those carry over_under/spread/moneyline submarkets we can bet.
+    if any(s in tag_set for s in ["counter-strike-2", "cs2", "counter-strike",
+                                   "valorant", "league-of-legends", "lol", "esports",
+                                   "dota-2", "dota", "rocket-league", "fortnite",
+                                   "overwatch", "rainbow-six"]):
         return "esports"
-    if any(s in tag_set for s in ["soccer", "fifa-world-cup", "2026-fifa-world-cup"]):
+    if any(s in tag_set for s in ["soccer", "fifa-world-cup", "2026-fifa-world-cup",
+                                   "mls", "epl", "premier-league", "la-liga",
+                                   "champions-league", "uefa"]):
         return "soccer"
-    if any(s in tag_set for s in ["tennis"]):
+    if any(s in tag_set for s in ["tennis", "atp", "wta", "itf"]):
         return "tennis"
-    if any(s in tag_set for s in ["basketball", "nba", "nba-finals"]):
+    if any(s in tag_set for s in ["basketball", "nba", "nba-finals", "wnba",
+                                   "euroleague", "ncaab"]):
         return "nba"
-    if any(s in tag_set for s in ["baseball", "mlb"]):
+    if any(s in tag_set for s in ["baseball", "mlb", "npb", "kbo"]):
         return "mlb"
-    if any(s in tag_set for s in ["football", "nfl"]):
+    if any(s in tag_set for s in ["football", "nfl", "ncaaf", "cfb"]):
         return "nfl"
-    if any(s in tag_set for s in ["hockey", "nhl"]):
+    if any(s in tag_set for s in ["hockey", "nhl", "ice-hockey", "khl"]):
         return "nhl"
-    if any(s in tag_set for s in ["ufc", "mma"]):
+    if any(s in tag_set for s in ["ufc", "mma", "bellator", "pfl"]):
         return "ufc"
     if any(s in tag_set for s in ["boxing"]):
         return "boxing"
-    if any(s in tag_set for s in ["cricket", "ipl"]):
+    if any(s in tag_set for s in ["cricket", "ipl", "international-cricket",
+                                   "t20", "bbl", "the-hundred", "test-cricket"]):
         return "cricket"
-    if any(s in tag_set for s in ["golf", "pga", "pga-tour"]):
+    if any(s in tag_set for s in ["golf", "pga", "pga-tour", "liv-golf", "dp-world-tour"]):
         return "golf"
-    if any(s in tag_set for s in ["f1", "formula-1", "formula-one", "motorsport"]):
+    if any(s in tag_set for s in ["f1", "formula-1", "formula-one", "motorsport",
+                                   "motogp", "nascar", "indycar"]):
         return "f1"
+    # Additional sports — each carries the cross-sport families (over_under,
+    # spread_handicap, moneyline, outright_winner) so they're worth fetching.
+    if any(s in tag_set for s in ["rugby", "rugby-union", "rugby-league",
+                                   "six-nations"]):
+        return "rugby"
+    if any(s in tag_set for s in ["volleyball"]):
+        return "volleyball"
+    if any(s in tag_set for s in ["handball"]):
+        return "handball"
+    if any(s in tag_set for s in ["table-tennis", "ping-pong"]):
+        return "table_tennis"
+    if any(s in tag_set for s in ["darts"]):
+        return "darts"
+    if any(s in tag_set for s in ["snooker"]):
+        return "snooker"
+    if any(s in tag_set for s in ["badminton"]):
+        return "badminton"
+    if any(s in tag_set for s in ["aussie-rules", "afl"]):
+        return "afl"
     if any(s in tag_set for s in ["crypto", "bitcoin", "ethereum", "weekly",
                                    "multi-strikes", "hit-price", "crypto-prices"]):
         return "crypto"

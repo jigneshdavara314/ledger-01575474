@@ -783,6 +783,27 @@ def test_strategy_family_isolation():
     print("PASS test_strategy_family_isolation")
 
 
+def test_no_cross_sport_rounds_leak_and_sport_coverage():
+    """A UFC/boxing 'Total Rounds O/U' must NOT classify as esports_prop (it would
+    borrow the esports edge rate = a fabricated cross-sport edge). And sport-variant
+    tags must map to a real category (not 'other') so they're fetched."""
+    from polybot.taxonomy import family_of
+    from polybot.market_data import _category_from_tags
+    # cross-sport leak guard: MMA rounds -> over_under (no calib -> market), NOT esports
+    assert family_of("UFC 300: Total Rounds O/U 2.5") != "esports_prop"
+    assert family_of("UFC 300: Total Rounds O/U 2.5") == "over_under"
+    # legit esports still classifies
+    assert family_of("Game 1: First Blood Team Vitality") == "esports_prop"
+    assert family_of("Map 1: Total Kills O/U 25.5") == "esports_prop"
+    # sport-variant tags must be fetched (not 'other')
+    for slug, cat in [("cs2", "esports"), ("wnba", "nba"), ("ice-hockey", "nhl"),
+                      ("mls", "soccer"), ("international-cricket", "cricket"),
+                      ("rugby", "rugby"), ("volleyball", "volleyball"),
+                      ("darts", "darts"), ("table-tennis", "table_tennis")]:
+        assert _category_from_tags([{"slug": slug}]) == cat, slug
+    print("PASS test_no_cross_sport_rounds_leak_and_sport_coverage")
+
+
 def test_crypto_quarantine_and_subfamilies():
     """Crypto up/down must be quarantined (never a bettable family); player/esports
     props must carve out of 'other'; crypto family must NOT be in the scanner."""

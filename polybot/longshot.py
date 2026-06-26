@@ -384,7 +384,10 @@ def find_longshot_fades(
     # esports leagues. More categories = more safe places to deploy the same
     # dollar (diversification), NOT bigger bets per market.
     cats = ["soccer", "nba", "mlb", "nfl", "nhl", "tennis", "ufc", "boxing",
-            "cricket", "golf", "f1", "esports", "tweets", "politics", "weather"]
+            "cricket", "golf", "f1", "esports", "tweets", "politics", "weather",
+            # additional sports — carry over_under/spread/moneyline/outright edges:
+            "rugby", "volleyball", "handball", "table_tennis", "darts", "snooker",
+            "badminton", "afl"]
     markets = fetch_short_term_markets(max_hours=max_hours, categories=cats,
                                        limit_per_event=40)
 

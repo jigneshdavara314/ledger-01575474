@@ -46,8 +46,14 @@ def family_of(question: str) -> str:
     if re.search(r":\s*\d+\+\s*(goal|assist|shot|save|tackle|pass|block|"
                  r"clearance|interception|point|rebound|three)", ql):
         return "player_prop"
-    if any(k in ql for k in ("map ", "rounds", "first blood", "kills",
-                             " cs2", "valorant")):
+    # Esports props. NOTE: "rounds" alone is NOT esports — UFC/boxing fights have
+    # "Total Rounds O/U", which previously leaked to esports_prop and borrowed its
+    # edge rate (a fabricated cross-sport edge). Gate "rounds"/"kills" to an esports
+    # context (map/game/cs2/valorant), and keep the unambiguous esports tokens.
+    if (any(k in ql for k in ("first blood", " cs2", "counter-strike", "valorant",
+                              "league of legends", " dota")) or
+            re.search(r"\bmap \d", ql) or
+            re.search(r"(map|game) \d[^?]*\b(rounds?|kills?)\b", ql)):
         return "esports_prop"
     if any(k in ql for k in ("posts from", "posts between", "tweets", "mentions")):
         return "tweet_range"
