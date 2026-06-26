@@ -12,6 +12,19 @@
       "direction": "NO",
       "band_lo": 0.45,
       "band_hi": 0.55
+    },
+    "moneyline | pay NO 0.55-0.75": {
+      "tier": "trial",
+      "mult": 0.25,
+      "promoted": "2026-06-26",
+      "recurred": 2,
+      "source": "auto-trial",
+      "measured_win": 0.825,
+      "measured_wilson_lower": 0.715,
+      "measured_n": 160,
+      "direction": "NO",
+      "band_lo": 0.55,
+      "band_hi": 0.75
     }
   },
   "disabled": [
@@ -20,5 +33,5 @@
   "warnings": {
     "over_under | pay YES 0.75-0.95": 2
   },
-  "updated": "2026-06-25"
+  "updated": "2026-06-26"
 }
