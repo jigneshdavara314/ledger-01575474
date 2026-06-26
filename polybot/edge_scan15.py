@@ -59,9 +59,54 @@ def _load_candidate_families():
         return []
 
 
+# Classification comes from the single-source taxonomy module (no drift).
+from .taxonomy import family_of, CRYPTO_HINTS as _CRYPTO_HINTS
+
+import re as _re
+_SIG_STOP = _re.compile(r"[?.!]")
+
+
+def other_signature(question: str) -> str:
+    """Structural signature for a market that family_of can't name (the 'other'
+    grab-bag). A normalized, number-masked phrase that (a) RECURS across many
+    markets of the same bet-TYPE and (b) is a real substring of the question (so
+    the live scanner can match it). The bet-type wording usually sits AFTER the
+    last colon ("Real Madrid vs Barca: will there be a red card?"); fall back to
+    the leading phrase, dropping a leading "will ". Returns "" if no stable phrase.
+
+    This is what lets a recurring 'other' edge SELF-NAME into 'other_<sig>' — a
+    concrete, promotable, bettable family — with no human editing code. The full
+    bulletproof gate still runs on each resulting cell, so an over-broad signature
+    simply fails the gate (it's the backstop), never bets noise."""
+    ql = (question or "").lower().strip()
+    seg = ql.rsplit(":", 1)[1].strip() if ":" in ql else ql
+    if seg.startswith("will "):
+        seg = seg[5:]
+    seg = _SIG_STOP.split(seg)[0]                  # cut at first sentence end
+    seg = _re.sub(r"[0-9]+(\.[0-9]+)?", "", seg)   # mask numbers (band-invariant)
+    seg = _re.sub(r"[^a-z+ ]+", " ", seg)          # keep letters / '+' / spaces
+    seg = _re.sub(r"\s+", " ", seg).strip()
+    toks = seg.split()
+    if len(toks) < 2:                              # too short to be a real signature
+        return ""
+    return " ".join(toks[:4])                      # leading 4 tokens of the bet phrase
+
+
+def _other_family(question: str) -> str:
+    """Turn an 'other' question into a signature-named family 'other_<sig>', or
+    bare 'other' if no stable signature (stays un-promotable)."""
+    sig = other_signature(question)
+    if not sig:
+        return "other"
+    name = "other_" + _re.sub(r"[^a-z]+", "_", sig)[:28].strip("_")
+    return name if name != "other_" else "other"
+
+
 def family_of_with_candidates(question, candidates):
-    """family_of, but if it returns 'other', try to match a queued candidate
-    keyword so auto-discovered patterns become their own testable family."""
+    """family_of, but sub-classify the 'other' grab-bag so a recurring structural
+    signature becomes its OWN named, testable, promotable family — measured on the
+    SAME markets the gate validates (no dataset drift). Queued discover_families
+    candidates take priority; otherwise derive a signature from the question."""
     fam = family_of(question)
     if fam != "other":
         return fam
@@ -70,11 +115,7 @@ def family_of_with_candidates(question, candidates):
         kw = (c.get("keyword") or "").lower()
         if kw and kw in ql:
             return c.get("family") or fam
-    return fam
-
-
-# Classification comes from the single-source taxonomy module (no drift).
-from .taxonomy import family_of, CRYPTO_HINTS as _CRYPTO_HINTS
+    return _other_family(question)
 
 
 def event_key(m):
@@ -252,6 +293,11 @@ def scan(days=DAYS, cap=5000):   # higher cap for the wider 45-day window
         )
         results.append({
             "cell": f"{fam} | pay {direction} {lo:.2f}-{hi:.2f}",
+            "family": fam,
+            # signature-named 'other_<sig>' families carry a live-matchable keyword
+            # so longshot can find their markets (via the discovered-keyword bridge).
+            "keyword": (fam[len("other_"):].replace("_", " ").strip()
+                        if fam.startswith("other_") else None),
             "n": n, "wins": wins, "win_rate": round(wr, 3),
             "avg_price": round(avg_q, 3), "price_sd": round(price_sd, 3),
             "breakeven": round(breakeven, 3),
@@ -300,6 +346,30 @@ def scan(days=DAYS, cap=5000):   # higher cap for the wider 45-day window
                                         "win_rate": r["win_rate"], "ev": r["ev"],
                                         "wilson_lower": r["wilson_lower"]}
                                        for r in reals]}) + "\n")
+
+    # AUTO-LOOP BRIDGE: expose each passing 'other_<sig>' cell's signature as a live
+    # keyword in discovered_families.json, so longshot._family_keywords can match
+    # real markets once self_improve promotes the cell. This is what makes the hunt
+    # SELF-WIRING — no human edits a file. We only EXPOSE the keyword; the bettable
+    # win-rate still comes from the promoted cell's MEASURED wilson_lower (no
+    # fabricated rates, calib_table untouched). Merge (don't clobber discovery).
+    qpath = os.path.join(base, "discovered_families.json")
+    try:
+        with open(qpath, encoding="utf-8") as f:
+            queue = json.load(f)
+    except Exception:
+        queue = {"candidates": []}
+    cmap = {c.get("family"): c for c in queue.get("candidates", []) if c.get("family")}
+    for r in reals:
+        fam = r.get("family", "")
+        kw = r.get("keyword")
+        if fam.startswith("other_") and kw:
+            cmap[fam] = {"family": fam, "keyword": kw,
+                         "occurrences": r["n"], "source": "scan_signature"}
+    queue["candidates"] = list(cmap.values())
+    with open(qpath, "w", encoding="utf-8") as f:
+        json.dump(queue, f, indent=2)
+
     print(f"\nResult written; history appended ({len(reals)} passing cells).")
     return results
 

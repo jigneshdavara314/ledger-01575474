@@ -21,3 +21,4 @@
 {"ts": "2026-06-24T01:29:02.204066", "action": "DISABLE", "cell": "over_under | pay YES 0.75-0.95", "reason": "underperformed after grace", "warnings": 2}
 {"ts": "2026-06-25T08:03:04.303816", "action": "TRIAL", "cell": "moneyline | pay NO 0.45-0.55", "recurred_days": 2, "tier": "trial", "mult": 0.25}
 {"ts": "2026-06-26T04:20:39.796018", "action": "TRIAL", "cell": "moneyline | pay NO 0.55-0.75", "recurred_days": 2, "tier": "trial", "mult": 0.25}
+{"ts": "2026-06-26T08:51:16.104609", "action": "GRADUATE", "cell": "other_red_card_in_the | pay NO 0.55-0.75", "recurred_days": 6, "tier": "exploratory", "mult": 0.5}

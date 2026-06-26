@@ -127,6 +127,76 @@ def test_grab_bag_and_crypto_never_promote():
     print("PASS test_grab_bag_and_crypto_never_promote")
 
 
+def test_signature_named_other_promotes_but_bare_other_does_not():
+    """AUTO-HUNT LOOP (the fix for 'I have to wire every edge by hand'): a recurring
+    'other' edge SELF-NAMES to other_<sig> and DOES promote, while bare 'other'
+    still does not. This is the link that was dead (other was un-promotable)."""
+    si, _ = _isolated_si()
+    named = "other_red_card_in_the | pay NO 0.55-0.75"
+    bare = "other | pay NO 0.55-0.75"
+    # write BOTH cells into the SAME history (one row/day with both), since
+    # _write_hist overwrites the file.
+    import json as _json
+    rows = []
+    for dd in range(9):
+        day = f"2026-06-{10+dd:02d}T06:00:00Z"
+        rows.append(_json.dumps({"ts": day, "passed": [
+            {"cell": named, "n": 303, "win_rate": 0.83, "ev": 0.29, "wilson_lower": 0.76},
+            {"cell": bare, "n": 303, "win_rate": 0.83, "ev": 0.29, "wilson_lower": 0.76}]}))
+    open(si.HISTORY_PATH, "w").write("\n".join(rows) + "\n")
+    st = {"tiers": {}, "disabled": [], "warnings": {}}
+    si.promote(st)
+    assert named in st["tiers"], "signature-named other_<sig> MUST auto-promote"
+    assert bare not in st["tiers"], "bare 'other' must still never promote"
+    print("PASS test_signature_named_other_promotes_but_bare_other_does_not")
+
+
+def test_auto_hunt_loop_end_to_end():
+    """FULL LOOP, proven not claimed: scan self-names an 'other' market -> exposes
+    its keyword -> self_improve promotes -> longshot can SCAN and BET it. No human
+    edits code; no hardcoded calib row."""
+    from polybot.edge_scan15 import family_of_with_candidates, other_signature
+    import polybot.longshot as L
+    from polybot import self_improve as si
+    import tempfile, os, json
+
+    q = "Manchester United vs Arsenal: Will there be a red card in the match?"
+    fam = family_of_with_candidates(q, [])
+    assert fam.startswith("other_"), fam               # 1) self-named
+    sig = other_signature(q)
+    assert sig and sig in q.lower()                     # 2) keyword is a real substring
+
+    orig_state = si.STATE_PATH
+    disc = os.path.join(os.path.dirname(L.__file__), "..", "discovered_families.json")
+    orig_disc = open(disc).read() if os.path.exists(disc) else None
+    fd, tmp = tempfile.mkstemp(suffix=".json"); os.close(fd)
+    si.STATE_PATH = tmp
+    try:
+        # the scan would write this keyword; emulate it
+        json.dump({"candidates": [{"family": fam, "keyword": sig,
+                                   "occurrences": 303, "source": "scan_signature"}]},
+                  open(disc, "w"))
+        # self_improve promoted it (measured stats from the gate)
+        si.save_state({"tiers": {f"{fam} | pay NO 0.55-0.75": {
+            "tier": "exploratory", "mult": 0.5, "direction": "NO",
+            "band_lo": 0.55, "band_hi": 0.75, "measured_win": 0.83,
+            "measured_wilson_lower": 0.76, "measured_n": 303}},
+            "disabled": [], "warnings": {}})
+        # 3) bot can SCAN it
+        assert L._longshot_tier(q.lower()) is not None, "promoted other_<sig> must be scannable"
+        # 4) bot can BET it (uses the MEASURED wilson_lower, not a hardcoded rate)
+        pw = L._promoted_win(q.lower(), 0.65)
+        assert pw is not None and abs(pw["wl"] - 0.76) < 1e-9, pw
+    finally:
+        si.STATE_PATH = orig_state
+        if orig_disc is not None:
+            open(disc, "w").write(orig_disc)
+        else:
+            os.remove(disc)
+        os.remove(tmp)
+    print("PASS test_auto_hunt_loop_end_to_end")
+
+
 def test_discovery_excludes_crypto():
     """Auto-discovery must NEVER queue crypto patterns. (Novelty 'will X say' is
     no longer excluded — the archive price test confirmed it's a real +EV fade,
@@ -140,12 +210,20 @@ def test_discovery_excludes_crypto():
 
 def test_candidate_family_overlay():
     """A queued candidate keyword turns an 'other' market into its own testable
-    family, without disturbing already-classified markets."""
-    from polybot.edge_scan15 import family_of_with_candidates
+    family, without disturbing already-classified markets. AND an 'other' market
+    with NO candidate match now SELF-NAMES by signature (other_<sig>) so a recurring
+    pattern can promote — that's the auto-hunt loop closure."""
+    from polybot.edge_scan15 import family_of_with_candidates, other_signature
     cands = [{"family": "auto_weather", "keyword": "will the highest", "occurrences": 50}]
+    # queued candidate takes priority
     assert family_of_with_candidates("Will the highest temp exceed 80F?", cands) == "auto_weather"
-    assert family_of_with_candidates("Exact Score: 2-1?", cands) == "exact_score"  # unaffected
-    assert family_of_with_candidates("Some random one-off question", cands) == "other"
+    # already-classified markets unaffected
+    assert family_of_with_candidates("Exact Score: 2-1?", cands) == "exact_score"
+    # an unmatched 'other' market now self-names by signature (was: stayed 'other')
+    f = family_of_with_candidates("Will there be a red card today?", cands)
+    assert f.startswith("other_") and f != "other_", f
+    # a question with no stable multi-word phrase stays bare 'other' (never promoted)
+    assert family_of_with_candidates("Lakers?", cands) == "other"
     print("PASS test_candidate_family_overlay")
 
 

@@ -113,11 +113,13 @@ def promote(state: dict):
       >=PROMOTE_DAYS distinct days -> graduate to EXPLORATORY (half stake)
     A candidate must STILL clear the full math gate each of those days — we never
     bet noise; we just start betting a *proven-recurring* edge sooner, small."""
-    # Families we will NEVER auto-promote, even if they clear the gate: the
-    # grab-bag "other" (un-classified — could be anything, can't be reasoned
-    # about) and quarantined crypto. Promoting a catch-all is how a non-edge
-    # sneaks into live betting; require a real, named family.
-    NON_PROMOTABLE = ("other", "crypto_pricetail")
+    # Families we will NEVER auto-promote, even if they clear the gate: the bare
+    # grab-bag "other" (un-classified — can't be reasoned about) and quarantined
+    # crypto. BUT a SIGNATURE-NAMED 'other_<sig>' family IS promotable — it's a
+    # concrete, recurring, gate-measured pattern (the scan self-named it from the
+    # question text), not the un-reasoned catch-all. That is the link that makes the
+    # daily hunt self-wiring instead of dying at 'other'.
+    NON_PROMOTABLE = ("other", "other_", "crypto_pricetail")
 
     hist = _scan_history()
     days_by_cell = defaultdict(set)
@@ -126,8 +128,8 @@ def promote(state: dict):
         day = (h.get("ts") or "")[:10]
         for p in h.get("passed", []):
             fam = p["cell"].split("|")[0].strip()
-            if fam in NON_PROMOTABLE:
-                continue   # never promote a catch-all / quarantined family
+            if fam in NON_PROMOTABLE or fam.startswith("crypto"):
+                continue   # bare catch-all / quarantined crypto -> never promote
             days_by_cell[p["cell"]].add(day)
             latest_stats[p["cell"]] = p   # later entries overwrite -> most recent
 

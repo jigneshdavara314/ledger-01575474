@@ -157,6 +157,12 @@ def _self_improve_mult(question: str) -> float:
     def _fam_matches(cell_fam: str) -> bool:
         # family labels are like "spread_handicap", "exact_score", "over_under";
         # match if ANY of their word-parts appears in the question text.
+        # SIGNATURE families ('other_<sig>') must match the FULL signature substring
+        # — never word-parts — or a stop-word like "the" in the signature would
+        # match (and a disabled cell would wrongly zero stakes on) unrelated markets.
+        if cell_fam.startswith("other_"):
+            sig = cell_fam[len("other_"):].replace("_", " ").strip()
+            return bool(sig) and sig in ql
         parts = [p for p in cell_fam.replace("/", "_").split("_") if len(p) > 2]
         return any(p in ql for p in parts) if parts else False
 
