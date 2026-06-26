@@ -858,6 +858,31 @@ def test_settle_and_credit_atomic():
     print("PASS test_settle_and_credit_atomic")
 
 
+def test_live_price_snaps_to_tick_grid():
+    """LIVE-readiness: create_order REJECTS off-tick prices. Our bids come out at
+    4dp (e.g. 0.4337) which would raise -> no order. Price must snap DOWN to the
+    market tick (0.01 default / 0.001 for fine markets), stay in (0,1)."""
+    from polybot import executor as ex_mod
+    ex = ex_mod.Executor.__new__(ex_mod.Executor)
+    ex.mode = "LIVE"
+    class C1:
+        def get_tick_size(self, t): return 0.01
+    ex._client = C1()
+    assert ex._snap_to_tick("t", 0.4337) == 0.43      # rounds DOWN to 0.01 tick
+    assert ex._snap_to_tick("t", 0.999) <= 0.99
+    assert ex._snap_to_tick("t", 0.001) >= 0.01       # floor at one tick
+    class C2:
+        def get_tick_size(self, t): return 0.001
+    ex._client = C2()
+    assert ex._snap_to_tick("t", 0.4337) == 0.433     # finer grid honored
+    # fall back to 0.01 if tick lookup fails (never crash)
+    class CBoom:
+        def get_tick_size(self, t): raise RuntimeError("no tick")
+    ex._client = CBoom()
+    assert ex._snap_to_tick("t", 0.4337) == 0.43
+    print("PASS test_live_price_snaps_to_tick_grid")
+
+
 def test_live_safety_rails_block_real_orders():
     """LIVE rails must FAIL CLOSED before any real order is placed: kill-switch,
     per-bet cap, and daily cap each return a 'blocked_*' result with $0 filled and

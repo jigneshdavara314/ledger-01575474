@@ -137,6 +137,15 @@ class Executor:
             if signal.side == "YES"
             else signal.market.token_id_no
         )
+
+        # SNAP price to the market's tick grid. create_order rejects prices not on
+        # the tick (most markets tick 0.01, some 0.001) — our bids come out at 4dp
+        # like 0.4337, which would raise. Round DOWN to the tick (never pay more
+        # than intended), and re-derive shares from the snapped price.
+        price = self._snap_to_tick(token_id, price)
+        if price <= 0:
+            return {"mode": "LIVE", "status": "bad_price_after_snap",
+                    "filled_size": 0.0, "price": price, "order_id": None}
         shares = round(signal.size_usd / price, 2) if price else 0.0
 
         # --- affordability check against REAL on-chain USDC (not just SQLite) ---
@@ -202,13 +211,59 @@ class Executor:
             return 0.0, fallback_price
 
     def _has_funds(self, usd: float) -> bool:
-        """Check real USDC collateral before ordering. FAIL-CLOSED: if we cannot
-        read the on-chain balance, we DON'T submit (refusing to risk real money
-        on an unknown balance is safer than failing open)."""
+        """Check real USDC collateral AND allowance before ordering. FAIL-CLOSED:
+        if we cannot read the on-chain balance/allowance, we DON'T submit.
+
+        get_balance_allowance() REQUIRES a BalanceAllowanceParams(asset_type=
+        COLLATERAL) argument — calling it with no params throws (NoneType has no
+        signature_type), which previously made this ALWAYS return False so MODE=LIVE
+        placed zero trades. We pass the params, read the USDC balance (6-decimal
+        base units), and verify BOTH balance >= usd AND allowance >= usd (an order
+        needs the exchange to be approved to pull the USDC, else post_order fails)."""
         try:
-            bal = self._client.get_balance_allowance()
-            # py-clob-client returns balances in USDC base units (6 decimals)
-            avail = float(bal.get("balance", 0)) / 1e6
-            return avail >= usd
+            from py_clob_client.clob_types import BalanceAllowanceParams, AssetType
+            ba = self._client.get_balance_allowance(
+                BalanceAllowanceParams(asset_type=AssetType.COLLATERAL))
+            bal = float(ba.get("balance", 0)) / 1e6
+            allow = float(ba.get("allowance", ba.get("allowances", 0)) or 0) / 1e6
+            if allow < usd:
+                # try to set the allowance once (the "approve once" step), then re-read
+                self._ensure_allowance()
+                ba = self._client.get_balance_allowance(
+                    BalanceAllowanceParams(asset_type=AssetType.COLLATERAL))
+                allow = float(ba.get("allowance", ba.get("allowances", 0)) or 0) / 1e6
+            return bal >= usd and allow >= usd
+        except Exception as e:
+            print(f"[executor] LIVE funds/allowance check failed (fail-closed, no "
+                  f"order): {e}")
+            return False  # fail-closed: no confirmed funds/allowance -> no order
+
+    def _snap_to_tick(self, token_id: str, price: float) -> float:
+        """Round price DOWN to the market's tick grid (create_order rejects
+        off-tick prices). Queries the live tick; falls back to 0.01 (the common
+        Polymarket tick) if unavailable. Rounding down never pays above our bid."""
+        import math
+        tick = 0.01
+        try:
+            t = float(self._client.get_tick_size(token_id))
+            if t > 0:
+                tick = t
         except Exception:
-            return False  # fail-closed: no confirmed funds -> no order
+            pass
+        snapped = math.floor(price / tick) * tick
+        # keep within (0,1) and on a clean number of decimals for the tick
+        decimals = max(0, len(str(tick).split(".")[-1])) if "." in str(tick) else 0
+        snapped = round(min(0.999, max(tick, snapped)), decimals)
+        return snapped
+
+    def _ensure_allowance(self):
+        """One-time USDC allowance approval so the CTF exchange can pull collateral.
+        Without this, post_order fails even with funds. Idempotent — safe to call;
+        update_balance_allowance is a no-op if already approved."""
+        try:
+            from py_clob_client.clob_types import BalanceAllowanceParams, AssetType
+            self._client.update_balance_allowance(
+                BalanceAllowanceParams(asset_type=AssetType.COLLATERAL))
+            print("[executor] USDC allowance approved for the exchange (one-time).")
+        except Exception as e:
+            print(f"[executor] allowance approval failed: {e}")
