@@ -119,12 +119,23 @@ def summary(strategy) -> dict:
                 "WHERE status='OPEN' AND strategy=?", (strategy,)).fetchone()[0] or 0.0
         except Exception:
             open_exp = 0.0
+        # HEADLINE profit = REALIZED settled P&L for THIS strategy only (not
+        # equity-deposit, which would count open stakes as gains — same honesty
+        # fix as the main bankroll).
+        try:
+            realized = c.execute(
+                "SELECT COALESCE(SUM(pnl_usd),0) FROM trades "
+                "WHERE status IN ('WON','LOST') AND strategy=? "
+                "AND condition_id NOT LIKE 'bf-%'", (strategy,)).fetchone()[0] or 0.0
+        except Exception:
+            realized = 0.0
     open_exp = round(open_exp, 2)
     equity = round(bal + open_exp, 2)
-    profit = round(equity - dep, 2)
+    realized = round(realized, 2)
     return {"strategy": strategy, "balance": round(bal, 2), "initial_deposit": round(dep, 2),
-            "open_exposure": open_exp, "total_equity": equity, "profit": profit,
-            "return_pct": round((profit / dep * 100) if dep else 0, 1)}
+            "open_exposure": open_exp, "total_equity": equity,
+            "realized_profit": realized, "profit": realized,
+            "return_pct": round((realized / dep * 100) if dep else 0, 1)}
 
 
 def all_summaries() -> list:

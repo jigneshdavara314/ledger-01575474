@@ -377,6 +377,48 @@ def test_stable_unit_reproducible():
     print("PASS test_stable_unit_reproducible")
 
 
+def test_headline_profit_is_realized_not_open_inflated():
+    """P&L ACCURACY (production-critical): the headline profit/return must be the
+    REALIZED (settled WON/LOST) P&L only — the stake sitting in OPEN bets is
+    undecided and must NOT count as profit. Bug it guards: profit = equity - deposit
+    counted open stakes as gains (reported +10.3% when realized was +5.3%)."""
+    from polybot import config, store, bankroll
+    import tempfile, os
+    fd, path = tempfile.mkstemp(suffix=".db"); os.close(fd)
+    config.DB_PATH = path
+    config.PAPER_FEE_FRAC = 0.0
+    store.init_db(); bankroll.init_bankroll()
+    from polybot.strategy import Signal
+    from polybot.market_data import Market
+    def mk(cid):
+        return Market(condition_id=cid, question="Q", token_id_yes="y", token_id_no="n",
+                      price_yes=0.5, liquidity=1e5, volume=0, volume_24h=0, spread=0,
+                      end_date="", hours_to_resolution=1, category="soccer", event_title="")
+    # one WON bet (+$10 realized) and one still-OPEN bet ($20 stake parked)
+    s1 = Signal(market=mk("0xWON"), side="NO", fair_prob=0.8, market_prob=0.5,
+                edge=0.3, size_usd=10, reason="t", estimator="x")
+    store.record_trade(s1, {"mode": "PAPER", "status": "simulated", "price": 0.5})
+    bankroll.deduct_stake(10.0, note="bet1")
+    tid = store.open_positions()[0][0]
+    store.settle_and_credit(tid, won=True, size_usd=10.0, shares=20.0)  # +$10 realized
+    s2 = Signal(market=mk("0xOPEN"), side="NO", fair_prob=0.8, market_prob=0.5,
+                edge=0.3, size_usd=20, reason="t", estimator="x")
+    store.record_trade(s2, {"mode": "PAPER", "status": "simulated", "price": 0.5})
+    bankroll.deduct_stake(20.0, note="bet2")     # $20 now parked in an OPEN bet
+
+    b = bankroll.summary()
+    # headline profit = REALIZED only ($10), NOT $10 + $20 open stake.
+    assert abs(b["realized_profit"] - 10.0) < 1e-6, b
+    assert abs(b["profit"] - 10.0) < 1e-6, "profit alias must be realized, not inflated"
+    assert b["open_exposure"] == 20.0, b
+    assert abs(b["total_equity"] - (b["balance"] + 20.0)) < 1e-6  # open held at cost
+    # headline profit must equal the settled-trades P&L exactly (the source of truth),
+    # never including the $20 open stake.
+    assert abs(b["profit"] - store.performance_summary()["pnl_usd"]) < 1e-6
+    os.remove(path)
+    print("PASS test_headline_profit_is_realized_not_open_inflated")
+
+
 def test_paper_fill_pays_the_ask_not_the_bid():
     """ACCURACY: paper fills must model the realistic price a sub-ask resting limit
     actually clears at (the ASK), not the optimistic bid+flat-slippage. This shrinks

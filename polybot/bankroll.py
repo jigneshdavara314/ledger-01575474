@@ -156,10 +156,15 @@ def summary() -> dict:
     """Balance, profit vs initial deposit, and total return %.
 
     Open exposure is the EXACT sum of stakes on currently-OPEN trades — taken
-    straight from the trades table, not derived from the cash log (which mixes
-    in realized P&L from settled bets and drifts). Total equity = free cash +
-    that open stake. Profit = equity - initial deposit. One coherent number set,
-    all from real paper trades (no simulated-backtest credits).
+    straight from the trades table. Total equity = free cash + that open stake
+    (open bets held at COST, never marked up — honest). All from real paper trades.
+
+    HONESTY: the HEADLINE profit/return is the REALIZED P&L only (settled WON/LOST
+    bets) — money that has actually been won or lost. The stake sitting in OPEN bets
+    is NOT profit (it's undecided), so it must not inflate the headline. Previously
+    `profit = equity - deposit` counted open stakes as gains (e.g. reported +10.3%
+    when realized was +5.3%). We now report realized_profit/return_pct as the
+    trustworthy number, and keep total_equity (incl. open-at-cost) separately.
     """
     init_bankroll()
     with _conn() as c:
@@ -172,16 +177,28 @@ def summary() -> dict:
             ).fetchone()[0] or 0.0
         except Exception:
             open_exposure = 0.0
+        # REALIZED P&L = sum of pnl on SETTLED real trades (the honest headline).
+        try:
+            realized = c.execute(
+                "SELECT COALESCE(SUM(pnl_usd),0) FROM trades "
+                "WHERE status IN ('WON','LOST') AND condition_id NOT LIKE 'bf-%' "
+                "AND COALESCE(exec_status,'') != 'backfill'"
+            ).fetchone()[0] or 0.0
+        except Exception:
+            realized = 0.0
     open_exposure = round(open_exposure, 2)
     equity = round(bal + open_exposure, 2)
-    profit = round(equity - dep, 2)
+    realized = round(realized, 2)
     return {
         "balance": round(bal, 2),
         "initial_deposit": round(dep, 2),
         "open_exposure": open_exposure,
-        "total_equity": equity,
-        "profit": profit,
-        "return_pct": round((profit / dep * 100) if dep else 0, 1),
+        "total_equity": equity,            # cash + open bets at cost
+        "realized_profit": realized,       # HEADLINE: actually won/lost (settled)
+        "return_pct": round((realized / dep * 100) if dep else 0, 1),  # realized %
+        # `profit` kept as an alias of realized_profit for back-compat with callers,
+        # so nothing reports the open-stake-inflated figure as profit anymore.
+        "profit": realized,
     }
 
 
