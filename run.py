@@ -746,7 +746,60 @@ def cmd_confidence():
     print("  themselves live, not by assuming a backtest holds.")
 
 
+def cmd_selfcheck():
+    """HONEST health check of the autonomous loop + P&L — so you never have to take
+    anyone's word that 'it works'. Prints PASS/FAIL for each link. Run any time."""
+    import os
+    from polybot import store, bankroll, strategy_bankroll as sb
+    store.init_db()
+    print("=" * 64)
+    print("  SELF-CHECK — is the bot actually working + accounting honest?")
+    print("=" * 64)
+    checks = []
+
+    def chk(name, ok, detail=""):
+        checks.append(ok)
+        print(f"  [{'PASS' if ok else 'FAIL'}] {name}" + (f"  — {detail}" if detail else ""))
+
+    # 1) P&L reconciles: balance + main open == equity (the identity)
+    b = bankroll.summary()
+    recon = abs((b["balance"] + b["open_exposure"]) - b["total_equity"]) < 0.01
+    chk("P&L reconciles (balance + open == equity)", recon,
+        f"${b['balance']:.2f}+${b['open_exposure']:.2f}=${b['total_equity']:.2f}")
+    # 2) headline profit == settled-trades P&L (realized only, not open-inflated)
+    perf = store.performance_summary()
+    honest = abs(b["realized_profit"] - perf["pnl_usd"]) < 0.01
+    chk("Headline profit is REALIZED only (matches ledger)", honest,
+        f"realized ${b['realized_profit']:.2f} == ledger ${perf['pnl_usd']:.2f}")
+    # 3) auto-hunt: scan self-names the 'other' grab-bag (loop not dead at 'other')
+    from polybot.edge_scan15 import family_of_with_candidates
+    fam = family_of_with_candidates("X vs Y: will there be a red card in the match?", [])
+    chk("Auto-hunt self-names 'other' edges (other_<sig>)", fam.startswith("other_"), fam)
+    # 4) cloud schedules present
+    botyml = open(".github/workflows/bot.yml").read() if os.path.exists(".github/workflows/bot.yml") else ""
+    scanyml = open(".github/workflows/edge-scan.yml").read() if os.path.exists(".github/workflows/edge-scan.yml") else ""
+    chk("Cloud bot cron + self-improve wired", "cron" in botyml and "self_improve" in botyml)
+    chk("Cloud edge-scan cron + discover wired", "cron" in scanyml and "edge_scan15" in scanyml)
+    # 5) recently active? (last bet + last resolved)
+    import sqlite3
+    c = sqlite3.connect(config.DB_PATH)
+    last_bet = c.execute("SELECT MAX(ts) FROM trades WHERE condition_id NOT LIKE 'bf-%'").fetchone()[0]
+    n_open = c.execute("SELECT COUNT(*) FROM trades WHERE status='OPEN'").fetchone()[0]
+    print(f"  [INFO] last bet: {last_bet}  | open positions: {n_open}  | resolved: {perf['resolved']} (W{perf['won']}/L{perf['lost']})")
+    # 6) validated edge families the bot can currently bet
+    from polybot.calib_table import CALIB
+    from polybot.self_improve import load_state
+    promoted = list(load_state().get("tiers", {}).keys())
+    print(f"  [INFO] {len(CALIB)} calibrated families + {len(promoted)} auto-promoted edge cells")
+    print("-" * 64)
+    allgood = all(checks)
+    print(f"  RESULT: {'ALL CHECKS PASS — loop is wired + P&L honest' if allgood else 'SOME CHECKS FAILED (see above)'}")
+    print(f"  Headline: equity ${b['total_equity']:.2f}, realized {b['return_pct']:+.1f}% "
+          f"(realized = settled only; open bets held at cost).")
+
+
 COMMANDS = {
+    "selfcheck": cmd_selfcheck,
     "scout":   cmd_scout,
     "export":  cmd_export,
     "short":   lambda: cmd_short_trade(scout_only=False),

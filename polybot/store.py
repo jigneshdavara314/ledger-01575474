@@ -34,6 +34,12 @@ STATUS_VOID = "VOID"   # market cancelled/refunded (50-50): stake returned, pnl 
 _REAL_ONLY = ("condition_id NOT LIKE 'bf-%' "
               "AND COALESCE(exec_status,'') != 'backfill'")
 
+# MAIN-BOOK scope: tournament strategies have their OWN bankrolls, so the HEADLINE
+# performance (the number tied to the main bankroll) counts only main/default trades.
+# Tournament books report separately via strategy_bankroll. This keeps the headline
+# P&L exactly reconciled with bankroll.summary() (no cross-book mixing).
+_MAIN_BOOK = "COALESCE(strategy,'') IN ('','conservative_fade')"
+
 
 def _conn():
     return sqlite3.connect(config.DB_PATH)
@@ -66,9 +72,12 @@ def init_db():
             )
             """
         )
-        # Add columns to existing databases that predate this schema
+        # Add columns to existing databases that predate this schema. 'strategy'
+        # MUST exist here (not just when record_trade first runs) because the
+        # headline P&L queries scope on it — a fresh DB needs the column up front.
         for col, typedef in [("category","TEXT"), ("estimator","TEXT"),
-                              ("hours_to_res","REAL"), ("event_slug","TEXT")]:
+                              ("hours_to_res","REAL"), ("event_slug","TEXT"),
+                              ("strategy","TEXT")]:
             try:
                 c.execute(f"ALTER TABLE trades ADD COLUMN {col} {typedef}")
             except Exception:
@@ -565,25 +574,26 @@ def recent_trades(limit: int = 30):
 def performance_summary() -> dict:
     """Aggregate win rate, P&L and ROI over all RESOLVED positions (REAL only —
     simulated/backfill rows are excluded so the headline never overstates)."""
+    _SCOPE = _REAL_ONLY + " AND " + _MAIN_BOOK   # headline = main book only
     with _conn() as c:
         total, open_n = c.execute(
-            "SELECT COUNT(*), SUM(status=?) FROM trades WHERE " + _REAL_ONLY,
+            "SELECT COUNT(*), SUM(status=?) FROM trades WHERE " + _SCOPE,
             (STATUS_OPEN,)
         ).fetchone()
         won = c.execute(
-            "SELECT COUNT(*) FROM trades WHERE status=? AND " + _REAL_ONLY,
+            "SELECT COUNT(*) FROM trades WHERE status=? AND " + _SCOPE,
             (STATUS_WON,)
         ).fetchone()[0]
         lost = c.execute(
-            "SELECT COUNT(*) FROM trades WHERE status=? AND " + _REAL_ONLY,
+            "SELECT COUNT(*) FROM trades WHERE status=? AND " + _SCOPE,
             (STATUS_LOST,)
         ).fetchone()[0]
         staked = c.execute(
-            "SELECT COALESCE(SUM(size_usd),0) FROM trades WHERE status IN (?,?) AND " + _REAL_ONLY,
+            "SELECT COALESCE(SUM(size_usd),0) FROM trades WHERE status IN (?,?) AND " + _SCOPE,
             (STATUS_WON, STATUS_LOST),
         ).fetchone()[0]
         pnl = c.execute(
-            "SELECT COALESCE(SUM(pnl_usd),0) FROM trades WHERE status IN (?,?) AND " + _REAL_ONLY,
+            "SELECT COALESCE(SUM(pnl_usd),0) FROM trades WHERE status IN (?,?) AND " + _SCOPE,
             (STATUS_WON, STATUS_LOST),
         ).fetchone()[0]
 
