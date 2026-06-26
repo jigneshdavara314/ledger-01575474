@@ -1,10 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "will cura\u00e7ao be",
-      "keyword": "will cura\u00e7ao be",
-      "occurrences": 10,
-      "family": "auto_will_cura_ao_be"
-    }
-  ]
+  "candidates": []
 }
