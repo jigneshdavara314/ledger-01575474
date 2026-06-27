@@ -1,28 +1,16 @@
 {
   "candidates": [
     {
-      "pattern": "will nvidia (nvda)",
-      "keyword": "will nvidia (nvda)",
-      "occurrences": 20,
-      "family": "auto_will_nvidia_nvda"
-    },
-    {
-      "pattern": "will apple (aapl)",
-      "keyword": "will apple (aapl)",
-      "occurrences": 18,
-      "family": "auto_will_apple_aapl"
-    },
-    {
-      "pattern": "will opendoor technologies",
-      "keyword": "will opendoor technologies",
-      "occurrences": 13,
-      "family": "auto_will_opendoor_technologi"
-    },
-    {
-      "pattern": "will netflix, inc.",
-      "keyword": "will netflix, inc.",
+      "pattern": "will wti crude",
+      "keyword": "will wti crude",
       "occurrences": 12,
-      "family": "auto_will_netflix_inc"
+      "family": "auto_will_wti_crude"
+    },
+    {
+      "pattern": "will natural gas",
+      "keyword": "will natural gas",
+      "occurrences": 12,
+      "family": "auto_will_natural_gas"
     },
     {
       "pattern": "will micron (mu)",
@@ -37,28 +25,22 @@
       "family": "auto_will_meta_meta"
     },
     {
-      "pattern": "will amazon (amzn)",
-      "keyword": "will amazon (amzn)",
-      "occurrences": 11,
-      "family": "auto_will_amazon_amzn"
-    },
-    {
       "pattern": "will palantir (pltr)",
       "keyword": "will palantir (pltr)",
       "occurrences": 11,
       "family": "auto_will_palantir_pltr"
     },
     {
+      "pattern": "will nvidia (nvda)",
+      "keyword": "will nvidia (nvda)",
+      "occurrences": 11,
+      "family": "auto_will_nvidia_nvda"
+    },
+    {
       "pattern": "will tesla (tsla)",
       "keyword": "will tesla (tsla)",
       "occurrences": 11,
       "family": "auto_will_tesla_tsla"
-    },
-    {
-      "pattern": "will microsoft (msft)",
-      "keyword": "will microsoft (msft)",
-      "occurrences": 11,
-      "family": "auto_will_microsoft_msft"
     },
     {
       "pattern": "will opendoor (open)",
@@ -79,52 +61,22 @@
       "family": "auto_will_google_googl"
     },
     {
-      "pattern": "will meta platforms,",
-      "keyword": "will meta platforms,",
-      "occurrences": 11,
-      "family": "auto_will_meta_platforms"
-    },
-    {
-      "pattern": "will amazon.com, inc.",
-      "keyword": "will amazon.com, inc.",
+      "pattern": "will iraq be",
+      "keyword": "will iraq be",
       "occurrences": 10,
-      "family": "auto_will_amazon_com_inc"
+      "family": "auto_will_iraq_be"
     },
     {
-      "pattern": "will microsoft corporation",
-      "keyword": "will microsoft corporation",
-      "occurrences": 10,
-      "family": "auto_will_microsoft_corporati"
-    },
-    {
-      "pattern": "will airbnb, inc.",
-      "keyword": "will airbnb, inc.",
+      "pattern": "will gold (xauusd)",
+      "keyword": "will gold (xauusd)",
       "occurrences": 9,
-      "family": "auto_will_airbnb_inc"
+      "family": "auto_will_gold_xauusd"
     },
     {
-      "pattern": "will s&p ###",
-      "keyword": "will s&p",
-      "occurrences": 9,
-      "family": "auto_will_s_p"
-    },
-    {
-      "pattern": "will robinhood markets,",
-      "keyword": "will robinhood markets,",
+      "pattern": "will there be a run scored in the first inning?",
+      "keyword": "will there be a run scored in the first inning?",
       "occurrences": 8,
-      "family": "auto_will_robinhood_markets"
-    },
-    {
-      "pattern": "will rocket lab",
-      "keyword": "will rocket lab",
-      "occurrences": 8,
-      "family": "auto_will_rocket_lab"
-    },
-    {
-      "pattern": "will tesla, inc.",
-      "keyword": "will tesla, inc.",
-      "occurrences": 8,
-      "family": "auto_will_tesla_inc"
+      "family": "auto_will_there_be_a_run_scor"
     }
   ]
 }
