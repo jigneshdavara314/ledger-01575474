@@ -1,10 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will new zealand",
-      "keyword": "will new zealand",
-      "occurrences": 17,
-      "family": "auto_will_new_zealand"
+      "pattern": "coppa il mondo t##",
+      "keyword": "coppa il mondo t",
+      "occurrences": 9,
+      "family": "auto_coppa_il_mondo_t"
     }
   ]
 }
