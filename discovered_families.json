@@ -1,22 +1,22 @@
 {
   "candidates": [
     {
-      "pattern": "coppa il mondo t##",
-      "keyword": "coppa il mondo t",
-      "occurrences": 12,
-      "family": "auto_coppa_il_mondo_t"
+      "pattern": "ufc fight night",
+      "keyword": "ufc fight night",
+      "occurrences": 10,
+      "family": "auto_ufc_fight_night"
     },
     {
       "pattern": "fight to go",
       "keyword": "fight to go",
-      "occurrences": 9,
+      "occurrences": 10,
       "family": "auto_fight_to_go"
     },
     {
-      "pattern": "ufc fight night",
-      "keyword": "ufc fight night",
-      "occurrences": 8,
-      "family": "auto_ufc_fight_night"
+      "pattern": "coppa il mondo t##",
+      "keyword": "coppa il mondo t",
+      "occurrences": 9,
+      "family": "auto_coppa_il_mondo_t"
     }
   ]
 }
