@@ -101,3 +101,4 @@
 {"ts": "2026-06-27T04:12:22Z", "days": 45, "n_obs": 2719, "passed": [{"cell": "moneyline | pay NO 0.45-0.55", "n": 55, "win_rate": 0.764, "ev": 0.461, "wilson_lower": 0.564}]}
 {"ts": "2026-06-27T07:48:09Z", "days": 45, "n_obs": 2732, "passed": []}
 {"ts": "2026-06-27T10:02:52Z", "days": 45, "n_obs": 2740, "passed": [{"cell": "moneyline | pay NO 0.45-0.55", "n": 58, "win_rate": 0.759, "ev": 0.455, "wilson_lower": 0.563}]}
+{"ts": "2026-06-27T11:43:30Z", "days": 45, "n_obs": 2740, "passed": [{"cell": "moneyline | pay NO 0.45-0.55", "n": 58, "win_rate": 0.759, "ev": 0.455, "wilson_lower": 0.563}]}
