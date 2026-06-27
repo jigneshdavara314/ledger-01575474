@@ -1,172 +1,22 @@
 {
   "candidates": [
     {
-      "pattern": "will elton hermansson",
-      "keyword": "will elton hermansson",
-      "occurrences": 16,
-      "family": "auto_will_elton_hermansson"
+      "pattern": "will saudi arabia",
+      "keyword": "will saudi arabia",
+      "occurrences": 17,
+      "family": "auto_will_saudi_arabia"
     },
     {
-      "pattern": "will william hakansson",
-      "keyword": "will william hakansson",
-      "occurrences": 16,
-      "family": "auto_will_william_hakansson"
+      "pattern": "will new zealand",
+      "keyword": "will new zealand",
+      "occurrences": 17,
+      "family": "auto_will_new_zealand"
     },
     {
-      "pattern": "will tynan lawrence",
-      "keyword": "will tynan lawrence",
-      "occurrences": 16,
-      "family": "auto_will_tynan_lawrence"
-    },
-    {
-      "pattern": "will nikita klepov",
-      "keyword": "will nikita klepov",
-      "occurrences": 15,
-      "family": "auto_will_nikita_klepov"
-    },
-    {
-      "pattern": "will oscar hemming",
-      "keyword": "will oscar hemming",
-      "occurrences": 15,
-      "family": "auto_will_oscar_hemming"
-    },
-    {
-      "pattern": "will malte gustafsson",
-      "keyword": "will malte gustafsson",
-      "occurrences": 15,
-      "family": "auto_will_malte_gustafsson"
-    },
-    {
-      "pattern": "will alexander command",
-      "keyword": "will alexander command",
-      "occurrences": 15,
-      "family": "auto_will_alexander_command"
-    },
-    {
-      "pattern": "will ilya morozov",
-      "keyword": "will ilya morozov",
-      "occurrences": 15,
-      "family": "auto_will_ilya_morozov"
-    },
-    {
-      "pattern": "will oliver suvanto",
-      "keyword": "will oliver suvanto",
-      "occurrences": 15,
-      "family": "auto_will_oliver_suvanto"
-    },
-    {
-      "pattern": "will maddox dagenais",
-      "keyword": "will maddox dagenais",
-      "occurrences": 15,
-      "family": "auto_will_maddox_dagenais"
-    },
-    {
-      "pattern": "will xavier villeneuve",
-      "keyword": "will xavier villeneuve",
-      "occurrences": 15,
-      "family": "auto_will_xavier_villeneuve"
-    },
-    {
-      "pattern": "will adam novotn\u00fd",
-      "keyword": "will adam novotn\u00fd",
-      "occurrences": 15,
-      "family": "auto_will_adam_novotn"
-    },
-    {
-      "pattern": "will ethan belchetz",
-      "keyword": "will ethan belchetz",
-      "occurrences": 15,
-      "family": "auto_will_ethan_belchetz"
-    },
-    {
-      "pattern": "will jp hurlbert",
-      "keyword": "will jp hurlbert",
-      "occurrences": 15,
-      "family": "auto_will_jp_hurlbert"
-    },
-    {
-      "pattern": "will marcus nordmark",
-      "keyword": "will marcus nordmark",
-      "occurrences": 15,
-      "family": "auto_will_marcus_nordmark"
-    },
-    {
-      "pattern": "will wyatt cullen",
-      "keyword": "will wyatt cullen",
-      "occurrences": 15,
-      "family": "auto_will_wyatt_cullen"
-    },
-    {
-      "pattern": "will carson carels",
-      "keyword": "will carson carels",
-      "occurrences": 15,
-      "family": "auto_will_carson_carels"
-    },
-    {
-      "pattern": "will keaton verhoeff",
-      "keyword": "will keaton verhoeff",
-      "occurrences": 15,
-      "family": "auto_will_keaton_verhoeff"
-    },
-    {
-      "pattern": "will chase reid",
-      "keyword": "will chase reid",
-      "occurrences": 15,
-      "family": "auto_will_chase_reid"
-    },
-    {
-      "pattern": "will alberts smits",
-      "keyword": "will alberts smits",
-      "occurrences": 15,
-      "family": "auto_will_alberts_smits"
-    },
-    {
-      "pattern": "will viggo bj\u00f6rck",
-      "keyword": "will viggo bj\u00f6rck",
-      "occurrences": 15,
-      "family": "auto_will_viggo_bj_rck"
-    },
-    {
-      "pattern": "will ryan lin",
-      "keyword": "will ryan lin",
-      "occurrences": 14,
-      "family": "auto_will_ryan_lin"
-    },
-    {
-      "pattern": "will liam ruck",
-      "keyword": "will liam ruck",
-      "occurrences": 14,
-      "family": "auto_will_liam_ruck"
-    },
-    {
-      "pattern": "will markus ruck",
-      "keyword": "will markus ruck",
-      "occurrences": 14,
-      "family": "auto_will_markus_ruck"
-    },
-    {
-      "pattern": "will mathis preston",
-      "keyword": "will mathis preston",
-      "occurrences": 14,
-      "family": "auto_will_mathis_preston"
-    },
-    {
-      "pattern": "will tommy bleyl",
-      "keyword": "will tommy bleyl",
-      "occurrences": 13,
-      "family": "auto_will_tommy_bleyl"
-    },
-    {
-      "pattern": "will the game go to extra innings?",
-      "keyword": "will the game go to extra innings?",
+      "pattern": "will uruguay be",
+      "keyword": "will uruguay be",
       "occurrences": 10,
-      "family": "auto_will_the_game_go_to_extr"
-    },
-    {
-      "pattern": "will daxon rudolph",
-      "keyword": "will daxon rudolph",
-      "occurrences": 8,
-      "family": "auto_will_daxon_rudolph"
+      "family": "auto_will_uruguay_be"
     }
   ]
 }

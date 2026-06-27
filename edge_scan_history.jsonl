@@ -99,3 +99,4 @@
 {"ts": "2026-06-26T22:11:33Z", "days": 45, "n_obs": 2732, "passed": []}
 {"ts": "2026-06-27T00:03:16Z", "days": 45, "n_obs": 2738, "passed": [{"cell": "moneyline | pay NO 0.45-0.55", "n": 50, "win_rate": 0.78, "ev": 0.491, "wilson_lower": 0.569}]}
 {"ts": "2026-06-27T04:12:22Z", "days": 45, "n_obs": 2719, "passed": [{"cell": "moneyline | pay NO 0.45-0.55", "n": 55, "win_rate": 0.764, "ev": 0.461, "wilson_lower": 0.564}]}
+{"ts": "2026-06-27T07:48:09Z", "days": 45, "n_obs": 2732, "passed": []}
