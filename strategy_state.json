@@ -6,9 +6,9 @@
       "promoted": "2026-06-25",
       "recurred": 2,
       "source": "auto-trial",
-      "measured_win": 0.77,
-      "measured_wilson_lower": 0.576,
-      "measured_n": 61,
+      "measured_win": 0.78,
+      "measured_wilson_lower": 0.569,
+      "measured_n": 50,
       "direction": "NO",
       "band_lo": 0.45,
       "band_hi": 0.55
@@ -33,5 +33,5 @@
   "warnings": {
     "over_under | pay YES 0.75-0.95": 2
   },
-  "updated": "2026-06-26"
+  "updated": "2026-06-27"
 }
