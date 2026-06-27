@@ -1,22 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will saudi arabia",
-      "keyword": "will saudi arabia",
-      "occurrences": 17,
-      "family": "auto_will_saudi_arabia"
-    },
-    {
       "pattern": "will new zealand",
       "keyword": "will new zealand",
       "occurrences": 17,
       "family": "auto_will_new_zealand"
-    },
-    {
-      "pattern": "will uruguay be",
-      "keyword": "will uruguay be",
-      "occurrences": 10,
-      "family": "auto_will_uruguay_be"
     }
   ]
 }
