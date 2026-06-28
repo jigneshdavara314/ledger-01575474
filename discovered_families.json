@@ -1,10 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "will iran be",
-      "keyword": "will iran be",
-      "occurrences": 8,
-      "family": "auto_will_iran_be"
-    }
-  ]
+  "candidates": []
 }
