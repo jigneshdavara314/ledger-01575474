@@ -117,3 +117,4 @@
 {"ts": "2026-06-28T16:09:56Z", "days": 45, "n_obs": 2816, "passed": [{"cell": "over_under | pay NO 0.25-0.45", "n": 119, "win_rate": 0.521, "ev": 0.47, "wilson_lower": 0.387}]}
 {"ts": "2026-06-28T18:05:11Z", "days": 45, "n_obs": 2830, "passed": [{"cell": "moneyline | pay NO 0.45-0.55", "n": 41, "win_rate": 0.78, "ev": 0.491, "wilson_lower": 0.547}, {"cell": "over_under | pay NO 0.25-0.45", "n": 119, "win_rate": 0.521, "ev": 0.47, "wilson_lower": 0.387}]}
 {"ts": "2026-06-28T20:14:10Z", "days": 45, "n_obs": 2841, "passed": [{"cell": "moneyline | pay NO 0.45-0.55", "n": 41, "win_rate": 0.78, "ev": 0.491, "wilson_lower": 0.547}, {"cell": "over_under | pay NO 0.25-0.45", "n": 119, "win_rate": 0.521, "ev": 0.47, "wilson_lower": 0.387}]}
+{"ts": "2026-06-28T22:01:36Z", "days": 45, "n_obs": 2828, "passed": [{"cell": "moneyline | pay NO 0.45-0.55", "n": 40, "win_rate": 0.8, "ev": 0.52, "wilson_lower": 0.564}]}
