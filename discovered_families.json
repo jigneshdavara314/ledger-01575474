@@ -1,18 +1,6 @@
 {
   "candidates": [
     {
-      "pattern": "will south korea",
-      "keyword": "will south korea",
-      "occurrences": 12,
-      "family": "auto_will_south_korea"
-    },
-    {
-      "pattern": "will uzbekistan be",
-      "keyword": "will uzbekistan be",
-      "occurrences": 10,
-      "family": "auto_will_uzbekistan_be"
-    },
-    {
       "pattern": "will iran be",
       "keyword": "will iran be",
       "occurrences": 8,
