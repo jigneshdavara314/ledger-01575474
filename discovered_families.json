@@ -1,16 +1,22 @@
 {
   "candidates": [
     {
-      "pattern": "will the game go to extra innings?",
-      "keyword": "will the game go to extra innings?",
-      "occurrences": 8,
-      "family": "auto_will_the_game_go_to_extr"
+      "pattern": "will south korea",
+      "keyword": "will south korea",
+      "occurrences": 12,
+      "family": "auto_will_south_korea"
     },
     {
-      "pattern": "will there be a run scored in the first inning?",
-      "keyword": "will there be a run scored in the first inning?",
+      "pattern": "will uzbekistan be",
+      "keyword": "will uzbekistan be",
+      "occurrences": 10,
+      "family": "auto_will_uzbekistan_be"
+    },
+    {
+      "pattern": "will iran be",
+      "keyword": "will iran be",
       "occurrences": 8,
-      "family": "auto_will_there_be_a_run_scor"
+      "family": "auto_will_iran_be"
     }
   ]
 }
