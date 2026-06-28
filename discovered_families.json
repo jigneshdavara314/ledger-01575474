@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will the game go to extra innings?",
+      "keyword": "will the game go to extra innings?",
+      "occurrences": 8,
+      "family": "auto_will_the_game_go_to_extr"
+    },
+    {
+      "pattern": "will there be a run scored in the first inning?",
+      "keyword": "will there be a run scored in the first inning?",
+      "occurrences": 8,
+      "family": "auto_will_there_be_a_run_scor"
+    }
+  ]
 }
