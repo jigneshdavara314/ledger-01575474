@@ -1,10 +1,28 @@
 {
   "candidates": [
     {
+      "pattern": "will there be a run scored in the first inning?",
+      "keyword": "will there be a run scored in the first inning?",
+      "occurrences": 12,
+      "family": "auto_will_there_be_a_run_scor"
+    },
+    {
+      "pattern": "t## blast, women",
+      "keyword": "t blast, women",
+      "occurrences": 12,
+      "family": "auto_t_blast_women"
+    },
+    {
       "pattern": "coppa il mondo t##",
       "keyword": "coppa il mondo t",
       "occurrences": 9,
       "family": "auto_coppa_il_mondo_t"
+    },
+    {
+      "pattern": "will mrbeast's next",
+      "keyword": "will mrbeast's next",
+      "occurrences": 8,
+      "family": "auto_will_mrbeast_s_next"
     }
   ]
 }
