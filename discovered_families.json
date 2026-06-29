@@ -1,10 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "nsk trophy state t##",
-      "keyword": "nsk trophy state t",
-      "occurrences": 9,
-      "family": "auto_nsk_trophy_state_t"
-    }
-  ]
+  "candidates": []
 }
