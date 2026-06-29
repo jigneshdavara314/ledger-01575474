@@ -1,10 +1,16 @@
 {
   "candidates": [
     {
-      "pattern": "will south africa",
-      "keyword": "will south africa",
-      "occurrences": 19,
-      "family": "auto_will_south_africa"
+      "pattern": "will there be",
+      "keyword": "will there be",
+      "occurrences": 13,
+      "family": "auto_will_there_be"
+    },
+    {
+      "pattern": "wtt - women's singles",
+      "keyword": "wtt - women's singles",
+      "occurrences": 8,
+      "family": "auto_wtt_women_s_singles"
     }
   ]
 }
