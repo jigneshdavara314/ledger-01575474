@@ -26,26 +26,28 @@
       "band_lo": 0.55,
       "band_hi": 0.75
     },
-    "over_under | pay NO 0.25-0.45": {
+    "over_under | pay YES 0.25-0.45": {
       "tier": "trial",
       "mult": 0.15,
       "promoted": "2026-06-29",
       "recurred": 2,
       "source": "auto-trial",
-      "measured_win": 0.523,
-      "measured_wilson_lower": 0.384,
-      "measured_n": 111,
-      "direction": "NO",
+      "measured_win": 0.543,
+      "measured_wilson_lower": 0.431,
+      "measured_n": 175,
+      "direction": "YES",
       "band_lo": 0.25,
       "band_hi": 0.45
     }
   },
   "disabled": [
-    "over_under | pay YES 0.75-0.95"
+    "over_under | pay YES 0.75-0.95",
+    "over_under | pay NO 0.25-0.45"
   ],
   "warnings": {
     "over_under | pay YES 0.75-0.95": 2,
-    "over_under | pay NO 0.25-0.45": 1
+    "over_under | pay NO 0.25-0.45": 2,
+    "over_under | pay YES 0.25-0.45": 1
   },
   "updated": "2026-06-29"
 }

@@ -24,3 +24,7 @@
 {"ts": "2026-06-26T08:51:16.104609", "action": "GRADUATE", "cell": "other_red_card_in_the | pay NO 0.55-0.75", "recurred_days": 6, "tier": "exploratory", "mult": 0.5}
 {"ts": "2026-06-29T04:51:56.071165", "action": "TRIAL", "cell": "over_under | pay NO 0.25-0.45", "recurred_days": 2, "tier": "trial", "mult": 0.25}
 {"ts": "2026-06-29T04:51:56.072391", "action": "WARN_IMPROVE", "cell": "over_under | pay NO 0.25-0.45", "live_win": 0.727, "breakeven": 0.813, "new_mult": 0.15, "warnings": 1}
+{"ts": "2026-06-29T09:34:23.203140", "action": "TRIAL", "cell": "over_under | pay YES 0.25-0.45", "recurred_days": 2, "tier": "trial", "mult": 0.25}
+{"ts": "2026-06-29T09:34:23.204061", "action": "WARN_IMPROVE", "cell": "over_under | pay NO 0.25-0.45", "live_win": 0.727, "breakeven": 0.813, "new_mult": 0.1, "warnings": 2}
+{"ts": "2026-06-29T09:34:23.204139", "action": "DISABLE", "cell": "over_under | pay NO 0.25-0.45", "reason": "underperformed after grace", "warnings": 2}
+{"ts": "2026-06-29T09:34:23.204451", "action": "WARN_IMPROVE", "cell": "over_under | pay YES 0.25-0.45", "live_win": 0.727, "breakeven": 0.813, "new_mult": 0.15, "warnings": 1}
