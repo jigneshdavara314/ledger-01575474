@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will the median",
+      "keyword": "will the median",
+      "occurrences": 48,
+      "family": "auto_will_the_median"
+    }
+  ]
 }
