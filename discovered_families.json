@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "wtt - women's singles",
+      "keyword": "wtt - women's singles",
+      "occurrences": 8,
+      "family": "auto_wtt_women_s_singles"
+    },
+    {
+      "pattern": "will \"supergirl\" opening",
+      "keyword": "will \"supergirl\" opening",
+      "occurrences": 8,
+      "family": "auto_will_supergirl_opening"
+    }
+  ]
 }
