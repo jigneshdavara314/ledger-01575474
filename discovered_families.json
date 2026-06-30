@@ -1,16 +1,40 @@
 {
   "candidates": [
     {
-      "pattern": "wtt - women's singles",
-      "keyword": "wtt - women's singles",
-      "occurrences": 8,
-      "family": "auto_wtt_women_s_singles"
+      "pattern": "will there be a run scored in the first inning?",
+      "keyword": "will there be a run scored in the first inning?",
+      "occurrences": 12,
+      "family": "auto_will_there_be_a_run_scor"
+    },
+    {
+      "pattern": "will donald trump",
+      "keyword": "will donald trump",
+      "occurrences": 11,
+      "family": "auto_will_donald_trump"
+    },
+    {
+      "pattern": "will trump post",
+      "keyword": "will trump post",
+      "occurrences": 10,
+      "family": "auto_will_trump_post"
     },
     {
       "pattern": "will \"supergirl\" opening",
       "keyword": "will \"supergirl\" opening",
-      "occurrences": 8,
+      "occurrences": 10,
       "family": "auto_will_supergirl_opening"
+    },
+    {
+      "pattern": "will germany be",
+      "keyword": "will germany be",
+      "occurrences": 9,
+      "family": "auto_will_germany_be"
+    },
+    {
+      "pattern": "will the game go to extra innings?",
+      "keyword": "will the game go to extra innings?",
+      "occurrences": 8,
+      "family": "auto_will_the_game_go_to_extr"
     }
   ]
 }
