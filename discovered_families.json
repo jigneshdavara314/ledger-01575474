@@ -1,16 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "wtt - women's singles",
-      "keyword": "wtt - women's singles",
-      "occurrences": 8,
-      "family": "auto_wtt_women_s_singles"
-    },
-    {
-      "pattern": "wtt - men's singles",
-      "keyword": "wtt - men's singles",
-      "occurrences": 8,
-      "family": "auto_wtt_men_s_singles"
-    }
-  ]
+  "candidates": []
 }
