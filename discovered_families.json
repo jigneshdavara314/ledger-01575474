@@ -1,10 +1,22 @@
 {
   "candidates": [
     {
-      "pattern": "will claude code",
-      "keyword": "will claude code",
-      "occurrences": 11,
-      "family": "auto_will_claude_code"
+      "pattern": "will meta platforms,",
+      "keyword": "will meta platforms,",
+      "occurrences": 9,
+      "family": "auto_will_meta_platforms"
+    },
+    {
+      "pattern": "will coinbase global,",
+      "keyword": "will coinbase global,",
+      "occurrences": 8,
+      "family": "auto_will_coinbase_global"
+    },
+    {
+      "pattern": "will usd fall",
+      "keyword": "will usd fall",
+      "occurrences": 8,
+      "family": "auto_will_usd_fall"
     }
   ]
 }
