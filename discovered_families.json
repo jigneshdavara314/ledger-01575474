@@ -1,76 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will crude oil",
-      "keyword": "will crude oil",
-      "occurrences": 42,
-      "family": "auto_will_crude_oil"
-    },
-    {
-      "pattern": "will gold (gc)",
-      "keyword": "will gold (gc)",
-      "occurrences": 40,
-      "family": "auto_will_gold_gc"
-    },
-    {
-      "pattern": "will silver (si)",
-      "keyword": "will silver (si)",
-      "occurrences": 37,
-      "family": "auto_will_silver_si"
-    },
-    {
-      "pattern": "will russia capture",
-      "keyword": "will russia capture",
-      "occurrences": 19,
-      "family": "auto_will_russia_capture"
-    },
-    {
-      "pattern": "will trump and",
-      "keyword": "will trump and",
-      "occurrences": 18,
-      "family": "auto_will_trump_and"
-    },
-    {
-      "pattern": "will donald trump",
-      "keyword": "will donald trump",
-      "occurrences": 17,
-      "family": "auto_will_donald_trump"
-    },
-    {
-      "pattern": "will elon musk\u2019s",
-      "keyword": "will elon musk\u2019s",
-      "occurrences": 16,
-      "family": "auto_will_elon_musk_s"
-    },
-    {
-      "pattern": "will russia enter",
-      "keyword": "will russia enter",
-      "occurrences": 16,
-      "family": "auto_will_russia_enter"
-    },
-    {
-      "pattern": "will robert lewandowski",
-      "keyword": "will robert lewandowski",
-      "occurrences": 13,
-      "family": "auto_will_robert_lewandowski"
-    },
-    {
-      "pattern": "will there be",
-      "keyword": "will there be",
+      "pattern": "will claude code",
+      "keyword": "will claude code",
       "occurrences": 11,
-      "family": "auto_will_there_be"
-    },
-    {
-      "pattern": "will fannie mae\u2019s",
-      "keyword": "will fannie mae\u2019s",
-      "occurrences": 8,
-      "family": "auto_will_fannie_mae_s"
-    },
-    {
-      "pattern": "will databricks\u2019 market",
-      "keyword": "will databricks\u2019 market",
-      "occurrences": 8,
-      "family": "auto_will_databricks_market"
+      "family": "auto_will_claude_code"
     }
   ]
 }
