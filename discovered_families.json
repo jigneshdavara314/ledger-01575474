@@ -1,40 +1,22 @@
 {
   "candidates": [
     {
+      "pattern": "will the ornn",
+      "keyword": "will the ornn",
+      "occurrences": 32,
+      "family": "auto_will_the_ornn"
+    },
+    {
+      "pattern": "will claude fable",
+      "keyword": "will claude fable",
+      "occurrences": 20,
+      "family": "auto_will_claude_fable"
+    },
+    {
       "pattern": "will dr congo",
       "keyword": "will dr congo",
       "occurrences": 12,
       "family": "auto_will_dr_congo"
-    },
-    {
-      "pattern": "will openai's valuation",
-      "keyword": "will openai's valuation",
-      "occurrences": 10,
-      "family": "auto_will_openai_s_valuation"
-    },
-    {
-      "pattern": "will databricks' valuation",
-      "keyword": "will databricks' valuation",
-      "occurrences": 9,
-      "family": "auto_will_databricks_valuatio"
-    },
-    {
-      "pattern": "will epic games'",
-      "keyword": "will epic games'",
-      "occurrences": 9,
-      "family": "auto_will_epic_games"
-    },
-    {
-      "pattern": "will stripe's valuation",
-      "keyword": "will stripe's valuation",
-      "occurrences": 9,
-      "family": "auto_will_stripe_s_valuation"
-    },
-    {
-      "pattern": "will anthropic\u2019s valuation",
-      "keyword": "will anthropic\u2019s valuation",
-      "occurrences": 8,
-      "family": "auto_will_anthropic_s_valuati"
     }
   ]
 }
