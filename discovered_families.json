@@ -1,6 +1,12 @@
 {
   "candidates": [
     {
+      "pattern": "will dr congo",
+      "keyword": "will dr congo",
+      "occurrences": 12,
+      "family": "auto_will_dr_congo"
+    },
+    {
       "pattern": "will openai's valuation",
       "keyword": "will openai's valuation",
       "occurrences": 10,
