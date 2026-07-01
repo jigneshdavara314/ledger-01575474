@@ -1,94 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will wti crude",
-      "keyword": "will wti crude",
-      "occurrences": 21,
-      "family": "auto_will_wti_crude"
-    },
-    {
-      "pattern": "will natural gas",
-      "keyword": "will natural gas",
-      "occurrences": 13,
-      "family": "auto_will_natural_gas"
-    },
-    {
-      "pattern": "will ivory coast",
-      "keyword": "will ivory coast",
-      "occurrences": 12,
-      "family": "auto_will_ivory_coast"
-    },
-    {
-      "pattern": "will netflix, inc.",
-      "keyword": "will netflix, inc.",
-      "occurrences": 11,
-      "family": "auto_will_netflix_inc"
-    },
-    {
-      "pattern": "will opendoor technologies",
-      "keyword": "will opendoor technologies",
-      "occurrences": 11,
-      "family": "auto_will_opendoor_technologi"
-    },
-    {
-      "pattern": "will s&p ###",
-      "keyword": "will s&p",
+      "pattern": "will the game go to extra innings?",
+      "keyword": "will the game go to extra innings?",
       "occurrences": 10,
-      "family": "auto_will_s_p"
-    },
-    {
-      "pattern": "will tesla, inc.",
-      "keyword": "will tesla, inc.",
-      "occurrences": 10,
-      "family": "auto_will_tesla_inc"
-    },
-    {
-      "pattern": "will meta platforms,",
-      "keyword": "will meta platforms,",
-      "occurrences": 9,
-      "family": "auto_will_meta_platforms"
-    },
-    {
-      "pattern": "will alphabet inc.",
-      "keyword": "will alphabet inc.",
-      "occurrences": 9,
-      "family": "auto_will_alphabet_inc"
-    },
-    {
-      "pattern": "will amazon.com, inc.",
-      "keyword": "will amazon.com, inc.",
-      "occurrences": 9,
-      "family": "auto_will_amazon_com_inc"
-    },
-    {
-      "pattern": "will apple (aapl)",
-      "keyword": "will apple (aapl)",
-      "occurrences": 9,
-      "family": "auto_will_apple_aapl"
-    },
-    {
-      "pattern": "will gold (xauusd)",
-      "keyword": "will gold (xauusd)",
-      "occurrences": 8,
-      "family": "auto_will_gold_xauusd"
-    },
-    {
-      "pattern": "will spacex's valuation",
-      "keyword": "will spacex's valuation",
-      "occurrences": 8,
-      "family": "auto_will_spacex_s_valuation"
-    },
-    {
-      "pattern": "will nvidia (nvda)",
-      "keyword": "will nvidia (nvda)",
-      "occurrences": 8,
-      "family": "auto_will_nvidia_nvda"
-    },
-    {
-      "pattern": "will airbnb, inc.",
-      "keyword": "will airbnb, inc.",
-      "occurrences": 8,
-      "family": "auto_will_airbnb_inc"
+      "family": "auto_will_the_game_go_to_extr"
     }
   ]
 }
