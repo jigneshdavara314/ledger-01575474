@@ -1,16 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "will tesla deliver",
-      "keyword": "will tesla deliver",
-      "occurrences": 9,
-      "family": "auto_will_tesla_deliver"
-    },
-    {
-      "pattern": "wimbledon wta (doubles)",
-      "keyword": "wimbledon wta (doubles)",
-      "occurrences": 8,
-      "family": "auto_wimbledon_wta_doubles"
-    }
-  ]
+  "candidates": []
 }
