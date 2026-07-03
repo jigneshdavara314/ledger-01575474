@@ -15,14 +15,8 @@
     {
       "pattern": "will gold (xauusd)",
       "keyword": "will gold (xauusd)",
-      "occurrences": 9,
+      "occurrences": 10,
       "family": "auto_will_gold_xauusd"
-    },
-    {
-      "pattern": "t## blast, league #, women",
-      "keyword": "t blast, league , women",
-      "occurrences": 9,
-      "family": "auto_t_blast_league_women"
     },
     {
       "pattern": "will silver (xagusd)",
