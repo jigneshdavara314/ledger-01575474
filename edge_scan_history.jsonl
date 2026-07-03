@@ -154,3 +154,4 @@
 {"ts": "2026-07-02T21:02:07Z", "days": 45, "n_obs": 2381, "passed": [{"cell": "over_under | pay YES 0.25-0.45", "n": 119, "win_rate": 0.546, "ev": 0.475, "wilson_lower": 0.414}]}
 {"ts": "2026-07-02T22:12:33Z", "days": 45, "n_obs": 2381, "passed": [{"cell": "over_under | pay YES 0.25-0.45", "n": 119, "win_rate": 0.546, "ev": 0.475, "wilson_lower": 0.414}]}
 {"ts": "2026-07-03T00:04:13Z", "days": 45, "n_obs": 2369, "passed": []}
+{"ts": "2026-07-03T04:41:27Z", "days": 45, "n_obs": 2367, "passed": []}
