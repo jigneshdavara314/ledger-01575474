@@ -1,10 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "wimbledon atp (doubles)",
-      "keyword": "wimbledon atp (doubles)",
-      "occurrences": 9,
-      "family": "auto_wimbledon_atp_doubles"
-    }
-  ]
+  "candidates": []
 }
