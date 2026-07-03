@@ -1,3 +1,34 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will wti crude",
+      "keyword": "will wti crude",
+      "occurrences": 13,
+      "family": "auto_will_wti_crude"
+    },
+    {
+      "pattern": "will natural gas",
+      "keyword": "will natural gas",
+      "occurrences": 12,
+      "family": "auto_will_natural_gas"
+    },
+    {
+      "pattern": "will gold (xauusd)",
+      "keyword": "will gold (xauusd)",
+      "occurrences": 9,
+      "family": "auto_will_gold_xauusd"
+    },
+    {
+      "pattern": "t## blast, league #, women",
+      "keyword": "t blast, league , women",
+      "occurrences": 9,
+      "family": "auto_t_blast_league_women"
+    },
+    {
+      "pattern": "will silver (xagusd)",
+      "keyword": "will silver (xagusd)",
+      "occurrences": 8,
+      "family": "auto_will_silver_xagusd"
+    }
+  ]
 }
