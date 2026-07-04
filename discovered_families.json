@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will mrbeast's next",
+      "keyword": "will mrbeast's next",
+      "occurrences": 13,
+      "family": "auto_will_mrbeast_s_next"
+    },
+    {
+      "pattern": "over $##m committed",
+      "keyword": "over $m committed",
+      "occurrences": 10,
+      "family": "auto_over_m_committed"
+    }
+  ]
 }
