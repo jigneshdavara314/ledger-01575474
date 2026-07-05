@@ -3,14 +3,14 @@
     {
       "pattern": "wimbledon juniors, boys",
       "keyword": "wimbledon juniors, boys",
-      "occurrences": 11,
+      "occurrences": 8,
       "family": "auto_wimbledon_juniors_boys"
     },
     {
-      "pattern": "wimbledon juniors, girls",
-      "keyword": "wimbledon juniors, girls",
-      "occurrences": 10,
-      "family": "auto_wimbledon_juniors_girls"
+      "pattern": "t## blast, women",
+      "keyword": "t blast, women",
+      "occurrences": 8,
+      "family": "auto_t_blast_women"
     }
   ]
 }
