@@ -1,16 +1,22 @@
 {
   "candidates": [
     {
+      "pattern": "wimbledon juniors, girls",
+      "keyword": "wimbledon juniors, girls",
+      "occurrences": 9,
+      "family": "auto_wimbledon_juniors_girls"
+    },
+    {
       "pattern": "wimbledon juniors, boys",
       "keyword": "wimbledon juniors, boys",
       "occurrences": 8,
       "family": "auto_wimbledon_juniors_boys"
     },
     {
-      "pattern": "t## blast, women",
-      "keyword": "t blast, women",
+      "pattern": "t## blast, league #, women",
+      "keyword": "t blast, league , women",
       "occurrences": 8,
-      "family": "auto_t_blast_women"
+      "family": "auto_t_blast_league_women"
     }
   ]
 }
