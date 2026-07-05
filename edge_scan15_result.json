@@ -1,7 +1,7 @@
 {
-  "generated_utc": "2026-07-05T09:42:02Z",
+  "generated_utc": "2026-07-05T11:31:43Z",
   "days": 45,
-  "n_observations": 2205,
+  "n_observations": 2204,
   "cells": [
     {
       "cell": "over_under | pay NO 0.25-0.45",
@@ -43,19 +43,19 @@
       "cell": "over_under | pay YES 0.25-0.45",
       "family": "over_under",
       "keyword": null,
-      "n": 122,
-      "wins": 66,
-      "win_rate": 0.541,
-      "avg_price": 0.377,
-      "price_sd": 0.042,
-      "breakeven": 0.377,
-      "ev": 0.457,
-      "ev_lower": 0.077,
-      "wilson_lower": 0.409,
+      "n": 121,
+      "wins": 65,
+      "win_rate": 0.537,
+      "avg_price": 0.378,
+      "price_sd": 0.041,
+      "breakeven": 0.378,
+      "ev": 0.44,
+      "ev_lower": 0.063,
+      "wilson_lower": 0.405,
       "z_corr": 2.96,
-      "oos": "38>38 / 44>38",
+      "oos": "38>38 / 43>38",
       "clean": true,
-      "verdict": "REAL"
+      "verdict": "promising"
     },
     {
       "cell": "draw | pay NO 0.45-0.55",
@@ -439,17 +439,17 @@
       "cell": "over_under | pay NO 0.55-0.75",
       "family": "over_under",
       "keyword": null,
-      "n": 121,
+      "n": 120,
       "wins": 56,
-      "win_rate": 0.463,
-      "avg_price": 0.622,
-      "price_sd": 0.041,
-      "breakeven": 0.622,
-      "ev": -0.261,
-      "ev_lower": -0.47,
-      "wilson_lower": 0.336,
+      "win_rate": 0.467,
+      "avg_price": 0.621,
+      "price_sd": 0.04,
+      "breakeven": 0.621,
+      "ev": -0.255,
+      "ev_lower": -0.464,
+      "wilson_lower": 0.339,
       "z_corr": 2.96,
-      "oos": "34>62 / 34>62",
+      "oos": "34>62 / 35>62",
       "clean": true,
       "verdict": "noise"
     },
@@ -580,24 +580,5 @@
       "verdict": "noise"
     }
   ],
-  "passed_gate": [
-    {
-      "cell": "over_under | pay YES 0.25-0.45",
-      "family": "over_under",
-      "keyword": null,
-      "n": 122,
-      "wins": 66,
-      "win_rate": 0.541,
-      "avg_price": 0.377,
-      "price_sd": 0.042,
-      "breakeven": 0.377,
-      "ev": 0.457,
-      "ev_lower": 0.077,
-      "wilson_lower": 0.409,
-      "z_corr": 2.96,
-      "oos": "38>38 / 44>38",
-      "clean": true,
-      "verdict": "REAL"
-    }
-  ]
+  "passed_gate": []
 }
