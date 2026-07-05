@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "wimbledon juniors, boys",
+      "keyword": "wimbledon juniors, boys",
+      "occurrences": 11,
+      "family": "auto_wimbledon_juniors_boys"
+    },
+    {
+      "pattern": "wimbledon juniors, girls",
+      "keyword": "wimbledon juniors, girls",
+      "occurrences": 10,
+      "family": "auto_wimbledon_juniors_girls"
+    }
+  ]
 }
