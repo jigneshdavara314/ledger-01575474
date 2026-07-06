@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will there be",
+      "keyword": "will there be",
+      "occurrences": 15,
+      "family": "auto_will_there_be"
+    },
+    {
+      "pattern": "will elon post",
+      "keyword": "will elon post",
+      "occurrences": 10,
+      "family": "auto_will_elon_post"
+    }
+  ]
 }
