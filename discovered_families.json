@@ -1,16 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "who will finish higher",
-      "keyword": "who will finish higher",
-      "occurrences": 22,
-      "family": "auto_who_will_finish_higher"
-    },
-    {
-      "pattern": "will the game go to extra innings?",
-      "keyword": "will the game go to extra innings?",
-      "occurrences": 9,
-      "family": "auto_will_the_game_go_to_extr"
-    }
-  ]
+  "candidates": []
 }
