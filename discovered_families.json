@@ -1,16 +1,16 @@
 {
   "candidates": [
     {
-      "pattern": "wimbledon juniors, girls",
-      "keyword": "wimbledon juniors, girls",
+      "pattern": "will ism services",
+      "keyword": "will ism services",
       "occurrences": 10,
-      "family": "auto_wimbledon_juniors_girls"
+      "family": "auto_will_ism_services"
     },
     {
-      "pattern": "will sandro tonali",
-      "keyword": "will sandro tonali",
-      "occurrences": 9,
-      "family": "auto_will_sandro_tonali"
+      "pattern": "will south korea",
+      "keyword": "will south korea",
+      "occurrences": 8,
+      "family": "auto_will_south_korea"
     }
   ]
 }
