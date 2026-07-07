@@ -1,34 +1,40 @@
 {
   "candidates": [
     {
-      "pattern": "will anfernee simons",
-      "keyword": "will anfernee simons",
-      "occurrences": 58,
-      "family": "auto_will_anfernee_simons"
+      "pattern": "will nikola vucevic",
+      "keyword": "will nikola vucevic",
+      "occurrences": 30,
+      "family": "auto_will_nikola_vucevic"
     },
     {
       "pattern": "will jaylen brown",
       "keyword": "will jaylen brown",
-      "occurrences": 36,
+      "occurrences": 30,
       "family": "auto_will_jaylen_brown"
+    },
+    {
+      "pattern": "will anfernee simons",
+      "keyword": "will anfernee simons",
+      "occurrences": 30,
+      "family": "auto_will_anfernee_simons"
+    },
+    {
+      "pattern": "will robert williams",
+      "keyword": "will robert williams",
+      "occurrences": 30,
+      "family": "auto_will_robert_williams"
+    },
+    {
+      "pattern": "will kristaps porzingis",
+      "keyword": "will kristaps porzingis",
+      "occurrences": 30,
+      "family": "auto_will_kristaps_porzingis"
     },
     {
       "pattern": "will giannis antetokounmpo",
       "keyword": "will giannis antetokounmpo",
       "occurrences": 30,
       "family": "auto_will_giannis_antetokounm"
-    },
-    {
-      "pattern": "will robert williams",
-      "keyword": "will robert williams",
-      "occurrences": 29,
-      "family": "auto_will_robert_williams"
-    },
-    {
-      "pattern": "will kristaps porzingis",
-      "keyword": "will kristaps porzingis",
-      "occurrences": 16,
-      "family": "auto_will_kristaps_porzingis"
     }
   ]
 }
