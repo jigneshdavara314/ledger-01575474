@@ -1,10 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "will mark williams",
-      "keyword": "will mark williams",
-      "occurrences": 30,
-      "family": "auto_will_mark_williams"
-    }
-  ]
+  "candidates": []
 }
