@@ -1,6 +1,18 @@
 {
   "candidates": [
     {
+      "pattern": "will tobias harris",
+      "keyword": "will tobias harris",
+      "occurrences": 29,
+      "family": "auto_will_tobias_harris"
+    },
+    {
+      "pattern": "will rui hachimura",
+      "keyword": "will rui hachimura",
+      "occurrences": 29,
+      "family": "auto_will_rui_hachimura"
+    },
+    {
       "pattern": "will christian pulisic",
       "keyword": "will christian pulisic",
       "occurrences": 8,
