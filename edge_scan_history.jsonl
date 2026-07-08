@@ -206,3 +206,4 @@
 {"ts": "2026-07-07T23:57:31Z", "days": 45, "n_obs": 2154, "passed": [{"cell": "over_under | pay YES 0.25-0.45", "n": 89, "win_rate": 0.596, "ev": 0.605, "wilson_lower": 0.441}]}
 {"ts": "2026-07-08T02:10:41Z", "days": 45, "n_obs": 2119, "passed": []}
 {"ts": "2026-07-08T05:48:49Z", "days": 45, "n_obs": 2099, "passed": []}
+{"ts": "2026-07-08T08:20:04Z", "days": 45, "n_obs": 2098, "passed": []}
