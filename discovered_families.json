@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "newport",
+      "keyword": "newport",
+      "occurrences": 8,
+      "family": "auto_newport"
+    }
+  ]
 }
