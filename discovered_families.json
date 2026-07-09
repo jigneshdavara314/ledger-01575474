@@ -1,16 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will the game go to extra innings?",
-      "keyword": "will the game go to extra innings?",
-      "occurrences": 11,
-      "family": "auto_will_the_game_go_to_extr"
-    },
-    {
-      "pattern": "will graham platner",
-      "keyword": "will graham platner",
-      "occurrences": 9,
-      "family": "auto_will_graham_platner"
+      "pattern": "will walker kessler",
+      "keyword": "will walker kessler",
+      "occurrences": 29,
+      "family": "auto_will_walker_kessler"
     },
     {
       "family": "other_neither_team_to_score",
