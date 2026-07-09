@@ -1,9 +1,15 @@
 {
   "candidates": [
     {
+      "pattern": "newport",
+      "keyword": "newport",
+      "occurrences": 12,
+      "family": "auto_newport"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 43,
+      "occurrences": 44,
       "source": "scan_signature"
     }
   ]
