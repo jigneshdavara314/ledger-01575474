@@ -1,15 +1,15 @@
 {
   "candidates": [
     {
-      "pattern": "newport",
-      "keyword": "newport",
-      "occurrences": 12,
-      "family": "auto_newport"
+      "pattern": "will gpt-#.# be",
+      "keyword": "will gpt-. be",
+      "occurrences": 23,
+      "family": "auto_will_gpt_be"
     },
     {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 44,
+      "occurrences": 46,
       "source": "scan_signature"
     }
   ]
