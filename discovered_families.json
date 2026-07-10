@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "t## blast, women",
+      "keyword": "t blast, women",
+      "occurrences": 10,
+      "family": "auto_t_blast_women"
+    }
+  ]
 }
