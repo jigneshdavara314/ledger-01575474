@@ -1,16 +1,16 @@
 {
   "candidates": [
     {
-      "pattern": "will gpt-#.# be",
-      "keyword": "will gpt-. be",
-      "occurrences": 23,
-      "family": "auto_will_gpt_be"
+      "pattern": "will jusuf nurkic",
+      "keyword": "will jusuf nurkic",
+      "occurrences": 30,
+      "family": "auto_will_jusuf_nurkic"
     },
     {
-      "family": "other_neither_team_to_score",
-      "keyword": "neither team to score",
-      "occurrences": 46,
-      "source": "scan_signature"
+      "pattern": "will tari eason",
+      "keyword": "will tari eason",
+      "occurrences": 29,
+      "family": "auto_will_tari_eason"
     }
   ]
 }
