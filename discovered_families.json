@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will future feature",
+      "keyword": "will future feature",
+      "occurrences": 29,
+      "family": "auto_will_future_feature"
+    }
+  ]
 }
