@@ -1,10 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will future feature",
-      "keyword": "will future feature",
-      "occurrences": 29,
-      "family": "auto_will_future_feature"
+      "pattern": "will delta q#",
+      "keyword": "will delta q",
+      "occurrences": 8,
+      "family": "auto_will_delta_q"
     }
   ]
 }
