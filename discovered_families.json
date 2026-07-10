@@ -1,10 +1,142 @@
 {
   "candidates": [
     {
-      "pattern": "t## blast, women",
-      "keyword": "t blast, women",
+      "pattern": "will apple (aapl)",
+      "keyword": "will apple (aapl)",
+      "occurrences": 22,
+      "family": "auto_will_apple_aapl"
+    },
+    {
+      "pattern": "will nvidia (nvda)",
+      "keyword": "will nvidia (nvda)",
+      "occurrences": 20,
+      "family": "auto_will_nvidia_nvda"
+    },
+    {
+      "pattern": "will spacex (spcx)",
+      "keyword": "will spacex (spcx)",
+      "occurrences": 16,
+      "family": "auto_will_spacex_spcx"
+    },
+    {
+      "pattern": "will microstrategy (mstr)",
+      "keyword": "will microstrategy (mstr)",
+      "occurrences": 12,
+      "family": "auto_will_microstrategy_mstr"
+    },
+    {
+      "pattern": "will netflix, inc.",
+      "keyword": "will netflix, inc.",
+      "occurrences": 12,
+      "family": "auto_will_netflix_inc"
+    },
+    {
+      "pattern": "will amazon.com, inc.",
+      "keyword": "will amazon.com, inc.",
+      "occurrences": 11,
+      "family": "auto_will_amazon_com_inc"
+    },
+    {
+      "pattern": "will tesla, inc.",
+      "keyword": "will tesla, inc.",
+      "occurrences": 11,
+      "family": "auto_will_tesla_inc"
+    },
+    {
+      "pattern": "will micron (mu)",
+      "keyword": "will micron (mu)",
+      "occurrences": 11,
+      "family": "auto_will_micron_mu"
+    },
+    {
+      "pattern": "will opendoor (open)",
+      "keyword": "will opendoor (open)",
+      "occurrences": 11,
+      "family": "auto_will_opendoor_open"
+    },
+    {
+      "pattern": "will netflix (nflx)",
+      "keyword": "will netflix (nflx)",
+      "occurrences": 11,
+      "family": "auto_will_netflix_nflx"
+    },
+    {
+      "pattern": "will google (googl)",
+      "keyword": "will google (googl)",
+      "occurrences": 11,
+      "family": "auto_will_google_googl"
+    },
+    {
+      "pattern": "will tesla (tsla)",
+      "keyword": "will tesla (tsla)",
+      "occurrences": 11,
+      "family": "auto_will_tesla_tsla"
+    },
+    {
+      "pattern": "will palantir (pltr)",
+      "keyword": "will palantir (pltr)",
+      "occurrences": 11,
+      "family": "auto_will_palantir_pltr"
+    },
+    {
+      "pattern": "will meta (meta)",
+      "keyword": "will meta (meta)",
+      "occurrences": 11,
+      "family": "auto_will_meta_meta"
+    },
+    {
+      "pattern": "will amazon (amzn)",
+      "keyword": "will amazon (amzn)",
+      "occurrences": 11,
+      "family": "auto_will_amazon_amzn"
+    },
+    {
+      "pattern": "will opendoor technologies",
+      "keyword": "will opendoor technologies",
+      "occurrences": 11,
+      "family": "auto_will_opendoor_technologi"
+    },
+    {
+      "pattern": "will s&p ###",
+      "keyword": "will s&p",
+      "occurrences": 11,
+      "family": "auto_will_s_p"
+    },
+    {
+      "pattern": "will microsoft (msft)",
+      "keyword": "will microsoft (msft)",
+      "occurrences": 11,
+      "family": "auto_will_microsoft_msft"
+    },
+    {
+      "pattern": "will airbnb, inc.",
+      "keyword": "will airbnb, inc.",
       "occurrences": 10,
-      "family": "auto_t_blast_women"
+      "family": "auto_will_airbnb_inc"
+    },
+    {
+      "pattern": "will alphabet inc.",
+      "keyword": "will alphabet inc.",
+      "occurrences": 10,
+      "family": "auto_will_alphabet_inc"
+    },
+    {
+      "pattern": "will microsoft corporation",
+      "keyword": "will microsoft corporation",
+      "occurrences": 10,
+      "family": "auto_will_microsoft_corporati"
+    },
+    {
+      "pattern": "will micron technology,",
+      "keyword": "will micron technology,",
+      "occurrences": 9,
+      "family": "auto_will_micron_technology"
+    },
+    {
+      "pattern": "will palantir technologies",
+      "keyword": "will palantir technologies",
+      "occurrences": 9,
+      "family": "auto_will_palantir_technologi"
     }
   ]
 }
