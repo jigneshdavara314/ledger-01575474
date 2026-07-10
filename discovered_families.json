@@ -97,12 +97,6 @@
       "family": "auto_will_opendoor_technologi"
     },
     {
-      "pattern": "will s&p ###",
-      "keyword": "will s&p",
-      "occurrences": 11,
-      "family": "auto_will_s_p"
-    },
-    {
       "pattern": "will microsoft (msft)",
       "keyword": "will microsoft (msft)",
       "occurrences": 11,
@@ -121,6 +115,12 @@
       "family": "auto_will_alphabet_inc"
     },
     {
+      "pattern": "will s&p ###",
+      "keyword": "will s&p",
+      "occurrences": 10,
+      "family": "auto_will_s_p"
+    },
+    {
       "pattern": "will microsoft corporation",
       "keyword": "will microsoft corporation",
       "occurrences": 10,
@@ -137,6 +137,12 @@
       "keyword": "will palantir technologies",
       "occurrences": 9,
       "family": "auto_will_palantir_technologi"
+    },
+    {
+      "pattern": "will robinhood markets,",
+      "keyword": "will robinhood markets,",
+      "occurrences": 8,
+      "family": "auto_will_robinhood_markets"
     }
   ]
 }
