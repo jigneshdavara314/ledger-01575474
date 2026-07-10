@@ -1,16 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will jusuf nurkic",
-      "keyword": "will jusuf nurkic",
-      "occurrences": 30,
-      "family": "auto_will_jusuf_nurkic"
-    },
-    {
-      "pattern": "will tari eason",
-      "keyword": "will tari eason",
-      "occurrences": 29,
-      "family": "auto_will_tari_eason"
+      "pattern": "will the semifinals",
+      "keyword": "will the semifinals",
+      "occurrences": 8,
+      "family": "auto_will_the_semifinals"
     }
   ]
 }
