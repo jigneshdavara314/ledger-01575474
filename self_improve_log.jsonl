@@ -30,3 +30,4 @@
 {"ts": "2026-06-29T09:34:23.204451", "action": "WARN_IMPROVE", "cell": "over_under | pay YES 0.25-0.45", "live_win": 0.727, "breakeven": 0.813, "new_mult": 0.15, "warnings": 1}
 {"ts": "2026-06-29T14:10:10.833006", "action": "WARN_IMPROVE", "cell": "over_under | pay YES 0.25-0.45", "live_win": 0.727, "breakeven": 0.813, "new_mult": 0.1, "warnings": 2}
 {"ts": "2026-06-29T14:10:10.833094", "action": "DISABLE", "cell": "over_under | pay YES 0.25-0.45", "reason": "underperformed after grace", "warnings": 2}
+{"ts": "2026-07-11T15:33:29.664459", "action": "TRIAL", "cell": "other_neither_team_to_score | pay NO 0.55-0.75", "recurred_days": 2, "tier": "trial", "mult": 0.25}
