@@ -1,46 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will marcus smart",
-      "keyword": "will marcus smart",
-      "occurrences": 30,
-      "family": "auto_will_marcus_smart"
-    },
-    {
-      "pattern": "will ayo dosunmu",
-      "keyword": "will ayo dosunmu",
-      "occurrences": 29,
-      "family": "auto_will_ayo_dosunmu"
-    },
-    {
-      "pattern": "will wti crude",
-      "keyword": "will wti crude",
-      "occurrences": 12,
-      "family": "auto_will_wti_crude"
-    },
-    {
-      "pattern": "will there be a run scored in the first inning?",
-      "keyword": "will there be a run scored in the first inning?",
-      "occurrences": 11,
-      "family": "auto_will_there_be_a_run_scor"
-    },
-    {
-      "pattern": "will gold (xauusd)",
-      "keyword": "will gold (xauusd)",
-      "occurrences": 10,
-      "family": "auto_will_gold_xauusd"
-    },
-    {
-      "pattern": "will natural gas",
-      "keyword": "will natural gas",
+      "pattern": "will the game go to extra innings?",
+      "keyword": "will the game go to extra innings?",
       "occurrences": 9,
-      "family": "auto_will_natural_gas"
-    },
-    {
-      "pattern": "will silver (xagusd)",
-      "keyword": "will silver (xagusd)",
-      "occurrences": 8,
-      "family": "auto_will_silver_xagusd"
+      "family": "auto_will_the_game_go_to_extr"
     }
   ]
 }
