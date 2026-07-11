@@ -1,7 +1,7 @@
 {
-  "generated_utc": "2026-07-11T11:03:12Z",
+  "generated_utc": "2026-07-11T12:00:00Z",
   "days": 45,
-  "n_observations": 2007,
+  "n_observations": 2009,
   "cells": [
     {
       "cell": "to_advance | pay NO 0.45-0.55",
