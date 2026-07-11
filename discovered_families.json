@@ -1,15 +1,9 @@
 {
   "candidates": [
     {
-      "pattern": "will norman powell",
-      "keyword": "will norman powell",
-      "occurrences": 29,
-      "family": "auto_will_norman_powell"
-    },
-    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 53,
+      "occurrences": 54,
       "source": "scan_signature"
     }
   ]
