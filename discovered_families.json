@@ -1,6 +1,30 @@
 {
   "candidates": [
     {
+      "pattern": "will grady emerson",
+      "keyword": "will grady emerson",
+      "occurrences": 13,
+      "family": "auto_will_grady_emerson"
+    },
+    {
+      "pattern": "will roch cholowsky",
+      "keyword": "will roch cholowsky",
+      "occurrences": 13,
+      "family": "auto_will_roch_cholowsky"
+    },
+    {
+      "pattern": "will vahn lackey",
+      "keyword": "will vahn lackey",
+      "occurrences": 11,
+      "family": "auto_will_vahn_lackey"
+    },
+    {
+      "pattern": "croatia open, qualification",
+      "keyword": "croatia open, qualification",
+      "occurrences": 8,
+      "family": "auto_croatia_open_qualificati"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 55,
