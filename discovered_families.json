@@ -1,10 +1,46 @@
 {
   "candidates": [
     {
-      "pattern": "will grady emerson",
-      "keyword": "will grady emerson",
+      "pattern": "will aj gracia",
+      "keyword": "will aj gracia",
       "occurrences": 13,
-      "family": "auto_will_grady_emerson"
+      "family": "auto_will_aj_gracia"
+    },
+    {
+      "pattern": "will aiden ruiz",
+      "keyword": "will aiden ruiz",
+      "occurrences": 13,
+      "family": "auto_will_aiden_ruiz"
+    },
+    {
+      "pattern": "will gavin grahovac",
+      "keyword": "will gavin grahovac",
+      "occurrences": 13,
+      "family": "auto_will_gavin_grahovac"
+    },
+    {
+      "pattern": "will carson bolemon",
+      "keyword": "will carson bolemon",
+      "occurrences": 13,
+      "family": "auto_will_carson_bolemon"
+    },
+    {
+      "pattern": "will chris rembert",
+      "keyword": "will chris rembert",
+      "occurrences": 13,
+      "family": "auto_will_chris_rembert"
+    },
+    {
+      "pattern": "will taj marchand",
+      "keyword": "will taj marchand",
+      "occurrences": 13,
+      "family": "auto_will_taj_marchand"
+    },
+    {
+      "pattern": "will cole carlon",
+      "keyword": "will cole carlon",
+      "occurrences": 13,
+      "family": "auto_will_cole_carlon"
     },
     {
       "pattern": "will roch cholowsky",
@@ -15,14 +51,320 @@
     {
       "pattern": "will vahn lackey",
       "keyword": "will vahn lackey",
-      "occurrences": 11,
+      "occurrences": 13,
       "family": "auto_will_vahn_lackey"
     },
     {
-      "pattern": "croatia open, qualification",
-      "keyword": "croatia open, qualification",
+      "pattern": "will ryder helfrick",
+      "keyword": "will ryder helfrick",
+      "occurrences": 12,
+      "family": "auto_will_ryder_helfrick"
+    },
+    {
+      "pattern": "will daniel jackson",
+      "keyword": "will daniel jackson",
+      "occurrences": 12,
+      "family": "auto_will_daniel_jackson"
+    },
+    {
+      "pattern": "will james clark",
+      "keyword": "will james clark",
+      "occurrences": 12,
+      "family": "auto_will_james_clark"
+    },
+    {
+      "pattern": "will jacob lombard",
+      "keyword": "will jacob lombard",
+      "occurrences": 12,
+      "family": "auto_will_jacob_lombard"
+    },
+    {
+      "pattern": "will tegan kuhns",
+      "keyword": "will tegan kuhns",
+      "occurrences": 12,
+      "family": "auto_will_tegan_kuhns"
+    },
+    {
+      "pattern": "will taylor rabe",
+      "keyword": "will taylor rabe",
+      "occurrences": 12,
+      "family": "auto_will_taylor_rabe"
+    },
+    {
+      "pattern": "will caden sorrell",
+      "keyword": "will caden sorrell",
+      "occurrences": 12,
+      "family": "auto_will_caden_sorrell"
+    },
+    {
+      "pattern": "will brody bumila",
+      "keyword": "will brody bumila",
+      "occurrences": 12,
+      "family": "auto_will_brody_bumila"
+    },
+    {
+      "pattern": "will chase brunson",
+      "keyword": "will chase brunson",
+      "occurrences": 12,
+      "family": "auto_will_chase_brunson"
+    },
+    {
+      "pattern": "will rocco maniscalco",
+      "keyword": "will rocco maniscalco",
+      "occurrences": 12,
+      "family": "auto_will_rocco_maniscalco"
+    },
+    {
+      "pattern": "will cade townsend",
+      "keyword": "will cade townsend",
+      "occurrences": 12,
+      "family": "auto_will_cade_townsend"
+    },
+    {
+      "pattern": "will jarren advincula",
+      "keyword": "will jarren advincula",
+      "occurrences": 12,
+      "family": "auto_will_jarren_advincula"
+    },
+    {
+      "pattern": "will chris hacopian",
+      "keyword": "will chris hacopian",
+      "occurrences": 12,
+      "family": "auto_will_chris_hacopian"
+    },
+    {
+      "pattern": "will logan schmidt",
+      "keyword": "will logan schmidt",
+      "occurrences": 12,
+      "family": "auto_will_logan_schmidt"
+    },
+    {
+      "pattern": "will liam peterson",
+      "keyword": "will liam peterson",
+      "occurrences": 12,
+      "family": "auto_will_liam_peterson"
+    },
+    {
+      "pattern": "will jensen hirschkorn",
+      "keyword": "will jensen hirschkorn",
+      "occurrences": 12,
+      "family": "auto_will_jensen_hirschkorn"
+    },
+    {
+      "pattern": "will landon thome",
+      "keyword": "will landon thome",
+      "occurrences": 12,
+      "family": "auto_will_landon_thome"
+    },
+    {
+      "pattern": "will sawyer strosnider",
+      "keyword": "will sawyer strosnider",
+      "occurrences": 12,
+      "family": "auto_will_sawyer_strosnider"
+    },
+    {
+      "pattern": "will hunter dietz",
+      "keyword": "will hunter dietz",
+      "occurrences": 12,
+      "family": "auto_will_hunter_dietz"
+    },
+    {
+      "pattern": "will jared grindlinger",
+      "keyword": "will jared grindlinger",
+      "occurrences": 12,
+      "family": "auto_will_jared_grindlinger"
+    },
+    {
+      "pattern": "will drew burress",
+      "keyword": "will drew burress",
+      "occurrences": 12,
+      "family": "auto_will_drew_burress"
+    },
+    {
+      "pattern": "will logan hughes",
+      "keyword": "will logan hughes",
+      "occurrences": 12,
+      "family": "auto_will_logan_hughes"
+    },
+    {
+      "pattern": "will ace reese",
+      "keyword": "will ace reese",
+      "occurrences": 12,
+      "family": "auto_will_ace_reese"
+    },
+    {
+      "pattern": "will logan reddemann",
+      "keyword": "will logan reddemann",
+      "occurrences": 12,
+      "family": "auto_will_logan_reddemann"
+    },
+    {
+      "pattern": "will eric becker",
+      "keyword": "will eric becker",
+      "occurrences": 12,
+      "family": "auto_will_eric_becker"
+    },
+    {
+      "pattern": "will mason edwards",
+      "keyword": "will mason edwards",
+      "occurrences": 12,
+      "family": "auto_will_mason_edwards"
+    },
+    {
+      "pattern": "will coleman borthwick",
+      "keyword": "will coleman borthwick",
+      "occurrences": 12,
+      "family": "auto_will_coleman_borthwick"
+    },
+    {
+      "pattern": "will jack radel",
+      "keyword": "will jack radel",
+      "occurrences": 12,
+      "family": "auto_will_jack_radel"
+    },
+    {
+      "pattern": "will jake brown",
+      "keyword": "will jake brown",
+      "occurrences": 12,
+      "family": "auto_will_jake_brown"
+    },
+    {
+      "pattern": "will andrew williamson",
+      "keyword": "will andrew williamson",
+      "occurrences": 12,
+      "family": "auto_will_andrew_williamson"
+    },
+    {
+      "pattern": "will cameron flukey",
+      "keyword": "will cameron flukey",
+      "occurrences": 12,
+      "family": "auto_will_cameron_flukey"
+    },
+    {
+      "pattern": "will bo lowrance",
+      "keyword": "will bo lowrance",
+      "occurrences": 12,
+      "family": "auto_will_bo_lowrance"
+    },
+    {
+      "pattern": "will eric booth",
+      "keyword": "will eric booth",
+      "occurrences": 12,
+      "family": "auto_will_eric_booth"
+    },
+    {
+      "pattern": "will will brick",
+      "keyword": "will will brick",
+      "occurrences": 12,
+      "family": "auto_will_will_brick"
+    },
+    {
+      "pattern": "will trevor condon",
+      "keyword": "will trevor condon",
+      "occurrences": 12,
+      "family": "auto_will_trevor_condon"
+    },
+    {
+      "pattern": "will zion rose",
+      "keyword": "will zion rose",
+      "occurrences": 12,
+      "family": "auto_will_zion_rose"
+    },
+    {
+      "pattern": "will jackson flora",
+      "keyword": "will jackson flora",
+      "occurrences": 12,
+      "family": "auto_will_jackson_flora"
+    },
+    {
+      "pattern": "will grady emerson",
+      "keyword": "will grady emerson",
+      "occurrences": 12,
+      "family": "auto_will_grady_emerson"
+    },
+    {
+      "pattern": "will derek curiel",
+      "keyword": "will derek curiel",
+      "occurrences": 12,
+      "family": "auto_will_derek_curiel"
+    },
+    {
+      "pattern": "will archer horn",
+      "keyword": "will archer horn",
+      "occurrences": 11,
+      "family": "auto_will_archer_horn"
+    },
+    {
+      "pattern": "will tyler spangler",
+      "keyword": "will tyler spangler",
+      "occurrences": 11,
+      "family": "auto_will_tyler_spangler"
+    },
+    {
+      "pattern": "will justin lebron",
+      "keyword": "will justin lebron",
+      "occurrences": 11,
+      "family": "auto_will_justin_lebron"
+    },
+    {
+      "pattern": "will ben blair",
+      "keyword": "will ben blair",
+      "occurrences": 11,
+      "family": "auto_will_ben_blair"
+    },
+    {
+      "pattern": "will ty head",
+      "keyword": "will ty head",
+      "occurrences": 11,
+      "family": "auto_will_ty_head"
+    },
+    {
+      "pattern": "will wes mendes",
+      "keyword": "will wes mendes",
+      "occurrences": 11,
+      "family": "auto_will_wes_mendes"
+    },
+    {
+      "pattern": "will connor comeau",
+      "keyword": "will connor comeau",
+      "occurrences": 11,
+      "family": "auto_will_connor_comeau"
+    },
+    {
+      "pattern": "will kaden waechter",
+      "keyword": "will kaden waechter",
+      "occurrences": 11,
+      "family": "auto_will_kaden_waechter"
+    },
+    {
+      "pattern": "will cole prosek",
+      "keyword": "will cole prosek",
+      "occurrences": 11,
+      "family": "auto_will_cole_prosek"
+    },
+    {
+      "pattern": "will gio rojas",
+      "keyword": "will gio rojas",
+      "occurrences": 11,
+      "family": "auto_will_gio_rojas"
+    },
+    {
+      "pattern": "will aiden robbins",
+      "keyword": "will aiden robbins",
+      "occurrences": 11,
+      "family": "auto_will_aiden_robbins"
+    },
+    {
+      "pattern": "will tyler bell",
+      "keyword": "will tyler bell",
+      "occurrences": 10,
+      "family": "auto_will_tyler_bell"
+    },
+    {
+      "pattern": "will there be a run scored in the first inning?",
+      "keyword": "will there be a run scored in the first inning?",
       "occurrences": 8,
-      "family": "auto_croatia_open_qualificati"
+      "family": "auto_will_there_be_a_run_scor"
     },
     {
       "family": "other_neither_team_to_score",
