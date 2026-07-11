@@ -1,58 +1,16 @@
 {
   "candidates": [
     {
-      "pattern": "will aj gracia",
-      "keyword": "will aj gracia",
-      "occurrences": 13,
-      "family": "auto_will_aj_gracia"
-    },
-    {
-      "pattern": "will aiden ruiz",
-      "keyword": "will aiden ruiz",
-      "occurrences": 13,
-      "family": "auto_will_aiden_ruiz"
-    },
-    {
-      "pattern": "will gavin grahovac",
-      "keyword": "will gavin grahovac",
-      "occurrences": 13,
-      "family": "auto_will_gavin_grahovac"
-    },
-    {
-      "pattern": "will carson bolemon",
-      "keyword": "will carson bolemon",
-      "occurrences": 13,
-      "family": "auto_will_carson_bolemon"
-    },
-    {
-      "pattern": "will chris rembert",
-      "keyword": "will chris rembert",
-      "occurrences": 13,
-      "family": "auto_will_chris_rembert"
-    },
-    {
-      "pattern": "will taj marchand",
-      "keyword": "will taj marchand",
-      "occurrences": 13,
-      "family": "auto_will_taj_marchand"
-    },
-    {
-      "pattern": "will cole carlon",
-      "keyword": "will cole carlon",
-      "occurrences": 13,
-      "family": "auto_will_cole_carlon"
-    },
-    {
       "pattern": "will roch cholowsky",
       "keyword": "will roch cholowsky",
       "occurrences": 13,
       "family": "auto_will_roch_cholowsky"
     },
     {
-      "pattern": "will vahn lackey",
-      "keyword": "will vahn lackey",
-      "occurrences": 13,
-      "family": "auto_will_vahn_lackey"
+      "pattern": "will aj gracia",
+      "keyword": "will aj gracia",
+      "occurrences": 12,
+      "family": "auto_will_aj_gracia"
     },
     {
       "pattern": "will ryder helfrick",
@@ -85,6 +43,12 @@
       "family": "auto_will_tegan_kuhns"
     },
     {
+      "pattern": "will aiden ruiz",
+      "keyword": "will aiden ruiz",
+      "occurrences": 12,
+      "family": "auto_will_aiden_ruiz"
+    },
+    {
       "pattern": "will taylor rabe",
       "keyword": "will taylor rabe",
       "occurrences": 12,
@@ -103,10 +67,22 @@
       "family": "auto_will_brody_bumila"
     },
     {
+      "pattern": "will gavin grahovac",
+      "keyword": "will gavin grahovac",
+      "occurrences": 12,
+      "family": "auto_will_gavin_grahovac"
+    },
+    {
       "pattern": "will chase brunson",
       "keyword": "will chase brunson",
       "occurrences": 12,
       "family": "auto_will_chase_brunson"
+    },
+    {
+      "pattern": "will carson bolemon",
+      "keyword": "will carson bolemon",
+      "occurrences": 12,
+      "family": "auto_will_carson_bolemon"
     },
     {
       "pattern": "will rocco maniscalco",
@@ -115,22 +91,28 @@
       "family": "auto_will_rocco_maniscalco"
     },
     {
+      "pattern": "will chris rembert",
+      "keyword": "will chris rembert",
+      "occurrences": 12,
+      "family": "auto_will_chris_rembert"
+    },
+    {
       "pattern": "will cade townsend",
       "keyword": "will cade townsend",
       "occurrences": 12,
       "family": "auto_will_cade_townsend"
     },
     {
-      "pattern": "will jarren advincula",
-      "keyword": "will jarren advincula",
-      "occurrences": 12,
-      "family": "auto_will_jarren_advincula"
-    },
-    {
       "pattern": "will chris hacopian",
       "keyword": "will chris hacopian",
       "occurrences": 12,
       "family": "auto_will_chris_hacopian"
+    },
+    {
+      "pattern": "will jarren advincula",
+      "keyword": "will jarren advincula",
+      "occurrences": 12,
+      "family": "auto_will_jarren_advincula"
     },
     {
       "pattern": "will logan schmidt",
@@ -143,12 +125,6 @@
       "keyword": "will liam peterson",
       "occurrences": 12,
       "family": "auto_will_liam_peterson"
-    },
-    {
-      "pattern": "will jensen hirschkorn",
-      "keyword": "will jensen hirschkorn",
-      "occurrences": 12,
-      "family": "auto_will_jensen_hirschkorn"
     },
     {
       "pattern": "will landon thome",
@@ -173,6 +149,12 @@
       "keyword": "will jared grindlinger",
       "occurrences": 12,
       "family": "auto_will_jared_grindlinger"
+    },
+    {
+      "pattern": "will taj marchand",
+      "keyword": "will taj marchand",
+      "occurrences": 12,
+      "family": "auto_will_taj_marchand"
     },
     {
       "pattern": "will drew burress",
@@ -223,22 +205,22 @@
       "family": "auto_will_jack_radel"
     },
     {
-      "pattern": "will jake brown",
-      "keyword": "will jake brown",
-      "occurrences": 12,
-      "family": "auto_will_jake_brown"
-    },
-    {
-      "pattern": "will andrew williamson",
-      "keyword": "will andrew williamson",
-      "occurrences": 12,
-      "family": "auto_will_andrew_williamson"
-    },
-    {
       "pattern": "will cameron flukey",
       "keyword": "will cameron flukey",
       "occurrences": 12,
       "family": "auto_will_cameron_flukey"
+    },
+    {
+      "pattern": "will cole prosek",
+      "keyword": "will cole prosek",
+      "occurrences": 12,
+      "family": "auto_will_cole_prosek"
+    },
+    {
+      "pattern": "will cole carlon",
+      "keyword": "will cole carlon",
+      "occurrences": 12,
+      "family": "auto_will_cole_carlon"
     },
     {
       "pattern": "will bo lowrance",
@@ -265,6 +247,12 @@
       "family": "auto_will_trevor_condon"
     },
     {
+      "pattern": "will aiden robbins",
+      "keyword": "will aiden robbins",
+      "occurrences": 12,
+      "family": "auto_will_aiden_robbins"
+    },
+    {
       "pattern": "will zion rose",
       "keyword": "will zion rose",
       "occurrences": 12,
@@ -287,6 +275,18 @@
       "keyword": "will derek curiel",
       "occurrences": 12,
       "family": "auto_will_derek_curiel"
+    },
+    {
+      "pattern": "will vahn lackey",
+      "keyword": "will vahn lackey",
+      "occurrences": 12,
+      "family": "auto_will_vahn_lackey"
+    },
+    {
+      "pattern": "will tyler bell",
+      "keyword": "will tyler bell",
+      "occurrences": 11,
+      "family": "auto_will_tyler_bell"
     },
     {
       "pattern": "will archer horn",
@@ -325,10 +325,28 @@
       "family": "auto_will_wes_mendes"
     },
     {
+      "pattern": "will jensen hirschkorn",
+      "keyword": "will jensen hirschkorn",
+      "occurrences": 11,
+      "family": "auto_will_jensen_hirschkorn"
+    },
+    {
       "pattern": "will connor comeau",
       "keyword": "will connor comeau",
       "occurrences": 11,
       "family": "auto_will_connor_comeau"
+    },
+    {
+      "pattern": "will jake brown",
+      "keyword": "will jake brown",
+      "occurrences": 11,
+      "family": "auto_will_jake_brown"
+    },
+    {
+      "pattern": "will andrew williamson",
+      "keyword": "will andrew williamson",
+      "occurrences": 11,
+      "family": "auto_will_andrew_williamson"
     },
     {
       "pattern": "will kaden waechter",
@@ -337,39 +355,15 @@
       "family": "auto_will_kaden_waechter"
     },
     {
-      "pattern": "will cole prosek",
-      "keyword": "will cole prosek",
-      "occurrences": 11,
-      "family": "auto_will_cole_prosek"
-    },
-    {
       "pattern": "will gio rojas",
       "keyword": "will gio rojas",
       "occurrences": 11,
       "family": "auto_will_gio_rojas"
     },
     {
-      "pattern": "will aiden robbins",
-      "keyword": "will aiden robbins",
-      "occurrences": 11,
-      "family": "auto_will_aiden_robbins"
-    },
-    {
-      "pattern": "will tyler bell",
-      "keyword": "will tyler bell",
-      "occurrences": 10,
-      "family": "auto_will_tyler_bell"
-    },
-    {
-      "pattern": "will there be a run scored in the first inning?",
-      "keyword": "will there be a run scored in the first inning?",
-      "occurrences": 8,
-      "family": "auto_will_there_be_a_run_scor"
-    },
-    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 55,
+      "occurrences": 56,
       "source": "scan_signature"
     }
   ]
