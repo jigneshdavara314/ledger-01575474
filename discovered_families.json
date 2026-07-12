@@ -1,6 +1,12 @@
 {
   "candidates": [
     {
+      "pattern": "t## blast, women",
+      "keyword": "t blast, women",
+      "occurrences": 8,
+      "family": "auto_t_blast_women"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 61,
