@@ -3,19 +3,13 @@
     {
       "pattern": "will the game go to extra innings?",
       "keyword": "will the game go to extra innings?",
-      "occurrences": 10,
-      "family": "auto_will_the_game_go_to_extr"
-    },
-    {
-      "pattern": "fight to go",
-      "keyword": "fight to go",
       "occurrences": 9,
-      "family": "auto_fight_to_go"
+      "family": "auto_will_the_game_go_to_extr"
     },
     {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 56,
+      "occurrences": 58,
       "source": "scan_signature"
     }
   ]
