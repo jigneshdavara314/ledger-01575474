@@ -261,3 +261,4 @@
 {"ts": "2026-07-12T19:01:12Z", "days": 45, "n_obs": 2366, "passed": [{"cell": "other_neither_team_to_score | pay NO 0.55-0.75", "n": 63, "win_rate": 0.889, "ev": 0.363, "wilson_lower": 0.73}]}
 {"ts": "2026-07-12T20:09:35Z", "days": 45, "n_obs": 2358, "passed": [{"cell": "other_neither_team_to_score | pay NO 0.55-0.75", "n": 63, "win_rate": 0.889, "ev": 0.363, "wilson_lower": 0.728}]}
 {"ts": "2026-07-12T21:46:07Z", "days": 45, "n_obs": 2365, "passed": [{"cell": "other_neither_team_to_score | pay NO 0.55-0.75", "n": 64, "win_rate": 0.891, "ev": 0.363, "wilson_lower": 0.732}]}
+{"ts": "2026-07-12T22:44:22Z", "days": 45, "n_obs": 2369, "passed": [{"cell": "other_neither_team_to_score | pay NO 0.55-0.75", "n": 64, "win_rate": 0.891, "ev": 0.363, "wilson_lower": 0.732}]}
