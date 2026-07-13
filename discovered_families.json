@@ -1,16 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will the game go to extra innings?",
-      "keyword": "will the game go to extra innings?",
-      "occurrences": 11,
-      "family": "auto_will_the_game_go_to_extr"
-    },
-    {
-      "family": "other_neither_team_to_score",
-      "keyword": "neither team to score",
-      "occurrences": 65,
-      "source": "scan_signature"
+      "pattern": "will austin reaves",
+      "keyword": "will austin reaves",
+      "occurrences": 29,
+      "family": "auto_will_austin_reaves"
     }
   ]
 }
