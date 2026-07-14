@@ -1,10 +1,16 @@
 {
   "candidates": [
     {
-      "pattern": "will \"gus\" -",
-      "keyword": "will \"gus\" -",
+      "pattern": "will luke kennard",
+      "keyword": "will luke kennard",
+      "occurrences": 30,
+      "family": "auto_will_luke_kennard"
+    },
+    {
+      "pattern": "will \"avatar",
+      "keyword": "will \"avatar",
       "occurrences": 8,
-      "family": "auto_will_gus"
+      "family": "auto_will_avatar"
     },
     {
       "pattern": "will argentina's monthly",
@@ -15,7 +21,7 @@
     {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 80,
+      "occurrences": 81,
       "source": "scan_signature"
     }
   ]
