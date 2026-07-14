@@ -1,33 +1,9 @@
 {
   "candidates": [
     {
-      "pattern": "will annual inflation",
-      "keyword": "will annual inflation",
-      "occurrences": 12,
-      "family": "auto_will_annual_inflation"
-    },
-    {
-      "pattern": "will a dozen",
-      "keyword": "will a dozen",
-      "occurrences": 10,
-      "family": "auto_will_a_dozen"
-    },
-    {
-      "pattern": "will core cpi",
-      "keyword": "will core cpi",
-      "occurrences": 10,
-      "family": "auto_will_core_cpi"
-    },
-    {
-      "pattern": "will monthly inflation",
-      "keyword": "will monthly inflation",
-      "occurrences": 9,
-      "family": "auto_will_monthly_inflation"
-    },
-    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 69,
+      "occurrences": 73,
       "source": "scan_signature"
     }
   ]
