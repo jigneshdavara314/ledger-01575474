@@ -1,7 +1,7 @@
 {
-  "generated_utc": "2026-07-14T11:25:32Z",
+  "generated_utc": "2026-07-14T13:24:00Z",
   "days": 45,
-  "n_observations": 2414,
+  "n_observations": 2421,
   "cells": [
     {
       "cell": "to_advance | pay NO 0.45-0.55",
@@ -176,7 +176,7 @@
       "price_sd": 0.063,
       "breakeven": 0.846,
       "ev": 0.032,
-      "ev_lower": -0.184,
+      "ev_lower": -0.185,
       "wilson_lower": 0.698,
       "z_corr": 2.87,
       "oos": "65>84 / 76>85",
@@ -352,10 +352,10 @@
       "n": 52,
       "wins": 5,
       "win_rate": 0.096,
-      "avg_price": 0.149,
+      "avg_price": 0.148,
       "price_sd": 0.064,
-      "breakeven": 0.149,
-      "ev": -0.404,
+      "breakeven": 0.148,
+      "ev": -0.399,
       "ev_lower": -0.813,
       "wilson_lower": 0.029,
       "z_corr": 2.87,
