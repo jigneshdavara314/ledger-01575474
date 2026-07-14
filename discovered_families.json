@@ -1,6 +1,12 @@
 {
   "candidates": [
     {
+      "pattern": "will \"gus\" -",
+      "keyword": "will \"gus\" -",
+      "occurrences": 8,
+      "family": "auto_will_gus"
+    },
+    {
       "pattern": "will argentina's monthly",
       "keyword": "will argentina's monthly",
       "occurrences": 8,
