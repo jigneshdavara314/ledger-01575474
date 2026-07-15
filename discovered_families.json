@@ -1,15 +1,9 @@
 {
   "candidates": [
     {
-      "pattern": "will ppi yoy",
-      "keyword": "will ppi yoy",
-      "occurrences": 10,
-      "family": "auto_will_ppi_yoy"
-    },
-    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 79,
+      "occurrences": 81,
       "source": "scan_signature"
     }
   ]
