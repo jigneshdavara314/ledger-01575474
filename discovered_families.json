@@ -1,18 +1,6 @@
 {
   "candidates": [
     {
-      "pattern": "will luke kennard",
-      "keyword": "will luke kennard",
-      "occurrences": 30,
-      "family": "auto_will_luke_kennard"
-    },
-    {
-      "pattern": "will \"avatar",
-      "keyword": "will \"avatar",
-      "occurrences": 8,
-      "family": "auto_will_avatar"
-    },
-    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 81,
