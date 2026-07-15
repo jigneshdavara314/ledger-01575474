@@ -13,12 +13,6 @@
       "family": "auto_will_avatar"
     },
     {
-      "pattern": "will argentina's monthly",
-      "keyword": "will argentina's monthly",
-      "occurrences": 8,
-      "family": "auto_will_argentina_s_monthly"
-    },
-    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 81,
