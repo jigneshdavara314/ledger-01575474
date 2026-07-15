@@ -27,11 +27,11 @@
       "band_hi": 0.75
     },
     "other_neither_team_to_score | pay NO 0.55-0.75": {
-      "tier": "trial",
-      "mult": 0.25,
-      "promoted": "2026-07-11",
-      "recurred": 2,
-      "source": "auto-trial",
+      "tier": "exploratory",
+      "mult": 0.5,
+      "promoted": "2026-07-15",
+      "recurred": 5,
+      "source": "auto-recur",
       "measured_win": 0.914,
       "measured_wilson_lower": 0.782,
       "measured_n": 81,
