@@ -1,6 +1,12 @@
 {
   "candidates": [
     {
+      "pattern": "will china gdp",
+      "keyword": "will china gdp",
+      "occurrences": 9,
+      "family": "auto_will_china_gdp"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 81,
