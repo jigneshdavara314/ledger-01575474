@@ -1,12 +1,6 @@
 {
   "candidates": [
     {
-      "pattern": "united airlines (ual)",
-      "keyword": "united airlines (ual)",
-      "occurrences": 10,
-      "family": "auto_united_airlines_ual"
-    },
-    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 81,
