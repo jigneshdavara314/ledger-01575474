@@ -1,16 +1,16 @@
 {
   "candidates": [
     {
-      "pattern": "will apple (aapl)",
-      "keyword": "will apple (aapl)",
-      "occurrences": 21,
-      "family": "auto_will_apple_aapl"
-    },
-    {
       "pattern": "will nvidia (nvda)",
       "keyword": "will nvidia (nvda)",
       "occurrences": 21,
       "family": "auto_will_nvidia_nvda"
+    },
+    {
+      "pattern": "will apple (aapl)",
+      "keyword": "will apple (aapl)",
+      "occurrences": 20,
+      "family": "auto_will_apple_aapl"
     },
     {
       "pattern": "will spacex (spcx)",
@@ -19,10 +19,10 @@
       "family": "auto_will_spacex_spcx"
     },
     {
-      "pattern": "over $##m committed",
-      "keyword": "over $m committed",
-      "occurrences": 13,
-      "family": "auto_over_m_committed"
+      "pattern": "will microstrategy (mstr)",
+      "keyword": "will microstrategy (mstr)",
+      "occurrences": 12,
+      "family": "auto_will_microstrategy_mstr"
     },
     {
       "pattern": "will opendoor technologies",
@@ -73,40 +73,22 @@
       "family": "auto_will_microsoft_msft"
     },
     {
+      "pattern": "will tesla (tsla)",
+      "keyword": "will tesla (tsla)",
+      "occurrences": 11,
+      "family": "auto_will_tesla_tsla"
+    },
+    {
       "pattern": "will palantir (pltr)",
       "keyword": "will palantir (pltr)",
       "occurrences": 11,
       "family": "auto_will_palantir_pltr"
     },
     {
-      "pattern": "will microstrategy (mstr)",
-      "keyword": "will microstrategy (mstr)",
-      "occurrences": 11,
-      "family": "auto_will_microstrategy_mstr"
-    },
-    {
       "pattern": "will s&p ###",
       "keyword": "will s&p",
       "occurrences": 11,
       "family": "auto_will_s_p"
-    },
-    {
-      "pattern": "will amazon.com, inc.",
-      "keyword": "will amazon.com, inc.",
-      "occurrences": 11,
-      "family": "auto_will_amazon_com_inc"
-    },
-    {
-      "pattern": "will microsoft corporation",
-      "keyword": "will microsoft corporation",
-      "occurrences": 11,
-      "family": "auto_will_microsoft_corporati"
-    },
-    {
-      "pattern": "will tesla (tsla)",
-      "keyword": "will tesla (tsla)",
-      "occurrences": 10,
-      "family": "auto_will_tesla_tsla"
     },
     {
       "pattern": "will tesla, inc.",
@@ -121,16 +103,22 @@
       "family": "auto_will_airbnb_inc"
     },
     {
+      "pattern": "will amazon.com, inc.",
+      "keyword": "will amazon.com, inc.",
+      "occurrences": 10,
+      "family": "auto_will_amazon_com_inc"
+    },
+    {
       "pattern": "will netflix, inc.",
       "keyword": "will netflix, inc.",
       "occurrences": 10,
       "family": "auto_will_netflix_inc"
     },
     {
-      "pattern": "will coinbase global,",
-      "keyword": "will coinbase global,",
+      "pattern": "will microsoft corporation",
+      "keyword": "will microsoft corporation",
       "occurrences": 10,
-      "family": "auto_will_coinbase_global"
+      "family": "auto_will_microsoft_corporati"
     },
     {
       "pattern": "will palantir technologies",
@@ -141,19 +129,19 @@
     {
       "pattern": "will meta platforms,",
       "keyword": "will meta platforms,",
-      "occurrences": 9,
+      "occurrences": 8,
       "family": "auto_will_meta_platforms"
     },
     {
-      "pattern": "will micron technology,",
-      "keyword": "will micron technology,",
+      "pattern": "will coinbase global,",
+      "keyword": "will coinbase global,",
       "occurrences": 8,
-      "family": "auto_will_micron_technology"
+      "family": "auto_will_coinbase_global"
     },
     {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 108,
+      "occurrences": 109,
       "source": "scan_signature"
     }
   ]
