@@ -1,9 +1,15 @@
 {
   "candidates": [
     {
+      "pattern": "will trump accuse",
+      "keyword": "will trump accuse",
+      "occurrences": 11,
+      "family": "auto_will_trump_accuse"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 102,
+      "occurrences": 103,
       "source": "scan_signature"
     }
   ]
