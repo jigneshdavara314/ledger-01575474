@@ -1,28 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will spacex (spcx)",
-      "keyword": "will spacex (spcx)",
-      "occurrences": 18,
-      "family": "auto_will_spacex_spcx"
-    },
-    {
-      "pattern": "will nvidia (nvda)",
-      "keyword": "will nvidia (nvda)",
-      "occurrences": 15,
-      "family": "auto_will_nvidia_nvda"
-    },
-    {
       "pattern": "will natural gas",
       "keyword": "will natural gas",
       "occurrences": 13,
       "family": "auto_will_natural_gas"
-    },
-    {
-      "pattern": "will apple (aapl)",
-      "keyword": "will apple (aapl)",
-      "occurrences": 13,
-      "family": "auto_will_apple_aapl"
     },
     {
       "pattern": "will wti crude",
@@ -31,70 +13,16 @@
       "family": "auto_will_wti_crude"
     },
     {
-      "pattern": "will microstrategy (mstr)",
-      "keyword": "will microstrategy (mstr)",
-      "occurrences": 12,
-      "family": "auto_will_microstrategy_mstr"
-    },
-    {
       "pattern": "will gold (xauusd)",
       "keyword": "will gold (xauusd)",
       "occurrences": 11,
       "family": "auto_will_gold_xauusd"
     },
     {
-      "pattern": "will micron (mu)",
-      "keyword": "will micron (mu)",
-      "occurrences": 11,
-      "family": "auto_will_micron_mu"
-    },
-    {
-      "pattern": "will netflix (nflx)",
-      "keyword": "will netflix (nflx)",
-      "occurrences": 11,
-      "family": "auto_will_netflix_nflx"
-    },
-    {
-      "pattern": "will meta (meta)",
-      "keyword": "will meta (meta)",
-      "occurrences": 11,
-      "family": "auto_will_meta_meta"
-    },
-    {
-      "pattern": "will opendoor (open)",
-      "keyword": "will opendoor (open)",
-      "occurrences": 11,
-      "family": "auto_will_opendoor_open"
-    },
-    {
-      "pattern": "will amazon (amzn)",
-      "keyword": "will amazon (amzn)",
-      "occurrences": 11,
-      "family": "auto_will_amazon_amzn"
-    },
-    {
-      "pattern": "will google (googl)",
-      "keyword": "will google (googl)",
-      "occurrences": 11,
-      "family": "auto_will_google_googl"
-    },
-    {
-      "pattern": "will microsoft (msft)",
-      "keyword": "will microsoft (msft)",
-      "occurrences": 11,
-      "family": "auto_will_microsoft_msft"
-    },
-    {
-      "pattern": "will tesla (tsla)",
-      "keyword": "will tesla (tsla)",
-      "occurrences": 11,
-      "family": "auto_will_tesla_tsla"
-    },
-    {
-      "pattern": "will palantir (pltr)",
-      "keyword": "will palantir (pltr)",
-      "occurrences": 11,
-      "family": "auto_will_palantir_pltr"
+      "pattern": "will there be a run scored in the first inning?",
+      "keyword": "will there be a run scored in the first inning?",
+      "occurrences": 9,
+      "family": "auto_will_there_be_a_run_scor"
     },
     {
       "pattern": "will silver (xagusd)",
@@ -105,7 +33,7 @@
     {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 109,
+      "occurrences": 99,
       "source": "scan_signature"
     }
   ]
