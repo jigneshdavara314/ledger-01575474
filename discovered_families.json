@@ -1,9 +1,27 @@
 {
   "candidates": [
     {
+      "pattern": "will there be a run scored in the first inning?",
+      "keyword": "will there be a run scored in the first inning?",
+      "occurrences": 9,
+      "family": "auto_will_there_be_a_run_scor"
+    },
+    {
+      "pattern": "will the world",
+      "keyword": "will the world",
+      "occurrences": 9,
+      "family": "auto_will_the_world"
+    },
+    {
+      "pattern": "will the game go to extra innings?",
+      "keyword": "will the game go to extra innings?",
+      "occurrences": 8,
+      "family": "auto_will_the_game_go_to_extr"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 120,
+      "occurrences": 121,
       "source": "scan_signature"
     }
   ]
