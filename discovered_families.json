@@ -1,6 +1,12 @@
 {
   "candidates": [
     {
+      "pattern": "who will finish higher",
+      "keyword": "who will finish higher",
+      "occurrences": 22,
+      "family": "auto_who_will_finish_higher"
+    },
+    {
       "pattern": "will the world",
       "keyword": "will the world",
       "occurrences": 9,
