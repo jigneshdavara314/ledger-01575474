@@ -1,15 +1,9 @@
 {
   "candidates": [
     {
-      "pattern": "will kylian mbappe",
-      "keyword": "will kylian mbappe",
-      "occurrences": 8,
-      "family": "auto_will_kylian_mbappe"
-    },
-    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 111,
+      "occurrences": 115,
       "source": "scan_signature"
     }
   ]
