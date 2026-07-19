@@ -1,9 +1,15 @@
 {
   "candidates": [
     {
+      "pattern": "hamburg european open, qualification",
+      "keyword": "hamburg european open, qualification",
+      "occurrences": 8,
+      "family": "auto_hamburg_european_open_qu"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 118,
+      "occurrences": 119,
       "source": "scan_signature"
     }
   ]
