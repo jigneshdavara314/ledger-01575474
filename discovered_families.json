@@ -3,20 +3,20 @@
     {
       "pattern": "will there be",
       "keyword": "will there be",
-      "occurrences": 10,
+      "occurrences": 12,
       "family": "auto_will_there_be"
     },
     {
-      "pattern": "will the get-in",
-      "keyword": "will the get-in",
-      "occurrences": 8,
-      "family": "auto_will_the_get_in"
+      "pattern": "will elon post",
+      "keyword": "will elon post",
+      "occurrences": 11,
+      "family": "auto_will_elon_post"
     },
     {
-      "pattern": "will a goal",
-      "keyword": "will a goal",
-      "occurrences": 8,
-      "family": "auto_will_a_goal"
+      "pattern": "will trump post",
+      "keyword": "will trump post",
+      "occurrences": 10,
+      "family": "auto_will_trump_post"
     },
     {
       "family": "other_neither_team_to_score",
