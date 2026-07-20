@@ -1,6 +1,12 @@
 {
   "candidates": [
     {
+      "pattern": "will \"the odyssey\"",
+      "keyword": "will \"the odyssey\"",
+      "occurrences": 9,
+      "family": "auto_will_the_odyssey"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 99,
