@@ -1,22 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "who will finish higher",
-      "keyword": "who will finish higher",
-      "occurrences": 20,
-      "family": "auto_who_will_finish_higher"
-    },
-    {
       "pattern": "will there be",
       "keyword": "will there be",
       "occurrences": 10,
       "family": "auto_will_there_be"
-    },
-    {
-      "pattern": "will lamine yamal",
-      "keyword": "will lamine yamal",
-      "occurrences": 9,
-      "family": "auto_will_lamine_yamal"
     },
     {
       "pattern": "will the get-in",
@@ -29,12 +17,6 @@
       "keyword": "will a goal",
       "occurrences": 8,
       "family": "auto_will_a_goal"
-    },
-    {
-      "pattern": "will lionel messi",
-      "keyword": "will lionel messi",
-      "occurrences": 8,
-      "family": "auto_will_lionel_messi"
     },
     {
       "family": "other_neither_team_to_score",
