@@ -3,8 +3,14 @@
     {
       "pattern": "will \"the odyssey\"",
       "keyword": "will \"the odyssey\"",
-      "occurrences": 25,
+      "occurrences": 17,
       "family": "auto_will_the_odyssey"
+    },
+    {
+      "pattern": "will there be a run scored in the first inning?",
+      "keyword": "will there be a run scored in the first inning?",
+      "occurrences": 12,
+      "family": "auto_will_there_be_a_run_scor"
     },
     {
       "family": "other_neither_team_to_score",
