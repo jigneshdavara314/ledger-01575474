@@ -1,6 +1,12 @@
 {
   "candidates": [
     {
+      "pattern": "over $#m committed",
+      "keyword": "over $m committed",
+      "occurrences": 9,
+      "family": "auto_over_m_committed"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 99,
