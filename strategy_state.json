@@ -38,6 +38,19 @@
       "direction": "NO",
       "band_lo": 0.55,
       "band_hi": 0.75
+    },
+    "other_neither_team_to_score | pay NO 0.45-0.55": {
+      "tier": "trial",
+      "mult": 0.25,
+      "promoted": "2026-07-23",
+      "recurred": 2,
+      "source": "auto-trial",
+      "measured_win": 0.919,
+      "measured_wilson_lower": 0.701,
+      "measured_n": 37,
+      "direction": "NO",
+      "band_lo": 0.45,
+      "band_hi": 0.55
     }
   },
   "disabled": [
@@ -50,5 +63,5 @@
     "over_under | pay NO 0.25-0.45": 2,
     "over_under | pay YES 0.25-0.45": 2
   },
-  "updated": "2026-07-22"
+  "updated": "2026-07-23"
 }

@@ -33,3 +33,4 @@
 {"ts": "2026-07-11T15:33:29.664459", "action": "TRIAL", "cell": "other_neither_team_to_score | pay NO 0.55-0.75", "recurred_days": 2, "tier": "trial", "mult": 0.25}
 {"ts": "2026-07-15T03:43:46.174017", "action": "GRADUATE", "cell": "other_neither_team_to_score | pay NO 0.55-0.75", "recurred_days": 5, "tier": "exploratory", "mult": 0.5}
 {"ts": "2026-07-21T03:54:35.525788", "action": "GRADUATE", "cell": "moneyline | pay NO 0.55-0.75", "recurred_days": 5, "tier": "exploratory", "mult": 0.5}
+{"ts": "2026-07-23T03:33:34.625005", "action": "TRIAL", "cell": "other_neither_team_to_score | pay NO 0.45-0.55", "recurred_days": 2, "tier": "trial", "mult": 0.25}
