@@ -1,12 +1,6 @@
 {
   "candidates": [
     {
-      "pattern": "will elliot anderson",
-      "keyword": "will elliot anderson",
-      "occurrences": 11,
-      "family": "auto_will_elliot_anderson"
-    },
-    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 125,
