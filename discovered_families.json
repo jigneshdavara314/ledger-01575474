@@ -1,18 +1,6 @@
 {
   "candidates": [
     {
-      "pattern": "will tesla, inc.",
-      "keyword": "will tesla, inc.",
-      "occurrences": 9,
-      "family": "auto_will_tesla_inc"
-    },
-    {
-      "pattern": "will alphabet inc.",
-      "keyword": "will alphabet inc.",
-      "occurrences": 8,
-      "family": "auto_will_alphabet_inc"
-    },
-    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 125,
