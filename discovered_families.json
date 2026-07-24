@@ -1,27 +1,9 @@
 {
   "candidates": [
     {
-      "pattern": "will newmont (nem)",
-      "keyword": "will newmont (nem)",
-      "occurrences": 9,
-      "family": "auto_will_newmont_nem"
-    },
-    {
-      "pattern": "intel (intc) q#",
-      "keyword": "intel (intc) q",
-      "occurrences": 9,
-      "family": "auto_intel_intc_q"
-    },
-    {
-      "pattern": "will russia enter",
-      "keyword": "will russia enter",
-      "occurrences": 8,
-      "family": "auto_will_russia_enter"
-    },
-    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 124,
+      "occurrences": 111,
       "source": "scan_signature"
     }
   ]
