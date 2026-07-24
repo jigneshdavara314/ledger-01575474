@@ -1,6 +1,12 @@
 {
   "candidates": [
     {
+      "pattern": "will the next",
+      "keyword": "will the next",
+      "occurrences": 22,
+      "family": "auto_will_the_next"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 115,
