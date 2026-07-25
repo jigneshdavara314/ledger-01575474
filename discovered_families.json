@@ -1,9 +1,15 @@
 {
   "candidates": [
     {
+      "pattern": "fight to go",
+      "keyword": "fight to go",
+      "occurrences": 10,
+      "family": "auto_fight_to_go"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 148,
+      "occurrences": 150,
       "source": "scan_signature"
     }
   ]
