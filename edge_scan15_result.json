@@ -1,7 +1,7 @@
 {
-  "generated_utc": "2026-07-25T09:51:23Z",
+  "generated_utc": "2026-07-25T11:09:51Z",
   "days": 45,
-  "n_observations": 2836,
+  "n_observations": 2837,
   "cells": [
     {
       "cell": "crypto_pricetail | pay YES 0.05-0.25",
@@ -532,9 +532,9 @@
       "n": 40,
       "wins": 1,
       "win_rate": 0.025,
-      "avg_price": 0.104,
+      "avg_price": 0.103,
       "price_sd": 0.035,
-      "breakeven": 0.104,
+      "breakeven": 0.103,
       "ev": -0.76,
       "ev_lower": -0.987,
       "wilson_lower": 0.002,
