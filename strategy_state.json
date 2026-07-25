@@ -34,7 +34,7 @@
       "source": "auto-recur",
       "measured_win": 0.972,
       "measured_wilson_lower": 0.898,
-      "measured_n": 144,
+      "measured_n": 145,
       "direction": "NO",
       "band_lo": 0.55,
       "band_hi": 0.75
