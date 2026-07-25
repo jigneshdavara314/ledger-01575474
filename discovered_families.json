@@ -1,9 +1,15 @@
 {
   "candidates": [
     {
+      "pattern": "will crysencio summerville",
+      "keyword": "will crysencio summerville",
+      "occurrences": 12,
+      "family": "auto_will_crysencio_summervil"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 145,
+      "occurrences": 146,
       "source": "scan_signature"
     }
   ]
