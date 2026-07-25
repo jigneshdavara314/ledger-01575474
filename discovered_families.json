@@ -1,15 +1,15 @@
 {
   "candidates": [
     {
-      "pattern": "metro bank one day cup",
-      "keyword": "metro bank one day cup",
-      "occurrences": 15,
-      "family": "auto_metro_bank_one_day_cup"
+      "pattern": "will there be a run scored in the first inning?",
+      "keyword": "will there be a run scored in the first inning?",
+      "occurrences": 13,
+      "family": "auto_will_there_be_a_run_scor"
     },
     {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 128,
+      "occurrences": 132,
       "source": "scan_signature"
     }
   ]
