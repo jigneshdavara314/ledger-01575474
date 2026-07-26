@@ -3,7 +3,7 @@
     {
       "pattern": "metro bank one day cup",
       "keyword": "metro bank one day cup",
-      "occurrences": 8,
+      "occurrences": 10,
       "family": "auto_metro_bank_one_day_cup"
     },
     {
@@ -15,7 +15,7 @@
     {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 155,
+      "occurrences": 154,
       "source": "scan_signature"
     }
   ]
