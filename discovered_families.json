@@ -1,16 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "metro bank one day cup",
-      "keyword": "metro bank one day cup",
-      "occurrences": 10,
-      "family": "auto_metro_bank_one_day_cup"
-    },
-    {
-      "pattern": "will mrbeast's next",
-      "keyword": "will mrbeast's next",
+      "pattern": "will the game go to extra innings?",
+      "keyword": "will the game go to extra innings?",
       "occurrences": 8,
-      "family": "auto_will_mrbeast_s_next"
+      "family": "auto_will_the_game_go_to_extr"
     },
     {
       "family": "other_neither_team_to_score",
