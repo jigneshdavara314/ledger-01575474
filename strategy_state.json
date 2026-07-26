@@ -1,14 +1,14 @@
 {
   "tiers": {
     "moneyline | pay NO 0.45-0.55": {
-      "tier": "trial",
-      "mult": 0.25,
-      "promoted": "2026-06-25",
-      "recurred": 2,
-      "source": "auto-trial",
-      "measured_win": 0.8,
-      "measured_wilson_lower": 0.564,
-      "measured_n": 40,
+      "tier": "exploratory",
+      "mult": 0.5,
+      "promoted": "2026-07-26",
+      "recurred": 5,
+      "source": "auto-recur",
+      "measured_win": 0.687,
+      "measured_wilson_lower": 0.561,
+      "measured_n": 134,
       "direction": "NO",
       "band_lo": 0.45,
       "band_hi": 0.55
@@ -45,9 +45,9 @@
       "promoted": "2026-07-26",
       "recurred": 5,
       "source": "auto-recur",
-      "measured_win": 0.929,
-      "measured_wilson_lower": 0.727,
-      "measured_n": 42,
+      "measured_win": 0.93,
+      "measured_wilson_lower": 0.732,
+      "measured_n": 43,
       "direction": "NO",
       "band_lo": 0.45,
       "band_hi": 0.55
