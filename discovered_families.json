@@ -1,6 +1,18 @@
 {
   "candidates": [
     {
+      "pattern": "metro bank one day cup",
+      "keyword": "metro bank one day cup",
+      "occurrences": 8,
+      "family": "auto_metro_bank_one_day_cup"
+    },
+    {
+      "pattern": "will mrbeast's next",
+      "keyword": "will mrbeast's next",
+      "occurrences": 8,
+      "family": "auto_will_mrbeast_s_next"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 155,
