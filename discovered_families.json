@@ -1,10 +1,16 @@
 {
   "candidates": [
     {
-      "pattern": "will south korea",
-      "keyword": "will south korea",
-      "occurrences": 10,
-      "family": "auto_will_south_korea"
+      "pattern": "german super league hamburg t##",
+      "keyword": "german super league hamburg t",
+      "occurrences": 12,
+      "family": "auto_german_super_league_hamb"
+    },
+    {
+      "pattern": "mukono super smash t##",
+      "keyword": "mukono super smash t",
+      "occurrences": 8,
+      "family": "auto_mukono_super_smash_t"
     },
     {
       "family": "other_neither_team_to_score",
