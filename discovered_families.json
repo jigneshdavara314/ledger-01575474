@@ -1,10 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "who will finish higher",
-      "keyword": "who will finish higher",
-      "occurrences": 22,
-      "family": "auto_who_will_finish_higher"
+      "family": "other_neither_team_to_score",
+      "keyword": "neither team to score",
+      "occurrences": 145,
+      "source": "scan_signature"
     }
   ]
 }
