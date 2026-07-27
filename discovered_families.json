@@ -1,16 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will the game go to extra innings?",
-      "keyword": "will the game go to extra innings?",
-      "occurrences": 17,
-      "family": "auto_will_the_game_go_to_extr"
-    },
-    {
-      "family": "other_neither_team_to_score",
-      "keyword": "neither team to score",
-      "occurrences": 154,
-      "source": "scan_signature"
+      "pattern": "who will finish higher",
+      "keyword": "who will finish higher",
+      "occurrences": 22,
+      "family": "auto_who_will_finish_higher"
     }
   ]
 }
