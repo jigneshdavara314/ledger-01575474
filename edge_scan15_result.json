@@ -1,7 +1,7 @@
 {
-  "generated_utc": "2026-07-27T13:38:22Z",
+  "generated_utc": "2026-07-27T16:15:39Z",
   "days": 45,
-  "n_observations": 2837,
+  "n_observations": 2822,
   "cells": [
     {
       "cell": "other_neither_team_to_score | pay NO 0.45-0.55",
@@ -158,7 +158,7 @@
       "price_sd": 0.06,
       "breakeven": 0.154,
       "ev": 0.101,
-      "ev_lower": -0.466,
+      "ev_lower": -0.465,
       "wilson_lower": 0.084,
       "z_corr": 2.94,
       "oos": "11>17 / 8>15",
@@ -283,7 +283,7 @@
       "avg_price": 0.842,
       "price_sd": 0.061,
       "breakeven": 0.842,
-      "ev": -0.016,
+      "ev": -0.017,
       "ev_lower": -0.166,
       "wilson_lower": 0.711,
       "z_corr": 2.94,

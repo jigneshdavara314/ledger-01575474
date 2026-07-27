@@ -1,6 +1,12 @@
 {
   "candidates": [
     {
+      "pattern": "will south korea",
+      "keyword": "will south korea",
+      "occurrences": 10,
+      "family": "auto_will_south_korea"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 145,
