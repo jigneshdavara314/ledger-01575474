@@ -1,9 +1,15 @@
 {
   "candidates": [
     {
+      "pattern": "visa (v) q#",
+      "keyword": "visa (v) q",
+      "occurrences": 10,
+      "family": "auto_visa_v_q"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 149,
+      "occurrences": 147,
       "source": "scan_signature"
     }
   ]
