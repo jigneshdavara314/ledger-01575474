@@ -33,8 +33,8 @@
       "recurred": 5,
       "source": "auto-recur",
       "measured_win": 0.973,
-      "measured_wilson_lower": 0.901,
-      "measured_n": 147,
+      "measured_wilson_lower": 0.902,
+      "measured_n": 148,
       "direction": "NO",
       "band_lo": 0.55,
       "band_hi": 0.75
@@ -45,9 +45,9 @@
       "promoted": "2026-07-26",
       "recurred": 5,
       "source": "auto-recur",
-      "measured_win": 0.932,
-      "measured_wilson_lower": 0.739,
-      "measured_n": 44,
+      "measured_win": 0.93,
+      "measured_wilson_lower": 0.736,
+      "measured_n": 43,
       "direction": "NO",
       "band_lo": 0.45,
       "band_hi": 0.55
