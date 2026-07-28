@@ -1,6 +1,18 @@
 {
   "candidates": [
     {
+      "pattern": "coca-cola (ko) q#",
+      "keyword": "coca-cola (ko) q",
+      "occurrences": 10,
+      "family": "auto_coca_cola_ko_q"
+    },
+    {
+      "pattern": "samsun",
+      "keyword": "samsun",
+      "occurrences": 8,
+      "family": "auto_samsun"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 149,
