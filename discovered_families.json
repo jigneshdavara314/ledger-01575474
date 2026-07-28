@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "family": "other_neither_team_to_score",
+      "keyword": "neither team to score",
+      "occurrences": 147,
+      "source": "scan_signature"
+    }
+  ]
 }
