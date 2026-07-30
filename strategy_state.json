@@ -33,8 +33,8 @@
       "recurred": 5,
       "source": "auto-recur",
       "measured_win": 0.984,
-      "measured_wilson_lower": 0.909,
-      "measured_n": 125,
+      "measured_wilson_lower": 0.907,
+      "measured_n": 122,
       "direction": "NO",
       "band_lo": 0.55,
       "band_hi": 0.75
