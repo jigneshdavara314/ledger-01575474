@@ -1,15 +1,9 @@
 {
   "candidates": [
     {
-      "pattern": "will draymond green",
-      "keyword": "will draymond green",
-      "occurrences": 30,
-      "family": "auto_will_draymond_green"
-    },
-    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 133,
+      "occurrences": 131,
       "source": "scan_signature"
     }
   ]
