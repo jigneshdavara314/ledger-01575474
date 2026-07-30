@@ -1,24 +1,6 @@
 {
   "candidates": [
     {
-      "pattern": "will core pce",
-      "keyword": "will core pce",
-      "occurrences": 14,
-      "family": "auto_will_core_pce"
-    },
-    {
-      "pattern": "mastercard (ma) q#",
-      "keyword": "mastercard (ma) q",
-      "occurrences": 10,
-      "family": "auto_mastercard_ma_q"
-    },
-    {
-      "pattern": "will mexico gdp",
-      "keyword": "will mexico gdp",
-      "occurrences": 8,
-      "family": "auto_will_mexico_gdp"
-    },
-    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 124,
