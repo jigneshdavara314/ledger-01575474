@@ -1,9 +1,15 @@
 {
   "candidates": [
     {
+      "pattern": "amway mlp orlando",
+      "keyword": "amway mlp orlando",
+      "occurrences": 10,
+      "family": "auto_amway_mlp_orlando"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 113,
+      "occurrences": 117,
       "source": "scan_signature"
     }
   ]
