@@ -1,6 +1,12 @@
 {
   "candidates": [
     {
+      "pattern": "will coinbase global,",
+      "keyword": "will coinbase global,",
+      "occurrences": 10,
+      "family": "auto_will_coinbase_global"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 117,
