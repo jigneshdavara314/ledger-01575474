@@ -1,6 +1,36 @@
 {
   "candidates": [
     {
+      "pattern": "will openai have",
+      "keyword": "will openai have",
+      "occurrences": 10,
+      "family": "auto_will_openai_have"
+    },
+    {
+      "pattern": "will bytedance have",
+      "keyword": "will bytedance have",
+      "occurrences": 10,
+      "family": "auto_will_bytedance_have"
+    },
+    {
+      "pattern": "will google have",
+      "keyword": "will google have",
+      "occurrences": 9,
+      "family": "auto_will_google_have"
+    },
+    {
+      "pattern": "will meta have",
+      "keyword": "will meta have",
+      "occurrences": 8,
+      "family": "auto_will_meta_have"
+    },
+    {
+      "pattern": "will amazon have",
+      "keyword": "will amazon have",
+      "occurrences": 8,
+      "family": "auto_will_amazon_have"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 118,
