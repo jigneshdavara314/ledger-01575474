@@ -1,6 +1,12 @@
 {
   "candidates": [
     {
+      "pattern": "will the ornn",
+      "keyword": "will the ornn",
+      "occurrences": 19,
+      "family": "auto_will_the_ornn"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 107,
