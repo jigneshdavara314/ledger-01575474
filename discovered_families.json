@@ -1,6 +1,24 @@
 {
   "candidates": [
     {
+      "pattern": "will donald trump",
+      "keyword": "will donald trump",
+      "occurrences": 16,
+      "family": "auto_will_donald_trump"
+    },
+    {
+      "pattern": "will russia enter",
+      "keyword": "will russia enter",
+      "occurrences": 10,
+      "family": "auto_will_russia_enter"
+    },
+    {
+      "pattern": "will russia capture",
+      "keyword": "will russia capture",
+      "occurrences": 9,
+      "family": "auto_will_russia_capture"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 109,
