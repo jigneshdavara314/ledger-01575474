@@ -1,12 +1,6 @@
 {
   "candidates": [
     {
-      "pattern": "will donald trump",
-      "keyword": "will donald trump",
-      "occurrences": 8,
-      "family": "auto_will_donald_trump"
-    },
-    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 109,
