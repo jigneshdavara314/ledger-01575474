@@ -1,33 +1,9 @@
 {
   "candidates": [
     {
-      "pattern": "will mrbeast's next",
-      "keyword": "will mrbeast's next",
-      "occurrences": 15,
-      "family": "auto_will_mrbeast_s_next"
-    },
-    {
-      "pattern": "will databricks' valuation",
-      "keyword": "will databricks' valuation",
-      "occurrences": 11,
-      "family": "auto_will_databricks_valuatio"
-    },
-    {
-      "pattern": "will anthropic's valuation",
-      "keyword": "will anthropic's valuation",
-      "occurrences": 10,
-      "family": "auto_will_anthropic_s_valuati"
-    },
-    {
-      "pattern": "will epic games'",
-      "keyword": "will epic games'",
-      "occurrences": 9,
-      "family": "auto_will_epic_games"
-    },
-    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 108,
+      "occurrences": 107,
       "source": "scan_signature"
     }
   ]
