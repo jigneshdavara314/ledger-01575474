@@ -1,15 +1,9 @@
 {
   "candidates": [
     {
-      "pattern": "will seoul have",
-      "keyword": "will seoul have",
-      "occurrences": 8,
-      "family": "auto_will_seoul_have"
-    },
-    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
-      "occurrences": 102,
+      "occurrences": 104,
       "source": "scan_signature"
     }
   ]
