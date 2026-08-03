@@ -1,3 +1,46 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will alphabet inc.",
+      "keyword": "will alphabet inc.",
+      "occurrences": 11,
+      "family": "auto_will_alphabet_inc"
+    },
+    {
+      "pattern": "will south korea",
+      "keyword": "will south korea",
+      "occurrences": 11,
+      "family": "auto_will_south_korea"
+    },
+    {
+      "pattern": "will microsoft corporation",
+      "keyword": "will microsoft corporation",
+      "occurrences": 11,
+      "family": "auto_will_microsoft_corporati"
+    },
+    {
+      "pattern": "will amazon.com, inc.",
+      "keyword": "will amazon.com, inc.",
+      "occurrences": 11,
+      "family": "auto_will_amazon_com_inc"
+    },
+    {
+      "pattern": "will ism manufacturing",
+      "keyword": "will ism manufacturing",
+      "occurrences": 10,
+      "family": "auto_will_ism_manufacturing"
+    },
+    {
+      "pattern": "will \"spider-man",
+      "keyword": "will \"spider-man",
+      "occurrences": 8,
+      "family": "auto_will_spider_man"
+    },
+    {
+      "family": "other_neither_team_to_score",
+      "keyword": "neither team to score",
+      "occurrences": 79,
+      "source": "scan_signature"
+    }
+  ]
 }
