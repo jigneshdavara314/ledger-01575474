@@ -1,6 +1,12 @@
 {
   "candidates": [
     {
+      "pattern": "will hong kong",
+      "keyword": "will hong kong",
+      "occurrences": 10,
+      "family": "auto_will_hong_kong"
+    },
+    {
       "family": "other_neither_team_to_score",
       "keyword": "neither team to score",
       "occurrences": 79,
