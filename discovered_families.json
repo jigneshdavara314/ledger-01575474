@@ -1,22 +1,46 @@
 {
   "candidates": [
     {
-      "pattern": "will luis arraez's",
-      "keyword": "will luis arraez's",
-      "occurrences": 30,
-      "family": "auto_will_luis_arraez_s"
-    },
-    {
-      "pattern": "will \"spider-man",
-      "keyword": "will \"spider-man",
+      "pattern": "will francisco lindor's",
+      "keyword": "will francisco lindor's",
       "occurrences": 29,
-      "family": "auto_will_spider_man"
+      "family": "auto_will_francisco_lindor_s"
     },
     {
-      "pattern": "national bank open",
-      "keyword": "national bank open",
-      "occurrences": 10,
-      "family": "auto_national_bank_open"
+      "pattern": "will mason miller's",
+      "keyword": "will mason miller's",
+      "occurrences": 29,
+      "family": "auto_will_mason_miller_s"
+    },
+    {
+      "pattern": "will mike trout's",
+      "keyword": "will mike trout's",
+      "occurrences": 29,
+      "family": "auto_will_mike_trout_s"
+    },
+    {
+      "pattern": "will byron buxton's",
+      "keyword": "will byron buxton's",
+      "occurrences": 29,
+      "family": "auto_will_byron_buxton_s"
+    },
+    {
+      "pattern": "will cj abrams's",
+      "keyword": "will cj abrams's",
+      "occurrences": 29,
+      "family": "auto_will_cj_abrams_s"
+    },
+    {
+      "pattern": "will josh hader's",
+      "keyword": "will josh hader's",
+      "occurrences": 29,
+      "family": "auto_will_josh_hader_s"
+    },
+    {
+      "pattern": "will trump speak",
+      "keyword": "will trump speak",
+      "occurrences": 20,
+      "family": "auto_will_trump_speak"
     }
   ]
 }
