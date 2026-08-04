@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-08-04T15:25:30Z",
+  "generated_utc": "2026-08-04T17:43:18Z",
   "days": 45,
   "n_observations": 2534,
   "cells": [
@@ -202,6 +202,24 @@
       "verdict": "noise"
     },
     {
+      "cell": "tweet_range | pay NO 0.75-0.95",
+      "family": "tweet_range",
+      "keyword": null,
+      "n": 47,
+      "wins": 43,
+      "win_rate": 0.915,
+      "avg_price": 0.881,
+      "price_sd": 0.05,
+      "breakeven": 0.881,
+      "ev": 0.03,
+      "ev_lower": -0.187,
+      "wilson_lower": 0.725,
+      "z_corr": 2.91,
+      "oos": "77>88 / 71>88",
+      "clean": true,
+      "verdict": "noise"
+    },
+    {
       "cell": "draw | pay NO 0.75-0.95",
       "family": "draw",
       "keyword": null,
@@ -216,24 +234,6 @@
       "wilson_lower": 0.603,
       "z_corr": 2.91,
       "oos": "50>80 / 67>79",
-      "clean": true,
-      "verdict": "noise"
-    },
-    {
-      "cell": "tweet_range | pay NO 0.75-0.95",
-      "family": "tweet_range",
-      "keyword": null,
-      "n": 45,
-      "wins": 41,
-      "win_rate": 0.911,
-      "avg_price": 0.884,
-      "price_sd": 0.049,
-      "breakeven": 0.884,
-      "ev": 0.021,
-      "ev_lower": -0.201,
-      "wilson_lower": 0.715,
-      "z_corr": 2.91,
-      "oos": "75>89 / 71>88",
       "clean": true,
       "verdict": "noise"
     },
@@ -328,24 +328,6 @@
       "verdict": "noise"
     },
     {
-      "cell": "tweet_range | pay YES 0.05-0.25",
-      "family": "tweet_range",
-      "keyword": null,
-      "n": 45,
-      "wins": 4,
-      "win_rate": 0.089,
-      "avg_price": 0.111,
-      "price_sd": 0.045,
-      "breakeven": 0.111,
-      "ev": -0.102,
-      "ev_lower": -0.8,
-      "wilson_lower": 0.023,
-      "z_corr": 2.91,
-      "oos": "1>10 / 4>12",
-      "clean": true,
-      "verdict": "noise"
-    },
-    {
       "cell": "crypto_pricetail | pay YES 0.75-0.95",
       "family": "crypto_pricetail",
       "keyword": null,
@@ -360,6 +342,24 @@
       "wilson_lower": 0.469,
       "z_corr": 2.91,
       "oos": "50>84 / 51>88",
+      "clean": true,
+      "verdict": "noise"
+    },
+    {
+      "cell": "tweet_range | pay YES 0.05-0.25",
+      "family": "tweet_range",
+      "keyword": null,
+      "n": 47,
+      "wins": 4,
+      "win_rate": 0.085,
+      "avg_price": 0.114,
+      "price_sd": 0.047,
+      "breakeven": 0.114,
+      "ev": -0.141,
+      "ev_lower": -0.815,
+      "wilson_lower": 0.022,
+      "z_corr": 2.91,
+      "oos": "1>11 / 4>12",
       "clean": true,
       "verdict": "noise"
     },
