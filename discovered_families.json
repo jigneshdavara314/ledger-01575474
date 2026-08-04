@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will palantir technologies",
+      "keyword": "will palantir technologies",
+      "occurrences": 10,
+      "family": "auto_will_palantir_technologi"
+    }
+  ]
 }
