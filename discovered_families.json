@@ -1,3 +1,22 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will luis arraez's",
+      "keyword": "will luis arraez's",
+      "occurrences": 30,
+      "family": "auto_will_luis_arraez_s"
+    },
+    {
+      "pattern": "will \"spider-man",
+      "keyword": "will \"spider-man",
+      "occurrences": 29,
+      "family": "auto_will_spider_man"
+    },
+    {
+      "pattern": "national bank open",
+      "keyword": "national bank open",
+      "occurrences": 10,
+      "family": "auto_national_bank_open"
+    }
+  ]
 }
