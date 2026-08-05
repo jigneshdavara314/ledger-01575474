@@ -5,6 +5,12 @@
       "keyword": "national bank open",
       "occurrences": 8,
       "family": "auto_national_bank_open"
+    },
+    {
+      "pattern": "will attovia therapeutics'",
+      "keyword": "will attovia therapeutics'",
+      "occurrences": 8,
+      "family": "auto_will_attovia_therapeutic"
     }
   ]
 }
