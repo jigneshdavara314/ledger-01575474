@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will ism services",
+      "keyword": "will ism services",
+      "occurrences": 10,
+      "family": "auto_will_ism_services"
+    }
+  ]
 }
