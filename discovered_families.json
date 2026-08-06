@@ -1,16 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "national bank open",
-      "keyword": "national bank open",
-      "occurrences": 11,
-      "family": "auto_national_bank_open"
-    },
-    {
-      "pattern": "will trump's las",
-      "keyword": "will trump's las",
-      "occurrences": 8,
-      "family": "auto_will_trump_s_las"
-    }
-  ]
+  "candidates": []
 }
