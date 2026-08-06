@@ -3,14 +3,14 @@
     {
       "pattern": "national bank open",
       "keyword": "national bank open",
-      "occurrences": 8,
+      "occurrences": 11,
       "family": "auto_national_bank_open"
     },
     {
-      "pattern": "will attovia therapeutics'",
-      "keyword": "will attovia therapeutics'",
+      "pattern": "will trump's las",
+      "keyword": "will trump's las",
       "occurrences": 8,
-      "family": "auto_will_attovia_therapeutic"
+      "family": "auto_will_trump_s_las"
     }
   ]
 }
