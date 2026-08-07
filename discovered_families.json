@@ -1,10 +1,28 @@
 {
   "candidates": [
     {
-      "pattern": "will spacex (spcx)",
-      "keyword": "will spacex (spcx)",
-      "occurrences": 9,
-      "family": "auto_will_spacex_spcx"
+      "pattern": "will natural gas",
+      "keyword": "will natural gas",
+      "occurrences": 12,
+      "family": "auto_will_natural_gas"
+    },
+    {
+      "pattern": "will wti crude",
+      "keyword": "will wti crude",
+      "occurrences": 11,
+      "family": "auto_will_wti_crude"
+    },
+    {
+      "pattern": "will \"petal\" -",
+      "keyword": "will \"petal\" -",
+      "occurrences": 8,
+      "family": "auto_will_petal"
+    },
+    {
+      "pattern": "metro bank one day cup",
+      "keyword": "metro bank one day cup",
+      "occurrences": 8,
+      "family": "auto_metro_bank_one_day_cup"
     }
   ]
 }
