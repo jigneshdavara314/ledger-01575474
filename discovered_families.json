@@ -1,16 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "will the july",
-      "keyword": "will the july",
-      "occurrences": 9,
-      "family": "auto_will_the_july"
-    },
-    {
-      "pattern": "will airbnb, inc.",
-      "keyword": "will airbnb, inc.",
-      "occurrences": 9,
-      "family": "auto_will_airbnb_inc"
-    }
-  ]
+  "candidates": []
 }
