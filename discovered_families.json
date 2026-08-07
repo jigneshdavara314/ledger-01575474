@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will airbnb, inc.",
+      "keyword": "will airbnb, inc.",
+      "occurrences": 8,
+      "family": "auto_will_airbnb_inc"
+    }
+  ]
 }
