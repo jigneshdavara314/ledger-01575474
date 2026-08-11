@@ -1,10 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "metro bank one day cup",
-      "keyword": "metro bank one day cup",
-      "occurrences": 9,
-      "family": "auto_metro_bank_one_day_cup"
+      "pattern": "will the ##",
+      "keyword": "will the",
+      "occurrences": 10,
+      "family": "auto_will_the"
     }
   ]
 }
