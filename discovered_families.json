@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "cincinnati open, qualification",
+      "keyword": "cincinnati open, qualification",
+      "occurrences": 13,
+      "family": "auto_cincinnati_open_qualific"
+    },
+    {
+      "pattern": "metro bank one day cup",
+      "keyword": "metro bank one day cup",
+      "occurrences": 13,
+      "family": "auto_metro_bank_one_day_cup"
+    }
+  ]
 }
