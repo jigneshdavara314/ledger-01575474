@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "reserve bank of",
+      "keyword": "reserve bank of",
+      "occurrences": 8,
+      "family": "auto_reserve_bank_of"
+    }
+  ]
 }
