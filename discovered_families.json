@@ -1,10 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "over $#m committed",
-      "keyword": "over $m committed",
-      "occurrences": 9,
-      "family": "auto_over_m_committed"
+      "pattern": "cincinnati open, qualification",
+      "keyword": "cincinnati open, qualification",
+      "occurrences": 11,
+      "family": "auto_cincinnati_open_qualific"
     }
   ]
 }
