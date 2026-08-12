@@ -3,8 +3,14 @@
     {
       "pattern": "cincinnati open, qualification",
       "keyword": "cincinnati open, qualification",
-      "occurrences": 11,
+      "occurrences": 12,
       "family": "auto_cincinnati_open_qualific"
+    },
+    {
+      "pattern": "will the game go to extra innings?",
+      "keyword": "will the game go to extra innings?",
+      "occurrences": 9,
+      "family": "auto_will_the_game_go_to_extr"
     }
   ]
 }
