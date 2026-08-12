@@ -1,10 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "grok #.# released",
-      "keyword": "grok . released",
-      "occurrences": 23,
-      "family": "auto_grok_released"
-    }
-  ]
+  "candidates": []
 }
