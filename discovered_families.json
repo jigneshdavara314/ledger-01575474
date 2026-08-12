@@ -1,28 +1,16 @@
 {
   "candidates": [
     {
-      "pattern": "will core cpi",
-      "keyword": "will core cpi",
-      "occurrences": 18,
-      "family": "auto_will_core_cpi"
-    },
-    {
-      "pattern": "will annual inflation",
-      "keyword": "will annual inflation",
-      "occurrences": 12,
-      "family": "auto_will_annual_inflation"
-    },
-    {
       "pattern": "will a dozen",
       "keyword": "will a dozen",
       "occurrences": 10,
       "family": "auto_will_a_dozen"
     },
     {
-      "pattern": "will monthly inflation",
-      "keyword": "will monthly inflation",
+      "pattern": "will core cpi",
+      "keyword": "will core cpi",
       "occurrences": 8,
-      "family": "auto_will_monthly_inflation"
+      "family": "auto_will_core_cpi"
     }
   ]
 }
