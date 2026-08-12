@@ -5,6 +5,12 @@
       "keyword": "grok . released",
       "occurrences": 17,
       "family": "auto_grok_released"
+    },
+    {
+      "pattern": "will mrbeast's next",
+      "keyword": "will mrbeast's next",
+      "occurrences": 11,
+      "family": "auto_will_mrbeast_s_next"
     }
   ]
 }
