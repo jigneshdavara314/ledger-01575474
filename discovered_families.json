@@ -1,16 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will a dozen",
-      "keyword": "will a dozen",
-      "occurrences": 10,
-      "family": "auto_will_a_dozen"
-    },
-    {
-      "pattern": "will core cpi",
-      "keyword": "will core cpi",
-      "occurrences": 8,
-      "family": "auto_will_core_cpi"
+      "pattern": "grok #.# released",
+      "keyword": "grok . released",
+      "occurrences": 17,
+      "family": "auto_grok_released"
     }
   ]
 }
