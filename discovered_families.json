@@ -3,14 +3,8 @@
     {
       "pattern": "grok #.# released",
       "keyword": "grok . released",
-      "occurrences": 17,
+      "occurrences": 23,
       "family": "auto_grok_released"
-    },
-    {
-      "pattern": "will mrbeast's next",
-      "keyword": "will mrbeast's next",
-      "occurrences": 11,
-      "family": "auto_will_mrbeast_s_next"
     }
   ]
 }
