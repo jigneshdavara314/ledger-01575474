@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will uk gdp",
+      "keyword": "will uk gdp",
+      "occurrences": 10,
+      "family": "auto_will_uk_gdp"
+    }
+  ]
 }
