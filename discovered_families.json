@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "cincinnati open, qualification",
+      "keyword": "cincinnati open, qualification",
+      "occurrences": 13,
+      "family": "auto_cincinnati_open_qualific"
+    }
+  ]
 }
