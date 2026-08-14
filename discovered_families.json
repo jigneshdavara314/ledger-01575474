@@ -1,3 +1,28 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will robinhood markets,",
+      "keyword": "will robinhood markets,",
+      "occurrences": 10,
+      "family": "auto_will_robinhood_markets"
+    },
+    {
+      "pattern": "will coinbase global,",
+      "keyword": "will coinbase global,",
+      "occurrences": 9,
+      "family": "auto_will_coinbase_global"
+    },
+    {
+      "pattern": "will microstrategy (mstr)",
+      "keyword": "will microstrategy (mstr)",
+      "occurrences": 8,
+      "family": "auto_will_microstrategy_mstr"
+    },
+    {
+      "pattern": "will meta platforms,",
+      "keyword": "will meta platforms,",
+      "occurrences": 8,
+      "family": "auto_will_meta_platforms"
+    }
+  ]
 }
