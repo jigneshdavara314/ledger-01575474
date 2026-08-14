@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will natural gas",
+      "keyword": "will natural gas",
+      "occurrences": 12,
+      "family": "auto_will_natural_gas"
+    },
+    {
+      "pattern": "will gold (xauusd)",
+      "keyword": "will gold (xauusd)",
+      "occurrences": 9,
+      "family": "auto_will_gold_xauusd"
+    }
+  ]
 }
