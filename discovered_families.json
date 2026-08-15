@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "dota #",
+      "keyword": "dota",
+      "occurrences": 8,
+      "family": "auto_dota"
+    }
+  ]
 }
