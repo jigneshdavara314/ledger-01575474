@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will japan q#",
+      "keyword": "will japan q",
+      "occurrences": 9,
+      "family": "auto_will_japan_q"
+    }
+  ]
 }
