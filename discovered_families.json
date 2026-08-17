@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will \"the end",
+      "keyword": "will \"the end",
+      "occurrences": 8,
+      "family": "auto_will_the_end"
+    }
+  ]
 }
