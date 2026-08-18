@@ -770,3 +770,4 @@
 {"ts": "2026-08-17T22:23:34Z", "days": 45, "n_obs": 1677, "passed": []}
 {"ts": "2026-08-17T23:20:34Z", "days": 45, "n_obs": 1678, "passed": []}
 {"ts": "2026-08-18T00:56:23Z", "days": 45, "n_obs": 1801, "passed": []}
+{"ts": "2026-08-18T02:15:58Z", "days": 45, "n_obs": 1816, "passed": [{"cell": "other_neither_team_to_score | pay NO 0.55-0.75", "n": 23, "win_rate": 0.957, "ev": 0.626, "wilson_lower": 0.694}]}
