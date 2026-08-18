@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will \"spider-man",
+      "keyword": "will \"spider-man",
+      "occurrences": 10,
+      "family": "auto_will_spider_man"
+    }
+  ]
 }
