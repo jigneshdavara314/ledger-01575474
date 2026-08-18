@@ -1,22 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "will \"spider-man",
-      "keyword": "will \"spider-man",
-      "occurrences": 10,
-      "family": "auto_will_spider_man"
-    },
-    {
-      "pattern": "will there be a run scored in the first inning?",
-      "keyword": "will there be a run scored in the first inning?",
-      "occurrences": 9,
-      "family": "auto_will_there_be_a_run_scor"
-    },
-    {
-      "family": "other_neither_team_to_score",
-      "keyword": "neither team to score",
-      "occurrences": 23,
-      "source": "scan_signature"
-    }
-  ]
+  "candidates": []
 }
