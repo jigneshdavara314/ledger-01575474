@@ -3,14 +3,8 @@
     {
       "pattern": "will the most",
       "keyword": "will the most",
-      "occurrences": 39,
+      "occurrences": 9,
       "family": "auto_will_the_most"
-    },
-    {
-      "pattern": "walmart (wmt) q#",
-      "keyword": "walmart (wmt) q",
-      "occurrences": 8,
-      "family": "auto_walmart_wmt_q"
     }
   ]
 }
