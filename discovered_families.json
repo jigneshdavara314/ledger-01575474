@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will the most",
+      "keyword": "will the most",
+      "occurrences": 35,
+      "family": "auto_will_the_most"
+    },
+    {
+      "pattern": "walmart (wmt) q#",
+      "keyword": "walmart (wmt) q",
+      "occurrences": 8,
+      "family": "auto_walmart_wmt_q"
+    }
+  ]
 }
