@@ -1,7 +1,7 @@
 {
-  "generated_utc": "2026-08-20T16:31:04Z",
+  "generated_utc": "2026-08-20T17:28:34Z",
   "days": 45,
-  "n_observations": 1723,
+  "n_observations": 1722,
   "cells": [
     {
       "cell": "moneyline | pay NO 0.45-0.55",
@@ -36,6 +36,24 @@
       "wilson_lower": 0.615,
       "z_corr": 2.69,
       "oos": "61>66 / 61>65",
+      "clean": true,
+      "verdict": "noise"
+    },
+    {
+      "cell": "moneyline | pay NO 0.25-0.45",
+      "family": "moneyline",
+      "keyword": null,
+      "n": 45,
+      "wins": 17,
+      "win_rate": 0.378,
+      "avg_price": 0.352,
+      "price_sd": 0.054,
+      "breakeven": 0.352,
+      "ev": 0.093,
+      "ev_lower": -0.404,
+      "wilson_lower": 0.213,
+      "z_corr": 2.69,
+      "oos": "21>35 / 21>35",
       "clean": true,
       "verdict": "noise"
     },
@@ -76,24 +94,6 @@
       "verdict": "noise"
     },
     {
-      "cell": "moneyline | pay NO 0.25-0.45",
-      "family": "moneyline",
-      "keyword": null,
-      "n": 46,
-      "wins": 17,
-      "win_rate": 0.37,
-      "avg_price": 0.354,
-      "price_sd": 0.055,
-      "breakeven": 0.354,
-      "ev": 0.069,
-      "ev_lower": -0.421,
-      "wilson_lower": 0.208,
-      "z_corr": 2.69,
-      "oos": "21>35 / 20>36",
-      "clean": true,
-      "verdict": "noise"
-    },
-    {
       "cell": "moneyline | pay NO 0.75-0.95",
       "family": "moneyline",
       "keyword": null,
@@ -130,24 +130,6 @@
       "verdict": "noise"
     },
     {
-      "cell": "moneyline | pay YES 0.55-0.75",
-      "family": "moneyline",
-      "keyword": null,
-      "n": 45,
-      "wins": 28,
-      "win_rate": 0.622,
-      "avg_price": 0.644,
-      "price_sd": 0.053,
-      "breakeven": 0.644,
-      "ev": -0.033,
-      "ev_lower": -0.352,
-      "wilson_lower": 0.424,
-      "z_corr": 2.69,
-      "oos": "41>64 / 43>64",
-      "clean": true,
-      "verdict": "noise"
-    },
-    {
       "cell": "draw | pay NO 0.75-0.95",
       "family": "draw",
       "keyword": null,
@@ -162,6 +144,24 @@
       "wilson_lower": 0.597,
       "z_corr": 2.69,
       "oos": "63>79 / 54>79",
+      "clean": true,
+      "verdict": "noise"
+    },
+    {
+      "cell": "moneyline | pay YES 0.55-0.75",
+      "family": "moneyline",
+      "keyword": null,
+      "n": 44,
+      "wins": 27,
+      "win_rate": 0.614,
+      "avg_price": 0.645,
+      "price_sd": 0.053,
+      "breakeven": 0.645,
+      "ev": -0.049,
+      "ev_lower": -0.369,
+      "wilson_lower": 0.414,
+      "z_corr": 2.69,
+      "oos": "41>64 / 41>65",
       "clean": true,
       "verdict": "noise"
     },
