@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will kai and",
+      "keyword": "will kai and",
+      "occurrences": 12,
+      "family": "auto_will_kai_and"
+    }
+  ]
 }

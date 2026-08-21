@@ -1,7 +1,7 @@
 {
-  "generated_utc": "2026-08-21T05:31:36Z",
+  "generated_utc": "2026-08-21T06:40:21Z",
   "days": 45,
-  "n_observations": 1808,
+  "n_observations": 1807,
   "cells": [
     {
       "cell": "moneyline | pay NO 0.45-0.55",
@@ -49,29 +49,11 @@
       "avg_price": 0.636,
       "price_sd": 0.056,
       "breakeven": 0.636,
-      "ev": 0.089,
+      "ev": 0.088,
       "ev_lower": -0.08,
       "wilson_lower": 0.591,
       "z_corr": 2.71,
       "oos": "64>64 / 54>63",
-      "clean": true,
-      "verdict": "noise"
-    },
-    {
-      "cell": "moneyline | pay YES 0.75-0.95",
-      "family": "moneyline",
-      "keyword": null,
-      "n": 20,
-      "wins": 18,
-      "win_rate": 0.9,
-      "avg_price": 0.833,
-      "price_sd": 0.065,
-      "breakeven": 0.833,
-      "ev": 0.08,
-      "ev_lower": -0.286,
-      "wilson_lower": 0.603,
-      "z_corr": 2.71,
-      "oos": "56>82 / 62>84",
       "clean": true,
       "verdict": "noise"
     },
@@ -90,6 +72,24 @@
       "wilson_lower": 0.698,
       "z_corr": 2.71,
       "oos": "44>82 / 77>85",
+      "clean": true,
+      "verdict": "noise"
+    },
+    {
+      "cell": "moneyline | pay YES 0.75-0.95",
+      "family": "moneyline",
+      "keyword": null,
+      "n": 20,
+      "wins": 18,
+      "win_rate": 0.9,
+      "avg_price": 0.837,
+      "price_sd": 0.062,
+      "breakeven": 0.837,
+      "ev": 0.074,
+      "ev_lower": -0.289,
+      "wilson_lower": 0.603,
+      "z_corr": 2.71,
+      "oos": "56>82 / 62>85",
       "clean": true,
       "verdict": "noise"
     },
@@ -193,7 +193,7 @@
       "avg_price": 0.357,
       "price_sd": 0.057,
       "breakeven": 0.357,
-      "ev": -0.14,
+      "ev": -0.139,
       "ev_lower": -0.403,
       "wilson_lower": 0.217,
       "z_corr": 2.71,
@@ -269,7 +269,7 @@
       "ev_lower": -0.879,
       "wilson_lower": 0.02,
       "z_corr": 2.71,
-      "oos": "3>19 / 2>15",
+      "oos": "3>18 / 2>15",
       "clean": true,
       "verdict": "noise"
     }
