@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "world series of darts",
+      "keyword": "world series of darts",
+      "occurrences": 8,
+      "family": "auto_world_series_of_darts"
+    }
+  ]
 }
