@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will it rain",
+      "keyword": "will it rain",
+      "occurrences": 11,
+      "family": "auto_will_it_rain"
+    }
+  ]
 }
