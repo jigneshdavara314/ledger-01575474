@@ -1,7 +1,7 @@
 {
-  "generated_utc": "2026-08-23T07:31:53Z",
+  "generated_utc": "2026-08-23T08:26:22Z",
   "days": 45,
-  "n_observations": 1674,
+  "n_observations": 1670,
   "cells": [
     {
       "cell": "moneyline | pay NO 0.45-0.55",
@@ -251,7 +251,7 @@
       "ev_lower": -0.888,
       "wilson_lower": 0.018,
       "z_corr": 2.71,
-      "oos": "3>19 / 1>13",
+      "oos": "3>18 / 1>13",
       "clean": true,
       "verdict": "noise"
     },
