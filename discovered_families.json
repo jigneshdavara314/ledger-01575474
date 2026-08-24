@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "us open, qualification atp",
+      "keyword": "us open, qualification atp",
+      "occurrences": 8,
+      "family": "auto_us_open_qualification_at"
+    },
+    {
+      "pattern": "us open, qualification wta",
+      "keyword": "us open, qualification wta",
+      "occurrences": 8,
+      "family": "auto_us_open_qualification_wt"
+    }
+  ]
 }
