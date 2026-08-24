@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-08-24T09:44:08Z",
+  "generated_utc": "2026-08-24T10:35:59Z",
   "days": 45,
   "n_observations": 1716,
   "cells": [
@@ -215,7 +215,7 @@
       "ev_lower": -0.885,
       "wilson_lower": 0.018,
       "z_corr": 2.67,
-      "oos": "3>18 / 1>13",
+      "oos": "3>19 / 1>13",
       "clean": true,
       "verdict": "noise"
     },
