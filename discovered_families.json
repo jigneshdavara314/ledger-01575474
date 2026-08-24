@@ -1,16 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will \"mutiny\" score",
-      "keyword": "will \"mutiny\" score",
-      "occurrences": 9,
-      "family": "auto_will_mutiny_score"
-    },
-    {
-      "pattern": "will \"insidious",
-      "keyword": "will \"insidious",
-      "occurrences": 9,
-      "family": "auto_will_insidious"
+      "pattern": "us open, qualification wta",
+      "keyword": "us open, qualification wta",
+      "occurrences": 8,
+      "family": "auto_us_open_qualification_wt"
     }
   ]
 }
