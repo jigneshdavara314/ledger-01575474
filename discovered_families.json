@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "who will finish higher",
+      "keyword": "who will finish higher",
+      "occurrences": 18,
+      "family": "auto_who_will_finish_higher"
+    }
+  ]
 }
