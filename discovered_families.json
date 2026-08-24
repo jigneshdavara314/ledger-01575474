@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will \"mutiny\" score",
+      "keyword": "will \"mutiny\" score",
+      "occurrences": 10,
+      "family": "auto_will_mutiny_score"
+    },
+    {
+      "pattern": "will \"insidious",
+      "keyword": "will \"insidious",
+      "occurrences": 9,
+      "family": "auto_will_insidious"
+    }
+  ]
 }
