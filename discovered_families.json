@@ -1,6 +1,12 @@
 {
   "candidates": [
     {
+      "pattern": "will there be",
+      "keyword": "will there be",
+      "occurrences": 8,
+      "family": "auto_will_there_be"
+    },
+    {
       "pattern": "will justin bieber's",
       "keyword": "will justin bieber's",
       "occurrences": 8,
