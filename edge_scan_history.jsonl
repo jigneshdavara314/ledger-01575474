@@ -948,3 +948,4 @@
 {"ts": "2026-08-25T16:34:22Z", "days": 45, "n_obs": 1647, "passed": [{"cell": "moneyline | pay NO 0.45-0.55", "n": 52, "win_rate": 0.827, "ev": 0.557, "wilson_lower": 0.649}]}
 {"ts": "2026-08-25T17:29:41Z", "days": 45, "n_obs": 1649, "passed": [{"cell": "moneyline | pay NO 0.45-0.55", "n": 52, "win_rate": 0.827, "ev": 0.557, "wilson_lower": 0.649}]}
 {"ts": "2026-08-25T18:35:57Z", "days": 45, "n_obs": 1655, "passed": [{"cell": "moneyline | pay NO 0.45-0.55", "n": 52, "win_rate": 0.827, "ev": 0.557, "wilson_lower": 0.649}]}
+{"ts": "2026-08-25T19:30:43Z", "days": 45, "n_obs": 1655, "passed": [{"cell": "moneyline | pay NO 0.45-0.55", "n": 52, "win_rate": 0.827, "ev": 0.557, "wilson_lower": 0.649}]}
