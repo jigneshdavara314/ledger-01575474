@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will justin bieber's",
+      "keyword": "will justin bieber's",
+      "occurrences": 8,
+      "family": "auto_will_justin_bieber_s"
+    },
+    {
+      "pattern": "will drake's highest",
+      "keyword": "will drake's highest",
+      "occurrences": 8,
+      "family": "auto_will_drake_s_highest"
+    }
+  ]
 }
