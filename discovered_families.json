@@ -3,14 +3,8 @@
     {
       "pattern": "will the ##",
       "keyword": "will the",
-      "occurrences": 11,
+      "occurrences": 14,
       "family": "auto_will_the"
-    },
-    {
-      "pattern": "us open, qualification atp",
-      "keyword": "us open, qualification atp",
-      "occurrences": 10,
-      "family": "auto_us_open_qualification_at"
     }
   ]
 }

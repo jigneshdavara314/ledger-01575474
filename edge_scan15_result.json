@@ -1,7 +1,7 @@
 {
-  "generated_utc": "2026-08-25T21:25:52Z",
+  "generated_utc": "2026-08-25T22:24:32Z",
   "days": 45,
-  "n_observations": 1674,
+  "n_observations": 1669,
   "cells": [
     {
       "cell": "moneyline | pay NO 0.45-0.55",
@@ -17,7 +17,7 @@
       "ev_lower": 0.243,
       "wilson_lower": 0.657,
       "z_corr": 2.73,
-      "oos": "68>53 / 60>52",
+      "oos": "55>52 / 74>52",
       "clean": true,
       "verdict": "REAL"
     },
@@ -53,7 +53,7 @@
       "ev_lower": -0.381,
       "wilson_lower": 0.129,
       "z_corr": 2.73,
-      "oos": "10>20 / 18>21",
+      "oos": "9>20 / 17>21",
       "clean": true,
       "verdict": "noise"
     },
@@ -71,7 +71,7 @@
       "ev_lower": -0.091,
       "wilson_lower": 0.587,
       "z_corr": 2.73,
-      "oos": "63>64 / 55>64",
+      "oos": "59>65 / 58>63",
       "clean": true,
       "verdict": "noise"
     },
@@ -89,25 +89,7 @@
       "ev_lower": -0.394,
       "wilson_lower": 0.22,
       "z_corr": 2.73,
-      "oos": "18>35 / 26>36",
-      "clean": true,
-      "verdict": "noise"
-    },
-    {
-      "cell": "company_beat_quarterly_earnings | pay YES 0.75-0.95",
-      "family": "company_beat_quarterly_earnings",
-      "keyword": null,
-      "n": 20,
-      "wins": 18,
-      "win_rate": 0.9,
-      "avg_price": 0.85,
-      "price_sd": 0.057,
-      "breakeven": 0.85,
-      "ev": 0.049,
-      "ev_lower": -0.304,
-      "wilson_lower": 0.601,
-      "z_corr": 2.73,
-      "oos": "44>82 / 69>87",
+      "oos": "18>35 / 25>36",
       "clean": true,
       "verdict": "noise"
     },
@@ -125,7 +107,7 @@
       "ev_lower": -0.115,
       "wilson_lower": 0.593,
       "z_corr": 2.73,
-      "oos": "59>67 / 60>66",
+      "oos": "55>67 / 62>66",
       "clean": true,
       "verdict": "noise"
     },
@@ -143,7 +125,25 @@
       "ev_lower": -0.073,
       "wilson_lower": 0.8,
       "z_corr": 2.73,
-      "oos": "80>85 / 79>87",
+      "oos": "78>85 / 82>86",
+      "clean": true,
+      "verdict": "noise"
+    },
+    {
+      "cell": "company_beat_quarterly_earnings | pay YES 0.75-0.95",
+      "family": "company_beat_quarterly_earnings",
+      "keyword": null,
+      "n": 23,
+      "wins": 20,
+      "win_rate": 0.87,
+      "avg_price": 0.855,
+      "price_sd": 0.056,
+      "breakeven": 0.855,
+      "ev": 0.008,
+      "ev_lower": -0.321,
+      "wilson_lower": 0.589,
+      "z_corr": 2.73,
+      "oos": "45>84 / 69>87",
       "clean": true,
       "verdict": "noise"
     },
@@ -161,7 +161,7 @@
       "ev_lower": -0.249,
       "wilson_lower": 0.602,
       "z_corr": 2.73,
-      "oos": "69>79 / 46>79",
+      "oos": "68>79 / 50>79",
       "clean": true,
       "verdict": "noise"
     },
@@ -179,7 +179,7 @@
       "ev_lower": -0.355,
       "wilson_lower": 0.419,
       "z_corr": 2.73,
-      "oos": "45>64 / 39>64",
+      "oos": "41>64 / 42>64",
       "clean": true,
       "verdict": "noise"
     },
@@ -197,7 +197,7 @@
       "ev_lower": -0.364,
       "wilson_lower": 0.216,
       "z_corr": 2.73,
-      "oos": "20>33 / 23>34",
+      "oos": "22>33 / 21>34",
       "clean": true,
       "verdict": "noise"
     },
@@ -215,7 +215,25 @@
       "ev_lower": -0.36,
       "wilson_lower": 0.228,
       "z_corr": 2.73,
-      "oos": "19>34 / 27>36",
+      "oos": "19>34 / 25>36",
+      "clean": true,
+      "verdict": "noise"
+    },
+    {
+      "cell": "company_beat_quarterly_earnings | pay NO 0.05-0.25",
+      "family": "company_beat_quarterly_earnings",
+      "keyword": null,
+      "n": 25,
+      "wins": 3,
+      "win_rate": 0.12,
+      "avg_price": 0.137,
+      "price_sd": 0.06,
+      "breakeven": 0.137,
+      "ev": -0.175,
+      "ev_lower": -0.8,
+      "wilson_lower": 0.029,
+      "z_corr": 2.73,
+      "oos": "6>16 / 1>12",
       "clean": true,
       "verdict": "noise"
     },
@@ -233,25 +251,7 @@
       "ev_lower": -0.597,
       "wilson_lower": 0.054,
       "z_corr": 2.73,
-      "oos": "6>13 / 4>13",
-      "clean": true,
-      "verdict": "noise"
-    },
-    {
-      "cell": "company_beat_quarterly_earnings | pay NO 0.05-0.25",
-      "family": "company_beat_quarterly_earnings",
-      "keyword": null,
-      "n": 22,
-      "wins": 2,
-      "win_rate": 0.091,
-      "avg_price": 0.141,
-      "price_sd": 0.061,
-      "breakeven": 0.141,
-      "ev": -0.411,
-      "ev_lower": -0.893,
-      "wilson_lower": 0.017,
-      "z_corr": 2.73,
-      "oos": "3>19 / 1>12",
+      "oos": "7>13 / 4>13",
       "clean": true,
       "verdict": "noise"
     },
@@ -269,7 +269,7 @@
       "ev_lower": -0.834,
       "wilson_lower": 0.083,
       "z_corr": 2.73,
-      "oos": "8>47 / 10>48",
+      "oos": "11>48 / 6>47",
       "clean": true,
       "verdict": "noise"
     },
@@ -307,7 +307,7 @@
       "ev_lower": 0.243,
       "wilson_lower": 0.657,
       "z_corr": 2.73,
-      "oos": "68>53 / 60>52",
+      "oos": "55>52 / 74>52",
       "clean": true,
       "verdict": "REAL"
     }
