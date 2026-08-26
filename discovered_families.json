@@ -1,16 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "us open, qualification wta",
-      "keyword": "us open, qualification wta",
-      "occurrences": 12,
-      "family": "auto_us_open_qualification_wt"
-    },
-    {
-      "pattern": "will there be a run scored in the first inning?",
-      "keyword": "will there be a run scored in the first inning?",
-      "occurrences": 8,
-      "family": "auto_will_there_be_a_run_scor"
-    }
-  ]
+  "candidates": []
 }
