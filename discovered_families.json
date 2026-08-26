@@ -1,10 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will it rain",
-      "keyword": "will it rain",
-      "occurrences": 10,
-      "family": "auto_will_it_rain"
+      "pattern": "will core pce",
+      "keyword": "will core pce",
+      "occurrences": 14,
+      "family": "auto_will_core_pce"
     }
   ]
 }
