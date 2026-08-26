@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "greece f##, singles",
+      "keyword": "greece f, singles",
+      "occurrences": 9,
+      "family": "auto_greece_f_singles"
+    }
+  ]
 }
