@@ -1,22 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "does ox alpha",
-      "keyword": "does ox alpha",
-      "occurrences": 22,
-      "family": "auto_does_ox_alpha"
-    },
-    {
-      "pattern": "metro bank one day cup women",
-      "keyword": "metro bank one day cup women",
-      "occurrences": 8,
-      "family": "auto_metro_bank_one_day_cup_w"
-    },
-    {
-      "pattern": "us open, qualification wta",
-      "keyword": "us open, qualification wta",
-      "occurrences": 8,
-      "family": "auto_us_open_qualification_wt"
-    }
-  ]
+  "candidates": []
 }
