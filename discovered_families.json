@@ -1,3 +1,94 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will apple (aapl)",
+      "keyword": "will apple (aapl)",
+      "occurrences": 30,
+      "family": "auto_will_apple_aapl"
+    },
+    {
+      "pattern": "will airbnb, inc.",
+      "keyword": "will airbnb, inc.",
+      "occurrences": 21,
+      "family": "auto_will_airbnb_inc"
+    },
+    {
+      "pattern": "will amazon.com, inc.",
+      "keyword": "will amazon.com, inc.",
+      "occurrences": 20,
+      "family": "auto_will_amazon_com_inc"
+    },
+    {
+      "pattern": "will nvidia (nvda)",
+      "keyword": "will nvidia (nvda)",
+      "occurrences": 17,
+      "family": "auto_will_nvidia_nvda"
+    },
+    {
+      "pattern": "will netflix (nflx)",
+      "keyword": "will netflix (nflx)",
+      "occurrences": 17,
+      "family": "auto_will_netflix_nflx"
+    },
+    {
+      "pattern": "will spacex (spcx)",
+      "keyword": "will spacex (spcx)",
+      "occurrences": 15,
+      "family": "auto_will_spacex_spcx"
+    },
+    {
+      "pattern": "will coinbase global,",
+      "keyword": "will coinbase global,",
+      "occurrences": 13,
+      "family": "auto_will_coinbase_global"
+    },
+    {
+      "pattern": "will opendoor (open)",
+      "keyword": "will opendoor (open)",
+      "occurrences": 13,
+      "family": "auto_will_opendoor_open"
+    },
+    {
+      "pattern": "will micron (mu)",
+      "keyword": "will micron (mu)",
+      "occurrences": 11,
+      "family": "auto_will_micron_mu"
+    },
+    {
+      "pattern": "will microsoft (msft)",
+      "keyword": "will microsoft (msft)",
+      "occurrences": 11,
+      "family": "auto_will_microsoft_msft"
+    },
+    {
+      "pattern": "will meta (meta)",
+      "keyword": "will meta (meta)",
+      "occurrences": 10,
+      "family": "auto_will_meta_meta"
+    },
+    {
+      "pattern": "will amazon (amzn)",
+      "keyword": "will amazon (amzn)",
+      "occurrences": 9,
+      "family": "auto_will_amazon_amzn"
+    },
+    {
+      "pattern": "will google (googl)",
+      "keyword": "will google (googl)",
+      "occurrences": 9,
+      "family": "auto_will_google_googl"
+    },
+    {
+      "pattern": "will robinhood markets,",
+      "keyword": "will robinhood markets,",
+      "occurrences": 8,
+      "family": "auto_will_robinhood_markets"
+    },
+    {
+      "pattern": "will microstrategy (mstr)",
+      "keyword": "will microstrategy (mstr)",
+      "occurrences": 8,
+      "family": "auto_will_microstrategy_mstr"
+    }
+  ]
 }
