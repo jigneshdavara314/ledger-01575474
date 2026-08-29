@@ -1,16 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will the game go to extra innings?",
-      "keyword": "will the game go to extra innings?",
-      "occurrences": 10,
-      "family": "auto_will_the_game_go_to_extr"
-    },
-    {
-      "pattern": "modus super series",
-      "keyword": "modus super series",
-      "occurrences": 10,
-      "family": "auto_modus_super_series"
+      "pattern": "kfc t## max",
+      "keyword": "kfc t max",
+      "occurrences": 11,
+      "family": "auto_kfc_t_max"
     }
   ]
 }
