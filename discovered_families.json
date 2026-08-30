@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will klay thompson's",
+      "keyword": "will klay thompson's",
+      "occurrences": 29,
+      "family": "auto_will_klay_thompson_s"
+    }
+  ]
 }
