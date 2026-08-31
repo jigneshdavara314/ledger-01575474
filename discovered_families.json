@@ -1,16 +1,22 @@
 {
   "candidates": [
     {
-      "pattern": "will it rain",
-      "keyword": "will it rain",
-      "occurrences": 15,
-      "family": "auto_will_it_rain"
+      "pattern": "modus super series",
+      "keyword": "modus super series",
+      "occurrences": 12,
+      "family": "auto_modus_super_series"
     },
     {
-      "pattern": "will elon post",
-      "keyword": "will elon post",
-      "occurrences": 10,
-      "family": "auto_will_elon_post"
+      "pattern": "manacor",
+      "keyword": "manacor",
+      "occurrences": 12,
+      "family": "auto_manacor"
+    },
+    {
+      "pattern": "plovdiv #",
+      "keyword": "plovdiv",
+      "occurrences": 8,
+      "family": "auto_plovdiv"
     }
   ]
 }
