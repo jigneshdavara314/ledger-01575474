@@ -1,22 +1,46 @@
 {
   "candidates": [
     {
-      "pattern": "modus super series",
-      "keyword": "modus super series",
-      "occurrences": 12,
-      "family": "auto_modus_super_series"
+      "pattern": "will airbnb, inc.",
+      "keyword": "will airbnb, inc.",
+      "occurrences": 17,
+      "family": "auto_will_airbnb_inc"
     },
     {
-      "pattern": "manacor",
-      "keyword": "manacor",
-      "occurrences": 12,
-      "family": "auto_manacor"
+      "pattern": "will amazon.com, inc.",
+      "keyword": "will amazon.com, inc.",
+      "occurrences": 14,
+      "family": "auto_will_amazon_com_inc"
     },
     {
-      "pattern": "plovdiv #",
-      "keyword": "plovdiv",
+      "pattern": "will apple (aapl)",
+      "keyword": "will apple (aapl)",
+      "occurrences": 13,
+      "family": "auto_will_apple_aapl"
+    },
+    {
+      "pattern": "will meta platforms,",
+      "keyword": "will meta platforms,",
+      "occurrences": 10,
+      "family": "auto_will_meta_platforms"
+    },
+    {
+      "pattern": "will robinhood markets,",
+      "keyword": "will robinhood markets,",
+      "occurrences": 10,
+      "family": "auto_will_robinhood_markets"
+    },
+    {
+      "pattern": "will alphabet inc.",
+      "keyword": "will alphabet inc.",
+      "occurrences": 9,
+      "family": "auto_will_alphabet_inc"
+    },
+    {
+      "pattern": "will alessandro bastoni",
+      "keyword": "will alessandro bastoni",
       "occurrences": 8,
-      "family": "auto_plovdiv"
+      "family": "auto_will_alessandro_bastoni"
     }
   ]
 }
