@@ -1,34 +1,16 @@
 {
   "candidates": [
     {
-      "pattern": "will cristiano ronaldo",
-      "keyword": "will cristiano ronaldo",
-      "occurrences": 33,
-      "family": "auto_will_cristiano_ronaldo"
+      "pattern": "will hyperliquid dip",
+      "keyword": "will hyperliquid dip",
+      "occurrences": 12,
+      "family": "auto_will_hyperliquid_dip"
     },
     {
-      "pattern": "will wti crude",
-      "keyword": "will wti crude",
-      "occurrences": 15,
-      "family": "auto_will_wti_crude"
-    },
-    {
-      "pattern": "will gold (xauusd)",
-      "keyword": "will gold (xauusd)",
-      "occurrences": 13,
-      "family": "auto_will_gold_xauusd"
-    },
-    {
-      "pattern": "will silver (xagusd)",
-      "keyword": "will silver (xagusd)",
-      "occurrences": 13,
-      "family": "auto_will_silver_xagusd"
-    },
-    {
-      "pattern": "will natural gas",
-      "keyword": "will natural gas",
-      "occurrences": 11,
-      "family": "auto_will_natural_gas"
+      "pattern": "will hong kong",
+      "keyword": "will hong kong",
+      "occurrences": 10,
+      "family": "auto_will_hong_kong"
     }
   ]
 }
