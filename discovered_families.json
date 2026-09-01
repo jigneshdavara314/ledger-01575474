@@ -1,16 +1,22 @@
 {
   "candidates": [
     {
-      "pattern": "will hyperliquid dip",
-      "keyword": "will hyperliquid dip",
-      "occurrences": 12,
-      "family": "auto_will_hyperliquid_dip"
+      "pattern": "will it rain",
+      "keyword": "will it rain",
+      "occurrences": 15,
+      "family": "auto_will_it_rain"
     },
     {
-      "pattern": "will hong kong",
-      "keyword": "will hong kong",
-      "occurrences": 10,
-      "family": "auto_will_hong_kong"
+      "pattern": "will donald trump",
+      "keyword": "will donald trump",
+      "occurrences": 11,
+      "family": "auto_will_donald_trump"
+    },
+    {
+      "pattern": "will there be",
+      "keyword": "will there be",
+      "occurrences": 9,
+      "family": "auto_will_there_be"
     }
   ]
 }
