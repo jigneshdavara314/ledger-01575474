@@ -1,46 +1,34 @@
 {
   "candidates": [
     {
-      "pattern": "will airbnb, inc.",
-      "keyword": "will airbnb, inc.",
-      "occurrences": 17,
-      "family": "auto_will_airbnb_inc"
+      "pattern": "will cristiano ronaldo",
+      "keyword": "will cristiano ronaldo",
+      "occurrences": 33,
+      "family": "auto_will_cristiano_ronaldo"
     },
     {
-      "pattern": "will amazon.com, inc.",
-      "keyword": "will amazon.com, inc.",
-      "occurrences": 14,
-      "family": "auto_will_amazon_com_inc"
+      "pattern": "will wti crude",
+      "keyword": "will wti crude",
+      "occurrences": 15,
+      "family": "auto_will_wti_crude"
     },
     {
-      "pattern": "will apple (aapl)",
-      "keyword": "will apple (aapl)",
+      "pattern": "will gold (xauusd)",
+      "keyword": "will gold (xauusd)",
       "occurrences": 13,
-      "family": "auto_will_apple_aapl"
+      "family": "auto_will_gold_xauusd"
     },
     {
-      "pattern": "will meta platforms,",
-      "keyword": "will meta platforms,",
-      "occurrences": 10,
-      "family": "auto_will_meta_platforms"
+      "pattern": "will silver (xagusd)",
+      "keyword": "will silver (xagusd)",
+      "occurrences": 13,
+      "family": "auto_will_silver_xagusd"
     },
     {
-      "pattern": "will robinhood markets,",
-      "keyword": "will robinhood markets,",
-      "occurrences": 10,
-      "family": "auto_will_robinhood_markets"
-    },
-    {
-      "pattern": "will alphabet inc.",
-      "keyword": "will alphabet inc.",
-      "occurrences": 9,
-      "family": "auto_will_alphabet_inc"
-    },
-    {
-      "pattern": "will alessandro bastoni",
-      "keyword": "will alessandro bastoni",
-      "occurrences": 8,
-      "family": "auto_will_alessandro_bastoni"
+      "pattern": "will natural gas",
+      "keyword": "will natural gas",
+      "occurrences": 11,
+      "family": "auto_will_natural_gas"
     }
   ]
 }
