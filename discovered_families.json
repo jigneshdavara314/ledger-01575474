@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will the ornn",
+      "keyword": "will the ornn",
+      "occurrences": 31,
+      "family": "auto_will_the_ornn"
+    },
+    {
+      "pattern": "will the ##",
+      "keyword": "will the",
+      "occurrences": 12,
+      "family": "auto_will_the"
+    }
+  ]
 }
