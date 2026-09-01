@@ -1,10 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "will the bank",
-      "keyword": "will the bank",
-      "occurrences": 8,
-      "family": "auto_will_the_bank"
-    }
-  ]
+  "candidates": []
 }
