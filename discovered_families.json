@@ -1,3 +1,34 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "ppa - women's doubles",
+      "keyword": "ppa - women's doubles",
+      "occurrences": 19,
+      "family": "auto_ppa_women_s_doubles"
+    },
+    {
+      "pattern": "ppa - mixed doubles",
+      "keyword": "ppa - mixed doubles",
+      "occurrences": 19,
+      "family": "auto_ppa_mixed_doubles"
+    },
+    {
+      "pattern": "ppa - men's doubles",
+      "keyword": "ppa - men's doubles",
+      "occurrences": 16,
+      "family": "auto_ppa_men_s_doubles"
+    },
+    {
+      "pattern": "st. louis cardinals vs. los angeles dodgers",
+      "keyword": "st. louis cardinals vs. los angeles dodgers",
+      "occurrences": 10,
+      "family": "auto_st_louis_cardinals_vs_lo"
+    },
+    {
+      "pattern": "san francisco giants vs. pittsburgh pirates",
+      "keyword": "san francisco giants vs. pittsburgh pirates",
+      "occurrences": 8,
+      "family": "auto_san_francisco_giants_vs"
+    }
+  ]
 }
