@@ -1,16 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "ppa - women's singles",
-      "keyword": "ppa - women's singles",
-      "occurrences": 15,
-      "family": "auto_ppa_women_s_singles"
-    },
-    {
-      "pattern": "miami marlins vs. kansas city royals",
-      "keyword": "miami marlins vs. kansas city royals",
-      "occurrences": 14,
-      "family": "auto_miami_marlins_vs_kansas"
-    }
-  ]
+  "candidates": []
 }
