@@ -1,22 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "metro bank one day cup women",
-      "keyword": "metro bank one day cup women",
-      "occurrences": 12,
-      "family": "auto_metro_bank_one_day_cup_w"
-    },
-    {
-      "pattern": "will the next",
-      "keyword": "will the next",
-      "occurrences": 10,
-      "family": "auto_will_the_next"
-    },
-    {
-      "pattern": "san francisco giants vs. pittsburgh pirates",
-      "keyword": "san francisco giants vs. pittsburgh pirates",
-      "occurrences": 9,
-      "family": "auto_san_francisco_giants_vs"
-    }
-  ]
+  "candidates": []
 }
