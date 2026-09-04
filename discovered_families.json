@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "ppa - women's doubles",
+      "keyword": "ppa - women's doubles",
+      "occurrences": 10,
+      "family": "auto_ppa_women_s_doubles"
+    },
+    {
+      "pattern": "ppa - men's doubles",
+      "keyword": "ppa - men's doubles",
+      "occurrences": 9,
+      "family": "auto_ppa_men_s_doubles"
+    }
+  ]
 }
