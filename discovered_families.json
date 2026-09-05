@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will mrbeast gaming's",
+      "keyword": "will mrbeast gaming's",
+      "occurrences": 16,
+      "family": "auto_will_mrbeast_gaming_s"
+    }
+  ]
 }
