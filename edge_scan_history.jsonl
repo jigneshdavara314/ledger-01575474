@@ -1035,3 +1035,4 @@
 {"ts": "2026-09-07T00:40:07Z", "days": 45, "n_obs": 1717, "passed": []}
 {"ts": "2026-09-07T05:39:24Z", "days": 45, "n_obs": 1710, "passed": []}
 {"ts": "2026-09-07T11:23:35Z", "days": 45, "n_obs": 1718, "passed": [{"cell": "moneyline | pay NO 0.55-0.75", "n": 146, "win_rate": 0.801, "ev": 0.248, "wilson_lower": 0.696}]}
+{"ts": "2026-09-07T17:07:28Z", "days": 45, "n_obs": 1745, "passed": [{"cell": "moneyline | pay NO 0.55-0.75", "n": 158, "win_rate": 0.797, "ev": 0.241, "wilson_lower": 0.696}]}
