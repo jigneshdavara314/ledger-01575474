@@ -19,9 +19,9 @@
       "promoted": "2026-07-21",
       "recurred": 5,
       "source": "auto-recur",
-      "measured_win": 0.781,
-      "measured_wilson_lower": 0.678,
-      "measured_n": 160,
+      "measured_win": 0.788,
+      "measured_wilson_lower": 0.685,
+      "measured_n": 156,
       "direction": "NO",
       "band_lo": 0.55,
       "band_hi": 0.75
