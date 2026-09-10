@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will ppi yoy",
+      "keyword": "will ppi yoy",
+      "occurrences": 10,
+      "family": "auto_will_ppi_yoy"
+    }
+  ]
 }
