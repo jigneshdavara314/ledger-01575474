@@ -1,10 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "will argentina's monthly",
-      "keyword": "will argentina's monthly",
-      "occurrences": 8,
-      "family": "auto_will_argentina_s_monthly"
-    }
-  ]
+  "candidates": []
 }
