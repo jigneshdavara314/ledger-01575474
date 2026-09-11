@@ -1,40 +1,34 @@
 {
   "candidates": [
     {
-      "pattern": "will alphabet inc.",
-      "keyword": "will alphabet inc.",
-      "occurrences": 14,
-      "family": "auto_will_alphabet_inc"
+      "pattern": "will natural gas",
+      "keyword": "will natural gas",
+      "occurrences": 19,
+      "family": "auto_will_natural_gas"
     },
     {
-      "pattern": "will tesla, inc.",
-      "keyword": "will tesla, inc.",
-      "occurrences": 14,
-      "family": "auto_will_tesla_inc"
+      "pattern": "will wti crude",
+      "keyword": "will wti crude",
+      "occurrences": 18,
+      "family": "auto_will_wti_crude"
     },
     {
-      "pattern": "will amazon.com, inc.",
-      "keyword": "will amazon.com, inc.",
-      "occurrences": 14,
-      "family": "auto_will_amazon_com_inc"
+      "pattern": "will gold (xauusd)",
+      "keyword": "will gold (xauusd)",
+      "occurrences": 17,
+      "family": "auto_will_gold_xauusd"
     },
     {
-      "pattern": "will apple (aapl)",
-      "keyword": "will apple (aapl)",
-      "occurrences": 13,
-      "family": "auto_will_apple_aapl"
+      "pattern": "will silver (xagusd)",
+      "keyword": "will silver (xagusd)",
+      "occurrences": 16,
+      "family": "auto_will_silver_xagusd"
     },
     {
-      "pattern": "will meta platforms,",
-      "keyword": "will meta platforms,",
-      "occurrences": 9,
-      "family": "auto_will_meta_platforms"
-    },
-    {
-      "pattern": "will meta (meta)",
-      "keyword": "will meta (meta)",
-      "occurrences": 9,
-      "family": "auto_will_meta_meta"
+      "pattern": "will us dollar",
+      "keyword": "will us dollar",
+      "occurrences": 15,
+      "family": "auto_will_us_dollar"
     }
   ]
 }
