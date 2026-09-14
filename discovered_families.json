@@ -1,28 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will \"the fix\"",
-      "keyword": "will \"the fix\"",
-      "occurrences": 10,
-      "family": "auto_will_the_fix"
-    },
-    {
-      "pattern": "will \"fall #",
-      "keyword": "will \"fall",
-      "occurrences": 9,
-      "family": "auto_will_fall"
-    },
-    {
-      "pattern": "will \"by any",
-      "keyword": "will \"by any",
-      "occurrences": 9,
-      "family": "auto_will_by_any"
-    },
-    {
-      "pattern": "will \"the uprising\"",
-      "keyword": "will \"the uprising\"",
+      "pattern": "real betis balompi\u00e9",
+      "keyword": "real betis balompi\u00e9",
       "occurrences": 8,
-      "family": "auto_will_the_uprising"
+      "family": "auto_real_betis_balompi"
     }
   ]
 }
