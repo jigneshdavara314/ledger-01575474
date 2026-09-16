@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "ppa - women's singles",
+      "keyword": "ppa - women's singles",
+      "occurrences": 10,
+      "family": "auto_ppa_women_s_singles"
+    },
+    {
+      "pattern": "w## santa margherita di pula",
+      "keyword": "w santa margherita di pula",
+      "occurrences": 8,
+      "family": "auto_w_santa_margherita_di_pu"
+    }
+  ]
 }
