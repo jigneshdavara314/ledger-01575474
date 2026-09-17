@@ -1,16 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "miami marlins vs. arizona diamondbacks",
-      "keyword": "miami marlins vs. arizona diamondbacks",
-      "occurrences": 11,
-      "family": "auto_miami_marlins_vs_arizona"
-    },
-    {
-      "pattern": "seattle mariners vs. los angeles angels",
-      "keyword": "seattle mariners vs. los angeles angels",
-      "occurrences": 9,
-      "family": "auto_seattle_mariners_vs_los"
-    }
-  ]
+  "candidates": []
 }
