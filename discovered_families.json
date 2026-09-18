@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "detroit tigers vs. chicago white sox",
+      "keyword": "detroit tigers vs. chicago white sox",
+      "occurrences": 8,
+      "family": "auto_detroit_tigers_vs_chicag"
+    }
+  ]
 }
