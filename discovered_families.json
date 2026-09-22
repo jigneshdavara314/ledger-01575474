@@ -1,10 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "will \"resident evil\"",
-      "keyword": "will \"resident evil\"",
-      "occurrences": 10,
-      "family": "auto_will_resident_evil"
-    }
-  ]
+  "candidates": []
 }
