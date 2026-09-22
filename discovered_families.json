@@ -1,10 +1,16 @@
 {
   "candidates": [
     {
-      "pattern": "modus super series",
-      "keyword": "modus super series",
-      "occurrences": 11,
-      "family": "auto_modus_super_series"
+      "pattern": "will the next",
+      "keyword": "will the next",
+      "occurrences": 16,
+      "family": "auto_will_the_next"
+    },
+    {
+      "pattern": "will mrbeast's next",
+      "keyword": "will mrbeast's next",
+      "occurrences": 8,
+      "family": "auto_will_mrbeast_s_next"
     }
   ]
 }
