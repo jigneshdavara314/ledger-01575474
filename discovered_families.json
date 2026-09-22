@@ -1,10 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will it rain",
-      "keyword": "will it rain",
-      "occurrences": 15,
-      "family": "auto_will_it_rain"
+      "pattern": "will \"resident evil\"",
+      "keyword": "will \"resident evil\"",
+      "occurrences": 10,
+      "family": "auto_will_resident_evil"
     }
   ]
 }
