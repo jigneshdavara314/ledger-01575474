@@ -1,28 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "milwaukee brewers vs. philadelphia phillies",
-      "keyword": "milwaukee brewers vs. philadelphia phillies",
-      "occurrences": 10,
-      "family": "auto_milwaukee_brewers_vs_phi"
-    },
-    {
-      "pattern": "tampa bay rays vs. new york yankees",
-      "keyword": "tampa bay rays vs. new york yankees",
-      "occurrences": 9,
-      "family": "auto_tampa_bay_rays_vs_new_yo"
-    },
-    {
-      "pattern": "will there be a run scored in the first inning?",
-      "keyword": "will there be a run scored in the first inning?",
-      "occurrences": 8,
-      "family": "auto_will_there_be_a_run_scor"
-    },
-    {
-      "pattern": "washington nationals vs. detroit tigers",
-      "keyword": "washington nationals vs. detroit tigers",
-      "occurrences": 8,
-      "family": "auto_washington_nationals_vs"
-    }
-  ]
+  "candidates": []
 }
