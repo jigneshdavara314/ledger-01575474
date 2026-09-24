@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "st. louis cardinals vs. pittsburgh pirates",
+      "keyword": "st. louis cardinals vs. pittsburgh pirates",
+      "occurrences": 10,
+      "family": "auto_st_louis_cardinals_vs_pi"
+    }
+  ]
 }
