@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "modus super series",
+      "keyword": "modus super series",
+      "occurrences": 12,
+      "family": "auto_modus_super_series"
+    }
+  ]
 }
