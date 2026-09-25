@@ -1,16 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "cleveland guardians vs. boston red sox",
-      "keyword": "cleveland guardians vs. boston red sox",
-      "occurrences": 9,
-      "family": "auto_cleveland_guardians_vs_b"
-    },
-    {
-      "pattern": "milwaukee brewers vs. philadelphia phillies",
-      "keyword": "milwaukee brewers vs. philadelphia phillies",
-      "occurrences": 8,
-      "family": "auto_milwaukee_brewers_vs_phi"
-    }
-  ]
+  "candidates": []
 }
