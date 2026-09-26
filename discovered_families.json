@@ -1,22 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "will silver (xagusd)",
-      "keyword": "will silver (xagusd)",
-      "occurrences": 14,
-      "family": "auto_will_silver_xagusd"
-    },
-    {
-      "pattern": "will gold (xauusd)",
-      "keyword": "will gold (xauusd)",
-      "occurrences": 13,
-      "family": "auto_will_gold_xauusd"
-    },
-    {
-      "pattern": "will us dollar",
-      "keyword": "will us dollar",
-      "occurrences": 10,
-      "family": "auto_will_us_dollar"
-    }
-  ]
+  "candidates": []
 }
