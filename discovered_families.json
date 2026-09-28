@@ -1,10 +1,22 @@
 {
   "candidates": [
     {
-      "pattern": "cardinals vs. ##ers",
-      "keyword": "cardinals vs. ers",
-      "occurrences": 11,
-      "family": "auto_cardinals_vs_ers"
+      "pattern": "club le\u00f3n fc vs. fc ju\u00e1rez",
+      "keyword": "club le\u00f3n fc vs. fc ju\u00e1rez",
+      "occurrences": 9,
+      "family": "auto_club_le_n_fc_vs_fc_ju_re"
+    },
+    {
+      "pattern": "will elon post",
+      "keyword": "will elon post",
+      "occurrences": 8,
+      "family": "auto_will_elon_post"
+    },
+    {
+      "pattern": "jingshan",
+      "keyword": "jingshan",
+      "occurrences": 8,
+      "family": "auto_jingshan"
     }
   ]
 }
