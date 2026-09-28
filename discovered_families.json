@@ -1,10 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will south korea",
-      "keyword": "will south korea",
-      "occurrences": 8,
-      "family": "auto_will_south_korea"
+      "pattern": "will the next",
+      "keyword": "will the next",
+      "occurrences": 48,
+      "family": "auto_will_the_next"
     }
   ]
 }
