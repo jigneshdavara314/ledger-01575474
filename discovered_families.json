@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "cardinals vs. ##ers",
+      "keyword": "cardinals vs. ers",
+      "occurrences": 11,
+      "family": "auto_cardinals_vs_ers"
+    }
+  ]
 }
