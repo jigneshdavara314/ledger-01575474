@@ -1,10 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "boston red sox vs. new york yankees",
-      "keyword": "boston red sox vs. new york yankees",
-      "occurrences": 9,
-      "family": "auto_boston_red_sox_vs_new_yo"
-    }
-  ]
+  "candidates": []
 }
