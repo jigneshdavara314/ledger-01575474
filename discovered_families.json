@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will the median",
+      "keyword": "will the median",
+      "occurrences": 56,
+      "family": "auto_will_the_median"
+    },
+    {
+      "pattern": "will core pce",
+      "keyword": "will core pce",
+      "occurrences": 14,
+      "family": "auto_will_core_pce"
+    }
+  ]
 }
