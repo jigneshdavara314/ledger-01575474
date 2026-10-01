@@ -1,28 +1,28 @@
 {
   "candidates": [
     {
-      "pattern": "will silver (xagusd)",
-      "keyword": "will silver (xagusd)",
-      "occurrences": 17,
-      "family": "auto_will_silver_xagusd"
+      "pattern": "will russia capture",
+      "keyword": "will russia capture",
+      "occurrences": 23,
+      "family": "auto_will_russia_capture"
     },
     {
-      "pattern": "will gold (xauusd)",
-      "keyword": "will gold (xauusd)",
-      "occurrences": 17,
-      "family": "auto_will_gold_xauusd"
+      "pattern": "will wti crude",
+      "keyword": "will wti crude",
+      "occurrences": 21,
+      "family": "auto_will_wti_crude"
     },
     {
-      "pattern": "will us dollar",
-      "keyword": "will us dollar",
+      "pattern": "will elon tweet",
+      "keyword": "will elon tweet",
       "occurrences": 15,
-      "family": "auto_will_us_dollar"
+      "family": "auto_will_elon_tweet"
     },
     {
-      "pattern": "chicago white sox vs. houston astros",
-      "keyword": "chicago white sox vs. houston astros",
-      "occurrences": 8,
-      "family": "auto_chicago_white_sox_vs_hou"
+      "pattern": "will trump meet",
+      "keyword": "will trump meet",
+      "occurrences": 12,
+      "family": "auto_will_trump_meet"
     }
   ]
 }
