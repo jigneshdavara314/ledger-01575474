@@ -1,3 +1,22 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will it rain",
+      "keyword": "will it rain",
+      "occurrences": 15,
+      "family": "auto_will_it_rain"
+    },
+    {
+      "pattern": "will openai\u2019s valuation",
+      "keyword": "will openai\u2019s valuation",
+      "occurrences": 10,
+      "family": "auto_will_openai_s_valuation"
+    },
+    {
+      "pattern": "will anthropic\u2019s valuation",
+      "keyword": "will anthropic\u2019s valuation",
+      "occurrences": 9,
+      "family": "auto_will_anthropic_s_valuati"
+    }
+  ]
 }
