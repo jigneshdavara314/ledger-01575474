@@ -1,28 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "will russia capture",
-      "keyword": "will russia capture",
-      "occurrences": 23,
-      "family": "auto_will_russia_capture"
-    },
-    {
-      "pattern": "will wti crude",
-      "keyword": "will wti crude",
-      "occurrences": 21,
-      "family": "auto_will_wti_crude"
-    },
-    {
-      "pattern": "will elon tweet",
-      "keyword": "will elon tweet",
-      "occurrences": 15,
-      "family": "auto_will_elon_tweet"
-    },
-    {
-      "pattern": "will trump meet",
-      "keyword": "will trump meet",
-      "occurrences": 12,
-      "family": "auto_will_trump_meet"
-    }
-  ]
+  "candidates": []
 }
