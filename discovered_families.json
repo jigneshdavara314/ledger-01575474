@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will hong kong",
+      "keyword": "will hong kong",
+      "occurrences": 10,
+      "family": "auto_will_hong_kong"
+    }
+  ]
 }
