@@ -1,10 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will the fight",
-      "keyword": "will the fight",
-      "occurrences": 10,
-      "family": "auto_will_the_fight"
+      "pattern": "w## las vegas, nv",
+      "keyword": "w las vegas, nv",
+      "occurrences": 12,
+      "family": "auto_w_las_vegas_nv"
     }
   ]
 }
