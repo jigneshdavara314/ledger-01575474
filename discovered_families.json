@@ -1,10 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will the ##",
-      "keyword": "will the",
-      "occurrences": 19,
-      "family": "auto_will_the"
+      "pattern": "will the fight",
+      "keyword": "will the fight",
+      "occurrences": 10,
+      "family": "auto_will_the_fight"
     }
   ]
 }
