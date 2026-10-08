@@ -1,16 +1,22 @@
 {
   "candidates": [
     {
-      "pattern": "will the next",
-      "keyword": "will the next",
-      "occurrences": 29,
-      "family": "auto_will_the_next"
+      "pattern": "ppa - women's singles",
+      "keyword": "ppa - women's singles",
+      "occurrences": 10,
+      "family": "auto_ppa_women_s_singles"
     },
     {
-      "pattern": "will it rain",
-      "keyword": "will it rain",
-      "occurrences": 14,
-      "family": "auto_will_it_rain"
+      "pattern": "los angeles dodgers vs. atlanta braves",
+      "keyword": "los angeles dodgers vs. atlanta braves",
+      "occurrences": 9,
+      "family": "auto_los_angeles_dodgers_vs_a"
+    },
+    {
+      "pattern": "ppa - men's singles",
+      "keyword": "ppa - men's singles",
+      "occurrences": 8,
+      "family": "auto_ppa_men_s_singles"
     }
   ]
 }
