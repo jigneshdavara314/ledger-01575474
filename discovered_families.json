@@ -1,22 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "ppa - men's doubles",
-      "keyword": "ppa - men's doubles",
-      "occurrences": 12,
-      "family": "auto_ppa_men_s_doubles"
-    },
-    {
-      "pattern": "t## world cup asia sub-regional qualifier a",
-      "keyword": "t world cup asia sub-regional qualifier a",
-      "occurrences": 10,
-      "family": "auto_t_world_cup_asia_sub_reg"
-    },
-    {
-      "pattern": "shanghai rolex masters",
-      "keyword": "shanghai rolex masters",
-      "occurrences": 8,
-      "family": "auto_shanghai_rolex_masters"
-    }
-  ]
+  "candidates": []
 }
