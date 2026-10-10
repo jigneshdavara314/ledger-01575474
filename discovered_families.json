@@ -1,3 +1,22 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "as monaco fc vs. toulouse fc",
+      "keyword": "as monaco fc vs. toulouse fc",
+      "occurrences": 10,
+      "family": "auto_as_monaco_fc_vs_toulouse"
+    },
+    {
+      "pattern": "will the fight",
+      "keyword": "will the fight",
+      "occurrences": 8,
+      "family": "auto_will_the_fight"
+    },
+    {
+      "pattern": "toulouse fc to",
+      "keyword": "toulouse fc to",
+      "occurrences": 8,
+      "family": "auto_toulouse_fc_to"
+    }
+  ]
 }
