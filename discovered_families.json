@@ -1,22 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "will ##% to",
-      "keyword": "will % to",
-      "occurrences": 32,
-      "family": "auto_will_to"
-    },
-    {
-      "pattern": "will under ##%",
-      "keyword": "will under %",
-      "occurrences": 8,
-      "family": "auto_will_under"
-    },
-    {
-      "pattern": "will ##% or",
-      "keyword": "will % or",
-      "occurrences": 8,
-      "family": "auto_will_or"
-    }
-  ]
+  "candidates": []
 }
