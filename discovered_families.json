@@ -1,10 +1,22 @@
 {
   "candidates": [
     {
-      "pattern": "will wti crude",
-      "keyword": "will wti crude",
-      "occurrences": 12,
-      "family": "auto_will_wti_crude"
+      "pattern": "will ##% to",
+      "keyword": "will % to",
+      "occurrences": 32,
+      "family": "auto_will_to"
+    },
+    {
+      "pattern": "will under ##%",
+      "keyword": "will under %",
+      "occurrences": 8,
+      "family": "auto_will_under"
+    },
+    {
+      "pattern": "will ##% or",
+      "keyword": "will % or",
+      "occurrences": 8,
+      "family": "auto_will_or"
     }
   ]
 }
