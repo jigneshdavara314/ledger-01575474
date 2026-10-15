@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "ppa - mixed doubles",
+      "keyword": "ppa - mixed doubles",
+      "occurrences": 8,
+      "family": "auto_ppa_mixed_doubles"
+    }
+  ]
 }
