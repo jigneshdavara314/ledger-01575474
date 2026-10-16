@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "seahawks vs. broncos",
+      "keyword": "seahawks vs. broncos",
+      "occurrences": 8,
+      "family": "auto_seahawks_vs_broncos"
+    }
+  ]
 }
