@@ -1,3 +1,34 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will silver (xagusd)",
+      "keyword": "will silver (xagusd)",
+      "occurrences": 12,
+      "family": "auto_will_silver_xagusd"
+    },
+    {
+      "pattern": "will apple (aapl)",
+      "keyword": "will apple (aapl)",
+      "occurrences": 11,
+      "family": "auto_will_apple_aapl"
+    },
+    {
+      "pattern": "will trump's approval",
+      "keyword": "will trump's approval",
+      "occurrences": 11,
+      "family": "auto_will_trump_s_approval"
+    },
+    {
+      "pattern": "will gold (xauusd)",
+      "keyword": "will gold (xauusd)",
+      "occurrences": 11,
+      "family": "auto_will_gold_xauusd"
+    },
+    {
+      "pattern": "will microstrategy (mstr)",
+      "keyword": "will microstrategy (mstr)",
+      "occurrences": 10,
+      "family": "auto_will_microstrategy_mstr"
+    }
+  ]
 }
