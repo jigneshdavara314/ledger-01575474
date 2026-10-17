@@ -1246,3 +1246,4 @@
 {"ts": "2026-10-16T19:16:03Z", "days": 45, "n_obs": 1836, "passed": []}
 {"ts": "2026-10-16T22:28:54Z", "days": 45, "n_obs": 1832, "passed": []}
 {"ts": "2026-10-17T01:01:37Z", "days": 45, "n_obs": 2060, "passed": []}
+{"ts": "2026-10-17T05:26:13Z", "days": 45, "n_obs": 2003, "passed": [{"cell": "moneyline | pay NO 0.55-0.75", "n": 375, "win_rate": 0.84, "ev": 0.324, "wilson_lower": 0.782}]}
