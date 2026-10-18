@@ -1255,3 +1255,4 @@
 {"ts": "2026-10-17T23:46:10Z", "days": 45, "n_obs": 2010, "passed": [{"cell": "moneyline | pay NO 0.55-0.75", "n": 327, "win_rate": 0.813, "ev": 0.27, "wilson_lower": 0.748}]}
 {"ts": "2026-10-18T02:40:01Z", "days": 45, "n_obs": 1972, "passed": []}
 {"ts": "2026-10-18T07:45:06Z", "days": 45, "n_obs": 2007, "passed": []}
+{"ts": "2026-10-18T12:26:36Z", "days": 45, "n_obs": 2011, "passed": [{"cell": "moneyline | pay NO 0.45-0.55", "n": 101, "win_rate": 0.851, "ev": 0.625, "wilson_lower": 0.731}]}
