@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "derevynskyi dmytro vs.",
+      "keyword": "derevynskyi dmytro vs.",
+      "occurrences": 8,
+      "family": "auto_derevynskyi_dmytro_vs"
+    }
+  ]
 }
