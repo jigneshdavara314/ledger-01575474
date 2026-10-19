@@ -1,27 +1,9 @@
 {
   "candidates": [
     {
-      "pattern": "will \"sense and",
-      "keyword": "will \"sense and",
-      "occurrences": 11,
-      "family": "auto_will_sense_and"
-    },
-    {
-      "pattern": "will \"you can",
-      "keyword": "will \"you can",
-      "occurrences": 8,
-      "family": "auto_will_you_can"
-    },
-    {
-      "pattern": "will \"whalefall\" score",
-      "keyword": "will \"whalefall\" score",
-      "occurrences": 8,
-      "family": "auto_will_whalefall_score"
-    },
-    {
       "pattern": "will \"street fighter\"",
       "keyword": "will \"street fighter\"",
-      "occurrences": 8,
+      "occurrences": 15,
       "family": "auto_will_street_fighter"
     }
   ]
