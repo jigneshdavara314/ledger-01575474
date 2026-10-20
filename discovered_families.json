@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "w## santa margherita di pula",
+      "keyword": "w santa margherita di pula",
+      "occurrences": 8,
+      "family": "auto_w_santa_margherita_di_pu"
+    }
+  ]
 }
