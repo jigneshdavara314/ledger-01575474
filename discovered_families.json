@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "meta (meta) q#",
+      "keyword": "meta (meta) q",
+      "occurrences": 10,
+      "family": "auto_meta_meta_q"
+    }
+  ]
 }
