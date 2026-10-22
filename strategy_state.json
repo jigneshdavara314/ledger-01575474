@@ -1,31 +1,5 @@
 {
   "tiers": {
-    "moneyline | pay NO 0.45-0.55": {
-      "tier": "exploratory",
-      "mult": 0.4,
-      "promoted": "2026-07-26",
-      "recurred": 5,
-      "source": "auto-recur",
-      "measured_win": 0.856,
-      "measured_wilson_lower": 0.734,
-      "measured_n": 104,
-      "direction": "NO",
-      "band_lo": 0.45,
-      "band_hi": 0.55
-    },
-    "moneyline | pay NO 0.55-0.75": {
-      "tier": "exploratory",
-      "mult": 0.4,
-      "promoted": "2026-07-21",
-      "recurred": 5,
-      "source": "auto-recur",
-      "measured_win": 0.817,
-      "measured_wilson_lower": 0.749,
-      "measured_n": 317,
-      "direction": "NO",
-      "band_lo": 0.55,
-      "band_hi": 0.75
-    },
     "other_neither_team_to_score | pay NO 0.55-0.75": {
       "tier": "exploratory",
       "mult": 0.5,
@@ -56,14 +30,16 @@
   "disabled": [
     "over_under | pay YES 0.75-0.95",
     "over_under | pay NO 0.25-0.45",
-    "over_under | pay YES 0.25-0.45"
+    "over_under | pay YES 0.25-0.45",
+    "moneyline | pay NO 0.45-0.55",
+    "moneyline | pay NO 0.55-0.75"
   ],
   "warnings": {
     "over_under | pay YES 0.75-0.95": 2,
     "over_under | pay NO 0.25-0.45": 2,
     "over_under | pay YES 0.25-0.45": 2,
-    "moneyline | pay NO 0.45-0.55": 1,
-    "moneyline | pay NO 0.55-0.75": 1
+    "moneyline | pay NO 0.45-0.55": 2,
+    "moneyline | pay NO 0.55-0.75": 2
   },
   "updated": "2026-10-22"
 }

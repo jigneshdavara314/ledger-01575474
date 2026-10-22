@@ -38,3 +38,7 @@
 {"ts": "2026-07-26T18:18:11.624359", "action": "GRADUATE", "cell": "moneyline | pay NO 0.45-0.55", "recurred_days": 5, "tier": "exploratory", "mult": 0.5}
 {"ts": "2026-10-22T02:03:01.410285", "action": "WARN_IMPROVE", "cell": "moneyline | pay NO 0.45-0.55", "live_win": 0.5, "breakeven": 0.554, "new_mult": 0.4, "warnings": 1}
 {"ts": "2026-10-22T02:03:01.410961", "action": "WARN_IMPROVE", "cell": "moneyline | pay NO 0.55-0.75", "live_win": 0.5, "breakeven": 0.554, "new_mult": 0.4, "warnings": 1}
+{"ts": "2026-10-22T07:34:10.698634", "action": "WARN_IMPROVE", "cell": "moneyline | pay NO 0.45-0.55", "live_win": 0.5, "breakeven": 0.554, "new_mult": 0.3, "warnings": 2}
+{"ts": "2026-10-22T07:34:10.698757", "action": "DISABLE", "cell": "moneyline | pay NO 0.45-0.55", "reason": "underperformed after grace", "warnings": 2}
+{"ts": "2026-10-22T07:34:10.699459", "action": "WARN_IMPROVE", "cell": "moneyline | pay NO 0.55-0.75", "live_win": 0.5, "breakeven": 0.554, "new_mult": 0.3, "warnings": 2}
+{"ts": "2026-10-22T07:34:10.699529", "action": "DISABLE", "cell": "moneyline | pay NO 0.55-0.75", "reason": "underperformed after grace", "warnings": 2}
