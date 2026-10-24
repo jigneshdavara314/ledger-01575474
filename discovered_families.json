@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will wti crude",
+      "keyword": "will wti crude",
+      "occurrences": 12,
+      "family": "auto_will_wti_crude"
+    },
+    {
+      "pattern": "will us dollar",
+      "keyword": "will us dollar",
+      "occurrences": 11,
+      "family": "auto_will_us_dollar"
+    }
+  ]
 }
