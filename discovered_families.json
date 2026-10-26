@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "m## jo\u00e3o pessoa",
+      "keyword": "m jo\u00e3o pessoa",
+      "occurrences": 15,
+      "family": "auto_m_jo_o_pessoa"
+    }
+  ]
 }
