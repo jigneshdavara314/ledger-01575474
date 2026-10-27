@@ -1,16 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "will \"clayface\" opening",
-      "keyword": "will \"clayface\" opening",
-      "occurrences": 12,
-      "family": "auto_will_clayface_opening"
-    },
-    {
-      "pattern": "m## yanagawa city",
-      "keyword": "m yanagawa city",
-      "occurrences": 12,
-      "family": "auto_m_yanagawa_city"
-    }
-  ]
+  "candidates": []
 }
