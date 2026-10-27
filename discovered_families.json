@@ -1,52 +1,16 @@
 {
   "candidates": [
     {
-      "pattern": "will it rain",
-      "keyword": "will it rain",
-      "occurrences": 14,
-      "family": "auto_will_it_rain"
+      "pattern": "will \"clayface\" opening",
+      "keyword": "will \"clayface\" opening",
+      "occurrences": 12,
+      "family": "auto_will_clayface_opening"
     },
     {
-      "pattern": "will luis diaz",
-      "keyword": "will luis diaz",
-      "occurrences": 9,
-      "family": "auto_will_luis_diaz"
-    },
-    {
-      "pattern": "will pau cubarsi",
-      "keyword": "will pau cubarsi",
-      "occurrences": 8,
-      "family": "auto_will_pau_cubarsi"
-    },
-    {
-      "pattern": "will achraf hakimi",
-      "keyword": "will achraf hakimi",
-      "occurrences": 8,
-      "family": "auto_will_achraf_hakimi"
-    },
-    {
-      "pattern": "will vitinha finish",
-      "keyword": "will vitinha finish",
-      "occurrences": 8,
-      "family": "auto_will_vitinha_finish"
-    },
-    {
-      "pattern": "will declan rice",
-      "keyword": "will declan rice",
-      "occurrences": 8,
-      "family": "auto_will_declan_rice"
-    },
-    {
-      "pattern": "will vin\u00edcius j\u00fanior",
-      "keyword": "will vin\u00edcius j\u00fanior",
-      "occurrences": 8,
-      "family": "auto_will_vin_cius_j_nior"
-    },
-    {
-      "pattern": "will bruno fernandes",
-      "keyword": "will bruno fernandes",
-      "occurrences": 8,
-      "family": "auto_will_bruno_fernandes"
+      "pattern": "m## yanagawa city",
+      "keyword": "m yanagawa city",
+      "occurrences": 12,
+      "family": "auto_m_yanagawa_city"
     }
   ]
 }
