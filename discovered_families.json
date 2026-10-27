@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "w## norman, ok",
+      "keyword": "w norman, ok",
+      "occurrences": 15,
+      "family": "auto_w_norman_ok"
+    }
+  ]
 }
