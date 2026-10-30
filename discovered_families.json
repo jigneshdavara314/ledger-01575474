@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "hong kong sixes",
+      "keyword": "hong kong sixes",
+      "occurrences": 9,
+      "family": "auto_hong_kong_sixes"
+    }
+  ]
 }
