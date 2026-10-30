@@ -1,10 +1,16 @@
 {
   "candidates": [
     {
-      "pattern": "hong kong sixes",
-      "keyword": "hong kong sixes",
-      "occurrences": 9,
-      "family": "auto_hong_kong_sixes"
+      "pattern": "will mexico gdp",
+      "keyword": "will mexico gdp",
+      "occurrences": 8,
+      "family": "auto_will_mexico_gdp"
+    },
+    {
+      "pattern": "will coinbase global,",
+      "keyword": "will coinbase global,",
+      "occurrences": 8,
+      "family": "auto_will_coinbase_global"
     }
   ]
 }
