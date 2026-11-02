@@ -1,10 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "who will finish higher",
-      "keyword": "who will finish higher",
-      "occurrences": 20,
-      "family": "auto_who_will_finish_higher"
+      "pattern": "will ism manufacturing",
+      "keyword": "will ism manufacturing",
+      "occurrences": 10,
+      "family": "auto_will_ism_manufacturing"
     }
   ]
 }
