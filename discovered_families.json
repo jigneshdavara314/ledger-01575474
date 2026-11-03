@@ -1,10 +1,22 @@
 {
   "candidates": [
     {
-      "pattern": "will ism manufacturing",
-      "keyword": "will ism manufacturing",
-      "occurrences": 10,
-      "family": "auto_will_ism_manufacturing"
+      "pattern": "w## sharm elsheikh",
+      "keyword": "w sharm elsheikh",
+      "occurrences": 17,
+      "family": "auto_w_sharm_elsheikh"
+    },
+    {
+      "pattern": "will oxy play",
+      "keyword": "will oxy play",
+      "occurrences": 12,
+      "family": "auto_will_oxy_play"
+    },
+    {
+      "pattern": "m## sharm elsheikh",
+      "keyword": "m sharm elsheikh",
+      "occurrences": 12,
+      "family": "auto_m_sharm_elsheikh"
     }
   ]
 }
