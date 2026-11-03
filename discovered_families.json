@@ -1,10 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "m## harlingen, tx",
-      "keyword": "m harlingen, tx",
-      "occurrences": 14,
-      "family": "auto_m_harlingen_tx"
-    }
-  ]
+  "candidates": []
 }
