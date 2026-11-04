@@ -1,22 +1,16 @@
 {
   "candidates": [
     {
-      "pattern": "will south korea",
-      "keyword": "will south korea",
+      "pattern": "ppa - men's singles",
+      "keyword": "ppa - men's singles",
       "occurrences": 8,
-      "family": "auto_will_south_korea"
+      "family": "auto_ppa_men_s_singles"
     },
     {
-      "pattern": "will microsoft corporation",
-      "keyword": "will microsoft corporation",
+      "pattern": "ppa - women's singles",
+      "keyword": "ppa - women's singles",
       "occurrences": 8,
-      "family": "auto_will_microsoft_corporati"
-    },
-    {
-      "pattern": "will apple (aapl)",
-      "keyword": "will apple (aapl)",
-      "occurrences": 8,
-      "family": "auto_will_apple_aapl"
+      "family": "auto_ppa_women_s_singles"
     }
   ]
 }
