@@ -1,16 +1,22 @@
 {
   "candidates": [
     {
-      "pattern": "m## hilton head island, sc",
-      "keyword": "m hilton head island, sc",
-      "occurrences": 13,
-      "family": "auto_m_hilton_head_island_sc"
+      "pattern": "will south korea",
+      "keyword": "will south korea",
+      "occurrences": 8,
+      "family": "auto_will_south_korea"
     },
     {
-      "pattern": "ppa - men's singles",
-      "keyword": "ppa - men's singles",
-      "occurrences": 10,
-      "family": "auto_ppa_men_s_singles"
+      "pattern": "will microsoft corporation",
+      "keyword": "will microsoft corporation",
+      "occurrences": 8,
+      "family": "auto_will_microsoft_corporati"
+    },
+    {
+      "pattern": "will apple (aapl)",
+      "keyword": "will apple (aapl)",
+      "occurrences": 8,
+      "family": "auto_will_apple_aapl"
     }
   ]
 }
