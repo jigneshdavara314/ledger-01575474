@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "m## sharm elsheikh",
+      "keyword": "m sharm elsheikh",
+      "occurrences": 16,
+      "family": "auto_m_sharm_elsheikh"
+    },
+    {
+      "pattern": "w## sharm elsheikh",
+      "keyword": "w sharm elsheikh",
+      "occurrences": 15,
+      "family": "auto_w_sharm_elsheikh"
+    }
+  ]
 }
