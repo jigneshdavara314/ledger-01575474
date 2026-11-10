@@ -1,22 +1,16 @@
 {
   "candidates": [
     {
-      "pattern": "w## weston, fl",
-      "keyword": "w weston, fl",
-      "occurrences": 15,
-      "family": "auto_w_weston_fl"
+      "pattern": "will a dozen",
+      "keyword": "will a dozen",
+      "occurrences": 10,
+      "family": "auto_will_a_dozen"
     },
     {
-      "pattern": "m## naples, fl",
-      "keyword": "m naples, fl",
-      "occurrences": 13,
-      "family": "auto_m_naples_fl"
-    },
-    {
-      "pattern": "m## columbus, oh",
-      "keyword": "m columbus, oh",
+      "pattern": "will monthly inflation",
+      "keyword": "will monthly inflation",
       "occurrences": 9,
-      "family": "auto_m_columbus_oh"
+      "family": "auto_will_monthly_inflation"
     }
   ]
 }
