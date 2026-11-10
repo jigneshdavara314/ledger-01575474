@@ -1,16 +1,22 @@
 {
   "candidates": [
     {
-      "pattern": "m## sharm elsheikh",
-      "keyword": "m sharm elsheikh",
-      "occurrences": 16,
-      "family": "auto_m_sharm_elsheikh"
+      "pattern": "w## weston, fl",
+      "keyword": "w weston, fl",
+      "occurrences": 15,
+      "family": "auto_w_weston_fl"
     },
     {
-      "pattern": "w## sharm elsheikh",
-      "keyword": "w sharm elsheikh",
-      "occurrences": 15,
-      "family": "auto_w_sharm_elsheikh"
+      "pattern": "m## naples, fl",
+      "keyword": "m naples, fl",
+      "occurrences": 13,
+      "family": "auto_m_naples_fl"
+    },
+    {
+      "pattern": "m## columbus, oh",
+      "keyword": "m columbus, oh",
+      "occurrences": 9,
+      "family": "auto_m_columbus_oh"
     }
   ]
 }
