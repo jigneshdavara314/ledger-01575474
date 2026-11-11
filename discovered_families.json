@@ -1,16 +1,40 @@
 {
   "candidates": [
     {
-      "pattern": "will total votes",
-      "keyword": "will total votes",
-      "occurrences": 13,
-      "family": "auto_will_total_votes"
+      "pattern": "will jonathan taylor's",
+      "keyword": "will jonathan taylor's",
+      "occurrences": 32,
+      "family": "auto_will_jonathan_taylor_s"
     },
     {
-      "pattern": "will fernando mendoza",
-      "keyword": "will fernando mendoza",
-      "occurrences": 9,
-      "family": "auto_will_fernando_mendoza"
+      "pattern": "will brian thomas",
+      "keyword": "will brian thomas",
+      "occurrences": 32,
+      "family": "auto_will_brian_thomas"
+    },
+    {
+      "pattern": "will shedeur sanders's",
+      "keyword": "will shedeur sanders's",
+      "occurrences": 32,
+      "family": "auto_will_shedeur_sanders_s"
+    },
+    {
+      "pattern": "will the next",
+      "keyword": "will the next",
+      "occurrences": 25,
+      "family": "auto_will_the_next"
+    },
+    {
+      "pattern": "will crashies play",
+      "keyword": "will crashies play",
+      "occurrences": 13,
+      "family": "auto_will_crashies_play"
+    },
+    {
+      "pattern": "m## kuala lumpur",
+      "keyword": "m kuala lumpur",
+      "occurrences": 10,
+      "family": "auto_m_kuala_lumpur"
     }
   ]
 }
