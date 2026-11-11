@@ -1,40 +1,34 @@
 {
   "candidates": [
     {
-      "pattern": "will jonathan taylor's",
-      "keyword": "will jonathan taylor's",
-      "occurrences": 32,
-      "family": "auto_will_jonathan_taylor_s"
-    },
-    {
-      "pattern": "will brian thomas",
-      "keyword": "will brian thomas",
-      "occurrences": 32,
-      "family": "auto_will_brian_thomas"
-    },
-    {
-      "pattern": "will shedeur sanders's",
-      "keyword": "will shedeur sanders's",
-      "occurrences": 32,
-      "family": "auto_will_shedeur_sanders_s"
-    },
-    {
-      "pattern": "will the next",
-      "keyword": "will the next",
-      "occurrences": 25,
-      "family": "auto_will_the_next"
-    },
-    {
-      "pattern": "will crashies play",
-      "keyword": "will crashies play",
+      "pattern": "will south korea",
+      "keyword": "will south korea",
       "occurrences": 13,
-      "family": "auto_will_crashies_play"
+      "family": "auto_will_south_korea"
     },
     {
-      "pattern": "m## kuala lumpur",
-      "keyword": "m kuala lumpur",
-      "occurrences": 10,
-      "family": "auto_m_kuala_lumpur"
+      "pattern": "dota #",
+      "keyword": "dota",
+      "occurrences": 8,
+      "family": "auto_dota"
+    },
+    {
+      "pattern": "will there be",
+      "keyword": "will there be",
+      "occurrences": 8,
+      "family": "auto_will_there_be"
+    },
+    {
+      "pattern": "will sk hynix",
+      "keyword": "will sk hynix",
+      "occurrences": 8,
+      "family": "auto_will_sk_hynix"
+    },
+    {
+      "pattern": "modus super series",
+      "keyword": "modus super series",
+      "occurrences": 8,
+      "family": "auto_modus_super_series"
     }
   ]
 }
