@@ -1,16 +1,16 @@
 {
   "candidates": [
     {
-      "pattern": "will a dozen",
-      "keyword": "will a dozen",
-      "occurrences": 10,
-      "family": "auto_will_a_dozen"
+      "pattern": "will total votes",
+      "keyword": "will total votes",
+      "occurrences": 13,
+      "family": "auto_will_total_votes"
     },
     {
-      "pattern": "will monthly inflation",
-      "keyword": "will monthly inflation",
+      "pattern": "will fernando mendoza",
+      "keyword": "will fernando mendoza",
       "occurrences": 9,
-      "family": "auto_will_monthly_inflation"
+      "family": "auto_will_fernando_mendoza"
     }
   ]
 }
