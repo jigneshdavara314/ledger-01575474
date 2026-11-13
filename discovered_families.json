@@ -1,10 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will the #-year",
-      "keyword": "will the -year",
-      "occurrences": 11,
-      "family": "auto_will_the_year"
+      "pattern": "will asuna play",
+      "keyword": "will asuna play",
+      "occurrences": 12,
+      "family": "auto_will_asuna_play"
     }
   ]
 }
