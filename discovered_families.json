@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "modus super series",
+      "keyword": "modus super series",
+      "occurrences": 9,
+      "family": "auto_modus_super_series"
+    },
+    {
+      "pattern": "will total votes",
+      "keyword": "will total votes",
+      "occurrences": 8,
+      "family": "auto_will_total_votes"
+    }
+  ]
 }
