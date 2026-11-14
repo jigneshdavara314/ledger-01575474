@@ -1,16 +1,34 @@
 {
   "candidates": [
     {
-      "pattern": "modus super series",
-      "keyword": "modus super series",
-      "occurrences": 9,
-      "family": "auto_modus_super_series"
+      "pattern": "will us dollar",
+      "keyword": "will us dollar",
+      "occurrences": 18,
+      "family": "auto_will_us_dollar"
     },
     {
-      "pattern": "will total votes",
-      "keyword": "will total votes",
+      "pattern": "will gold (xauusd)",
+      "keyword": "will gold (xauusd)",
+      "occurrences": 17,
+      "family": "auto_will_gold_xauusd"
+    },
+    {
+      "pattern": "will silver (xagusd)",
+      "keyword": "will silver (xagusd)",
+      "occurrences": 14,
+      "family": "auto_will_silver_xagusd"
+    },
+    {
+      "pattern": "will wti crude",
+      "keyword": "will wti crude",
+      "occurrences": 13,
+      "family": "auto_will_wti_crude"
+    },
+    {
+      "pattern": "will trump's approval",
+      "keyword": "will trump's approval",
       "occurrences": 8,
-      "family": "auto_will_total_votes"
+      "family": "auto_will_trump_s_approval"
     }
   ]
 }
