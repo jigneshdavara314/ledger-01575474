@@ -1,22 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "will moloney vs.",
-      "keyword": "will moloney vs.",
-      "occurrences": 10,
-      "family": "auto_will_moloney_vs"
-    },
-    {
-      "pattern": "will surace vs.",
-      "keyword": "will surace vs.",
-      "occurrences": 10,
-      "family": "auto_will_surace_vs"
-    },
-    {
-      "pattern": "will butaev vs.",
-      "keyword": "will butaev vs.",
-      "occurrences": 10,
-      "family": "auto_will_butaev_vs"
-    }
-  ]
+  "candidates": []
 }
