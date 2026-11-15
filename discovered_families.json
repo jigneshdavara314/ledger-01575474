@@ -1,16 +1,3 @@
 {
-  "candidates": [
-    {
-      "pattern": "will natural gas",
-      "keyword": "will natural gas",
-      "occurrences": 17,
-      "family": "auto_will_natural_gas"
-    },
-    {
-      "pattern": "m## hua hin",
-      "keyword": "m hua hin",
-      "occurrences": 11,
-      "family": "auto_m_hua_hin"
-    }
-  ]
+  "candidates": []
 }
