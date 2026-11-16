@@ -1,16 +1,16 @@
 {
   "candidates": [
     {
-      "pattern": "m## kuala lumpur",
-      "keyword": "m kuala lumpur",
-      "occurrences": 11,
-      "family": "auto_m_kuala_lumpur"
+      "pattern": "m## sharm elsheikh",
+      "keyword": "m sharm elsheikh",
+      "occurrences": 9,
+      "family": "auto_m_sharm_elsheikh"
     },
     {
-      "pattern": "will dk metcalf",
-      "keyword": "will dk metcalf",
+      "pattern": "will \"ebenezer\" score",
+      "keyword": "will \"ebenezer\" score",
       "occurrences": 8,
-      "family": "auto_will_dk_metcalf"
+      "family": "auto_will_ebenezer_score"
     }
   ]
 }
