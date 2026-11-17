@@ -1,16 +1,16 @@
 {
   "candidates": [
     {
-      "pattern": "m## sharm elsheikh",
-      "keyword": "m sharm elsheikh",
-      "occurrences": 9,
-      "family": "auto_m_sharm_elsheikh"
+      "pattern": "m## alcal\u00e1 de henares",
+      "keyword": "m alcal\u00e1 de henares",
+      "occurrences": 16,
+      "family": "auto_m_alcal_de_henares"
     },
     {
-      "pattern": "will \"ebenezer\" score",
-      "keyword": "will \"ebenezer\" score",
+      "pattern": "w## orlando, fl",
+      "keyword": "w orlando, fl",
       "occurrences": 8,
-      "family": "auto_will_ebenezer_score"
+      "family": "auto_w_orlando_fl"
     }
   ]
 }
