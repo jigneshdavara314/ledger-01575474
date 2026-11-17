@@ -42,3 +42,5 @@
 {"ts": "2026-10-22T07:34:10.698757", "action": "DISABLE", "cell": "moneyline | pay NO 0.45-0.55", "reason": "underperformed after grace", "warnings": 2}
 {"ts": "2026-10-22T07:34:10.699459", "action": "WARN_IMPROVE", "cell": "moneyline | pay NO 0.55-0.75", "live_win": 0.5, "breakeven": 0.554, "new_mult": 0.3, "warnings": 2}
 {"ts": "2026-10-22T07:34:10.699529", "action": "DISABLE", "cell": "moneyline | pay NO 0.55-0.75", "reason": "underperformed after grace", "warnings": 2}
+{"ts": "2026-11-17T21:58:12.534556", "action": "TRIAL", "cell": "moneyline | pay NO 0.75-0.95", "recurred_days": 2, "tier": "trial", "mult": 0.25}
+{"ts": "2026-11-17T21:58:12.535461", "action": "WARN_IMPROVE", "cell": "moneyline | pay NO 0.75-0.95", "live_win": 0.5, "breakeven": 0.554, "new_mult": 0.15, "warnings": 1}
