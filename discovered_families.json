@@ -1,10 +1,46 @@
 {
   "candidates": [
     {
-      "pattern": "will the next",
-      "keyword": "will the next",
+      "pattern": "wtt star contender",
+      "keyword": "wtt star contender",
+      "occurrences": 13,
+      "family": "auto_wtt_star_contender"
+    },
+    {
+      "pattern": "ppa - men's doubles",
+      "keyword": "ppa - men's doubles",
+      "occurrences": 13,
+      "family": "auto_ppa_men_s_doubles"
+    },
+    {
+      "pattern": "ppa - mixed doubles",
+      "keyword": "ppa - mixed doubles",
+      "occurrences": 12,
+      "family": "auto_ppa_mixed_doubles"
+    },
+    {
+      "pattern": "ppa - women's doubles",
+      "keyword": "ppa - women's doubles",
+      "occurrences": 11,
+      "family": "auto_ppa_women_s_doubles"
+    },
+    {
+      "pattern": "modus super series",
+      "keyword": "modus super series",
       "occurrences": 9,
-      "family": "auto_will_the_next"
+      "family": "auto_modus_super_series"
+    },
+    {
+      "pattern": "m## vale do lobo",
+      "keyword": "m vale do lobo",
+      "occurrences": 8,
+      "family": "auto_m_vale_do_lobo"
+    },
+    {
+      "pattern": "will total votes",
+      "keyword": "will total votes",
+      "occurrences": 8,
+      "family": "auto_will_total_votes"
     }
   ]
 }
