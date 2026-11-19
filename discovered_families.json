@@ -1,22 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "ppa - mixed doubles",
-      "keyword": "ppa - mixed doubles",
-      "occurrences": 12,
-      "family": "auto_ppa_mixed_doubles"
-    },
-    {
-      "pattern": "ppa - men's singles",
-      "keyword": "ppa - men's singles",
+      "pattern": "will the next",
+      "keyword": "will the next",
       "occurrences": 9,
-      "family": "auto_ppa_men_s_singles"
-    },
-    {
-      "pattern": "ppa - women's singles",
-      "keyword": "ppa - women's singles",
-      "occurrences": 9,
-      "family": "auto_ppa_women_s_singles"
+      "family": "auto_will_the_next"
     }
   ]
 }
