@@ -1,34 +1,22 @@
 {
   "candidates": [
     {
-      "pattern": "will trump and",
-      "keyword": "will trump and",
-      "occurrences": 17,
-      "family": "auto_will_trump_and"
+      "pattern": "ppa - mixed doubles",
+      "keyword": "ppa - mixed doubles",
+      "occurrences": 12,
+      "family": "auto_ppa_mixed_doubles"
     },
     {
-      "pattern": "abu dhabi t## league",
-      "keyword": "abu dhabi t league",
+      "pattern": "ppa - men's singles",
+      "keyword": "ppa - men's singles",
       "occurrences": 9,
-      "family": "auto_abu_dhabi_t_league"
+      "family": "auto_ppa_men_s_singles"
     },
     {
-      "pattern": "wtt star contender",
-      "keyword": "wtt star contender",
+      "pattern": "ppa - women's singles",
+      "keyword": "ppa - women's singles",
       "occurrences": 9,
-      "family": "auto_wtt_star_contender"
-    },
-    {
-      "pattern": "m## sharm elsheikh",
-      "keyword": "m sharm elsheikh",
-      "occurrences": 8,
-      "family": "auto_m_sharm_elsheikh"
-    },
-    {
-      "pattern": "m## vale do lobo",
-      "keyword": "m vale do lobo",
-      "occurrences": 8,
-      "family": "auto_m_vale_do_lobo"
+      "family": "auto_ppa_women_s_singles"
     }
   ]
 }
