@@ -1,22 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "m## alcal\u00e1 de henares",
-      "keyword": "m alcal\u00e1 de henares",
-      "occurrences": 10,
-      "family": "auto_m_alcal_de_henares"
-    },
-    {
-      "pattern": "w## alcala de henares",
-      "keyword": "w alcala de henares",
-      "occurrences": 9,
-      "family": "auto_w_alcala_de_henares"
-    },
-    {
-      "pattern": "will anthropic's market",
-      "keyword": "will anthropic's market",
+      "pattern": "w## orlando, fl",
+      "keyword": "w orlando, fl",
       "occurrences": 8,
-      "family": "auto_will_anthropic_s_market"
+      "family": "auto_w_orlando_fl"
     }
   ]
 }
