@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "who will finish higher",
+      "keyword": "who will finish higher",
+      "occurrences": 22,
+      "family": "auto_who_will_finish_higher"
+    },
+    {
+      "pattern": "hersonissos #",
+      "keyword": "hersonissos",
+      "occurrences": 8,
+      "family": "auto_hersonissos"
+    }
+  ]
 }
