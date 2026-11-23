@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will openrouter process",
+      "keyword": "will openrouter process",
+      "occurrences": 9,
+      "family": "auto_will_openrouter_process"
+    }
+  ]
 }
