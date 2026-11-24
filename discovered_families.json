@@ -1,3 +1,16 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will ##+ ships",
+      "keyword": "will + ships",
+      "occurrences": 12,
+      "family": "auto_will_ships"
+    },
+    {
+      "pattern": "will total votes",
+      "keyword": "will total votes",
+      "occurrences": 16,
+      "family": "auto_will_total_votes"
+    }
+  ]
 }
