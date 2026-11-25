@@ -1,10 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will total votes",
-      "keyword": "will total votes",
-      "occurrences": 18,
-      "family": "auto_will_total_votes"
+      "pattern": "will there be",
+      "keyword": "will there be",
+      "occurrences": 9,
+      "family": "auto_will_there_be"
     }
   ]
 }
