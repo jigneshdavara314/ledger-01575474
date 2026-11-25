@@ -1,10 +1,10 @@
 {
   "candidates": [
     {
-      "pattern": "will there be",
-      "keyword": "will there be",
-      "occurrences": 9,
-      "family": "auto_will_there_be"
+      "pattern": "will it rain",
+      "keyword": "will it rain",
+      "occurrences": 14,
+      "family": "auto_will_it_rain"
     }
   ]
 }
