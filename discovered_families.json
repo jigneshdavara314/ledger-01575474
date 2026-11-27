@@ -1,3 +1,10 @@
 {
-  "candidates": []
+  "candidates": [
+    {
+      "pattern": "will ceedee lamb",
+      "keyword": "will ceedee lamb",
+      "occurrences": 8,
+      "family": "auto_will_ceedee_lamb"
+    }
+  ]
 }
